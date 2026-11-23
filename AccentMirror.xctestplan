@@ -16,6 +16,13 @@
   "testTargets": [
     {
       "target": {
+        "containerPath": "container:AccentMirror.xcodeproj",
+        "identifier": "8B8C0D91651D5D0A45531B54",
+        "name": "AccentMirrorTests"
+      }
+    },
+    {
+      "target": {
         "containerPath": "container:Packages\/AccentKit",
         "identifier": "AMAlignmentTests",
         "name": "AMAlignmentTests"

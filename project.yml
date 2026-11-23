@@ -68,6 +68,23 @@ targets:
         CODE_SIGN_STYLE: Automatic
         CODE_SIGN_IDENTITY: "-"
 
+  # Unhosted unit tests for the app's fixture layer (the Samples menu's names). No TEST_HOST: the few UI-free
+  # files they need are compiled in, so running them never launches the app or opens a window.
+  AccentMirrorTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: AccentMirrorTests
+      - path: AccentMirror/Fixtures/FixtureLibrary.swift
+      - path: AccentMirror/Fixtures/FixtureModel.swift
+      - path: AccentMirror/Shell/LibraryManifest.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.raphaelterrier.accentmirror.tests
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "-"
+
   # Local-only screenshot runner (spec 19). Not built by the AccentMirror scheme, not run by CI or `make check`:
   # `make screenshots` runs it. Hosted by the app so it renders the real SwiftUI views in a 1200 × 800 pt window.
   AccentMirrorScreenshots:
@@ -98,8 +115,8 @@ schemeTemplates:
 
 schemes:
   # Build (⌘B) is what CI's `make build` runs: the app only. Test (⌘U) uses AccentMirror.xctestplan: the AccentKit
-  # unit tests only. They run in xctest with no host app, so ⌘U never opens a window. Test targets are built for
-  # testing only, so `xcodebuild build` never builds them.
+  # unit tests and AccentMirrorTests. They run in xctest with no host app, so ⌘U never opens a window. Test targets
+  # are built for testing only, so `xcodebuild build` never builds them.
   AccentMirror:
     shared: true
     build:
