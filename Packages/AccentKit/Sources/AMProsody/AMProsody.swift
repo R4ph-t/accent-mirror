@@ -1,5 +1,6 @@
 // AMProsody: stress, rhythm and intonation features.
-// Placeholder from spec 00; real types arrive in later specs.
+// Spec 07: the L1 syllable segmenter. Spec 08: prominence, observed stress, A(w), S and U, contrast, and the one
+// placement rule (`placementDecision`).
 
 import Foundation
 import AMCore
