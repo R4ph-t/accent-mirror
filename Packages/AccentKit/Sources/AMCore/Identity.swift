@@ -10,10 +10,13 @@ public struct ConfigIdentity: Sendable, Hashable, Codable {
     public let asrModelID: String
     public let pitchTrackerID: String
     public let voicingID: String
+    /// The word-boundary refiner run after ASR (spec 23): `whisper` (unrefined), `dsp-snap-1` or `ctc-w2v2b960-1`.
+    public let aligner: String
 
     public init(
         algorithmVersion: Int = Versions.algorithmVersion, thresholdsVersion: Int = Versions.thresholdsVersion,
-        contractVersion: Int = Versions.contractVersion, asrModelID: String, pitchTrackerID: String, voicingID: String
+        contractVersion: Int = Versions.contractVersion, asrModelID: String, pitchTrackerID: String, voicingID: String,
+        aligner: String
     ) {
         self.algorithmVersion = algorithmVersion
         self.thresholdsVersion = thresholdsVersion
@@ -21,6 +24,7 @@ public struct ConfigIdentity: Sendable, Hashable, Codable {
         self.asrModelID = asrModelID
         self.pitchTrackerID = pitchTrackerID
         self.voicingID = voicingID
+        self.aligner = aligner
     }
 }
 

@@ -221,6 +221,17 @@ spec 07's and is not applied here. Under a bar, the report goes to CTO.
 | Word-boundary tolerance | `wordTimestamps.withinToleranceMs` | 80 | ms | first v2 | 03 | The "within 80 ms" of the next row |
 | Word boundaries within tolerance | `wordTimestamps.withinToleranceShareMin` | 0.85 | share of one side's comparable boundaries | first v2 | 03 | Per side: at least 85% of unpadded starts, and of unpadded ends, within 80 ms |
 
+## Word boundaries (`Thresholds.wordBoundaries`)
+
+Spec 23's refinement of Whisper word boundaries after ASR (CTO ruling 2026-11-23 13:00). Judged on spec 03's bars
+above (`wordTimestamps.*`), which it never changes. Any b1 constant is chosen on tuning speakers only, never on the
+held-out clips the gate uses.
+
+| Name | Key | Value | Unit | Plan | Owner spec | Notes |
+|---|---|---|---|---|---|---|
+| Snap search window | `wordBoundaries.snapWindowMs` | 150 | ± ms | CTO 2026-11-23 | 23 | Each Whisper boundary is searched this far either side, clamped to the neighbouring words and the take |
+| Intensity drop | `wordBoundaries.intensityDropDB` | 10 | dB | CTO 2026-11-23 | 23 | `dsp-snap-1` intensity offset: first frame after the last local peak whose frame RMS is this far below it (mirror rule for onsets). Spec default, untuned |
+
 ## Performance
 
 | Name | Key | Value | Unit | Plan | Owner spec | Notes |

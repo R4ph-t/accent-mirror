@@ -208,7 +208,7 @@ private func range(_ start: Double, _ end: Double) -> TimeRange { try! TimeRange
 }
 
 @Suite("Identity") struct IdentityTests {
-    private let config = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "none")
+    private let config = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "none", aligner: "whisper")
 
     @Test("config identity records the current versions") func versions() {
         #expect(config.algorithmVersion == Versions.algorithmVersion)
@@ -223,7 +223,13 @@ private func range(_ start: Double, _ end: Double) -> TimeRange { try! TimeRange
         var tweaked = Thresholds.current
         tweaked.decision.closeMinShapeMatch = 0.71
         #expect(try configDigest(config, thresholds: tweaked) != digest)
-        let otherVoicing = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "acf-1")
+        let otherVoicing = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "acf-1", aligner: "whisper")
         #expect(try configDigest(otherVoicing) != digest)
+    }
+
+    @Test("a different aligner gives a different configDigest (spec 23)") func configDigestTracksAligner() throws {
+        let snapped = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "none", aligner: "dsp-snap-1")
+        #expect(snapped.aligner == "dsp-snap-1")
+        #expect(try configDigest(snapped) != (try configDigest(config)))
     }
 }

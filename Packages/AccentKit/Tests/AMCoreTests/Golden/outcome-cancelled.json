@@ -2,10 +2,11 @@
   "identity" : {
     "config" : {
       "algorithmVersion" : 1,
+      "aligner" : "whisper",
       "asrModelID" : "whisperkit-base.en",
-      "contractVersion" : 1,
+      "contractVersion" : 2,
       "pitchTrackerID" : "pyin-1",
-      "thresholdsVersion" : 3,
+      "thresholdsVersion" : 4,
       "voicingID" : "acf-1"
     },
     "reference" : {

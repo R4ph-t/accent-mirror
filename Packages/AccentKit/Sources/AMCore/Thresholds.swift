@@ -24,6 +24,7 @@ public struct Thresholds: Sendable, Hashable, Codable {
     public var decision = Decision()
     public var agreement = Agreement()
     public var wordTimestamps = WordTimestamps()
+    public var wordBoundaries = WordBoundaries()
     public var performance = Performance()
 
     public init() {}
@@ -257,6 +258,14 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public var medianErrorMaxMs = 40.0
         public var withinToleranceMs = 80.0
         public var withinToleranceShareMin = 0.85
+        public init() {}
+    }
+
+    /// Word-boundary refinement after ASR, spec 23 (CTO ruling 2026-11-23 13:00). `intensityDropDB` is the spec's
+    /// default, not tuned.
+    public struct WordBoundaries: Sendable, Hashable, Codable {
+        public var snapWindowMs = 150.0
+        public var intensityDropDB = 10.0
         public init() {}
     }
 
