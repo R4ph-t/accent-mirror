@@ -4,30 +4,29 @@ import SwiftUI
 @main
 struct AccentMirrorApp: App {
     @State private var model: ShellModel
+    private let library = FixtureLibrary()
+    private let sampleNames: [String]
 
     init() {
         BundledFonts.register()
-        // `-UIFixture <name>` picks a committed fixture (spec 19); without it the app shows the empty state.
-        let name = UserDefaults.standard.string(forKey: "UIFixture") ?? FixtureLibrary.defaultFixture
-        if let library = FixtureLibrary(), let loaded = try? library.load(name) {
-            _model = State(initialValue: ShellModel(fixture: loaded))
-            return
-        }
-        _model = State(initialValue: ShellModel(
-            manifest: .stub,
-            sidebar: .stub,
-            toolbar: ToolbarState(
-                title: "Photography is harder than it looks.",
-                subtitle: .source("My Phrases · From demo-talk.m4a"),
-                modelEnabled: true,
-                youEnabled: false,
-                record: .record(enabled: true),
-                takeMenu: .takes,
-                takeMenuNote: nil,
-                savedTakes: []
-            )
-        ))
+        sampleNames = (try? library?.allNames()) ?? []
+        // Samples ▸ (or `-UIFixture <name>`, spec 19) picks a committed fixture; without either, the empty state.
+        let model = ShellModel(manifest: .stub, sidebar: .stub, toolbar: Self.fallbackToolbar)
+        FixtureChoice.show(FixtureChoice.stored, in: model, from: library)
+        _model = State(initialValue: model)
     }
+
+    /// Only seen when the stored fixture can't be read.
+    private static let fallbackToolbar = ToolbarState(
+        title: "Photography is harder than it looks.",
+        subtitle: .source("My Phrases · From demo-talk.m4a"),
+        modelEnabled: true,
+        youEnabled: false,
+        record: .record(enabled: true),
+        takeMenu: .takes,
+        takeMenuNote: nil,
+        savedTakes: []
+    )
 
     var body: some Scene {
         WindowGroup {
@@ -47,6 +46,7 @@ struct AccentMirrorApp: App {
                 }
                 .keyboardShortcut("s", modifiers: [.control, .command])
             }
+            SamplesCommands(model: model, library: library, names: sampleNames)
         }
     }
 }

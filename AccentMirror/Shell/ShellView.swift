@@ -8,13 +8,23 @@ struct ShellView: View {
         ShellSplitView(
             sidebarVisible: model.sidebarVisible,
             inspectorVisible: model.inspectorVisible,
-            sidebar: { SidebarView(manifest: model.manifest, state: model.sidebar) },
+            sidebar: { SidebarPane(model: model) },
             detail: { DetailPane(model: model) },
             inspector: { InspectorPane(model: model) }
         )
         .ignoresSafeArea()
         .frame(minWidth: Metrics.minimumWindow.width, minHeight: Metrics.minimumWindow.height)
         .background(WindowChromeConfigurator())
+    }
+}
+
+/// The sidebar, reading the model in its own body so a fixture switch redraws it.
+struct SidebarPane: View {
+    var model: ShellModel
+
+    var body: some View {
+        // The id resets the sidebar's own expand state when Samples ▸ switches fixture.
+        SidebarView(manifest: model.manifest, state: model.sidebar).id(model.fixtureName)
     }
 }
 
