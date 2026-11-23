@@ -28,7 +28,7 @@ time.
 | `take` | string? | `takes/<take>.json`: the take on screen (saved, or the unsaved last try) |
 | `savedTakes` | int[] | Saved take numbers, newest first |
 | `analysis` | object? | The contract result (below) |
-| `operationalError` | object? | `{kind: modelUnavailable \| inferenceFailed \| referenceCacheCorrupt \| audioUnreadable, stage?, source?: clip \| take}` |
+| `operationalError` | object? | `{kind: modelUnavailable \| inferenceFailed \| referenceCacheCorrupt \| audioUnreadable, stage?: findingWords \| measuringPitch \| measuringStress \| comparing, source?: clip \| take}` |
 | `persistence` | string? | `saved` \| `notSaved` \| `saveFailed` \| `savedPruneFailed` |
 | `outcome` | string? | Coordinator outcome with no UI trace (`cancelled`) |
 | `inspectorOpen` | bool? | Opens the Details inspector |

@@ -268,13 +268,27 @@ enum Copy {
         case .modelUnavailable:
             ("Accent Mirror couldn't load its speech model, so this take wasn't checked. This isn't about your take.", "Retry")
         case .inferenceFailed:
-            ("Something went wrong inside Accent Mirror while \(error.stage ?? "comparing with the model"). This isn't about your take.", "Retry")
+            (inferenceFailed(error.stage ?? .comparing), "Retry")
         case .referenceCacheCorrupt:
             ("Accent Mirror couldn't read its copy of this native recording.", "Rebuild")
         case .audioUnreadable:
             error.source == "take"
                 ? ("Accent Mirror couldn't read the recording it just made.", "Retry")
                 : ("Accent Mirror couldn't read that audio file. Try a WAV, M4A or MP3 file.", "Choose File\u{2026}")
+        }
+    }
+
+    /// §13.2: "Something went wrong inside Accent Mirror while {stage}. This isn't about your take." No ellipsis.
+    static func inferenceFailed(_ stage: OperationalError.Stage) -> String {
+        "Something went wrong inside Accent Mirror while \(inferenceStage(stage)). This isn't about your take."
+    }
+
+    static func inferenceStage(_ stage: OperationalError.Stage) -> String {
+        switch stage {
+        case .findingWords: "finding your words"
+        case .measuringPitch: "measuring your pitch"
+        case .measuringStress: "measuring stress"
+        case .comparing: "comparing with the model"
         }
     }
 

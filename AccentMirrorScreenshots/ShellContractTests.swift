@@ -100,7 +100,7 @@ struct ShellContractTests {
         }
     }
 
-    // MARK: Designer review of PR #4 (fixes 1 to 6)
+    // MARK: Designer review of PR #4 (fixes 1, 2, 4, 6) and inferenceFailed copy
 
     /// Your strip labels that carry the mistake marker, as (word syllable text, upper-cased).
     private func markedSyllables(_ loaded: LoadedFixture) -> [String] {
@@ -218,6 +218,20 @@ struct ShellContractTests {
 
     @Test func noVoicedFramesKeepsItsMessage() throws {
         #expect(ShellPresenter.pitch(try library.load("noVoicedFrames")).message == "No pitch to show for this take")
+    }
+
+    @Test(arguments: [
+        (OperationalError.Stage.findingWords, "finding your words"),
+        (.measuringPitch, "measuring your pitch"),
+        (.measuringStress, "measuring stress"),
+        (.comparing, "comparing with the model"),
+    ])
+    func inferenceFailedNamesTheStage(_ stage: OperationalError.Stage, _ words: String) {
+        let sentence = Copy.inferenceFailed(stage)
+        #expect(sentence == "Something went wrong inside Accent Mirror while \(words). This isn't about your take.")
+        #expect(!sentence.contains("\u{2026}") && !sentence.contains("..."))
+        let banner = Copy.banner(OperationalError(kind: .inferenceFailed, stage: stage))
+        #expect(banner.sentence == sentence && banner.button == "Retry")
     }
 
     // MARK: Fonts
