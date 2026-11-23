@@ -7,7 +7,7 @@ public enum Versions {
     /// Bump when an algorithm change can change any output for the same inputs.
     public static let algorithmVersion = 1
     /// Bump when any value in `Thresholds` changes.
-    public static let thresholdsVersion = 6
+    public static let thresholdsVersion = 7
     /// Bump when a contract type's shape or JSON changes.
     public static let contractVersion = 1
 
@@ -46,5 +46,10 @@ public enum Versions {
         GoldenDigest(
             algorithmVersion: 1, thresholdsVersion: 6, contractVersion: 1,
             digest: "ba13dd10863932382111046991d0c2ec4a629904c7d5a395b7422789eaa9d8bf"),
+        // Spec 22: `agreement.voiceMovedStressMin`, `.voiceCorrectStressMin` and `.syntheticDSPAgreementMaxPoints`
+        // added (plan §6.4 values, not tuned; evaluation gates only). Only `thresholdsVersion` moved in the goldens.
+        GoldenDigest(
+            algorithmVersion: 1, thresholdsVersion: 7, contractVersion: 1,
+            digest: "378903a072998736f7bc45d615d0a6892a15847dc52acab90b86334736651782"),
     ]
 }

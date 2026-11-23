@@ -78,7 +78,7 @@
       "asrModelID" : "replayed-word-timings",
       "contractVersion" : 1,
       "pitchTrackerID" : "pyin-1",
-      "thresholdsVersion" : 6,
+      "thresholdsVersion" : 7,
       "voicingID" : "acf-1"
     },
     "reference" : {
