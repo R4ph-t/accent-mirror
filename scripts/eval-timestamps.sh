@@ -21,7 +21,7 @@ fi
 
 "$root/scripts/fetch-models.sh" --verify "$model"
 "$root/scripts/fetch-vctk.sh"
-"$root/scripts/am-timestamps.sh" eval "${release[@]}" \
+"$root/scripts/am-timestamps.sh" eval ${release[@]+"${release[@]}"} \
   --repo "$root" \
   --clips "$root/fixtures/vctk/starter-clips.txt" \
   --corpus "${VCTK_CACHE:-$root/.cache/vctk}/VCTK-Corpus-0.92" \
