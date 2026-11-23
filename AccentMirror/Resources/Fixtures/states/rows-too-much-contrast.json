@@ -1,6 +1,6 @@
 {
   "name": "rows-too-much-contrast",
-  "summary": "The too-much-contrast row: only your HAR and LOOKS bars are bigger.",
+  "summary": "The too-much-contrast row (r4 C4): your HAR and LOOKS at full height, their neighbours is, der and it at most half the native ratio, TOG and the rest as native.",
   "phrase": "photography",
   "phase": "showingTake",
   "savedTakes": [
