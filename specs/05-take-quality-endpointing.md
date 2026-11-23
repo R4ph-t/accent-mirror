@@ -117,4 +117,49 @@ Every case asserts both `t_onset` and `t_detect` where an onset exists.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Built 2026-11-23 on `factory/05-take-quality-endpointing` (hand build, Claude Code on Opus).
+
+**What's in `AMCapture`** (all value types, Foundation and Accelerate only, no microphone, nothing under `Live/`):
+
+- `FrameAnalyzer` (internal): per 10 ms frame, the RMS in dBFS (20·log10 rms, so a full-scale sine is −3 dBFS;
+  silence reads −120), the ACF peak and a clip-run flag. The ACF uses a causal 40 ms window that ends with the
+  frame, so it streams with no look-ahead. It is the mean-removed normalised cross-correlation (1 for a periodic
+  window), and the peak is the highest *local maximum* for lags 2–16.7 ms. A monotonic decay, as pink noise gives,
+  has no local maximum, so it scores 0. Frames before the first full window (the first 30 ms) are unvoiced.
+- `ACFVoicing` (`acf-1`): the `VoicingSource`. `isVoiced` is the streaming rule. `voicedFrames(samples:sampleRate:)`
+  runs the endpointer's detector over the take for its floor.
+- `NoiseFloor` (internal): the provisional floor (last-session floor or −60) and settling rules (a) and (b). After
+  settling it tracks the P10 of non-speech frames over a sliding 2 s window and is clamped to −70…−35.
+- `SpeechDetector` (internal): onset, offset and retraction. `Endpointer` (public): the frame-fed state machine.
+  It adds the endpoint, the cap, `stop()`, `cancel()` and the kept audio, and emits `onset`, `floorSettled`,
+  `retracted` and `ended` events.
+- `TakeAnalysis` / `TakeQuality.check(samples:)`: one batch pass of the same detector (no endpoint, no cap), then the
+  first problem in Designer's order.
+
+**Decisions where the spec left room** (the least-committal reading in each case, also listed in the PR):
+
+1. Two numbers in the spec were missing from `Thresholds`: 0.3 s of voicing (`noSpeech` / `tooQuiet` voiced rule)
+   and 0.3 s of speech to arm the endpoint. Added as `capture.noSpeechVoicedS` and `capture.endpointArmSpeechS`
+   (0.3 each, plan values, not tuned), with rows in `docs/thresholds.md`. `Versions.thresholdsVersion` is now 2,
+   the goldens were re-recorded (only `thresholdsVersion` changed in them) and a digest was appended.
+   `IdentityTests.versions` now checks the config against `Versions` rather than the literal 1.
+2. "Nothing crosses detection" is read as under `noSpeechS` of detected speech. Such a take is `tooQuiet` when it has
+   ≥ 0.3 s of voicing and `noSpeech` otherwise; it is never `tooShort`. E3 and E17 need this: in Designer's order,
+   `tooShort` would otherwise win.
+3. Onset window: the 3-frame run, its voiced frame and `t_detect` all sit within 100 ms of `t_onset`. When a run grows
+   past 100 ms with no voicing, its start slides forward, so `t_onset` is the first frame of the run that qualifies.
+4. After an offset, speech resumes only through a new onset (hysteresis), so a take can have several onsets.
+   `Take.onsets` lists the kept ones, and the endpoint counts from the last speech frame of any kept segment.
+5. Rule (b) is checked on every frame from 2.0 s on (over the last 2 s), not only once at 2.0 s.
+6. Frames an onset backdates over are removed from the non-speech set. Frames of a retracted segment are not added
+   back to it.
+7. Take-quality voicing uses the floor as finally known: frames heard before the floor settled are judged against
+   the settled value. Without this, E14's hum is voiced on the provisional −60 floor and the take reads `tooQuiet`.
+8. Kept audio: from max(0, first kept `t_onset` − 0.2 s). A take that ends (stop or cap) with no kept onset keeps
+   all its audio, so `TakeQuality` can still apply the voiced rule. To allow that, the endpointer holds the whole
+   take (at most 20 s by the cap) rather than a literal 500 ms ring. `ringBufferMs` bounds the pre-roll.
+
+**Tests** (`Tests/AMCaptureTests/EndpointingTests.swift`, signals from `Synth.swift`, seeded): E1–E17 by name, the
+E14 variant, plus clipped, clean, last-session floor, 0.3 s arming and the `VoicingSource` contract. Each case
+prints `t_onset`, `t_detect` and the outcome. Margins checked across ten other seeds: −50 dBFS pink noise
+reads at most 0.14 s voiced (bar 0.3 s); E13's burst has an ACF peak ≤ 0.28 (bar 0.45); E3 reads ≥ 0.8 s voiced.
