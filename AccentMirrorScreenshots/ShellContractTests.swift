@@ -198,8 +198,13 @@ struct ShellContractTests {
         guard case .takeProblem(_, .clipped, "Too loud to measure"?) = try you("tp-clipped") else {
             Issue.record("tp-clipped"); return
         }
-        guard case .takeProblem(_, .plain, nil) = try you("tp-wordsDontMatch") else { Issue.record("tp-wordsDontMatch"); return }
-        guard case .takeProblem(_, .plain, nil) = try you("tp-tooShort") else { Issue.record("tp-tooShort"); return }
+        // Round 3, Designer answer 3: too short and words don't match get the too-quiet treatment and a caption.
+        guard case .takeProblem(_, .nearSilent, "Words didn't match the phrase"?) = try you("tp-wordsDontMatch") else {
+            Issue.record("tp-wordsDontMatch"); return
+        }
+        guard case .takeProblem(_, .nearSilent, "Too short to measure"?) = try you("tp-tooShort") else {
+            Issue.record("tp-tooShort"); return
+        }
 
         let problemNames = try library.allNames().filter { $0.hasPrefix("tp-") } + ["tooQuiet"]
         for name in problemNames {
@@ -214,6 +219,52 @@ struct ShellContractTests {
                 guard case .placeholder = ShellPresenter.strip(loaded).you else { Issue.record("\(name)"); continue }
             }
         }
+    }
+
+    // MARK: Round 3, Designer answer 1: the noClearDifference sentence
+
+    private static let ncdSentences: [NoClearDifferenceReason: String] = [
+        .pitchShapeBelowClose: "No clear difference in stress or rhythm. Your pitch moves a little differently from the model's, but not in one place we can point to.",
+        .optionalMeasuresUnavailable: "No clear difference in stress or rhythm. Some pitch measures couldn't be taken on this take.",
+        .mediumConfidenceOnly: "Nothing stood out clearly enough to point at. Try another take to check.",
+        .timingRough: "No clear difference, but the timing match was rough, so small differences may be hidden.",
+    ]
+
+    /// Each §13 item 1 reason on its own gives its full sentence, with or without quiet-line reasons beside it.
+    @Test(arguments: [
+        NoClearDifferenceReason.pitchShapeBelowClose, .optionalMeasuresUnavailable, .mediumConfidenceOnly, .timingRough,
+    ])
+    func noClearDifferenceReasonOnItsOwn(_ reason: NoClearDifferenceReason) {
+        let expected = Self.ncdSentences[reason]
+        #expect(Copy.noClearDifference([reason]).plain == expected)
+        #expect(Copy.noClearDifference([.insertionsPresent, reason, .nonTargetWordsIncomplete]).plain == expected)
+    }
+
+    /// Several §13 item 1 reasons: the first in §13 order wins, whatever order the result lists them in.
+    @Test func noClearDifferenceFirstApplicableReasonWins() {
+        #expect(Copy.noClearDifference([.timingRough, .pitchShapeBelowClose]).plain == Self.ncdSentences[.pitchShapeBelowClose])
+        #expect(Copy.noClearDifference([.timingRough, .mediumConfidenceOnly, .optionalMeasuresUnavailable]).plain ==
+            Self.ncdSentences[.optionalMeasuresUnavailable])
+        #expect(Copy.noClearDifference([.timingRough, .mediumConfidenceOnly]).plain == Self.ncdSentences[.mediumConfidenceOnly])
+        #expect(Copy.noClearDifference(NoClearDifferenceReason.allCases.reversed()).plain ==
+            Self.ncdSentences[.pitchShapeBelowClose])
+    }
+
+    /// No §13 item 1 reason: the bare sentence, and the A6 quiet line (if any) sits under it.
+    @Test func noClearDifferenceBareSentenceOnlyWhenNoReasonApplies() {
+        let bare = "No clear difference in stress or rhythm."
+        #expect(Copy.noClearDifference([]).plain == bare)
+        #expect(Copy.noClearDifference([.insertionsPresent]).plain == bare)
+        #expect(Copy.noClearDifference([.nonTargetWordsIncomplete]).plain == bare)
+        #expect(Copy.noClearDifference([.nonTargetWordsIncomplete, .insertionsPresent]).plain == bare)
+    }
+
+    /// The ncd fixtures follow the same rule end to end.
+    @Test func noClearDifferenceFixturesUseTheirReasonSentence() throws {
+        #expect(try sentences("ncd-pitchShapeBelowClose") == [Self.ncdSentences[.pitchShapeBelowClose]!])
+        #expect(try sentences("ncd-optionalMeasuresUnavailable") == [Self.ncdSentences[.optionalMeasuresUnavailable]!])
+        #expect(try sentences("ncd-mediumConfidenceOnly") == [Self.ncdSentences[.mediumConfidenceOnly]!])
+        #expect(try sentences("ncd-timingRough") == [Self.ncdSentences[.timingRough]!])
     }
 
     @Test func noVoicedFramesKeepsItsMessage() throws {

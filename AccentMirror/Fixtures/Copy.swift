@@ -43,6 +43,8 @@ enum Copy {
     static let yourTakeAppearsHere = "Your take appears here."
     static let tooQuietToMeasure = "Too quiet to measure"
     static let tooLoudToMeasure = "Too loud to measure"
+    static let tooShortToMeasure = "Too short to measure"
+    static let wordsDidntMatch = "Words didn't match the phrase"
     static let noPitch = "No pitch to show for this take"
     static let unalignable = "This take was recorded for the old wording, so it can't be compared."
     static let notComparable = "NOT COMPARABLE"
@@ -243,13 +245,14 @@ enum Copy {
         }
     }
 
-    /// The caption under your strip row for a take problem with audio (§7.1). Only the Designer's two
-    /// captions exist; too short and words don't match have none (see the PR's open points).
+    /// The caption under your strip row for a take problem with audio (§7.1, Designer answer 3 of round 3).
     static func takeProblemCaption(_ problem: TakeProblem) -> String? {
         switch problem {
         case .tooQuiet: tooQuietToMeasure
         case .clipped: tooLoudToMeasure
-        default: nil
+        case .tooShort: tooShortToMeasure
+        case .wordsDontMatch: wordsDidntMatch
+        case .noMicrophone, .micDenied, .noSpeech: nil
         }
     }
 

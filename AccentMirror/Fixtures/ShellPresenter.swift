@@ -58,11 +58,11 @@ struct StripPresentation: Sendable {
 
 /// How a take problem's audio is drawn in your row.
 enum TakeProblemShape: Sendable, Equatable {
-    /// Too quiet: a flat, near-silent waveform, a couple of points tall.
+    /// Too quiet, too short, words don't match: a flat, near-silent waveform, a couple of points tall.
     case nearSilent
     /// Clipped: the waveform cut flat at the top (and, mirrored, at the bottom).
     case clipped
-    /// Too short, words don't match: the take as heard, grey, unlabelled.
+    /// Fallback for a problem that has no audio in practice (no speech): the take as heard, grey, unlabelled.
     case plain
 }
 
@@ -422,11 +422,12 @@ enum ShellPresenter {
         return StripPresentation(native: native, you: you)
     }
 
+    /// Too short and words don't match use the too-quiet treatment (Designer answer 3, round 3).
     static func takeProblemShape(_ problem: TakeProblem) -> TakeProblemShape {
         switch problem {
-        case .tooQuiet: .nearSilent
+        case .tooQuiet, .tooShort, .wordsDontMatch: .nearSilent
         case .clipped: .clipped
-        default: .plain
+        case .noMicrophone, .micDenied, .noSpeech: .plain
         }
     }
 
