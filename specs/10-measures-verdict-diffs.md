@@ -82,6 +82,10 @@ golden digest and version rule from spec 01 apply.
 - Output still prints `Negative set: NOT EVALUATED` and `Release gate: NOT MET` (spec 11 wires the L2 gates).
 - These run on **initial, untuned** thresholds. A FAIL goes to CTO with the numbers; nothing is tuned on held-out
   speakers here (the fixed-grid fit is spec 11, on tuning data only).
+- **Blocked on spec 24 (CTO ruling, 2026-11-23 14:18).** Every gate in this list consumes spec 02's positive-set
+  result. While that result reads NOT EVALUATED (15 phrases against ≥ 18), each gate prints NOT EVALUATED (blocked on
+  spec 24) through spec 02's `PositiveSetGates.line`. It's never a pass and never a waiver, and the release gate stays
+  NOT MET. "12 held-out" is a floor (≥ 12; the manifest records the actual count).
 
 ## Defaults
 
