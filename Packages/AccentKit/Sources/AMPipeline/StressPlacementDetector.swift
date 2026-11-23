@@ -79,6 +79,10 @@ public struct PlacementAnalysis: Sendable, Hashable {
     public let segmentation: SyllableSegmentation
     /// One result per transcript word with an A(w), in transcript order.
     public let words: [PlacementWordResult]
+    /// The word alignment the segmentation was built from (spec 10 scores pairs from it).
+    public let alignment: WordAlignment
+    /// The take's pitch track (spec 04).
+    public let pitch: PitchTrack
 }
 
 public struct StressPlacementDetector: Sendable {
@@ -159,7 +163,7 @@ public struct StressPlacementDetector: Sendable {
             return PlacementWordResult(
                 word: word.index, present: true, observed: observed, decision: decision, suppression: suppression)
         }
-        return PlacementAnalysis(segmentation: segmentation, words: results)
+        return PlacementAnalysis(segmentation: segmentation, words: results, alignment: alignment, pitch: pitch)
     }
 
     /// The lowest probability among the recognised words overlapping `range` (a recognised word the aligner split

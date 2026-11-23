@@ -96,8 +96,11 @@ public struct PlacementGolden: Sendable, Hashable, Codable {
     public let item: String
     public let l1Digest: String
     public let words: [Word]
+    /// Spec 10: the item's verdict against a native model of the same phrase; nil when the smoke set has none.
+    public var verdict: SmokeVerdict?
 
-    public init(item: PlacementFixtureItem, analysis: PlacementAnalysis) throws {
+    public init(item: PlacementFixtureItem, analysis: PlacementAnalysis, verdict: SmokeVerdict? = nil) throws {
+        self.verdict = verdict
         self.item = item.item
         l1Digest = try analysis.segmentation.digest()
         let ids = Dictionary(item.words.map { ($0.index, $0.id) }, uniquingKeysWith: { first, _ in first })
@@ -108,6 +111,59 @@ public struct PlacementGolden: Sendable, Hashable, Codable {
                 flaggedBeforeSuppression: result.flaggedBeforeSuppression,
                 flaggedAfterSuppression: result.flaggedAfterSuppression, suppression: result.suppression?.name)
         }
+    }
+}
+
+/// Spec 10's verdict for one smoke item: the model item it was scored against and the decision, or why no model
+/// served.
+public struct SmokeVerdict: Sendable, Hashable, Codable {
+    /// The model item; nil when none served.
+    public let model: String?
+    public let decision: Decision?
+    /// Why the item has no decision.
+    public let unscored: String?
+
+    public init(model: String?, decision: Decision?, unscored: String? = nil) {
+        self.model = model
+        self.decision = decision
+        self.unscored = unscored
+    }
+
+    /// Model candidates for each item that can have one: the other smoke items of the same VCTK phrase, by speaker
+    /// (never the item's own speaker). speechocean762 items have no native take, so no candidates.
+    public static func candidates(_ items: [PlacementFixtureItem]) -> [String: [PlacementFixtureItem]] {
+        func phrase(_ item: PlacementFixtureItem) -> String? {
+            item.corpus == "vctk" ? item.item.split(separator: "_").last.map(String.init) : nil
+        }
+        var out: [String: [PlacementFixtureItem]] = [:]
+        for item in items {
+            guard let p = phrase(item) else { continue }
+            out[item.item] = items.filter { phrase($0) == p && $0.speaker != item.speaker }.sorted { $0.speaker < $1.speaker }
+        }
+        return out
+    }
+
+    /// Scores `item` against the first candidate whose take has every phrase word present.
+    public static func score(
+        item: PlacementFixtureItem, analysis: PlacementAnalysis,
+        candidates: [(item: PlacementFixtureItem, analysis: PlacementAnalysis)]
+    ) throws -> SmokeVerdict {
+        let words = try item.words.map { word in
+            PlacementTake.Word(
+                index: WordIndex(word.index), text: word.text, pronunciation: try Pronunciation(arpabet: word.phones),
+                accepted: word.accepted.map(Set.init))
+        }
+        var skipped: [String] = []
+        for candidate in candidates {
+            do {
+                let scoring = try PairScoring.score(
+                    words: words, you: analysis, model: candidate.analysis, modelVoice: candidate.item.speaker)
+                return SmokeVerdict(model: candidate.item.item, decision: scoring.decision)
+            } catch PairScoring.Failure.modelIncomplete(let missing) {
+                skipped.append("\(candidate.item.item) misses word \(missing.map { String($0.rawValue) }.joined(separator: ","))")
+            }
+        }
+        return SmokeVerdict(model: nil, decision: nil, unscored: "no complete model take: " + skipped.joined(separator: "; "))
     }
 }
 
