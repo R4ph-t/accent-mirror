@@ -1,0 +1,11 @@
+{
+  "corpus": "VCTK 0.92",
+  "licence": "CC BY 4.0",
+  "source": "https://datashare.ed.ac.uk/server/api/core/bitstreams/535f4286-e54c-4038-838c-a02285e32cb2/content",
+  "landingPage": "https://datashare.ed.ac.uk/handle/10283/3443",
+  "archiveName": "VCTK-Corpus-0.92.zip",
+  "archiveBytes": "11747302977",
+  "archiveMD5Official": "8a6ba2946b36fcbef0212cad601f4bfa",
+  "archiveSHA256": "f96258be9fdc2cbff6559541aae7ea4f59df3fcaf5cf963aae5ca647357e359c",
+  "note": "DataShare publishes only an MD5; the first fetch checks it and records the archive's SHA-256 here (spec 02, Open question 1). Every later fetch fails on a SHA-256 mismatch."
+}

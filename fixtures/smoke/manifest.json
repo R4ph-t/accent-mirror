@@ -1,0 +1,1142 @@
+{
+  "files" : [
+    {
+      "bytes" : 74599,
+      "corpus" : "speechocean762",
+      "item" : "000360343",
+      "path" : "audio/speechocean762-000360343.flac",
+      "sha256" : "1e8270162def5080c956b6ca476b0c44220289f0b5523ef6552e9adb2eac2673",
+      "speaker" : "0036",
+      "words" : [
+        {
+          "id" : "000360343#2",
+          "label" : "stressCorrect",
+          "text" : "ALWAYS"
+        },
+        {
+          "id" : "000360343#3",
+          "label" : "stressCorrect",
+          "text" : "READY"
+        },
+        {
+          "id" : "000360343#6",
+          "label" : "stressCorrect",
+          "text" : "ANYTHING"
+        },
+        {
+          "id" : "000360343#7",
+          "label" : "stressCorrect",
+          "text" : "WHATEVER"
+        }
+      ]
+    },
+    {
+      "bytes" : 72228,
+      "corpus" : "speechocean762",
+      "item" : "000540058",
+      "path" : "audio/speechocean762-000540058.flac",
+      "sha256" : "e49bcfbecbcd70b5f6c703641c5c08c68dce52c0aec71e3298a35036c97398d7",
+      "speaker" : "0054",
+      "words" : [
+        {
+          "id" : "000540058#0",
+          "label" : "stressCorrect",
+          "text" : "SHANGHAI"
+        },
+        {
+          "id" : "000540058#1",
+          "label" : "stressCorrect",
+          "text" : "QUIRE"
+        },
+        {
+          "id" : "000540058#2",
+          "label" : "stressCorrect",
+          "text" : "TODAY"
+        },
+        {
+          "id" : "000540058#4",
+          "label" : "stressCorrect",
+          "text" : "TOMORROW"
+        }
+      ]
+    },
+    {
+      "bytes" : 95487,
+      "corpus" : "speechocean762",
+      "item" : "001450171",
+      "path" : "audio/speechocean762-001450171.flac",
+      "sha256" : "44f92718b73fcba963860456a3e6a89be47004833258dafd209a99f8717eb554",
+      "speaker" : "0145",
+      "words" : [
+        {
+          "id" : "001450171#2",
+          "label" : "stressCorrect",
+          "text" : "TODAY"
+        },
+        {
+          "id" : "001450171#4",
+          "label" : "stressWrong",
+          "text" : "OFFICER"
+        }
+      ]
+    },
+    {
+      "bytes" : 63660,
+      "corpus" : "speechocean762",
+      "item" : "004820329",
+      "path" : "audio/speechocean762-004820329.flac",
+      "sha256" : "fd49ab15623da266382eb9573b919f53a7f5ccba05134734b539096f98526136",
+      "speaker" : "0482",
+      "words" : [
+        {
+          "id" : "004820329#2",
+          "label" : "stressCorrect",
+          "text" : "CITY"
+        },
+        {
+          "id" : "004820329#4",
+          "label" : "stressCorrect",
+          "text" : "ALREADY"
+        },
+        {
+          "id" : "004820329#5",
+          "label" : "stressCorrect",
+          "text" : "DIRTY"
+        }
+      ]
+    },
+    {
+      "bytes" : 89823,
+      "corpus" : "speechocean762",
+      "item" : "004820378",
+      "path" : "audio/speechocean762-004820378.flac",
+      "sha256" : "ed79bea4cd08f506538a7807ba036843dcf44712c66ef92fe2aefbbba1e333aa",
+      "speaker" : "0482",
+      "words" : [
+        {
+          "id" : "004820378#2",
+          "label" : "stressCorrect",
+          "text" : "NEVER"
+        },
+        {
+          "id" : "004820378#3",
+          "label" : "stressCorrect",
+          "text" : "FORGIVE"
+        },
+        {
+          "id" : "004820378#4",
+          "label" : "stressCorrect",
+          "text" : "MYSELF"
+        },
+        {
+          "id" : "004820378#7",
+          "label" : "stressCorrect",
+          "text" : "EXPOSURE"
+        }
+      ]
+    },
+    {
+      "bytes" : 62105,
+      "corpus" : "speechocean762",
+      "item" : "008130346",
+      "path" : "audio/speechocean762-008130346.flac",
+      "sha256" : "e8359bcc795af56af68888d63d18720484bca67c1385c2b5d552189be79d89e0",
+      "speaker" : "0813",
+      "words" : [
+        {
+          "id" : "008130346#3",
+          "label" : "stressWrong",
+          "text" : "SUFFICIENT"
+        },
+        {
+          "id" : "008130346#4",
+          "label" : "stressCorrect",
+          "text" : "ANSWER"
+        }
+      ]
+    },
+    {
+      "bytes" : 112832,
+      "corpus" : "speechocean762",
+      "item" : "009600335",
+      "path" : "audio/speechocean762-009600335.flac",
+      "sha256" : "38b0603311d8f72a0f69f93047a694c62d4ff9962e5c5348b12ba1240b89012a",
+      "speaker" : "0960",
+      "words" : [
+        {
+          "id" : "009600335#4",
+          "label" : "stressWrong",
+          "text" : "OPINION"
+        }
+      ]
+    },
+    {
+      "bytes" : 54688,
+      "corpus" : "speechocean762",
+      "item" : "010120265",
+      "path" : "audio/speechocean762-010120265.flac",
+      "sha256" : "9e85d75331793c0a376ca3e25d94ab539da88b4dfa3d142ba4011e6f9d9a5f69",
+      "speaker" : "1012",
+      "words" : [
+        {
+          "id" : "010120265#0",
+          "label" : "stressCorrect",
+          "text" : "IRON"
+        },
+        {
+          "id" : "010120265#1",
+          "label" : "stressCorrect",
+          "text" : "BANNER"
+        },
+        {
+          "id" : "010120265#2",
+          "label" : "stressCorrect",
+          "text" : "CONTROL"
+        }
+      ]
+    },
+    {
+      "bytes" : 58515,
+      "corpus" : "speechocean762",
+      "item" : "010330103",
+      "path" : "audio/speechocean762-010330103.flac",
+      "sha256" : "c077458e1aee5b062ba78f1616238df1731adeb3270a136e496a40c406775b26",
+      "speaker" : "1033",
+      "words" : [
+        {
+          "id" : "010330103#0",
+          "label" : "stressCorrect",
+          "text" : "SOMETHING"
+        },
+        {
+          "id" : "010330103#1",
+          "label" : "stressCorrect",
+          "text" : "ALWAYS"
+        },
+        {
+          "id" : "010330103#4",
+          "label" : "stressCorrect",
+          "text" : "HAPPEN"
+        }
+      ]
+    },
+    {
+      "bytes" : 92057,
+      "corpus" : "speechocean762",
+      "item" : "010640280",
+      "path" : "audio/speechocean762-010640280.flac",
+      "sha256" : "717c8f3f98bad37b6e97fe9183beafad02d219a2f834e2257d17090f813498c6",
+      "speaker" : "1064",
+      "words" : [
+        {
+          "id" : "010640280#6",
+          "label" : "stressWrong",
+          "text" : "ALMOST"
+        }
+      ]
+    },
+    {
+      "bytes" : 53182,
+      "corpus" : "speechocean762",
+      "item" : "013090076",
+      "path" : "audio/speechocean762-013090076.flac",
+      "sha256" : "3e778ce893bf208500dc36315f1d3a97ce49c84c815558dd6cfcb81acd67576c",
+      "speaker" : "1309",
+      "words" : [
+        {
+          "id" : "013090076#1",
+          "label" : "stressCorrect",
+          "text" : "WITHOUT"
+        },
+        {
+          "id" : "013090076#4",
+          "label" : "stressCorrect",
+          "text" : "BEING"
+        },
+        {
+          "id" : "013090076#5",
+          "label" : "stressCorrect",
+          "text" : "ARRESTED"
+        }
+      ]
+    },
+    {
+      "bytes" : 96048,
+      "corpus" : "speechocean762",
+      "item" : "013620106",
+      "path" : "audio/speechocean762-013620106.flac",
+      "sha256" : "4a3fccfdc0f52303529e561da89e667ed823bcb9c99b880b4952789be5be2881",
+      "speaker" : "1362",
+      "words" : [
+        {
+          "id" : "013620106#6",
+          "label" : "stressWrong",
+          "text" : "CONSEQUENCE"
+        }
+      ]
+    },
+    {
+      "bytes" : 73273,
+      "corpus" : "speechocean762",
+      "item" : "014070304",
+      "path" : "audio/speechocean762-014070304.flac",
+      "sha256" : "1937545fb146e0c0586d5d1e79b71c6a9d8f313ffbcd7286b81392f4977f0e5d",
+      "speaker" : "1407",
+      "words" : [
+        {
+          "id" : "014070304#7",
+          "label" : "stressWrong",
+          "text" : "REPEAT"
+        }
+      ]
+    },
+    {
+      "bytes" : 59488,
+      "corpus" : "speechocean762",
+      "item" : "014190062",
+      "path" : "audio/speechocean762-014190062.flac",
+      "sha256" : "b534654d5eae8f88fb487d74ffe574df5519eeaa453f2982f12f5a0b26ce0ecb",
+      "speaker" : "1419",
+      "words" : [
+        {
+          "id" : "014190062#2",
+          "label" : "stressWrong",
+          "text" : "SAUSAGE"
+        }
+      ]
+    },
+    {
+      "bytes" : 69178,
+      "corpus" : "speechocean762",
+      "item" : "014190073",
+      "path" : "audio/speechocean762-014190073.flac",
+      "sha256" : "28c87fe51fd3205ee1eb583644202f2d71b583cd49970794298465dd3fdcba52",
+      "speaker" : "1419",
+      "words" : [
+        {
+          "id" : "014190073#2",
+          "label" : "stressWrong",
+          "text" : "JAYME'S"
+        }
+      ]
+    },
+    {
+      "bytes" : 55355,
+      "corpus" : "speechocean762",
+      "item" : "014350127",
+      "path" : "audio/speechocean762-014350127.flac",
+      "sha256" : "7efd17d75b86d012dbdf12953a823ed502c19f497fba69217a46523e54ac7c7f",
+      "speaker" : "1435",
+      "words" : [
+        {
+          "id" : "014350127#0",
+          "label" : "stressCorrect",
+          "text" : "STEEVEN"
+        },
+        {
+          "id" : "014350127#3",
+          "label" : "stressWrong",
+          "text" : "CUCUMBER"
+        }
+      ]
+    },
+    {
+      "bytes" : 107649,
+      "corpus" : "speechocean762",
+      "item" : "020590077",
+      "path" : "audio/speechocean762-020590077.flac",
+      "sha256" : "fdd4166f9a1f4719c2fe183c20ef715add961c58d7a420f91563e17d8fce8eb6",
+      "speaker" : "2059",
+      "words" : [
+        {
+          "id" : "020590077#2",
+          "label" : "stressCorrect",
+          "text" : "PROBABLY"
+        },
+        {
+          "id" : "020590077#3",
+          "label" : "stressCorrect",
+          "text" : "FEELING"
+        },
+        {
+          "id" : "020590077#4",
+          "label" : "stressCorrect",
+          "text" : "SORRY"
+        },
+        {
+          "id" : "020590077#6",
+          "label" : "stressCorrect",
+          "text" : "MYSELF"
+        },
+        {
+          "id" : "020590077#9",
+          "label" : "stressCorrect",
+          "text" : "ANYTHING"
+        }
+      ]
+    },
+    {
+      "bytes" : 72715,
+      "corpus" : "speechocean762",
+      "item" : "020610174",
+      "path" : "audio/speechocean762-020610174.flac",
+      "sha256" : "ebf722b24756c5569c9096b0f0cd969f482d91af90e267aaf8b7ec22a14c7504",
+      "speaker" : "2061",
+      "words" : [
+        {
+          "id" : "020610174#4",
+          "label" : "stressWrong",
+          "text" : "EUROPE"
+        },
+        {
+          "id" : "020610174#5",
+          "label" : "stressCorrect",
+          "text" : "ISSUE"
+        }
+      ]
+    },
+    {
+      "bytes" : 76630,
+      "corpus" : "speechocean762",
+      "item" : "020890003",
+      "path" : "audio/speechocean762-020890003.flac",
+      "sha256" : "1109e94ea1226a2ffaf720d638ea70167742f515a440e57533a6b6f93005b033",
+      "speaker" : "2089",
+      "words" : [
+        {
+          "id" : "020890003#2",
+          "label" : "stressCorrect",
+          "text" : "SOMETHING"
+        },
+        {
+          "id" : "020890003#4",
+          "label" : "stressCorrect",
+          "text" : "NEVER"
+        },
+        {
+          "id" : "020890003#5",
+          "label" : "stressCorrect",
+          "text" : "HAPPENED"
+        },
+        {
+          "id" : "020890003#8",
+          "label" : "stressCorrect",
+          "text" : "BEFORE"
+        }
+      ]
+    },
+    {
+      "bytes" : 90501,
+      "corpus" : "speechocean762",
+      "item" : "022360321",
+      "path" : "audio/speechocean762-022360321.flac",
+      "sha256" : "55995bc5fa7ae3afe8d94607ff8f519b6fd47a4e2841b756365b10ec10df26d4",
+      "speaker" : "2236",
+      "words" : [
+        {
+          "id" : "022360321#1",
+          "label" : "stressCorrect",
+          "text" : "NOTHING"
+        },
+        {
+          "id" : "022360321#3",
+          "label" : "stressCorrect",
+          "text" : "UNUSUAL"
+        },
+        {
+          "id" : "022360321#4",
+          "label" : "stressCorrect",
+          "text" : "ABOUT"
+        },
+        {
+          "id" : "022360321#6",
+          "label" : "stressCorrect",
+          "text" : "STRUCTURE"
+        }
+      ]
+    },
+    {
+      "bytes" : 86416,
+      "corpus" : "speechocean762",
+      "item" : "022420086",
+      "path" : "audio/speechocean762-022420086.flac",
+      "sha256" : "b8162352c9721a617aeab105a3f1547c7f49695a755ffbad8154398aa41c5cb4",
+      "speaker" : "2242",
+      "words" : [
+        {
+          "id" : "022420086#1",
+          "label" : "stressCorrect",
+          "text" : "WINNING"
+        },
+        {
+          "id" : "022420086#2",
+          "label" : "stressCorrect",
+          "text" : "COLORS"
+        },
+        {
+          "id" : "022420086#4",
+          "label" : "stressCorrect",
+          "text" : "BECOME"
+        },
+        {
+          "id" : "022420086#6",
+          "label" : "stressCorrect",
+          "text" : "SECOND"
+        }
+      ]
+    },
+    {
+      "bytes" : 86787,
+      "corpus" : "speechocean762",
+      "item" : "022440073",
+      "path" : "audio/speechocean762-022440073.flac",
+      "sha256" : "19774b3cac99eb24591299ab25be241e85f7be845be3b26d11c72acd37809b57",
+      "speaker" : "2244",
+      "words" : [
+        {
+          "id" : "022440073#1",
+          "label" : "stressCorrect",
+          "text" : "DANGERS"
+        },
+        {
+          "id" : "022440073#3",
+          "label" : "stressCorrect",
+          "text" : "HANGING"
+        },
+        {
+          "id" : "022440073#6",
+          "label" : "stressCorrect",
+          "text" : "PUBLIC"
+        },
+        {
+          "id" : "022440073#7",
+          "label" : "stressCorrect",
+          "text" : "PLACES"
+        }
+      ]
+    },
+    {
+      "bytes" : 52393,
+      "corpus" : "speechocean762",
+      "item" : "023800160",
+      "path" : "audio/speechocean762-023800160.flac",
+      "sha256" : "ad66ecc627a476f8542c004b70d62fa29f1c0525806ae58960b667e842de9142",
+      "speaker" : "2380",
+      "words" : [
+        {
+          "id" : "023800160#0",
+          "label" : "stressCorrect",
+          "text" : "GOING"
+        },
+        {
+          "id" : "023800160#2",
+          "label" : "stressCorrect",
+          "text" : "ANY"
+        },
+        {
+          "id" : "023800160#3",
+          "label" : "stressCorrect",
+          "text" : "OTHER"
+        }
+      ]
+    },
+    {
+      "bytes" : 83679,
+      "corpus" : "speechocean762",
+      "item" : "023800330",
+      "path" : "audio/speechocean762-023800330.flac",
+      "sha256" : "0da9c729859d84cf685db4b0546c61c94078f0524f07df919fb462146590db45",
+      "speaker" : "2380",
+      "words" : [
+        {
+          "id" : "023800330#2",
+          "label" : "stressCorrect",
+          "text" : "PROBABLY"
+        }
+      ]
+    },
+    {
+      "bytes" : 69419,
+      "corpus" : "speechocean762",
+      "item" : "024020142",
+      "path" : "audio/speechocean762-024020142.flac",
+      "sha256" : "c1a9ac48293225604f535da81c2ba45781fbeca8ed719075bdb12f06e39c342f",
+      "speaker" : "2402",
+      "words" : [
+        {
+          "id" : "024020142#0",
+          "label" : "stressCorrect",
+          "text" : "INTERESTED"
+        },
+        {
+          "id" : "024020142#2",
+          "label" : "stressCorrect",
+          "text" : "LEARNING"
+        },
+        {
+          "id" : "024020142#4",
+          "label" : "stressCorrect",
+          "text" : "ABOUT"
+        },
+        {
+          "id" : "024020142#6",
+          "label" : "stressCorrect",
+          "text" : "EVENTS"
+        }
+      ]
+    },
+    {
+      "bytes" : 44250,
+      "corpus" : "speechocean762",
+      "item" : "024020175",
+      "path" : "audio/speechocean762-024020175.flac",
+      "sha256" : "e5a3a8b900af34f544c2db48a3808272403b5d90653e8e23fe23b709b42aab29",
+      "speaker" : "2402",
+      "words" : [
+        {
+          "id" : "024020175#0",
+          "label" : "stressCorrect",
+          "text" : "ALCOHOL"
+        },
+        {
+          "id" : "024020175#2",
+          "label" : "stressCorrect",
+          "text" : "ALWAYS"
+        },
+        {
+          "id" : "024020175#4",
+          "label" : "stressCorrect",
+          "text" : "ANSWER"
+        }
+      ]
+    },
+    {
+      "bytes" : 68995,
+      "corpus" : "speechocean762",
+      "item" : "024020328",
+      "path" : "audio/speechocean762-024020328.flac",
+      "sha256" : "ab448490827fa5f5aa4c96471927e7a186ecc59ea10be0dd04322f6e9779271b",
+      "speaker" : "2402",
+      "words" : [
+        {
+          "id" : "024020328#2",
+          "label" : "stressCorrect",
+          "text" : "TWENTY"
+        },
+        {
+          "id" : "024020328#5",
+          "label" : "stressCorrect",
+          "text" : "LEARNED"
+        },
+        {
+          "id" : "024020328#8",
+          "label" : "stressCorrect",
+          "text" : "ABOUT"
+        },
+        {
+          "id" : "024020328#9",
+          "label" : "stressCorrect",
+          "text" : "HIMSELF"
+        }
+      ]
+    },
+    {
+      "bytes" : 44262,
+      "corpus" : "speechocean762",
+      "item" : "024270127",
+      "path" : "audio/speechocean762-024270127.flac",
+      "sha256" : "5ba07dd6e438e21518622a52e353fab643c8cb401bc6a46c547459b41acc8eb8",
+      "speaker" : "2427",
+      "words" : [
+        {
+          "id" : "024270127#2",
+          "label" : "stressCorrect",
+          "text" : "TALKING"
+        },
+        {
+          "id" : "024270127#3",
+          "label" : "stressCorrect",
+          "text" : "ABOUT"
+        },
+        {
+          "id" : "024270127#4",
+          "label" : "stressCorrect",
+          "text" : "SOCCER"
+        }
+      ]
+    },
+    {
+      "bytes" : 60446,
+      "corpus" : "speechocean762",
+      "item" : "024300099",
+      "path" : "audio/speechocean762-024300099.flac",
+      "sha256" : "a65434c731091af0742ad7862e3987bed9ffd0942778600846fa68dec0a59c6c",
+      "speaker" : "2430",
+      "words" : [
+        {
+          "id" : "024300099#1",
+          "label" : "stressWrong",
+          "text" : "ECONOMY"
+        }
+      ]
+    },
+    {
+      "bytes" : 45524,
+      "corpus" : "speechocean762",
+      "item" : "024500151",
+      "path" : "audio/speechocean762-024500151.flac",
+      "sha256" : "2b6269c1334ea4ac1f46cc524d5dfe116a662c59a668ab0e99ebda86ce995fe8",
+      "speaker" : "2450",
+      "words" : [
+        {
+          "id" : "024500151#0",
+          "label" : "stressCorrect",
+          "text" : "SORRY"
+        },
+        {
+          "id" : "024500151#2",
+          "label" : "stressCorrect",
+          "text" : "BEING"
+        },
+        {
+          "id" : "024500151#4",
+          "label" : "stressCorrect",
+          "text" : "PLASTIC"
+        }
+      ]
+    },
+    {
+      "bytes" : 67631,
+      "corpus" : "speechocean762",
+      "item" : "027990156",
+      "path" : "audio/speechocean762-027990156.flac",
+      "sha256" : "760f994e1fd8bab6b1ae0df559a229a5b99ed491e5307ec618e74df5f0012e19",
+      "speaker" : "2799",
+      "words" : [
+        {
+          "id" : "027990156#0",
+          "label" : "stressCorrect",
+          "text" : "LOOKING"
+        },
+        {
+          "id" : "027990156#1",
+          "label" : "stressCorrect",
+          "text" : "FORWARD"
+        },
+        {
+          "id" : "027990156#3",
+          "label" : "stressCorrect",
+          "text" : "SEEING"
+        },
+        {
+          "id" : "027990156#8",
+          "label" : "stressCorrect",
+          "text" : "OFFER"
+        }
+      ]
+    },
+    {
+      "bytes" : 81566,
+      "corpus" : "speechocean762",
+      "item" : "030230092",
+      "path" : "audio/speechocean762-030230092.flac",
+      "sha256" : "59f87a00014abef2435e2cb9aa2b321a4a0ffe155ebe05eba6690f671e5ed049",
+      "speaker" : "3023",
+      "words" : [
+        {
+          "id" : "030230092#2",
+          "label" : "stressCorrect",
+          "text" : "UPON"
+        },
+        {
+          "id" : "030230092#7",
+          "label" : "stressWrong",
+          "text" : "IMMEDIATELY"
+        }
+      ]
+    },
+    {
+      "bytes" : 55672,
+      "corpus" : "speechocean762",
+      "item" : "040050107",
+      "path" : "audio/speechocean762-040050107.flac",
+      "sha256" : "3633da127abff3bd732cafcb7253b62b296d936775a0ddf2d332f10ebcec4942",
+      "speaker" : "4005",
+      "words" : [
+        {
+          "id" : "040050107#0",
+          "label" : "stressCorrect",
+          "text" : "SECURITY"
+        },
+        {
+          "id" : "040050107#1",
+          "label" : "stressCorrect",
+          "text" : "AROUND"
+        },
+        {
+          "id" : "040050107#3",
+          "label" : "stressCorrect",
+          "text" : "HOTEL"
+        }
+      ]
+    },
+    {
+      "bytes" : 63187,
+      "corpus" : "speechocean762",
+      "item" : "054180022",
+      "path" : "audio/speechocean762-054180022.flac",
+      "sha256" : "ca3ad860a27528b5387b1fffe1badc719886694bf9c823bc7b62fc81fb1cff98",
+      "speaker" : "5418",
+      "words" : [
+        {
+          "id" : "054180022#3",
+          "label" : "stressCorrect",
+          "text" : "INTO"
+        },
+        {
+          "id" : "054180022#4",
+          "label" : "stressCorrect",
+          "text" : "OTHER"
+        },
+        {
+          "id" : "054180022#5",
+          "label" : "stressCorrect",
+          "text" : "HANDS"
+        }
+      ]
+    },
+    {
+      "bytes" : 61113,
+      "corpus" : "speechocean762",
+      "item" : "054180087",
+      "path" : "audio/speechocean762-054180087.flac",
+      "sha256" : "d32f223e809d0edb7bfd662f8f1de18ad6b1317be1f7553aec62b5508f058587",
+      "speaker" : "5418",
+      "words" : [
+        {
+          "id" : "054180087#0",
+          "label" : "stressCorrect",
+          "text" : "OUR"
+        },
+        {
+          "id" : "054180087#1",
+          "label" : "stressCorrect",
+          "text" : "MEETING"
+        },
+        {
+          "id" : "054180087#5",
+          "label" : "stressCorrect",
+          "text" : "HAPPENED"
+        },
+        {
+          "id" : "054180087#6",
+          "label" : "stressCorrect",
+          "text" : "BETTER"
+        }
+      ]
+    },
+    {
+      "bytes" : 85346,
+      "corpus" : "speechocean762",
+      "item" : "055510122",
+      "path" : "audio/speechocean762-055510122.flac",
+      "sha256" : "011b3805994c5cb7aff187125e1016dd7e472957237cdf7ef231c5c671b21ba9",
+      "speaker" : "5551",
+      "words" : [
+        {
+          "id" : "055510122#0",
+          "label" : "stressCorrect",
+          "text" : "FOURTEEN"
+        },
+        {
+          "id" : "055510122#1",
+          "label" : "stressCorrect",
+          "text" : "FIFTEEN"
+        },
+        {
+          "id" : "055510122#2",
+          "label" : "stressCorrect",
+          "text" : "EIGHTEEN"
+        },
+        {
+          "id" : "055510122#3",
+          "label" : "stressCorrect",
+          "text" : "HOURS"
+        }
+      ]
+    },
+    {
+      "bytes" : 48843,
+      "corpus" : "speechocean762",
+      "item" : "060100037",
+      "path" : "audio/speechocean762-060100037.flac",
+      "sha256" : "03aa28b4c502f8d1e8b4fe0137478fa71b3a90661bc9d012b3bb9bdaba870412",
+      "speaker" : "6010",
+      "words" : [
+        {
+          "id" : "060100037#3",
+          "label" : "stressWrong",
+          "text" : "DIFFERENCE"
+        }
+      ]
+    },
+    {
+      "bytes" : 56081,
+      "corpus" : "speechocean762",
+      "item" : "061210174",
+      "path" : "audio/speechocean762-061210174.flac",
+      "sha256" : "1f849582b00e0b10f44fbb9e33f830262ec11b98a85711897543111abd94b0ce",
+      "speaker" : "6121",
+      "words" : [
+        {
+          "id" : "061210174#0",
+          "label" : "stressCorrect",
+          "text" : "EVERYONE"
+        },
+        {
+          "id" : "061210174#1",
+          "label" : "stressCorrect",
+          "text" : "STARTED"
+        },
+        {
+          "id" : "061210174#3",
+          "label" : "stressCorrect",
+          "text" : "SURPRISE"
+        }
+      ]
+    },
+    {
+      "bytes" : 110990,
+      "corpus" : "speechocean762",
+      "item" : "080020017",
+      "path" : "audio/speechocean762-080020017.flac",
+      "sha256" : "79f8564e02eaf6faf48f211c133131d48c23bab2a54581a88463bc9a08155680",
+      "speaker" : "8002",
+      "words" : [
+        {
+          "id" : "080020017#4",
+          "label" : "stressWrong",
+          "text" : "DIVISION"
+        }
+      ]
+    },
+    {
+      "bytes" : 52561,
+      "corpus" : "speechocean762",
+      "item" : "085850170",
+      "path" : "audio/speechocean762-085850170.flac",
+      "sha256" : "04e4d672185c918f7dcb584a6f005c496e653adb0614d62318f77751bd879f2e",
+      "speaker" : "8585",
+      "words" : [
+        {
+          "id" : "085850170#0",
+          "label" : "stressCorrect",
+          "text" : "NEVER"
+        },
+        {
+          "id" : "085850170#2",
+          "label" : "stressCorrect",
+          "text" : "ANYTHING"
+        },
+        {
+          "id" : "085850170#5",
+          "label" : "stressCorrect",
+          "text" : "NEVER"
+        }
+      ]
+    },
+    {
+      "bytes" : 78691,
+      "corpus" : "speechocean762",
+      "item" : "095560008",
+      "path" : "audio/speechocean762-095560008.flac",
+      "sha256" : "f823802173103e7324bdb5ab77bdc0634aedbd2164fd2daa6cce0aa20374589d",
+      "speaker" : "9556",
+      "words" : [
+        {
+          "id" : "095560008#2",
+          "label" : "stressWrong",
+          "text" : "CONSIDER"
+        }
+      ]
+    },
+    {
+      "bytes" : 75584,
+      "corpus" : "speechocean762",
+      "item" : "095560051",
+      "path" : "audio/speechocean762-095560051.flac",
+      "sha256" : "9ae4ac6dd936b218032808cce3895af175fb218b636bbe13862ea74e4440fe99",
+      "speaker" : "9556",
+      "words" : [
+        {
+          "id" : "095560051#0",
+          "label" : "stressCorrect",
+          "text" : "HOWEVER"
+        },
+        {
+          "id" : "095560051#3",
+          "label" : "stressCorrect",
+          "text" : "HIMSELF"
+        },
+        {
+          "id" : "095560051#4",
+          "label" : "stressCorrect",
+          "text" : "TOGETHER"
+        },
+        {
+          "id" : "095560051#5",
+          "label" : "stressCorrect",
+          "text" : "QUICKLY"
+        }
+      ]
+    },
+    {
+      "bytes" : 106581,
+      "corpus" : "speechocean762",
+      "item" : "096000002",
+      "path" : "audio/speechocean762-096000002.flac",
+      "sha256" : "b4386e8d6242f2fd406b757fc75df2d9a45eff4a42c4bfd229f5c70c975f9aef",
+      "speaker" : "9600",
+      "words" : [
+        {
+          "id" : "096000002#4",
+          "label" : "stressWrong",
+          "text" : "ONLY"
+        },
+        {
+          "id" : "096000002#7",
+          "label" : "stressCorrect",
+          "text" : "QUARTER"
+        }
+      ]
+    },
+    {
+      "bytes" : 98295,
+      "corpus" : "speechocean762",
+      "item" : "096060001",
+      "path" : "audio/speechocean762-096060001.flac",
+      "sha256" : "6e7c80e5707e2053e20acff9f5ada851f3c099e0b4c8a446d034f703fa9b997e",
+      "speaker" : "9606",
+      "words" : [
+        {
+          "id" : "096060001#8",
+          "label" : "stressWrong",
+          "text" : "BEFORE"
+        }
+      ]
+    },
+    {
+      "bytes" : 97703,
+      "corpus" : "speechocean762",
+      "item" : "096160010",
+      "path" : "audio/speechocean762-096160010.flac",
+      "sha256" : "a04f2f53b293c4c9b6ee123b582e349a747aaec7aa5f2f5e3a51039e50339b7f",
+      "speaker" : "9616",
+      "words" : [
+        {
+          "id" : "096160010#1",
+          "label" : "stressWrong",
+          "text" : "OPENED"
+        }
+      ]
+    },
+    {
+      "bytes" : 97745,
+      "corpus" : "speechocean762",
+      "item" : "096190009",
+      "path" : "audio/speechocean762-096190009.flac",
+      "sha256" : "9e0b3d5076b19d504eb49cad3d36332f6afd64476f1118add68fa9e6a7faae45",
+      "speaker" : "9619",
+      "words" : [
+        {
+          "id" : "096190009#7",
+          "label" : "stressWrong",
+          "text" : "DEFEAT"
+        }
+      ]
+    },
+    {
+      "bytes" : 86569,
+      "corpus" : "speechocean762",
+      "item" : "096430009",
+      "path" : "audio/speechocean762-096430009.flac",
+      "sha256" : "8c35c71ceee604cab30b44ff00ae8422cf66cef946405957135dc212b46af111",
+      "speaker" : "9643",
+      "words" : [
+        {
+          "id" : "096430009#4",
+          "label" : "stressWrong",
+          "text" : "ENERGY"
+        }
+      ]
+    },
+    {
+      "bytes" : 109129,
+      "corpus" : "vctk",
+      "item" : "002",
+      "path" : "audio/vctk-p245_002.flac",
+      "sha256" : "a84e9847db9a19873d26b6032f23d54eb4af2a687b63114ab1e4c1f0c7c4c3be",
+      "speaker" : "p245",
+      "words" : [
+
+      ]
+    },
+    {
+      "bytes" : 181411,
+      "corpus" : "vctk",
+      "item" : "018",
+      "path" : "audio/vctk-p245_018.flac",
+      "sha256" : "20eb75654d1099c92a406f96d45f0a339c42733e22858c777435f934c487ac9c",
+      "speaker" : "p245",
+      "words" : [
+
+      ]
+    },
+    {
+      "bytes" : 94749,
+      "corpus" : "vctk",
+      "item" : "002",
+      "path" : "audio/vctk-p288_002.flac",
+      "sha256" : "fa218fa75ccc5eb6669d820850209bf08d9991f640800bb85aa837ea27394c89",
+      "speaker" : "p288",
+      "words" : [
+
+      ]
+    },
+    {
+      "bytes" : 165222,
+      "corpus" : "vctk",
+      "item" : "018",
+      "path" : "audio/vctk-p288_018.flac",
+      "sha256" : "19204c979ebd68786502fbd68b8d39ec4f3bc3c713863baa01e36240895b3459",
+      "speaker" : "p288",
+      "words" : [
+
+      ]
+    },
+    {
+      "bytes" : 98192,
+      "corpus" : "vctk",
+      "item" : "002",
+      "path" : "audio/vctk-p360_002.flac",
+      "sha256" : "0fc773de11187283ca75f6507927668925eb99e38b45587fdd366b9da365f108",
+      "speaker" : "p360",
+      "words" : [
+
+      ]
+    },
+    {
+      "bytes" : 168125,
+      "corpus" : "vctk",
+      "item" : "018",
+      "path" : "audio/vctk-p360_018.flac",
+      "sha256" : "c92c3ec91fd93269e177d5b1e76bd8617dba3ad387432ec76c82bb9bb149e2bb",
+      "speaker" : "p360",
+      "words" : [
+
+      ]
+    }
+  ],
+  "seed" : 20261127,
+  "version" : 1
+}

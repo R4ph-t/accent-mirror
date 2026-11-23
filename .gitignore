@@ -69,5 +69,8 @@ eval-local/
 # Test VM results (make test-vm / test-ui-vm)
 /.factory/vm-results/
 
+# Corpus caches for the agreement harness (spec 02): never committed
+/eval-cache/
+
 # Local caches (spec 03): model weights, VCTK clips, MFA. Never committed.
 /.cache/
