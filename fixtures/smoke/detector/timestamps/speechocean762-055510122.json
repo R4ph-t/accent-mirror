@@ -1,0 +1,45 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "011b3805994c5cb7aff187125e1016dd7e472957237cdf7ef231c5c671b21ba9",
+  "clipID" : "speechocean762-055510122",
+  "formatVersion" : 1,
+  "text" : "14, 15, 18 hours a day.",
+  "words" : [
+    {
+      "end" : 0.72,
+      "probability" : 0.8,
+      "start" : 0.56,
+      "word" : " 14,"
+    },
+    {
+      "end" : 1.54,
+      "probability" : 0.99,
+      "start" : 1.3,
+      "word" : " 15,"
+    },
+    {
+      "end" : 2.08,
+      "probability" : 0.97,
+      "start" : 1.88,
+      "word" : " 18"
+    },
+    {
+      "end" : 3.14,
+      "probability" : 0.94,
+      "start" : 2.08,
+      "word" : " hours"
+    },
+    {
+      "end" : 3.5,
+      "probability" : 0.99,
+      "start" : 3.14,
+      "word" : " a"
+    },
+    {
+      "end" : 3.72,
+      "probability" : 1,
+      "start" : 3.5,
+      "word" : " day."
+    }
+  ]
+}
