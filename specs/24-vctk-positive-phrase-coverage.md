@@ -1,6 +1,6 @@
 # 24: VCTK positive-set phrase coverage
 
-Status: Ready · Branch: – · Depends on: 02 (harness, positive set, trim rule, manifests) · Estimate: 3–4 h agent run
+Status: Done · Branch: factory/24-vctk-positive-phrase-coverage · Depends on: 02 (harness, positive set, trim rule, manifests) · Estimate: 3–4 h agent run
 + 1 h Raph review
 
 Source: CTO ruling on spec 02 (#20 at `c097498`, 2026-11-23 14:18 Europe/Paris, relayed by Accent Mirror Lead). Spec

@@ -52,9 +52,10 @@ main gate or tuning.
 - Keep a voice only if all three hold: ≥ 90% of moved items have their observed primary on the marked syllable at ≥
   medium confidence; ≥ 95% of correct items match the expected stress; used as the reference for the **18 VCTK
   tuning speakers only**, it passes the positive-set placement-FP gate (≤ 2%).
-- **That placement-FP gate is blocked on spec 24 (CTO ruling, 2026-11-23 14:18).** It consumes spec 02's positive-set
-  result. While that result reads NOT EVALUATED, the gate prints NOT EVALUATED (blocked on spec 24) through spec 02's
-  `PositiveSetGates.line`, so no voice can pass verification on it. It's never a pass and never a waiver. "18 VCTK
+- **That placement-FP gate is no longer blocked on spec 24.** It consumes spec 02's positive-set result through spec
+  02's `PositiveSetGates.line`. It was blocked on spec 24 (CTO ruling, 2026-11-23 14:18). Spec 24 merged in #35
+  (6f69934), and the set is now EVALUABLE (20 phrases, 17 distinct source prompts, 274 headline pairs), so the gate
+  evaluates. A NOT EVALUATED line is still never a pass and never a waiver, and no voice passes verification on one. "18 VCTK
   tuning speakers" is a floor (≥ 18; the manifest records the actual 24).
 - **Selection uses only VCTK tuning speakers and the verification items**, through spec 02's tuning-only API. Held-
   out VCTK speakers and speechocean762 words are never used to pick voices (Raph 09:56).

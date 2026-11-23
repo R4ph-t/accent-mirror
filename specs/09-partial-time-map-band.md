@@ -1,6 +1,6 @@
 # 09: Partial time map and native band
 
-Status: Ready · Branch: – · Depends on: 02 (harness), 04 (pitch), 07 (syllables) · Estimate: 3–4 h agent run + 1 h
+Status: Done · Branch: factory/09-partial-time-map-band · Depends on: 02 (harness), 04 (pitch), 07 (syllables) · Estimate: 3–4 h agent run + 1 h
 Raph review
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
@@ -61,10 +61,13 @@ band-coverage metric.
 - With spec 02's harness, the positive-set report gains **band coverage: median over pairs ≥ 80%** (§6.7, "as in the
   first v2") on the 12 held-out VCTK speakers. A FAIL goes to CTO with the numbers; nothing is tuned on held-out
   clips.
-- **This gate consumes the positive-set result, so it is blocked on spec 24** (CTO ruling, 2026-11-23 14:18). While
-  spec 02's positive set reads NOT EVALUATED (15 phrases against ≥ 18), band coverage prints NOT EVALUATED (blocked
-  on spec 24). That's never a pass and never a waiver. The smoke-set golden below isn't affected. "12 held-out" is a
-  floor (≥ 12; the manifest records the actual count).
+- **This gate consumes the positive-set result through spec 02's `PositiveSetGates.line`.** It was blocked on spec
+  24 (CTO ruling, 2026-11-23 14:18). Spec 24 merged in #35 (6f69934): the set is now EVALUABLE (20 phrases from 17
+  distinct source prompts, 274 headline pairs, 16 held-out speakers), so the gate evaluates once held-out pairs are
+  measured (that needs spec 12's pipeline). Until then it prints NOT EVALUATED (n below the minimum). NOT EVALUATED
+  is never a pass and never a waiver, and if the set ever falls short again the line goes back to NOT EVALUATED
+  (blocked). The smoke-set golden below isn't affected. "12 held-out" is a floor (≥ 12; the manifest records the
+  actual count).
 
 ## Defaults
 
