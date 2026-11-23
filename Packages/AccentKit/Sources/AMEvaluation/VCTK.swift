@@ -20,13 +20,20 @@ public enum VCTK {
     /// Never used: p280 and p315.
     public static let excludedSpeakers = ["p280", "p315"]
 
+    /// The shared prompt a phrase comes from: itself, or `021` for the sub-phrase `021-a` (spec 24).
+    public static func sourcePrompt(of phrase: String) -> String {
+        String(phrase.prefix { $0 != "-" })
+    }
+
     /// The headline reference of a phrase: p225, or p226 for 015 (p225 has no 015).
-    public static func headlineReference(for phrase: String) -> String { phrase == "015" ? "p226" : "p225" }
+    public static func headlineReference(for phrase: String) -> String {
+        sourcePrompt(of: phrase) == "015" ? "p226" : "p225"
+    }
 
     /// The native readers of a phrase: the bundled voices that have it. The only voices that may build a band or
     /// add to A(w). Held-out speakers can't appear here: the list is fixed.
     public static func nativeReaders(for phrase: String) -> [String] {
-        bundledVoices.filter { !($0 == "p225" && phrase == "015") }
+        bundledVoices.filter { !($0 == "p225" && sourcePrompt(of: phrase) == "015") }
     }
 }
 
@@ -50,6 +57,8 @@ public struct VCTKEvalSpeakersManifest: Sendable, Hashable, Codable {
     public let corpus: String
     public let seed: UInt64
     public let phrases: [String]
+    /// Prompt id → the normalised shared text a listed clip's transcript must read (the prompts the CTO ruling added).
+    public let phraseText: [String: String]?
     public let bundled: [Entry]
     public let speakers: [Entry]
     /// The recorded split sizes (24 / 16 after the CTO ruling). Floors, not exact counts: `meetsFloors`.
@@ -134,6 +143,21 @@ public struct VCTKPair: Sendable, Hashable, Codable {
     public let speaker: String
     public let phrase: String
     public let reference: String
+
+    public init(speaker: String, phrase: String, reference: String) {
+        self.speaker = speaker
+        self.phrase = phrase
+        self.reference = reference
+    }
+
+    /// The shared prompt the pair's phrase comes from.
+    public var sourcePrompt: String { VCTK.sourcePrompt(of: phrase) }
+
+    /// The pair as a scored unit: its phrase for the worst-phrase figure, clustered under its source prompt for the
+    /// two-way bootstrap (sub-phrases of one prompt share a reader, a session and context, spec 24).
+    public func scoredUnit(hit: Bool) -> ScoredUnit {
+        ScoredUnit(speaker: speaker, phrase: phrase, phraseCluster: sourcePrompt, hit: hit)
+    }
 }
 
 /// A clip that survived the trim (2–6 s).
@@ -153,11 +177,12 @@ public struct VCTKPairs: Sendable, Hashable {
     public let headline: [VCTKPair]
     public let secondary: [VCTKPair]
 
-    public init(manifest: VCTKEvalSpeakersManifest, available: Set<VCTKClip>) {
+    /// `phrases`: the positive set's phrases (`VCTKSubPhraseTable.evaluationPhrases`, or `VCTK.phrases` unsplit).
+    public init(manifest: VCTKEvalSpeakersManifest, available: Set<VCTKClip>, phrases: [String]) {
         var headline: [VCTKPair] = []
         var secondary: [VCTKPair] = []
         for speaker in manifest.heldOutSpeakers.map(\.id).sorted() {
-            for phrase in VCTK.phrases where available.contains(VCTKClip(speaker: speaker, phrase: phrase)) {
+            for phrase in phrases where available.contains(VCTKClip(speaker: speaker, phrase: phrase)) {
                 let reference = VCTK.headlineReference(for: phrase)
                 if available.contains(VCTKClip(speaker: reference, phrase: phrase)) {
                     headline.append(VCTKPair(speaker: speaker, phrase: phrase, reference: reference))
@@ -172,34 +197,68 @@ public struct VCTKPairs: Sendable, Hashable {
         self.secondary = secondary
     }
 
+    /// Phrases with a headline pair: whole prompts plus sub-phrases (spec 24).
+    public var phraseCount: Int { Set(headline.map(\.phrase)).count }
+    /// The distinct shared prompts behind those phrases. Sub-phrases of one prompt are correlated, so this is printed
+    /// next to the phrase count every time.
+    public var sourcePromptCount: Int { Set(headline.map(\.sourcePrompt)).count }
+    public var heldOutSpeakerCount: Int { Set(headline.map(\.speaker)).count }
+
+    /// One §6.2 minimum: what it counts, the measured value and the floor.
+    public struct Minimum: Sendable, Hashable {
+        public let name: String
+        public let value: Int
+        public let minimum: Int
+        public var isMet: Bool { value >= minimum }
+
+        /// PASS when met, otherwise NOT EVALUATED: a short positive set is never a FAIL and never a pass.
+        public var line: String { "\(name) \(value) (≥ \(minimum)): \(isMet ? "PASS" : "NOT EVALUATED")" }
+    }
+
+    /// The §6.2 minimums. The phrase minimum is checked on the phrase count (CTO ruling, spec 24 Open question 2).
+    public func minimums(thresholds: Thresholds = .current) -> [Minimum] {
+        [
+            Minimum(name: "pairs", value: headline.count, minimum: Int(thresholds.agreement.positiveMinPairs)),
+            Minimum(name: "phrases", value: phraseCount, minimum: Self.minimumPhrases),
+            Minimum(
+                name: "held-out speakers", value: heldOutSpeakerCount,
+                minimum: Int(thresholds.agreement.positiveHeldOutSpeakers)),
+        ]
+    }
+
     /// The §6.2 minimums (pairs, phrases after trimming, held-out speakers). Empty when the headline set can be
     /// evaluated; otherwise each shortfall, and every positive-set metric is NOT EVALUATED.
     public func shortfalls(thresholds: Thresholds = .current) -> [String] {
-        var out: [String] = []
-        let minPairs = Int(thresholds.agreement.positiveMinPairs)
-        let minSpeakers = Int(thresholds.agreement.positiveHeldOutSpeakers)
-        let phrases = Set(headline.map(\.phrase)).count
-        let speakers = Set(headline.map(\.speaker)).count
-        if headline.count < minPairs { out.append("pairs \(headline.count) < \(minPairs)") }
-        if phrases < Self.minimumPhrases { out.append("phrases \(phrases) < \(Self.minimumPhrases)") }
-        if speakers < minSpeakers { out.append("held-out speakers \(speakers) < \(minSpeakers)") }
-        return out
+        minimums(thresholds: thresholds).filter { !$0.isMet }.map { m in
+            "\(m.name) \(m.value) < \(m.minimum)"
+                + (m.name == "phrases" ? " (\(sourcePromptCount) distinct source prompts)" : "")
+        }
     }
 
     /// "≥ 18 phrases after trimming" (§6.2). Not a tunable: it is the plan's evaluability floor, and the CTO ruling
     /// keeps it at 18 with the widened phrase set.
     public static let minimumPhrases = 18
 
-    /// Per phrase, how many clips the trim rejected (all speakers) and whether the headline reference survived.
-    public static func rejectionsByPhrase(rejected: [VCTKClip], manifest: VCTKEvalSpeakersManifest) -> [String] {
+    /// Per phrase, how many clips the trim rejected (all speakers) and whether the headline reference survived. A
+    /// sub-phrase always gets a line, with its MFA-mismatch rejections next to the trim's (spec 24).
+    public static func rejectionsByPhrase(
+        trimmed: [VCTKClip], misaligned: [VCTKClip] = [], phrases: [String], manifest: VCTKEvalSpeakersManifest
+    ) -> [String] {
         let heldOut = Set(manifest.heldOutSpeakers.map(\.id))
-        return VCTK.phrases.compactMap { phrase in
-            let clips = rejected.filter { $0.phrase == phrase }
-            guard !clips.isEmpty else { return nil }
+        func count(_ clips: [VCTKClip], _ by: String) -> String {
+            "\(clips.count) \(by) (\(clips.filter { heldOut.contains($0.speaker) }.count) held-out)"
+        }
+        return phrases.compactMap { phrase in
+            let trim = trimmed.filter { $0.phrase == phrase }
+            let mfa = misaligned.filter { $0.phrase == phrase }
+            let isSubPhrase = VCTK.sourcePrompt(of: phrase) != phrase
+            guard isSubPhrase || !trim.isEmpty || !mfa.isEmpty else { return nil }
             let reference = VCTK.headlineReference(for: phrase)
-            let referenceLost = clips.contains { $0.speaker == reference }
-            return "\(phrase): \(clips.count) rejected (\(clips.filter { heldOut.contains($0.speaker) }.count) held-out)"
-                + (referenceLost ? ", reference \(reference) rejected: phrase dropped" : "")
+            let referenceLost = (trim + mfa).contains { $0.speaker == reference }
+            let counts = isSubPhrase
+                ? count(trim, "rejected by the trim") + ", " + count(mfa, "by MFA mismatch")
+                : count(trim, "rejected")
+            return "\(phrase): " + counts + (referenceLost ? ", reference \(reference) rejected: phrase dropped" : "")
         }
     }
 }

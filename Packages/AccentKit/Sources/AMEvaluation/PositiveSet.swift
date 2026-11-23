@@ -34,7 +34,9 @@ extension VCTKPairs {
 
 /// The gates that consume the positive-set result, and the one function that turns a measurement into their line.
 public enum PositiveSetGates {
-    /// The follow-up that closes the phrase gap (spec 24, VCTK positive-set phrase coverage).
+    /// The follow-up that closes the phrase gap (spec 24, VCTK positive-set phrase coverage). With spec 24's
+    /// sub-phrases the set meets every minimum, so this is only reached if the set regresses below one (a trim,
+    /// manifest or cut-list change drops phrases, pairs or held-out speakers); the line then names spec 24.
     public static let blockingSpec = "spec 24"
 
     /// One gate that reads the positive set: its report name, the spec that wires it, and its gate.

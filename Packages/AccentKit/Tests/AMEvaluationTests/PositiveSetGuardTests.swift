@@ -10,7 +10,7 @@ import AMEvaluation
         let manifest = try SyntheticVCTK.manifest()
         var clips = SyntheticVCTK.allClips(manifest)
         for phrase in VCTK.phrases.prefix(9) { clips.remove(VCTKClip(speaker: "p225", phrase: phrase)) }
-        return VCTKPairs(manifest: manifest, available: clips)
+        return VCTKPairs(manifest: manifest, available: clips, phrases: VCTK.phrases)
     }
 
     /// A measured PASS for every dependent gate, as a downstream spec might hand in.
@@ -31,9 +31,9 @@ import AMEvaluation
     @Test("A NOT EVALUATED positive set: every dependent gate line is NOT EVALUATED, none PASS, release gate NOT MET")
     func notEvaluatedNeverPasses() throws {
         let pairs = try Self.shortSet()
-        #expect(pairs.headline.count >= 150 && pairs.shortfalls() == ["phrases 15 < 18"])
+        #expect(pairs.headline.count >= 150 && pairs.shortfalls() == ["phrases 15 < 18 (15 distinct source prompts)"])
         let status = pairs.status()
-        #expect(status == .notEvaluated(shortfalls: ["phrases 15 < 18"], blockedOn: "spec 24"))
+        #expect(status == .notEvaluated(shortfalls: ["phrases 15 < 18 (15 distinct source prompts)"], blockedOn: "spec 24"))
 
         // Even when every dependent gate was measured as passing, the consumer blocks it.
         let lines = PositiveSetGates.lines(positiveSet: status, measured: Self.allPassing(), pairs: pairs.headline.count)
@@ -43,8 +43,8 @@ import AMEvaluation
         }
         #expect(lines.count == PositiveSetGates.dependents().count)
         for line in lines {
-            #expect(line.status == .blocked(on: "spec 24", reason: "phrases 15 < 18"), "\(line.name)")
-            #expect(line.status.text == "NOT EVALUATED (blocked on spec 24: phrases 15 < 18)")
+            #expect(line.status == .blocked(on: "spec 24", reason: "phrases 15 < 18 (15 distinct source prompts)"), "\(line.name)")
+            #expect(line.status.text == "NOT EVALUATED (blocked on spec 24: phrases 15 < 18 (15 distinct source prompts))")
             #expect(!line.status.isPass && line.value == nil && line.dependsOnPositiveSet == true)
         }
 
@@ -52,7 +52,7 @@ import AMEvaluation
         let summary = ReleaseSummary(negativeSet: .pass, positiveSet: status, gated: lines)
         #expect(!summary.releaseGateMet)
         #expect(summary.lines == [
-            "Negative set: PASS", "Positive set: NOT EVALUATED (blocked on spec 24: phrases 15 < 18)",
+            "Negative set: PASS", "Positive set: NOT EVALUATED (blocked on spec 24: phrases 15 < 18 (15 distinct source prompts))",
             "Release gate: NOT MET",
         ])
         let report = AgreementReport(

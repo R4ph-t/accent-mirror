@@ -85,16 +85,20 @@ public struct SeededGenerator: RandomNumberGenerator, Sendable {
 /// One scored unit for a bootstrap: which speaker and phrase it belongs to, and its outcome(s).
 public struct BootstrapUnit: Sendable, Hashable {
     public let speaker: String
-    /// Phrase (or utterance text) for the two-way bootstrap; ignored by the speaker-clustered one.
+    /// Phrase (or utterance text); ignored by the speaker-clustered bootstrap.
     public let phrase: String
+    /// The phrase cluster the two-way bootstrap resamples: the phrase itself, or a sub-phrase's source prompt
+    /// (spec 24), so sub-phrases of one prompt are drawn together.
+    public let phraseCluster: String
     /// 1 for a hit, 0 for a miss (detector).
     public let value: Double
     /// The paired comparison value (for example the best baseline's hit), when the bootstrap is paired.
     public let paired: Double
 
-    public init(speaker: String, phrase: String = "", value: Double, paired: Double = 0) {
+    public init(speaker: String, phrase: String = "", phraseCluster: String? = nil, value: Double, paired: Double = 0) {
         self.speaker = speaker
         self.phrase = phrase
+        self.phraseCluster = phraseCluster ?? phrase
         self.value = value
         self.paired = paired
     }
@@ -117,7 +121,7 @@ public enum ClusteredBootstrap {
         precondition(!units.isEmpty && resamples > 0)
         var generator = SeededGenerator(seed: seed)
         let speakers = Array(Set(units.map(\.speaker))).sorted()
-        let phrases = Array(Set(units.map(\.phrase))).sorted()
+        let phrases = Array(Set(units.map(\.phraseCluster))).sorted()
         let speakerIndex = Dictionary(uniqueKeysWithValues: speakers.enumerated().map { ($1, $0) })
         let phraseIndex = Dictionary(uniqueKeysWithValues: phrases.enumerated().map { ($1, $0) })
         var results: [Double] = []
@@ -130,7 +134,7 @@ public enum ClusteredBootstrap {
                 phraseCount = [Double](repeating: 0, count: phrases.count)
                 for _ in phrases.indices { phraseCount[generator.index(below: phrases.count)] += 1 }
             }
-            let weights = units.map { speakerCount[speakerIndex[$0.speaker]!] * phraseCount[phraseIndex[$0.phrase]!] }
+            let weights = units.map { speakerCount[speakerIndex[$0.speaker]!] * phraseCount[phraseIndex[$0.phraseCluster]!] }
             if let value = statistic(units, weights) { results.append(value) }
         }
         return results.sorted()
@@ -166,7 +170,7 @@ public enum ClusteredBootstrap {
     static func label(_ clustering: Clustering, resamples: Int) -> String {
         switch clustering {
         case .speakers: "speaker-clustered bootstrap, \(resamples) resamples"
-        case .speakersAndPhrases: "two-way clustered bootstrap (speakers × phrases), \(resamples) resamples"
+        case .speakersAndPhrases: "two-way clustered bootstrap (speakers × source prompts), \(resamples) resamples"
         }
     }
 

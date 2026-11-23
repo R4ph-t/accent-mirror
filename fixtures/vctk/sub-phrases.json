@@ -1,0 +1,49 @@
+{
+  "prompts": {
+    "021": "The difference in the rainbow depends considerably upon the size of the drops, and the width of the colored band increases as the size of the drops increases.",
+    "023": "If the red of the second bow falls upon the green of the first, the result is to give a bow with an abnormally wide yellow band, since red and green light when mixed form yellow."
+  },
+  "rule": "Spec 24, Open question 1 (default): sentence ends first; a comma, semicolon or colon clause boundary only when a sentence alone falls outside 2-6 s for the bundled reference (p225). 021 and 023 are one sentence each (p225: 8.1 s and 9.3 s of words), so each is cut at its commas, using the fewest cuts that put every piece of p225's clip inside 2-6 s: 021 at its one comma; 023 at both (a single cut leaves a piece over 6 s). Word indices are 0-based and inclusive, into the prompt's normalised words. The same table for every speaker; held-out speakers were never looked at.",
+  "subPhrases": [
+    {
+      "boundary": "clause",
+      "firstWord": 0,
+      "id": "021-a",
+      "lastWord": 12,
+      "prompt": "021",
+      "text": "the difference in the rainbow depends considerably upon the size of the drops"
+    },
+    {
+      "boundary": "sentence",
+      "firstWord": 13,
+      "id": "021-b",
+      "lastWord": 27,
+      "prompt": "021",
+      "text": "and the width of the colored band increases as the size of the drops increases"
+    },
+    {
+      "boundary": "clause",
+      "firstWord": 0,
+      "id": "023-a",
+      "lastWord": 13,
+      "prompt": "023",
+      "text": "if the red of the second bow falls upon the green of the first"
+    },
+    {
+      "boundary": "clause",
+      "firstWord": 14,
+      "id": "023-b",
+      "lastWord": 26,
+      "prompt": "023",
+      "text": "the result is to give a bow with an abnormally wide yellow band"
+    },
+    {
+      "boundary": "sentence",
+      "firstWord": 27,
+      "id": "023-c",
+      "lastWord": 35,
+      "prompt": "023",
+      "text": "since red and green light when mixed form yellow"
+    }
+  ]
+}

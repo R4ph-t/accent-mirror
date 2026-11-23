@@ -11,7 +11,9 @@
 # 2. If fixtures/vctk/eval-speakers.json exists, extracts only the files it lists (shared-text prompts 001–024, mic1)
 #    for the 8 bundled voices and the 40 eval speakers, checks each against the manifest's SHA-256, and trims them
 #    (2–6 s, the same rule for every speaker; spec 02 Open question 2) to 16 kHz FLAC, cached under
-#    eval-cache/vctk/trimmed/<manifest hash>/.
+#    eval-cache/vctk/trimmed/<hash of the manifest, sub-phrase table and cut list>/. The split prompts' clips are also
+#    cut into sub-phrases at the committed MFA cuts (fixtures/vctk/sub-phrase-cuts.json, spec 24) and trimmed the same
+#    way.
 #    Without the manifest it stops after step 1: run tools/pick_vctk_eval_speakers.py, then this again.
 #
 #   scripts/fetch-vctk-eval.sh
@@ -67,7 +69,9 @@ if [[ ! -f "$manifest" ]]; then
   exit 0
 fi
 
-key="$(shasum -a 256 "$manifest" | cut -d ' ' -f 1)"
+sub_phrases="$root/fixtures/vctk/sub-phrases.json"
+cuts="$root/fixtures/vctk/sub-phrase-cuts.json"
+key="$(cat "$manifest" "$sub_phrases" "$cuts" | shasum -a 256 | cut -d ' ' -f 1)"
 raw="$cache/vctk/raw"
 trimmed="$cache/vctk/trimmed/${key:0:16}"
 if [[ ! -f "$trimmed/.done" ]]; then
@@ -85,7 +89,7 @@ with zipfile.ZipFile(archive) as z:
                 f.write(z.read("wav48_silence_trimmed/%s/%s" % (s, name)))
 PY
   rm -rf "$trimmed"
-  "$root/scripts/am-eval.sh" vctk-trim --eval-speakers "$manifest" --raw "$raw" --out "$trimmed"
+  "$root/scripts/am-eval.sh" vctk-trim --eval-speakers "$manifest" --sub-phrases "$sub_phrases" --cuts "$cuts" --raw "$raw" --out "$trimmed"
   touch "$trimmed/.done"
 fi
 ln -sfn "$trimmed" "$cache/vctk/current"
