@@ -221,6 +221,15 @@ struct ShellContractTests {
         }
     }
 
+    // MARK: Round 3, 12:19 batch c: final-direction icons
+
+    @Test func finalDirectionIconFollowsTheDirection() throws {
+        let higher = try card("rows-final-direction-higher").rows.first { $0.sentence.plain.hasPrefix("End higher") }
+        #expect(higher?.icon == "arrow.up.right")
+        let lower = try card("rows-final-direction-lower").rows.first { $0.sentence.plain.hasPrefix("End lower") }
+        #expect(lower?.icon == "arrow.down.right")
+    }
+
     // MARK: Round 3, Designer answer 1: the noClearDifference sentence
 
     private static let ncdSentences: [NoClearDifferenceReason: String] = [

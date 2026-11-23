@@ -256,7 +256,7 @@ enum ShellPresenter {
         switch verdict.kind {
         case .feedback:
             rows = orderedRows(verdict.rows ?? []).map { row in
-                CardRow(icon: diffIcon(row.kind), iconIsMistake: false, sentence: Copy.row(row), trailing: .play)
+                CardRow(icon: diffIcon(row), iconIsMistake: false, sentence: Copy.row(row), trailing: .play)
             }
         case .close:
             rows = [CardRow(icon: "checkmark.circle", iconIsMistake: false, sentence: Copy.close(measures: measures), trailing: .none)]
@@ -287,14 +287,16 @@ enum ShellPresenter {
         return Array(sorted.prefix(3))
     }
 
-    static func diffIcon(_ kind: DiffRow.Kind) -> String {
-        switch kind {
+    /// The final-direction icon follows the direction: arrow.up.right for "End higher", arrow.down.right for
+    /// "End lower" (Designer 12:19 c, round 3).
+    static func diffIcon(_ row: DiffRow) -> String {
+        switch row.kind {
         case .roughTiming: "waveform.path.ecg"
         case .placement: "arrow.left.arrow.right"
         case .contrast: "chart.bar"
         case .reduction: "arrow.left.and.right"
         case .range: "arrow.up.and.down"
-        case .finalDirection: "arrow.down.right"
+        case .finalDirection: row.direction == "higher" ? "arrow.up.right" : "arrow.down.right"
         case .tooMuchContrast: "chart.bar.fill"
         }
     }
