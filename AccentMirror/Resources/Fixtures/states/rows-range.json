@@ -1,6 +1,6 @@
 {
   "name": "rows-range",
-  "summary": "The range row.",
+  "summary": "The range row: only your flatter line differs.",
   "phrase": "photography",
   "phase": "showingTake",
   "savedTakes": [
@@ -9,18 +9,11 @@
     2,
     1
   ],
-  "take": "photography-take04-close",
+  "take": "photography-take04-flat",
   "analysis": {
     "verdict": {
       "kind": "feedback",
       "rows": [
-        {
-          "kind": "contrast",
-          "targets": [
-            "HAR",
-            "LOOKS"
-          ]
-        },
         {
           "kind": "range"
         }
@@ -75,7 +68,7 @@
       },
       {
         "word": "photography",
-        "outcome": "outsideAccepted",
+        "outcome": "matchesDictionary",
         "pattern": "phoTOGraphy"
       }
     ]

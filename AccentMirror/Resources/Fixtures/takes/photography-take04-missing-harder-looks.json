@@ -1,0 +1,347 @@
+{
+  "id": "photography-take04-missing-harder-looks",
+  "number": 4,
+  "hasAudio": true,
+  "alignment": "aligned",
+  "level": "normal",
+  "words": [
+    {
+      "kind": "present",
+      "expected": "photography",
+      "heard": "photography",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "pho",
+          "start": 0.003,
+          "end": 0.075,
+          "prominence": 0.35,
+          "stressed": false,
+          "label": "lower"
+        },
+        {
+          "text": "tog",
+          "start": 0.08,
+          "end": 0.235,
+          "prominence": 1.0,
+          "stressed": true,
+          "label": "caps"
+        },
+        {
+          "text": "ra",
+          "start": 0.24,
+          "end": 0.295,
+          "prominence": 0.35,
+          "stressed": false,
+          "label": "lower"
+        },
+        {
+          "text": "phy",
+          "start": 0.3,
+          "end": 0.385,
+          "prominence": 0.38,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "is",
+      "heard": "is",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "is",
+          "start": 0.39,
+          "end": 0.45,
+          "prominence": 0.32,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "missing",
+      "expected": "harder",
+      "syllables": [],
+      "slot": 0.561
+    },
+    {
+      "kind": "present",
+      "expected": "than",
+      "heard": "than",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "than",
+          "start": 0.673,
+          "end": 0.718,
+          "prominence": 0.3,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "it",
+      "heard": "it",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "it",
+          "start": 0.724,
+          "end": 0.762,
+          "prominence": 0.26,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "missing",
+      "expected": "looks",
+      "syllables": [],
+      "slot": 0.883
+    }
+  ],
+  "pitch": [
+    {
+      "points": [
+        {
+          "t": 0.014,
+          "st": 0.13
+        },
+        {
+          "t": 0.025,
+          "st": 0.221
+        },
+        {
+          "t": 0.036,
+          "st": 0.308
+        },
+        {
+          "t": 0.047,
+          "st": 0.475
+        },
+        {
+          "t": 0.058,
+          "st": 0.806
+        },
+        {
+          "t": 0.068,
+          "st": 1.32
+        },
+        {
+          "t": 0.069,
+          "st": 1.358
+        },
+        {
+          "t": 0.08,
+          "st": 1.897
+        },
+        {
+          "t": 0.091,
+          "st": 2.606
+        },
+        {
+          "t": 0.102,
+          "st": 3.423
+        },
+        {
+          "t": 0.113,
+          "st": 4.286
+        },
+        {
+          "t": 0.124,
+          "st": 5.131
+        },
+        {
+          "t": 0.135,
+          "st": 5.898
+        },
+        {
+          "t": 0.146,
+          "st": 6.523
+        },
+        {
+          "t": 0.157,
+          "st": 6.944
+        },
+        {
+          "t": 0.16,
+          "st": 7.015
+        },
+        {
+          "t": 0.168,
+          "st": 7.144
+        },
+        {
+          "t": 0.179,
+          "st": 7.028
+        },
+        {
+          "t": 0.19,
+          "st": 6.664
+        },
+        {
+          "t": 0.201,
+          "st": 6.154
+        },
+        {
+          "t": 0.212,
+          "st": 5.599
+        },
+        {
+          "t": 0.223,
+          "st": 5.099
+        },
+        {
+          "t": 0.224,
+          "st": 5.06
+        },
+        {
+          "t": 0.234,
+          "st": 4.198
+        },
+        {
+          "t": 0.245,
+          "st": 3.128
+        },
+        {
+          "t": 0.256,
+          "st": 2.16
+        },
+        {
+          "t": 0.257,
+          "st": 2.085
+        },
+        {
+          "t": 0.267,
+          "st": 1.731
+        },
+        {
+          "t": 0.278,
+          "st": 1.373
+        },
+        {
+          "t": 0.289,
+          "st": 1.045
+        },
+        {
+          "t": 0.3,
+          "st": 0.748
+        },
+        {
+          "t": 0.311,
+          "st": 0.478
+        },
+        {
+          "t": 0.322,
+          "st": 0.236
+        },
+        {
+          "t": 0.323,
+          "st": 0.215
+        },
+        {
+          "t": 0.333,
+          "st": 0.015
+        },
+        {
+          "t": 0.344,
+          "st": -0.215
+        },
+        {
+          "t": 0.355,
+          "st": -0.429
+        },
+        {
+          "t": 0.366,
+          "st": -0.598
+        },
+        {
+          "t": 0.377,
+          "st": -0.697
+        },
+        {
+          "t": 0.388,
+          "st": -0.698
+        },
+        {
+          "t": 0.395,
+          "st": -0.635
+        },
+        {
+          "t": 0.399,
+          "st": -0.555
+        },
+        {
+          "t": 0.41,
+          "st": -0.192
+        },
+        {
+          "t": 0.421,
+          "st": 0.327
+        },
+        {
+          "t": 0.432,
+          "st": 0.928
+        },
+        {
+          "t": 0.443,
+          "st": 1.538
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "t": 0.674,
+          "st": -0.675
+        },
+        {
+          "t": 0.685,
+          "st": -0.986
+        },
+        {
+          "t": 0.696,
+          "st": -1.257
+        },
+        {
+          "t": 0.707,
+          "st": -1.471
+        },
+        {
+          "t": 0.718,
+          "st": -1.616
+        },
+        {
+          "t": 0.723,
+          "st": -1.655
+        },
+        {
+          "t": 0.729,
+          "st": -1.675
+        },
+        {
+          "t": 0.74,
+          "st": -1.35
+        },
+        {
+          "t": 0.749,
+          "st": -0.805
+        },
+        {
+          "t": 0.751,
+          "st": -0.722
+        },
+        {
+          "t": 0.762,
+          "st": -0.09
+        }
+      ]
+    }
+  ]
+}

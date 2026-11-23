@@ -45,15 +45,15 @@ enum TypeRole {
 
     var font: Font { .custom(fontName, fixedSize: size) }
 
-    /// The real italic of the same weight, from the bundled Geist and Geist Mono italics. Funnel Display has no
-    /// italic and no role uses one, so the phrase title stays upright.
+    /// The real italic of the same weight, from the bundled Geist italic. Funnel Display and Geist Mono have no
+    /// bundled italic and no role uses one, so the phrase title and mono labels stay upright.
     var italicFontName: String {
         switch self {
         case .phraseTitle: BundledFonts.funnelDisplaySemiBold
         case .body, .small: BundledFonts.geistItalic
         case .bodySemibold: BundledFonts.geistSemiBoldItalic
         case .bodyBold, .smallBold: BundledFonts.geistBoldItalic
-        case .mono: BundledFonts.geistMonoMediumItalic
+        case .mono: BundledFonts.geistMonoMedium
         }
     }
 

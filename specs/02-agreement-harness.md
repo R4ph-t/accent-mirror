@@ -100,6 +100,29 @@ the only L2 recall number is the CV estimate of the tuning procedure.
 - VCTK CV estimate: 6 speaker-disjoint outer folds over the 18 tuning speakers, reported as "CV estimate, not
   shipped".
 
+### CTO ruling on the positive-set shortfall (2026-11-23, after 13:20 Europe/Paris)
+
+The first build found the VCTK positive set short under the 2–6 s trim: 149 headline pairs over 14 phrases, against
+the minimums of 150 and 18. CTO ruled:
+
+- **The minimums stay:** ≥ 150 headline pairs, ≥ 18 phrases after trimming, ≥ 12 held-out speakers. They are never
+  lowered.
+- **Widen the phrase set** with more of VCTK's shared-text prompts, the 001–024 files every speaker reads. Add the
+  ones CPO's 20 left out, checked against the transcripts so that each one really is the same text for every
+  speaker. Never use per-speaker newspaper sentences. A phrase counts only if its bundled reference (p225, or p226
+  where the table says so) survives the trim too.
+- **Add speakers inside the existing split.** New speakers pass the same filters (mic1, every shared-text file
+  present, not p280 or p315, not one of the bundled 8) and are assigned to tuning or held-out by the same fixed-seed
+  stratified rule. Speakers already in `fixtures/vctk/eval-speakers.json` keep their split: nothing moves across
+  the tuning / held-out line, and held-out speakers stay out of references, bands and A(w).
+- **The trim stays 2–6 s.** Reason: 2–6 s is the plan's rule (§6.1) for extraction and for bundled phrases (spec 15),
+  and no spec or design accepts 1.5–7 s phrases. The 20 s recording cap (`capture.recordingCapS`) is a hard cap, not
+  a phrase-length range. Changing the phrase length is a product call for CPO and Raph, not an evaluation fix.
+- **If the set is still short**, the positive set stays NOT EVALUATED. The report and the PR give the counts:
+  headline pairs, phrases kept, held-out speakers, and clips rejected by the trim per phrase. The next step would be
+  LibriTTS-R (CC BY 4.0) as an extra positive source, which is a new CTO decision. Lowering the minimums is not.
+- The smoke set (§6.3a) and the speechocean762 sets don't change.
+
 ### speechocean762 (§6.3)
 
 - `scripts/fetch-speechocean762.sh`: fetches the OpenSLR 101 tarball into a git-ignored cache, cached by hash.

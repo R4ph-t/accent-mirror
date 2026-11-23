@@ -1,6 +1,6 @@
 {
   "name": "rows-final-direction-lower",
-  "summary": "The final-direction row, lower.",
+  "summary": "The final-direction row, lower: only your ending differs (it rises where the model falls).",
   "phrase": "photography",
   "phase": "showingTake",
   "savedTakes": [
@@ -9,20 +9,11 @@
     2,
     1
   ],
-  "take": "photography-take04-close",
+  "take": "photography-take04-end-rises",
   "analysis": {
     "verdict": {
       "kind": "feedback",
       "rows": [
-        {
-          "kind": "reduction",
-          "targets": [
-            "ra",
-            "phy",
-            "der",
-            "than"
-          ]
-        },
         {
           "kind": "finalDirection",
           "direction": "lower"
@@ -78,7 +69,7 @@
       },
       {
         "word": "photography",
-        "outcome": "outsideAccepted",
+        "outcome": "matchesDictionary",
         "pattern": "phoTOGraphy"
       }
     ]

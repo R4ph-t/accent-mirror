@@ -9,14 +9,14 @@
     2,
     1
   ],
-  "take": "photography-take04-close",
+  "take": "photography-take04-missing-harder",
   "analysis": {
     "verdict": {
       "kind": "inconclusive",
       "inconclusive": {
         "reason": "targetWordsMissing",
         "words": [
-          "explained"
+          "harder"
         ]
       }
     },
