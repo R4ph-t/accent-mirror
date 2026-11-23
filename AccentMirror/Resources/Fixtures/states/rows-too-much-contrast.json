@@ -1,6 +1,6 @@
 {
   "name": "rows-too-much-contrast",
-  "summary": "Too much contrast: only with room, always last.",
+  "summary": "The too-much-contrast row: only your HAR and LOOKS bars are bigger.",
   "phrase": "photography",
   "phase": "showingTake",
   "savedTakes": [
@@ -8,7 +8,7 @@
     2,
     1
   ],
-  "take": "photography-take04-close",
+  "take": "photography-take04-strong-contrast",
   "analysis": {
     "verdict": {
       "kind": "feedback",
@@ -16,16 +16,8 @@
         {
           "kind": "tooMuchContrast",
           "targets": [
-            "HAR"
-          ]
-        },
-        {
-          "kind": "reduction",
-          "targets": [
-            "ra",
-            "phy",
-            "der",
-            "than"
+            "HAR",
+            "LOOKS"
           ]
         }
       ]
@@ -79,7 +71,7 @@
       },
       {
         "word": "photography",
-        "outcome": "outsideAccepted",
+        "outcome": "matchesDictionary",
         "pattern": "phoTOGraphy"
       }
     ]
