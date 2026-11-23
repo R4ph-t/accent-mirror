@@ -817,9 +817,9 @@
       "id" : "whisper",
       "latency" : {
         "count" : 154,
-        "maxMs" : 0.017917,
-        "medianMs" : 0.0022915,
-        "p90Ms" : 0.003459
+        "maxMs" : 0.018958,
+        "medianMs" : 0.001583,
+        "p90Ms" : 0.004375
       },
       "movedShare" : 0
     },
@@ -1640,9 +1640,9 @@
       "id" : "dsp-snap-1",
       "latency" : {
         "count" : 154,
-        "maxMs" : 27.504709,
-        "medianMs" : 5.1162915,
-        "p90Ms" : 7.515041
+        "maxMs" : 13.28725,
+        "medianMs" : 5.215792,
+        "p90Ms" : 7.9625
       },
       "movedShare" : 0.6157312576812781,
       "replay" : {
@@ -2481,9 +2481,9 @@
       "id" : "ctc-w2v2b960-1",
       "latency" : {
         "count" : 154,
-        "maxMs" : 45.89025,
-        "medianMs" : 27.8906875,
-        "p90Ms" : 35.506083
+        "maxMs" : 99.737167,
+        "medianMs" : 32.205354,
+        "p90Ms" : 50.576416
       },
       "movedShare" : 0.9778779188857026,
       "replay" : {
@@ -2565,27 +2565,27 @@
       "modelStillLoaded" : true,
       "outcome" : "PASS",
       "returnMs" : [
-        0.103667,
-        0.023125,
-        0.035375,
-        0.030875,
-        0.039208
+        0.051417,
+        0.035458,
+        0.02375,
+        0.027959,
+        0.056917
       ],
       "trials" : 5,
-      "uncancelledCallMs" : 94.404459,
-      "uncancelledTrialCallMs" : 481.964
+      "uncancelledCallMs" : 93.853792,
+      "uncancelledTrialCallMs" : 492.915167
     },
     "computeUnits" : "all",
     "fp16" : "not converted (the spec names float32)",
     "fp32PackageBytes" : 377745248,
     "license" : "Apache-2.0",
     "licenseEvidence" : "README.md front matter `license: apache-2.0` at https://huggingface.co/facebook/wav2vec2-base-960h/raw/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/README.md; Hub API cardData.license apache-2.0 at that revision",
-    "loadMs" : 2569.965666,
+    "loadMs" : 2910.567208,
     "manifest" : "fixtures/models/wav2vec2-base-960h/manifest.json",
     "packageSHA256" : "9ae95d751153f85e2282590668e2ab1ffd4db3b1a10292ccdd3660b50f7ee4d8",
     "runnerLatency" : "NOT RUN: needs a manual workflow on GitHub's macos-26 runner that Raph adds by hand (.github/ is off-limits to agents)",
     "sourceCommit" : "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
-    "verifyMs" : 214.719334
+    "verifyMs" : 253.170833
   },
   "ctcConfidence" : {
     "belowMinimum" : 75,
@@ -2689,7 +2689,7 @@
     "minShareWithinTolerance" : 0.85,
     "toleranceMs" : 80
   },
-  "generatedAt" : "2026-11-23T13:26:00Z",
+  "generatedAt" : "2026-11-23T13:27:43Z",
   "identity" : {
     "cleanTree" : true,
     "config" : {
@@ -2707,10 +2707,10 @@
     "configDigestRecipe" : "printf '%s' \"$(plutil -extract identity.configCanonicalJSON raw -o - <report>.json)\" | shasum -a 256",
     "corpusManifestHash" : "1ba061d2ca470e64ae96b6aeab93251255e0505226348eb962f423fc0723e716",
     "corpusManifestRecipe" : "shasum -a 256 <clip files> | cut -d' ' -f1 | LC_ALL=C sort | shasum -a 256",
-    "evaluatedCommit" : "528933440e34eff84d2cd96a6c315a159e56be99",
+    "evaluatedCommit" : "68abae13c61261de7d520e8398ff71adba29558d",
     "labelFile" : "fixtures/vctk/mfa-word-baseline.json",
     "labelHash" : "e2751a293ac6a886775d0ae1bd608d6d27ef9c48a0c1f09362859899ec8dcb59",
-    "sourceTreeHash" : "a964aecad94bbfaec3ee7083aa52d1bbbd4ae291a886aba953088e096868d03d",
+    "sourceTreeHash" : "d7aafe0de03004768bce1f9aadf22096dcc7a1961361f34a10c9f21d26452757",
     "sourceTreeRecipe" : "git ls-tree -r --full-tree <commit> | grep -v \"$(printf '\\t')docs/agreement/reports/\" | LC_ALL=C sort | shasum -a 256",
     "toolchain" : {
       "hardware" : "Apple M3 Max, Mac15,11",
