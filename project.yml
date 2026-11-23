@@ -1,0 +1,47 @@
+# XcodeGen spec. `make generate` writes AccentMirror.xcodeproj (git-ignored).
+# Mac first, iOS right after: the iOS app target comes in a later spec.
+name: AccentMirror
+
+options:
+  bundleIdPrefix: com.raphaelterrier
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+
+packages:
+  AccentKit:
+    path: Packages/AccentKit
+
+targets:
+  AccentMirror:
+    type: application
+    platform: macOS
+    sources:
+      - path: AccentMirror
+    dependencies:
+      - package: AccentKit
+        product: AMPipeline
+    settings:
+      base:
+        PRODUCT_NAME: AccentMirror
+        PRODUCT_BUNDLE_IDENTIFIER: com.raphaelterrier.accentmirror
+        MARKETING_VERSION: 0.1.0
+        CURRENT_PROJECT_VERSION: 1
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Accent Mirror
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.education
+        # Signing: automatic, no team. CI passes CODE_SIGNING_ALLOWED=NO (see Makefile).
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "-"
+
+schemes:
+  AccentMirror:
+    shared: true
+    build:
+      targets:
+        AccentMirror: all
