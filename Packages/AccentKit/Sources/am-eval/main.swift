@@ -97,6 +97,8 @@ enum Paths {
     static let soSplit = "fixtures/splits/speechocean762.json"
     static let vctkSplit = "fixtures/splits/vctk.json"
     static let evalSpeakers = "fixtures/vctk/eval-speakers.json"
+    static let subPhrases = "fixtures/vctk/sub-phrases.json"
+    static let subPhraseCuts = "fixtures/vctk/sub-phrase-cuts.json"
     static let smoke = "fixtures/smoke"
     static let so762Pin = "fixtures/corpora/speechocean762.pin.json"
     static let vctkPin = "fixtures/corpora/vctk.pin.json"
@@ -186,14 +188,37 @@ func sets(_ args: Arguments) throws -> Int32 {
     return headlineDiffers.isEmpty ? 0 : 1
 }
 
-/// Trims, resamples to 16 kHz and caches the VCTK clips the eval-speakers manifest names.
+/// Trims, resamples to 16 kHz and caches the VCTK clips the eval-speakers manifest names, then cuts every listed clip
+/// of a split prompt into its sub-phrases at the committed MFA cuts and trims each by the same rule (spec 24).
 func vctkTrim(_ args: Arguments) throws {
     let manifest = try VCTKEvalSpeakersManifest.load(try args.url("eval-speakers"))
+    let table = try VCTKSubPhraseTable.load(try args.url("sub-phrases"))
+    let cuts = try VCTKSubPhraseCutList.load(try args.url("cuts"))
     let raw = try args.url("raw")
     let out = try args.url("out")
+    guard cuts.subPhrasesSHA256 == (try sha256(of: try args.url("sub-phrases"))) else {
+        throw CLIError.failed("the cut list was made from another sub-phrase table: run scripts/vctk-sub-phrase-cuts.sh")
+    }
     let rule = TrimRule()
     var kept: [VCTKClip] = []
     var rejected: [[String: String]] = []
+    func trimAndWrite(_ samples: [Float], rate: Double, speaker: String, phrase: String) throws {
+        switch rule.apply(samples: samples, sampleRate: rate) {
+        case .keep(let range):
+            let resampled = try AudioFiles.resample(Array(samples[range]), from: rate, to: 16_000)
+            try AudioFiles.writeFLAC(
+                resampled, sampleRate: 16_000,
+                to: out.appendingPathComponent("\(speaker)/\(speaker)_\(phrase).flac"))
+            kept.append(VCTKClip(speaker: speaker, phrase: phrase))
+        case .noSpeech:
+            rejected.append(["speaker": speaker, "phrase": phrase, "stage": "trim", "reason": "no speech"])
+        case .outOfRange(let seconds):
+            rejected.append([
+                "speaker": speaker, "phrase": phrase, "stage": "trim",
+                "reason": String(format: "%.2f s outside 2–6 s", seconds),
+            ])
+        }
+    }
     for entry in manifest.bundled + manifest.speakers {
         let dir = out.appendingPathComponent(entry.speaker)
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
@@ -203,16 +228,28 @@ func vctkTrim(_ args: Arguments) throws {
                 throw CLIError.failed("\(source.lastPathComponent): SHA-256 does not match eval-speakers.json")
             }
             let (samples, rate) = try AudioFiles.readMono(source)
-            switch rule.apply(samples: samples, sampleRate: rate) {
-            case .keep(let range):
-                let resampled = try AudioFiles.resample(Array(samples[range]), from: rate, to: 16_000)
-                try AudioFiles.writeFLAC(resampled, sampleRate: 16_000, to: dir.appendingPathComponent("\(entry.speaker)_\(phrase).flac"))
-                kept.append(VCTKClip(speaker: entry.speaker, phrase: phrase))
-            case .noSpeech:
-                rejected.append(["speaker": entry.speaker, "phrase": phrase, "reason": "no speech"])
-            case .outOfRange(let seconds):
-                rejected.append(["speaker": entry.speaker, "phrase": phrase, "reason": String(format: "%.2f s outside 2–6 s", seconds)])
-            }
+            try trimAndWrite(samples, rate: rate, speaker: entry.speaker, phrase: phrase)
+        }
+    }
+    // Sub-phrases: cut at the MFA word boundaries in the committed cut list, then the same trim (spec 24).
+    let subPhrases = Dictionary(uniqueKeysWithValues: table.subPhrases.map { ($0.id, $0) })
+    for entry in cuts.entries {
+        guard let sub = subPhrases[entry.subPhrase] else {
+            throw CLIError.failed("cut list names \(entry.subPhrase), which the sub-phrase table doesn't define")
+        }
+        let base = ["speaker": entry.speaker, "phrase": sub.id]
+        switch entry.outcome {
+        case .cut(let start, let end, _):
+            let source = raw.appendingPathComponent("\(entry.speaker)/\(entry.speaker)_\(sub.prompt)_mic1.flac")
+            let (samples, rate) = try AudioFiles.readMono(source)
+            let range = min(samples.count, Int((start * rate).rounded()))..<min(samples.count, Int((end * rate).rounded()))
+            try trimAndWrite(Array(samples[range]), rate: rate, speaker: entry.speaker, phrase: sub.id)
+        case .mfaMismatch(let words):
+            rejected.append(base.merging(["stage": "mfa", "reason": "MFA words don't contain the sub-phrase once: \(words.joined(separator: " "))"]) { $1 })
+        case .noAlignment:
+            rejected.append(base.merging(["stage": "mfa", "reason": "no MFA alignment"]) { $1 })
+        case .transcriptMismatch:
+            rejected.append(base.merging(["stage": "transcript", "reason": "transcript doesn't contain the sub-phrase: not listed"]) { $1 })
         }
     }
     let report: [String: Any] = [
@@ -220,14 +257,92 @@ func vctkTrim(_ args: Arguments) throws {
     ]
     try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys])
         .write(to: out.appendingPathComponent("trim-report.json"))
-    let pairs = VCTKPairs(manifest: manifest, available: Set(kept))
     print("vctk-trim: kept \(kept.count), rejected \(rejected.count)")
-    for r in rejected { print("  rejected \(r["speaker"]!)_\(r["phrase"]!): \(r["reason"]!)") }
-    let rejectedClips = rejected.map { VCTKClip(speaker: $0["speaker"]!, phrase: $0["phrase"]!) }
-    for line in VCTKPairs.rejectionsByPhrase(rejected: rejectedClips, manifest: manifest) { print("  trim \(line)") }
-    print("headline pairs \(pairs.headline.count) (\(Set(pairs.headline.map(\.phrase)).count) phrases, \(Set(pairs.headline.map(\.speaker)).count) held-out speakers); secondary pairs \(pairs.secondary.count)")
-    let shortfalls = pairs.shortfalls()
-    print(shortfalls.isEmpty ? "positive set: evaluable" : "positive set: NOT EVALUATED (\(shortfalls.joined(separator: "; ")))")
+    for r in rejected { print("  rejected \(r["speaker"]!)_\(r["phrase"]!) (\(r["stage"]!)): \(r["reason"]!)") }
+    for line in PositiveSetCounts(manifest: manifest, table: table, kept: kept, rejected: rejected).lines {
+        print("vctk-trim: \(line)")
+    }
+}
+
+/// The positive set's counts as the trim left them (spec 24): phrases and distinct source prompts, headline pairs,
+/// held-out speakers, per-phrase rejections and the minimums.
+struct PositiveSetCounts {
+    let pairs: VCTKPairs
+    let lines: [String]
+
+    init(manifest: VCTKEvalSpeakersManifest, table: VCTKSubPhraseTable, kept: [VCTKClip], rejected: [[String: String]]) {
+        let phrases = table.evaluationPhrases
+        pairs = VCTKPairs(manifest: manifest, available: Set(kept), phrases: phrases)
+        func clips(_ stage: String) -> [VCTKClip] {
+            rejected.filter { $0["stage"] == stage }.compactMap { r in
+                r["speaker"].flatMap { s in r["phrase"].map { VCTKClip(speaker: s, phrase: $0) } }
+            }
+        }
+        var lines = ["\(kept.count) clips kept; \(clips("trim").count) rejected by the 2–6 s trim, "
+            + "\(clips("mfa").count) by MFA mismatch, \(clips("transcript").count) not listed (transcript)"]
+        lines += VCTKPairs.rejectionsByPhrase(
+            trimmed: clips("trim"), misaligned: clips("mfa"), phrases: (phrases + table.splitPrompts).sorted(),
+            manifest: manifest
+        ).map { "rejections \($0)" }
+        lines.append(
+            "phrases kept \(pairs.phraseCount) from \(pairs.sourcePromptCount) distinct source prompts "
+                + "(\(table.subPhrases.count) sub-phrases of \(table.splitPrompts.sorted().joined(separator: ", ")) replace those prompts); "
+                + "headline pairs \(pairs.headline.count); held-out speakers \(pairs.heldOutSpeakerCount); "
+                + "secondary pairs \(pairs.secondary.count) (correlated)")
+        lines += pairs.minimums().map { "minimum \($0.line)" }
+        self.lines = lines
+    }
+}
+
+/// Builds fixtures/vctk/sub-phrase-cuts.json from the MFA alignments scripts/mfa-align.sh wrote (spec 24). Local
+/// only: CI replays the committed cut list and never runs MFA.
+func vctkSubPhraseCuts(_ args: Arguments) throws {
+    struct Alignments: Decodable {
+        struct Clip: Decodable {
+            let clipID: String
+            let words: [VCTKTimedWord]
+        }
+        let aligner: [String: String]
+        let clips: [Clip]
+    }
+    let root = try repositoryRoot()
+    let tablePath = args.value("sub-phrases").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.subPhrases)
+    let manifestPath = args.value("eval-speakers").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.evalSpeakers)
+    let table = try VCTKSubPhraseTable.load(tablePath)
+    let manifest = try VCTKEvalSpeakersManifest.load(manifestPath)
+    let problems = table.problems(phraseText: manifest.phraseText ?? [:])
+    guard problems.isEmpty else { throw CLIError.failed("sub-phrase table: " + problems.joined(separator: "; ")) }
+    let alignmentsPath = try args.url("alignments")
+    let alignments = try JSONDecoder().decode(Alignments.self, from: Data(contentsOf: alignmentsPath))
+    let transcripts = try args.url("transcripts")
+    var texts: [String: String] = [:]
+    for entry in manifest.bundled + manifest.speakers {
+        for prompt in table.splitPrompts where entry.files[prompt] != nil {
+            let clip = "\(entry.speaker)_\(prompt)"
+            texts[clip] = try String(
+                contentsOf: transcripts.appendingPathComponent("\(entry.speaker)/\(clip).txt"), encoding: .utf8)
+        }
+    }
+    let list = VCTKSubPhraseCutList.make(
+        table: table, manifest: manifest, transcripts: texts,
+        alignments: Dictionary(uniqueKeysWithValues: alignments.clips.map { ($0.clipID, $0.words) }),
+        subPhrasesSHA256: try sha256(of: tablePath), alignmentsSHA256: try sha256(of: alignmentsPath),
+        aligner: alignments.aligner)
+    let out = args.value("out").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.subPhraseCuts)
+    try ManifestJSON.encode(list).write(to: out, options: .atomic)
+    var tally: [String: [String: Int]] = [:]
+    for entry in list.entries {
+        let kind: String = switch entry.outcome {
+        case .cut: "cut"
+        case .mfaMismatch, .noAlignment: "MFA mismatch"
+        case .transcriptMismatch: "not listed (transcript)"
+        }
+        tally[entry.subPhrase, default: [:]][kind, default: 0] += 1
+    }
+    for (sub, kinds) in tally.sorted(by: { $0.key < $1.key }) {
+        print("vctk-sub-phrase-cuts: \(sub): " + kinds.sorted(by: { $0.key < $1.key }).map { "\($0.value) \($0.key)" }.joined(separator: ", "))
+    }
+    print("vctk-sub-phrase-cuts: \(list.entries.count) entries → \(out.path)")
 }
 
 func vctkSplit(_ args: Arguments) throws {
@@ -364,18 +479,18 @@ func positive(_ args: Arguments, root: URL) throws -> Int32 {
         print("positive: NOT EVALUATED (no trimmed VCTK cache: run scripts/fetch-vctk-eval.sh)")
         return 0
     }
-    let clips = Set(kept.compactMap { name -> VCTKClip? in
+    let table = try VCTKSubPhraseTable.load(root.appendingPathComponent(Paths.subPhrases))
+    let clips = kept.compactMap { name -> VCTKClip? in
         let parts = name.split(separator: "_")
         return parts.count == 2 ? VCTKClip(speaker: String(parts[0]), phrase: String(parts[1])) : nil
-    })
-    let pairs = VCTKPairs(manifest: manifest, available: clips)
-    let rejectedClips = ((report["rejected"] as? [[String: String]]) ?? []).compactMap { r -> VCTKClip? in
-        guard let speaker = r["speaker"], let phrase = r["phrase"] else { return nil }
-        return VCTKClip(speaker: speaker, phrase: phrase)
     }
-    print("positive: \(kept.count) clips kept, \(rejectedClips.count) rejected by the 2–6 s trim")
-    for line in VCTKPairs.rejectionsByPhrase(rejected: rejectedClips, manifest: manifest) { print("positive: trim \(line)") }
-    print("positive: headline pairs \(pairs.headline.count) (\(Set(pairs.headline.map(\.phrase)).count) phrases, \(Set(pairs.headline.map(\.speaker)).count) held-out speakers), secondary pairs \(pairs.secondary.count) (correlated)")
+    // A cache trimmed before spec 24 has no `stage`: every rejection in it is the trim's.
+    let rejected = ((report["rejected"] as? [[String: String]]) ?? []).map { r in
+        r["stage"] == nil ? r.merging(["stage": "trim"]) { $1 } : r
+    }
+    let counts = PositiveSetCounts(manifest: manifest, table: table, kept: clips, rejected: rejected)
+    for line in counts.lines { print("positive: \(line)") }
+    let pairs = counts.pairs
     let status = pairs.status()
     print("positive: \(status.text)")
     // Every positive-set gate goes through the one consumer (PositiveSetGates.line); none is measured until specs
@@ -401,7 +516,10 @@ func usage() {
         am-eval <command> [options]
           so762-labels --corpus <dir> [--out <tsv>]        build the label-only fixture from the fetched corpus
           sets [--corpus <dir> | --labels <tsv>] [--write-split <json>]   recount the §6.3 sets
-          vctk-trim --eval-speakers <json> --raw <dir> --out <dir>         trim and cache the VCTK clips
+          vctk-trim --eval-speakers <json> --sub-phrases <json> --cuts <json> --raw <dir> --out <dir>
+                                                           trim and cache the VCTK clips and sub-phrases
+          vctk-sub-phrase-cuts --alignments <json> --transcripts <dir> [--sub-phrases <json>] [--eval-speakers <json>] [--out <json>]
+                                                           write the sub-phrase cut list from MFA alignments
           vctk-split [--eval-speakers <json>] [--out <json>]               write fixtures/splits/vctk.json
           smoke-build --selection <json> --so762 <dir> --vctk <dir> --out <dir>
           suite --suite smoke|l2-shared|positive [--write-report] [--release]
@@ -418,6 +536,7 @@ do {
     case "sets": exit(try sets(args))
     case "vctk-trim": try vctkTrim(args)
     case "vctk-split": try vctkSplit(args)
+    case "vctk-sub-phrase-cuts": try vctkSubPhraseCuts(args)
     case "smoke-build": try smokeBuild(args)
     case "suite":
         let root = try repositoryRoot()
