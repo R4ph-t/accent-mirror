@@ -223,6 +223,8 @@ func vctkTrim(_ args: Arguments) throws {
     let pairs = VCTKPairs(manifest: manifest, available: Set(kept))
     print("vctk-trim: kept \(kept.count), rejected \(rejected.count)")
     for r in rejected { print("  rejected \(r["speaker"]!)_\(r["phrase"]!): \(r["reason"]!)") }
+    let rejectedClips = rejected.map { VCTKClip(speaker: $0["speaker"]!, phrase: $0["phrase"]!) }
+    for line in VCTKPairs.rejectionsByPhrase(rejected: rejectedClips, manifest: manifest) { print("  trim \(line)") }
     print("headline pairs \(pairs.headline.count) (\(Set(pairs.headline.map(\.phrase)).count) phrases, \(Set(pairs.headline.map(\.speaker)).count) held-out speakers); secondary pairs \(pairs.secondary.count)")
     let shortfalls = pairs.shortfalls()
     print(shortfalls.isEmpty ? "positive set: evaluable" : "positive set: NOT EVALUATED (\(shortfalls.joined(separator: "; ")))")
@@ -367,14 +369,18 @@ func positive(_ args: Arguments, root: URL) throws -> Int32 {
         return parts.count == 2 ? VCTKClip(speaker: String(parts[0]), phrase: String(parts[1])) : nil
     })
     let pairs = VCTKPairs(manifest: manifest, available: clips)
-    let rejected = (report["rejected"] as? [Any])?.count ?? 0
-    print("positive: \(kept.count) clips kept, \(rejected) rejected by the 2–6 s trim")
+    let rejectedClips = ((report["rejected"] as? [[String: String]]) ?? []).compactMap { r -> VCTKClip? in
+        guard let speaker = r["speaker"], let phrase = r["phrase"] else { return nil }
+        return VCTKClip(speaker: speaker, phrase: phrase)
+    }
+    print("positive: \(kept.count) clips kept, \(rejectedClips.count) rejected by the 2–6 s trim")
+    for line in VCTKPairs.rejectionsByPhrase(rejected: rejectedClips, manifest: manifest) { print("positive: trim \(line)") }
     print("positive: headline pairs \(pairs.headline.count) (\(Set(pairs.headline.map(\.phrase)).count) phrases, \(Set(pairs.headline.map(\.speaker)).count) held-out speakers), secondary pairs \(pairs.secondary.count) (correlated)")
     let shortfalls = pairs.shortfalls()
     print(shortfalls.isEmpty
         ? "positive: pair set evaluable; metrics NOT EVALUATED until spec 10 wires measures and verdicts"
         : "positive: NOT EVALUATED (\(shortfalls.joined(separator: "; ")))")
-    print("VCTK CV estimate (6 folds over the 18 tuning speakers): NOT EVALUATED until spec 08")
+    print("VCTK CV estimate (6 folds over the \(manifest.tuningSpeakers.count) tuning speakers): NOT EVALUATED until spec 08")
     return 0
 }
 

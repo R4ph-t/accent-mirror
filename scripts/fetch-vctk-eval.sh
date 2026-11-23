@@ -8,9 +8,10 @@
 #
 # 1. Downloads the archive (resumable) and verifies it: the size and the official MD5 DataShare publishes, then the
 #    SHA-256 pinned in fixtures/corpora/vctk.pin.json (recorded by the first fetch, Open question 1).
-# 2. If fixtures/vctk/eval-speakers.json exists, extracts only CPO's 20 phrases (mic1) for the 8 bundled voices and
-#    the 30 eval speakers, checks each file against the manifest's SHA-256, and trims them (2–6 s, the same rule for
-#    every speaker; spec 02 Open question 2) to 16 kHz FLAC, cached under eval-cache/vctk/trimmed/<manifest hash>/.
+# 2. If fixtures/vctk/eval-speakers.json exists, extracts only the files it lists (shared-text prompts 001–024, mic1)
+#    for the 8 bundled voices and the 40 eval speakers, checks each against the manifest's SHA-256, and trims them
+#    (2–6 s, the same rule for every speaker; spec 02 Open question 2) to 16 kHz FLAC, cached under
+#    eval-cache/vctk/trimmed/<manifest hash>/.
 #    Without the manifest it stops after step 1: run tools/pick_vctk_eval_speakers.py, then this again.
 #
 #   scripts/fetch-vctk-eval.sh

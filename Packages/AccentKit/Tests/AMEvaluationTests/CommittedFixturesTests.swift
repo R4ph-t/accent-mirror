@@ -61,18 +61,42 @@ import AMEvaluation
         }
     }
 
-    @Test("eval-speakers.json: 18 tuning, 12 held-out, none bundled, p280 or p315") func evalSpeakers() throws {
+    @Test("eval-speakers.json: 24 tuning, 16 held-out, none bundled, p280 or p315") func evalSpeakers() throws {
         let manifest = try VCTKEvalSpeakersManifest.load(Repo.url("fixtures/vctk/eval-speakers.json"))
-        #expect(manifest.tuningSpeakers.count == 18 && manifest.heldOutSpeakers.count == 12)
+        #expect(manifest.tuningSpeakers.count == 24 && manifest.heldOutSpeakers.count == 16)
         let picked = Set(manifest.speakers.map(\.speaker))
-        #expect(picked.count == 30)
+        #expect(picked.count == 40)
         #expect(picked.isDisjoint(with: VCTK.bundledVoices + VCTK.excludedSpeakers))
-        #expect(manifest.phrases == VCTK.phrases)
-        #expect(manifest.speakers.allSatisfy { $0.files.count == 20 })
+        #expect(manifest.phrases == VCTK.phrases && VCTK.phrases.count == 24)
+        // Every eval speaker has all of CPO's 20; an added prompt is listed only where its transcript matched.
+        #expect(manifest.speakers.allSatisfy { Set(VCTK.starterPhrases).isSubset(of: $0.files.keys) })
+        #expect((manifest.bundled + manifest.speakers).allSatisfy { Set($0.files.keys).isSubset(of: VCTK.phrases) })
         let split = try JSONDecoder().decode(VCTKSplitManifest.self, from: Data(contentsOf: Repo.url("fixtures/splits/vctk.json")))
         let hash = SHA256Digest.hex(of: try Data(contentsOf: Repo.url("fixtures/vctk/eval-speakers.json")))
         let rebuilt = VCTKSplitManifest(evalSpeakers: manifest, evalSpeakersSHA256: hash, foldSeed: split.foldSeed, bootstrapSeed: split.bootstrapSeed)
         #expect(rebuilt == split)
+    }
+
+    /// The 30 speakers of the first build, in pick order, with their split. The CTO ruling adds speakers inside the
+    /// existing split: none of these may move across the tuning / held-out line or leave the manifest.
+    static let originalSpeakers: [(String, VCTKSplit)] = [
+        ("p374", .tuning), ("p262", .heldOut), ("p248", .tuning), ("s5", .heldOut), ("p347", .tuning),
+        ("p363", .tuning), ("p238", .heldOut), ("p245", .tuning), ("p301", .heldOut), ("p256", .tuning),
+        ("p326", .tuning), ("p271", .heldOut), ("p251", .tuning), ("p323", .heldOut), ("p317", .tuning),
+        ("p261", .tuning), ("p266", .heldOut), ("p334", .tuning), ("p239", .heldOut), ("p285", .tuning),
+        ("p376", .tuning), ("p314", .heldOut), ("p303", .tuning), ("p304", .heldOut), ("p288", .tuning),
+        ("p360", .tuning), ("p269", .heldOut), ("p246", .tuning), ("p336", .heldOut), ("p351", .tuning),
+    ]
+
+    @Test("Added speakers: the first 30 picks keep their order and split; the new 10 follow the same 3-of-5 rule")
+    func addedSpeakersKeepSplit() throws {
+        let manifest = try VCTKEvalSpeakersManifest.load(Repo.url("fixtures/vctk/eval-speakers.json"))
+        let speakers = manifest.speakers.map { ($0.speaker, $0.split) }
+        #expect(speakers.count == 40)
+        #expect(speakers.prefix(30).map(\.0) == Self.originalSpeakers.map(\.0))
+        #expect(speakers.prefix(30).map(\.1) == Self.originalSpeakers.map { Optional($0.1) })
+        let pattern: [VCTKSplit] = [.tuning, .heldOut, .tuning, .heldOut, .tuning]
+        #expect(speakers.enumerated().allSatisfy { $0.element.1 == pattern[$0.offset % 5] })
     }
 
     @Test("One VCTK archive pin: spec 03's digest file and spec 02's pin hold the same SHA-256") func vctkArchivePinsAgree() throws {

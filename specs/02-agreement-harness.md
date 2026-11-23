@@ -233,7 +233,8 @@ cache, and the nightly / release speechocean762 job.
 3. On a Mac with disk space: `scripts/fetch-speechocean762.sh` then `scripts/agreement.sh --suite sets` prints the
    §6.3 counts (134 / 72, 1,400 / 90, 1,868 / 124, 406 / 34, 1,299 / 86, 157) and they match.
 4. `scripts/fetch-vctk-eval.sh` then `python3 tools/pick_vctk_eval_speakers.py` writes `fixtures/vctk/eval-speakers.json`
-   with 18 tuning and 12 held-out speakers and none of the bundled 8, p280 or p315.
+   with 24 tuning and 16 held-out speakers (the first build's 18 / 12 unchanged, plus 6 / 4 under the CTO ruling) and
+   none of the bundled 8, p280 or p315.
 5. `du -sh fixtures/smoke` is ≤ 5 MB and `fixtures/smoke/ATTRIBUTION.md` names both corpora and licences.
 6. `scripts/check-report-identity.sh` self-test passes, and a report with a non-report file changed in the
    descendant diff fails it.
@@ -270,15 +271,44 @@ a Swift Testing known issue; nothing was edited to pass.
 that commit; `scores-detail.json` `8a90ff40…a989e1` (identical in both); corpus manifest `fec07c74…11cc6`. VCTK 0.92:
 official MD5 `8a6ba294…f4bfa` checked, SHA-256 `f96258be…359c` recorded. All in `fixtures/corpora/*.pin.json`.
 
-**VCTK positive set: NOT EVALUATED under the stated trim (to CTO).** The trim (Open question 2 default, spec 05's
-level rule from `Thresholds.capture`, without spec 05's voicing condition: spec 05 merged while this was being built, and AMEvaluation can't import AMCapture, so moving the trim onto spec 05's detector is a follow-up) rejects 201
-of 755 clips as longer than 6 s. The speech itself is long: phrases 003, 008, 011, 016, 019 and 024 run 6–8 s for most
-speakers, references included. That leaves 149 headline pairs over 14 phrases (minimums 150 and 18), so every
-positive-set number is NOT EVALUATED. The rule was not loosened. Also, 4 bundled-voice files are missing from the
-archive (p227_007, p233_010, p241_015, p241_020), so the bundled set is 155 clips, not spec 03's 159.
+**VCTK positive set: still NOT EVALUATED after the CTO ruling (fix round 2).** The trim (Open question 2 default,
+spec 05's level rule from `Thresholds.capture`, without spec 05's voicing condition: spec 05 merged while this was
+being built, and AMEvaluation can't import AMCapture, so moving the trim onto spec 05's detector is a follow-up)
+is unchanged.
 
-**Eval speakers.** 63 candidates; the picker chose 30 across all 11 accent groups (15 F / 15 M), including `s5`
-(VCTK 0.92 lists it with accent "British"; the stated filters don't exclude it).
+- *First build:* 30 speakers × CPO's 20 phrases. The trim rejected 201 of 755 clips, and p225 lost 003, 008, 011,
+  016, 019 and 024 (all longer than 6 s), leaving 149 headline pairs over 14 phrases.
+- *Phrases added:* the four shared-text prompts CPO's 20 left out, 001, 021, 022 and 023 (`VCTK.addedPhrases`). The
+  picker lists a speaker's clip of one only if its `txt/` transcript, normalised (lower case, apostrophes and
+  hyphens dropped, letters and spaces only), is the prompt's text in `phraseText`. That leaves out 7 clips that read
+  different words (p252, p269 and p313 for 021 and 022; p336 for 023), so every listed clip of a phrase is the same
+  text. No per-speaker newspaper sentence is used. CPO's 20 are listed as before.
+- *Speakers added:* the picker now takes 40 instead of 30 with the same filters, seed and stratified round-robin. The
+  round-robin is prefix-stable, so the first 30 picks are the original 30 in the same order, and the 3-of-5 position
+  rule keeps every one of them on its side of the split. A test (`addedSpeakersKeepSplit`) pins the original 30 and
+  their splits. The 10 new speakers are p298, p232, p283, p305, p284 and p333 (tuning) and p310, p255, p270 and
+  p313 (held-out). 40 is the smallest count above 30 that adds whole blocks of 5 and keeps the 6 VCTK
+  CV folds equal (24 tuning = 6 × 4). Held-out speakers are still never a reference, a band voice or in A(w).
+- *Trim kept at 2–6 s.* Per the ruling, 2–6 s is the plan's rule (§6.1) for extraction and for bundled phrases
+  (spec 15). No spec accepts longer phrases, and the 20 s recording cap is a hard cap, not a phrase-length range.
+  Changing the phrase length is a product call for CPO and Raph, not an evaluation fix.
+- *Result:* 1,139 clips, 737 kept and 402 rejected. **203 headline pairs** (≥ 150 met), **16 held-out speakers**
+  (≥ 12 met), **15 phrases kept** (< 18), so the positive set is NOT EVALUATED on the phrase floor alone. The added
+  prompts can't close the gap: 001 ("Please call Stella") is too short (p225 1.81 s, p226 1.58 s), and the trim
+  rejects every listed clip of 021 and 023 (7–13 s), p225's included. Only 022 survives for p225 (5.46 s). Clips rejected by the
+  trim, per phrase (all speakers / held-out; † = the headline reference was rejected, so the phrase is dropped):
+  001 36/13 †, 003 36/11 †, 004 1/1, 005 20/8, 006 4/2, 007 2/2, 008 44/15 †, 010 2/1, 011 30/11 †, 012 3/3, 013 2/1,
+  014 1/0, 015 7/4, 016 22/10 †, 018 5/3, 019 44/14 †, 021 45/14 †, 022 23/10, 023 47/15 †, 024 28/13 †; 002, 009,
+  017 and 020 lost none. `am-eval vctk-trim` and `scripts/agreement.sh` print these lines. Per the ruling, the next
+  step would be LibriTTS-R as an extra positive source, which is a new CTO decision.
+- 4 bundled-voice files are missing from the archive (p227_007, p233_010, p241_015, p241_020), so the bundled set of
+  CPO's 20 is 155 clips, not spec 03's 159.
+- The smoke set and the speechocean762 sets are unchanged. The smoke set's three VCTK speakers (p245, p288, p360) are
+  among the original tuning speakers and stay tuning.
+
+**Eval speakers.** 63 candidates. The first 30 cover all 11 accent groups (16 F / 14 M) and include `s5` (VCTK 0.92
+lists it with accent "British"; the stated filters don't exclude it). With the 10 added, the full 40 are 24 tuning
+and 16 held-out (21 F / 19 M).
 
 **Smoke set.** 47 speechocean762 utterances (20 stress-wrong + 100 unanimous correct words, train speakers only) and
 6 VCTK clips (p245, p288, p360 × 002, 018): 4.3 MB. The 5 MB cap is read as 5,000,000 bytes for the whole folder.

@@ -5,11 +5,16 @@ import Foundation
 import AMCore
 
 public enum VCTK {
-    /// CPO's 20 starter phrases: the unique VCTK 0.92 shared-text utterances.
-    public static let phrases = [
+    /// CPO's 20 starter phrases.
+    public static let starterPhrases = [
         "002", "003", "004", "005", "006", "007", "008", "009", "010", "011",
         "012", "013", "014", "015", "016", "017", "018", "019", "020", "024",
     ]
+    /// The shared-text prompts CPO's 20 left out (CTO ruling on the positive-set shortfall). The picker lists a
+    /// speaker's clip of one only if its transcript is the shared text (`phraseText` in eval-speakers.json).
+    public static let addedPhrases = ["001", "021", "022", "023"]
+    /// Every positive-set phrase: VCTK 0.92's shared-text prompts 001–024.
+    public static let phrases = (starterPhrases + addedPhrases).sorted()
     /// The bundled reference voices (mic1).
     public static let bundledVoices = ["p225", "p226", "p227", "p233", "p241", "p252", "p311", "p345"]
     /// Never used: p280 and p315.
@@ -52,12 +57,12 @@ public struct VCTKEvalSpeakersManifest: Sendable, Hashable, Codable {
         try JSONDecoder().decode(VCTKEvalSpeakersManifest.self, from: Data(contentsOf: url))
     }
 
-    /// The 18 tuning speakers. The only way to get a `TuningSpeaker`.
+    /// The tuning speakers (24). The only way to get a `TuningSpeaker`.
     public var tuningSpeakers: [TuningSpeaker] {
         speakers.filter { $0.split == .tuning }.map { TuningSpeaker(id: $0.speaker, accent: $0.accent, gender: $0.gender) }
     }
 
-    /// The 12 held-out speakers, for the pair builder only.
+    /// The held-out speakers (16), for the pair builder only.
     public var heldOutSpeakers: [HeldOutSpeaker] {
         speakers.filter { $0.split == .heldOut }.map { HeldOutSpeaker(id: $0.speaker) }
     }
@@ -164,11 +169,25 @@ public struct VCTKPairs: Sendable, Hashable {
         return out
     }
 
-    /// "≥ 18 phrases after trimming" (§6.2). Not a tunable: it is the plan's evaluability floor for 20 phrases.
+    /// "≥ 18 phrases after trimming" (§6.2). Not a tunable: it is the plan's evaluability floor, and the CTO ruling
+    /// keeps it at 18 with the widened phrase set.
     public static let minimumPhrases = 18
+
+    /// Per phrase, how many clips the trim rejected (all speakers) and whether the headline reference survived.
+    public static func rejectionsByPhrase(rejected: [VCTKClip], manifest: VCTKEvalSpeakersManifest) -> [String] {
+        let heldOut = Set(manifest.heldOutSpeakers.map(\.id))
+        return VCTK.phrases.compactMap { phrase in
+            let clips = rejected.filter { $0.phrase == phrase }
+            guard !clips.isEmpty else { return nil }
+            let reference = VCTK.headlineReference(for: phrase)
+            let referenceLost = clips.contains { $0.speaker == reference }
+            return "\(phrase): \(clips.count) rejected (\(clips.filter { heldOut.contains($0.speaker) }.count) held-out)"
+                + (referenceLost ? ", reference \(reference) rejected: phrase dropped" : "")
+        }
+    }
 }
 
-/// The VCTK CV estimate's folds: 6 speaker-disjoint outer folds over the 18 tuning speakers, stratified by gender.
+/// The VCTK CV estimate's folds: 6 speaker-disjoint outer folds over the tuning speakers (24), stratified by gender.
 public enum VCTKFolds {
     public static func make(_ speakers: [TuningSpeaker], count: Int = 6, seed: UInt64) -> [OuterFold] {
         FoldAssignment.stratified(speakers: speakers.map { ($0.id, $0.gender) }, count: count, seed: seed)

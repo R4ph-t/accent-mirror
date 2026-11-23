@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
-"""Picks the 30 VCTK eval speakers and splits them 18 tuning / 12 held-out (spec 02, plan §6.1).
+"""Picks the 40 VCTK eval speakers and splits them 24 tuning / 16 held-out (spec 02, plan §6.1, CTO ruling).
 
 Pure Python 3, standard library only. Reads the VCTK 0.92 archive fetched by scripts/fetch-vctk-eval.sh (no network) and
-writes fixtures/vctk/eval-speakers.json: speaker, accent, gender, split and the SHA-256 of each of CPO's 20 phrase
-files, plus the same hashes for the 8 bundled voices.
+writes fixtures/vctk/eval-speakers.json: speaker, accent, gender, split and the SHA-256 of each phrase file, plus the
+same hashes for the 8 bundled voices.
+
+Phrases: CPO's 20, plus the shared-text prompts they left out (001, 021, 022, 023; CTO ruling on the positive-set
+shortfall). An added prompt's file is listed for a speaker only if its transcript (txt/, lower-cased, apostrophes and
+hyphens dropped, letters and spaces only) is the prompt's text in PHRASE_TEXT, so every listed clip of a phrase reads
+the same words. Speakers without a matching transcript are left out of that phrase and printed. CPO's 20 are listed
+as before.
 
 Rule:
   1. Candidates: mic1, every shared-text file 001-024 present, not p280 or p315, not one of the bundled 8.
   2. Group candidates by the speaker-info ACCENTS column. Shuffle each group (sorted first) and the group order with
      a fixed seed.
   3. Stratified round-robin: visit the groups in order, taking one speaker from each non-empty group per round, and
-     within a group the next speaker of the gender picked less so far (F on a tie), until 30 are picked.
-  4. Split by speaker in pick order: of every 5, positions 1, 3 and 5 are tuning and 2 and 4 held-out (18 / 12), so
+     within a group the next speaker of the gender picked less so far (F on a tie), until 40 are picked.
+  4. Split by speaker in pick order: of every 5, positions 1, 3 and 5 are tuning and 2 and 4 held-out (24 / 16), so
      both splits get the round-robin's accent and gender spread.
+
+The pick is prefix-stable: picking 40 makes the same first 30 picks, in the same order, as the original 30, so no
+speaker already in the manifest changes split (AMEvaluationTests checks the first 30 against the original list).
+40 is the smallest count above 30 that adds whole blocks of 5 and keeps the 6 VCTK CV folds equal (24 tuning = 6 x 4).
 
   python3 tools/pick_vctk_eval_speakers.py [--archive eval-cache/downloads/VCTK-Corpus-0.92.zip] [--out ...]
 """
@@ -22,16 +32,27 @@ import hashlib
 import json
 import os
 import random
+import re
 import sys
 import zipfile
 
-PHRASES = ["002", "003", "004", "005", "006", "007", "008", "009", "010", "011",
-           "012", "013", "014", "015", "016", "017", "018", "019", "020", "024"]
+CPO_PHRASES = ["002", "003", "004", "005", "006", "007", "008", "009", "010", "011",
+               "012", "013", "014", "015", "016", "017", "018", "019", "020", "024"]
+# The shared-text prompts CPO's 20 left out, with the text every listed clip must read (normalised).
+PHRASE_TEXT = {
+    "001": "please call stella",
+    "021": "the difference in the rainbow depends considerably upon the size of the drops and the width of the "
+           "colored band increases as the size of the drops increases",
+    "022": "the actual primary rainbow observed is said to be the effect of superimposition of a number of bows",
+    "023": "if the red of the second bow falls upon the green of the first the result is to give a bow with an "
+           "abnormally wide yellow band since red and green light when mixed form yellow",
+}
+PHRASES = sorted(CPO_PHRASES + list(PHRASE_TEXT))
 SHARED = ["%03d" % i for i in range(1, 25)]
 BUNDLED = ["p225", "p226", "p227", "p233", "p241", "p252", "p311", "p345"]
 EXCLUDED = ["p280", "p315"]
 SEED = 20261123
-PICK, TUNING_PATTERN = 30, (True, False, True, False, True)
+PICK, TUNING_PATTERN = 40, (True, False, True, False, True)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -77,9 +98,27 @@ def pick(info, names, seed):
     return candidates, picked
 
 
-def file_hashes(archive, speaker, names):
-    return {t: hashlib.sha256(archive.read(flac(speaker, t))).hexdigest()
-            for t in PHRASES if flac(speaker, t) in names}
+def normalised(text):
+    return " ".join(re.sub(r"[^a-z ]", " ", text.lower().replace("'", "").replace("-", "")).split())
+
+
+def text_matches(archive, names, speaker, text_id):
+    if text_id not in PHRASE_TEXT:
+        return True
+    path = "txt/%s/%s_%s.txt" % (speaker, speaker, text_id)
+    return path in names and normalised(archive.read(path).decode("utf-8", "replace")) == PHRASE_TEXT[text_id]
+
+
+def file_hashes(archive, speaker, names, dropped):
+    out = {}
+    for t in PHRASES:
+        if flac(speaker, t) not in names:
+            continue
+        if not text_matches(archive, names, speaker, t):
+            dropped.append("%s_%s" % (speaker, t))
+            continue
+        out[t] = hashlib.sha256(archive.read(flac(speaker, t))).hexdigest()
+    return out
 
 
 def main():
@@ -95,10 +134,11 @@ def main():
         names = set(archive.namelist())
         info = speaker_info(archive)
         candidates, picked = pick(info, names, args.seed)
+        dropped = []
 
         def entry(speaker, split=None):
             e = {"speaker": speaker, "accent": info[speaker]["accent"], "region": info[speaker]["region"],
-                 "gender": info[speaker]["gender"], "files": file_hashes(archive, speaker, names)}
+                 "gender": info[speaker]["gender"], "files": file_hashes(archive, speaker, names, dropped)}
             if split:
                 e["split"] = split
             return e
@@ -109,10 +149,12 @@ def main():
             "licence": "CC BY 4.0",
             "seed": args.seed,
             "rule": "tools/pick_vctk_eval_speakers.py: stratified round-robin over speaker-info accent groups, "
-                    "gender-balanced, then 3 of every 5 in pick order tuning",
+                    "gender-balanced, then 3 of every 5 in pick order tuning; added prompts listed only where the "
+                    "transcript matches phraseText",
             "excluded": EXCLUDED,
             "candidates": len(candidates),
             "phrases": PHRASES,
+            "phraseText": PHRASE_TEXT,
             "bundled": [entry(s) for s in BUNDLED],
             "speakers": speakers,
         }
@@ -120,6 +162,8 @@ def main():
     with open(args.out, "w") as f:
         json.dump(manifest, f, indent=2, sort_keys=True)
         f.write("\n")
+    for clip in dropped:
+        print("pick_vctk_eval_speakers: left out %s (transcript is not the shared text)" % clip)
     tuning = sum(1 for s in speakers if s["split"] == "tuning")
     print("pick_vctk_eval_speakers: %d candidates; picked %d (%d tuning, %d held-out) -> %s"
           % (len(candidates), len(speakers), tuning, len(speakers) - tuning, os.path.relpath(args.out, ROOT)))
