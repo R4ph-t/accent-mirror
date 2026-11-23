@@ -1,6 +1,8 @@
 // am-eval: the agreement harness's command-line runner (spec 02). Called by scripts/agreement.sh, scripts/tune.sh and
 // the corpus fetchers; never by the app, never in PR CI beyond `swift build`. No network: it reads caches only.
 
+import AMAlignment
+import AMCapture
 import AMCore
 import AMEvaluation
 import AMPipeline
@@ -101,12 +103,18 @@ enum Paths {
     static let so762Pin = "fixtures/corpora/speechocean762.pin.json"
     static let vctkPin = "fixtures/corpora/vctk.pin.json"
     static let tuningLog = "docs/agreement/tuning-log.md"
+    static let smokeDetector = "fixtures/smoke/detector"
+    static let mfaBaseline = "fixtures/vctk/mfa-word-baseline.json"
+    static let so762Cache = "eval-cache/speechocean762/current"
+    static let so762Timings = "eval-cache/speechocean762-timings"
+    static let whisperModel = "openai_whisper-base.en"
 }
 
-/// The identity of the configuration the harness evaluates. ASR is replayed word timings (CI never runs ASR);
-/// voicing has no implementation on main yet (spec 05).
+/// The identity of the configuration the harness evaluates. ASR is replayed word timings (CI never runs ASR); the
+/// detector (spec 08) runs spec 05's voicing and spec 04's pYIN.
 func harnessConfig() -> ConfigIdentity {
-    ConfigIdentity(asrModelID: "replayed-word-timings", pitchTrackerID: PYINTracker.trackerID, voicingID: "none")
+    ConfigIdentity(
+        asrModelID: "replayed-word-timings", pitchTrackerID: PYINTracker.trackerID, voicingID: ACFVoicing.voicingID)
 }
 
 func pinValue(_ root: URL, _ pin: String, _ key: String) -> String {
@@ -311,33 +319,83 @@ func smoke(root: URL) throws -> Int32 {
     let limit = Thresholds.current.agreement.smokeSetMaxSeconds
     print("smoke: \(manifest.files.count) files, \(manifest.totalBytes) bytes (cap \(SmokeManifest.maximumBytes)), \(String(format: "%.1f", seconds)) s of audio loaded in \(String(format: "%.2f", elapsed)) s (limit \(Int(limit)) s)")
     for problem in problems { print("  " + problem) }
-    print("smoke: never a rate gate; goldens arrive with specs 08 and 10")
+    print("smoke: never a rate gate; placement goldens: `am-eval smoke-detector` (spec 08), verdicts with spec 10")
     return problems.isEmpty && manifest.totalBytes <= SmokeManifest.maximumBytes && elapsed < limit ? 0 : 1
 }
 
-/// The speechocean762 shared-detector suite. Reported, not gated, and NOT EVALUATED until spec 08 wires a detector.
-func l2Shared(_ args: Arguments, root: URL) throws -> Int32 {
+/// The speechocean762 shared-detector suite (§6.3). Reported, not gated (gating is spec 11): every line reads
+/// REPORTED, never PASS. Runs spec 08's detector over replayed word timings (`am-eval record-timings --set l2-shared`).
+func l2Shared(_ args: Arguments, root: URL) async throws -> Int32 {
     let labels = try loadLabels(Arguments(["", "--labels", root.appendingPathComponent(Paths.labels).path]), root: root)
     let sets = SpeechOceanSets(labels: labels)
     let split = try JSONDecoder().decode(
         SpeechOceanSplitManifest.self, from: Data(contentsOf: root.appendingPathComponent(Paths.soSplit)))
-    let reason = "no PlacementDetector is wired (spec 08)"
-    func notEvaluated(_ name: String, _ layer: ValidationLayer, _ gate: Gate, n: Int) -> MetricResult {
-        MetricResult(name: name, layer: layer, n: 0, value: nil, gate: gate, status: .notEvaluated(n: 0, minimum: n))
-    }
-    let metrics = [
-        notEvaluated("L2 recall, pooled out-of-fold, after suppression", .cvEstimate,
-                     .agreement("agreement.l2RecallMin", \.l2RecallMin, .atLeast), n: sets.recall.count),
-        notEvaluated("L2 false positives, clean 1,400, after suppression", .shippedConfigCheck,
-                     .agreement("agreement.l2FalsePositiveMax", \.l2FalsePositiveMax, .atMost), n: sets.cleanFalsePositive.count),
-        notEvaluated("Unintelligible words with a placement diff (count)", .shippedConfigCheck,
-                     .agreement("agreement.unintelligiblePlacementDiffsMax", \.unintelligiblePlacementDiffsMax, .atMost), n: sets.unintelligible.count),
+    let corpusDir = args.value("corpus").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.so762Cache)
+    let timingsDir = args.value("timings").map(URL.init(fileURLWithPath:))
+        ?? root.appendingPathComponent(Paths.so762Timings)
+    let suites: [(name: String, words: [SpeechOceanWord], layer: ValidationLayer, key: String)] = [
+        ("L2 recall (stress-wrong words), after suppression", sets.recall, .descriptive, "recall"),
+        ("L2 false positives, clean 1,400, after suppression", sets.cleanFalsePositive, .shippedConfigCheck, "clean"),
+        ("Unintelligible words with a placement diff (count)", sets.unintelligible, .shippedConfigCheck, "unintelligible"),
     ]
-    for m in metrics {
-        print("\(m.layer.label): \(m.name): n=\(m.n) gate \(m.gate!.direction == .atLeast ? "≥" : "≤") \(m.gate!.bound): \(m.status.text)")
+    var metrics: [MetricResult] = []
+    var notes: [String] = []
+    let manifestURL = timingsDir.appendingPathComponent(ReplayManifest.fileName)
+    if FileManager.default.fileExists(atPath: corpusDir.appendingPathComponent("resource/text-phone").path),
+        FileManager.default.fileExists(atPath: manifestURL.path)
+    {
+        let corpus = try SpeechOceanCorpusFiles(root: corpusDir)
+        let detector = ReplayedPlacementDetector(
+            corpus: corpus, timings: try FixtureTimestamper(directory: timingsDir),
+            refPhones: Dictionary(labels.words.map { ($0.id, $0.refPhones) }, uniquingKeysWith: { first, _ in first }),
+            dictionary: try .bundled())
+        let runner = SharedDetectorRunner(
+            detector: detector, corpus: corpus, dictionary: SelectorPrimaryLookup(selector: try .bundled()))
+        let config = try FoldConfig(identity: harnessConfig(), thresholds: .current)
+        print("l2-shared: spec 08 detector, initial thresholds (untuned; the fold-tuned CV estimate is spec 11), config \(config.digest.prefix(12))")
+        for suite in suites {
+            let results = try await runner.run(suite.words, config: config)
+            let before = results.units(afterSuppression: false).count(where: \.hit)
+            let after = results.units(afterSuppression: true).count(where: \.hit)
+            let present = results.comparable.count
+            var reasons: [PlacementSuppression: Int] = [:]
+            for row in results.rows {
+                if let outcome = row.outcome, outcome.present, outcome.flaggedBeforeSuppression,
+                    let reason = outcome.suppression
+                {
+                    reasons[reason, default: 0] += 1
+                }
+            }
+            let reasonText = PlacementSuppression.allCases.compactMap { r in reasons[r].map { "\(r.rawValue) \($0)" } }
+                .joined(separator: ", ")
+            print("l2-shared: \(suite.key): n=\(suite.words.count), excluded (no A(w)) \(results.excluded.count), present \(present); flagged before suppression \(before), after \(after)\(reasonText.isEmpty ? "" : " (suppressed: \(reasonText))")")
+            notes.append("\(suite.key): n=\(suite.words.count), present \(present), before \(before), after \(after)")
+            let n = suite.words.count
+            let isCount = suite.key == "unintelligible"
+            let value = isCount ? Double(after) : (n == 0 ? nil : Double(after) / Double(n))
+            let intervals = isCount || n == 0
+                ? [] : [Statistics.wilson(successes: after, n: n)]
+            metrics.append(MetricResult(
+                name: suite.name, layer: suite.layer, n: n, value: value, gate: nil, status: .reported,
+                intervals: intervals))
+            if isCount { print("l2-shared: \(n) unintelligible: \(after) placement diffs") }
+        }
+    } else {
+        let reason = "no fetched corpus or recorded word timings (scripts/fetch-speechocean762.sh, then am-eval record-timings --set l2-shared)"
+        print("l2-shared: NOT EVALUATED: \(reason)")
+        notes.append("l2-shared: \(reason)")
+        metrics = suites.map {
+            MetricResult(name: $0.name, layer: $0.layer, n: 0, value: nil, gate: nil,
+                         status: .notEvaluated(n: 0, minimum: $0.words.count))
+        }
     }
-    print("l2-shared: \(reason)")
-    let summary = ReleaseSummary(negativeSet: nil, gated: metrics)
+    for m in metrics {
+        let value = m.value.map { $0 >= 1 || $0 == 0 ? String(format: "%.0f", $0) : String(format: "%.4f", $0) } ?? "–"
+        let interval = m.intervals.first.map { " [\(String(format: "%.4f, %.4f", $0.lower, $0.upper))] Wilson 95%, \($0.label)" } ?? ""
+        print("\(m.layer.label): \(m.name): n=\(m.n) value \(value)\(interval): \(m.status.text)")
+    }
+    print("l2-shared: reported, not gated (gating is spec 11)")
+    let summary = ReleaseSummary(negativeSet: nil, gated: [])
     for line in summary.lines { print(line) }
     if args.flag("write-report") {
         let identity = try reportIdentity(
@@ -345,7 +403,7 @@ func l2Shared(_ args: Arguments, root: URL) throws -> Int32 {
             labelHash: labels.sourceSHA256, splitPath: Paths.soSplit, splitSeed: split.foldSeed)
         let report = AgreementReport(
             suite: "l2-shared", generatedAt: Date(), release: args.flag("release"), identity: identity,
-            metrics: metrics, summary: summary, notes: ["l2-shared: \(reason)"])
+            metrics: metrics, summary: summary, notes: notes)
         let written = try ReportWriter.write(report, to: ReportWriter.directory(repositoryRoot: root))
         print("wrote \(written.json.path) and .md")
     }
@@ -378,21 +436,28 @@ func positive(_ args: Arguments, root: URL) throws -> Int32 {
     print("positive: headline pairs \(pairs.headline.count) (\(Set(pairs.headline.map(\.phrase)).count) phrases, \(Set(pairs.headline.map(\.speaker)).count) held-out speakers), secondary pairs \(pairs.secondary.count) (correlated)")
     let status = pairs.status()
     print("positive: \(status.text)")
-    // Every positive-set gate goes through the one consumer (PositiveSetGates.line); none is measured until specs
-    // 09, 10 and 22 wire them, and none can read PASS while the set is NOT EVALUATED.
-    let lines = PositiveSetGates.lines(positiveSet: status, pairs: pairs.headline.count)
+    // Every positive-set gate goes through the one consumer (PositiveSetGates.line), and none can read PASS while the
+    // set is NOT EVALUATED. Band coverage (spec 09) is wired: its per-pair values need each held-out take's word
+    // timings and syllables, which the pipeline (spec 12) produces; until then no pair is measured.
+    let bandPairs: [PairBandCoverage] = []
+    let band = BandCoverageGate.measured(bandPairs)
+    let lines = PositiveSetGates.lines(
+        positiveSet: status, measured: [BandCoverageGate.dependent().name: band], pairs: pairs.headline.count)
     for m in lines {
-        print("positive: \(m.name): gate \(m.gate!.direction == .atLeast ? "≥" : "≤") \(m.gate!.bound): \(m.status.text)")
+        let value = m.value.map { String(format: "%.3f", $0) } ?? "–"
+        print("positive: \(m.name): n \(m.n), value \(value), gate \(m.gate!.direction == .atLeast ? "≥" : "≤") \(m.gate!.bound): \(m.status.text)")
     }
+    print("positive: band coverage pairs measured: \(bandPairs.count) (held-out word timings arrive with the pipeline, spec 12)")
     for line in ReleaseSummary(negativeSet: nil, positiveSet: status, gated: lines).lines { print(line) }
-    print("VCTK CV estimate (6 folds over the \(manifest.tuningSpeakers.count) tuning speakers): NOT EVALUATED until spec 08")
+    // The detector exists (spec 08); the VCTK CV estimate is a positive-set number, so it waits on the set itself.
+    print("VCTK CV estimate, not shipped (6 folds over the \(manifest.tuningSpeakers.count) tuning speakers): \(status.isEvaluable ? "NOT EVALUATED (the fold-tuned run is spec 11)" : "NOT EVALUATED (blocked on spec 24: positive set NOT EVALUATED)")")
     return 0
 }
 
 func tune(_ args: Arguments, root: URL) -> Int32 {
     let grid = TuningGrid()
     print("tune: grid of \(grid.weights.count) weight points × \(grid.lambdas.count) λ × \(grid.tauPairs.count)³ τ pairs per n-bucket = \(grid.count) points")
-    print("tune: NOT RUN: the objective needs spec 08's detector and cached L1 features. Re-tunes are logged in \(Paths.tuningLog).")
+    print("tune: NOT RUN: the fixed-grid fit over cached L1 features is spec 11 (spec 08's detector is wired). Re-tunes are logged in \(Paths.tuningLog).")
     return 2
 }
 
@@ -406,6 +471,10 @@ func usage() {
           smoke-build --selection <json> --so762 <dir> --vctk <dir> --out <dir>
           suite --suite smoke|l2-shared|positive [--write-report] [--release]
           tune
+          record-timings --set smoke|l2-shared [--corpus <so762 dir>] [--model-dir <dir>] [--out <dir>]
+                                                           run WhisperKit once and save replayable word timings (local only)
+          smoke-detector [--build-inputs --corpus <so762 dir>] [--record]
+                                                           check (or record) the smoke set's L1 digests and placements
         """)
 }
 
@@ -423,11 +492,13 @@ do {
         let root = try repositoryRoot()
         switch try args.required("suite") {
         case "smoke": exit(try smoke(root: root))
-        case "l2-shared": exit(try l2Shared(args, root: root))
+        case "l2-shared": exit(try await l2Shared(args, root: root))
         case "positive": exit(try positive(args, root: root))
         case let other: throw CLIError.usage("unknown suite \(other)")
         }
     case "tune": exit(tune(args, root: try repositoryRoot()))
+    case "record-timings": exit(try await recordTimingsCommand(args, root: try repositoryRoot()))
+    case "smoke-detector": exit(try await smokeDetector(args, root: try repositoryRoot()))
     default:
         usage()
         exit(args.command == "help" ? 0 : 64)

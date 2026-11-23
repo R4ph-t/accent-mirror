@@ -1,0 +1,63 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "760f994e1fd8bab6b1ae0df559a229a5b99ed491e5307ec618e74df5f0012e19",
+  "clipID" : "speechocean762-027990156",
+  "formatVersion" : 1,
+  "text" : "Looking forward to seeing what you have to offer.",
+  "words" : [
+    {
+      "end" : 0.76,
+      "probability" : 0.89,
+      "start" : 0.54,
+      "word" : " Looking"
+    },
+    {
+      "end" : 1.08,
+      "probability" : 0.99,
+      "start" : 0.76,
+      "word" : " forward"
+    },
+    {
+      "end" : 1.38,
+      "probability" : 1,
+      "start" : 1.08,
+      "word" : " to"
+    },
+    {
+      "end" : 1.62,
+      "probability" : 0.8,
+      "start" : 1.38,
+      "word" : " seeing"
+    },
+    {
+      "end" : 1.98,
+      "probability" : 0.98,
+      "start" : 1.62,
+      "word" : " what"
+    },
+    {
+      "end" : 2.14,
+      "probability" : 0.93,
+      "start" : 1.98,
+      "word" : " you"
+    },
+    {
+      "end" : 2.32,
+      "probability" : 0.98,
+      "start" : 2.14,
+      "word" : " have"
+    },
+    {
+      "end" : 2.5,
+      "probability" : 1,
+      "start" : 2.32,
+      "word" : " to"
+    },
+    {
+      "end" : 2.74,
+      "probability" : 1,
+      "start" : 2.5,
+      "word" : " offer."
+    }
+  ]
+}

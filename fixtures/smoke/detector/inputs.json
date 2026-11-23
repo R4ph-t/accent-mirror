@@ -1,0 +1,3000 @@
+{
+  "attribution" : "Word timings recognised from the smoke set's audio (fixtures/smoke/ATTRIBUTION.md): speechocean762 (OpenSLR 101, SpeechOcean) and CSTR VCTK Corpus 0.92, both CC BY 4.0",
+  "formatVersion" : 1,
+  "items" : [
+    {
+      "audio" : "audio/speechocean762-000360343.flac",
+      "audioSHA256" : "1e8270162def5080c956b6ca476b0c44220289f0b5523ef6552e9adb2eac2673",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-000360343",
+      "speaker" : "0036",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "HH IY0",
+          "text" : "HE"
+        },
+        {
+          "index" : 1,
+          "phones" : "W AH0 Z",
+          "text" : "WAS"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "000360343#2",
+          "index" : 2,
+          "phones" : "AO1 L W EY0 Z",
+          "text" : "ALWAYS"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "000360343#3",
+          "index" : 3,
+          "phones" : "R EH1 D IY0",
+          "text" : "READY"
+        },
+        {
+          "index" : 4,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "index" : 5,
+          "phones" : "D UH0",
+          "text" : "DO"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "000360343#6",
+          "index" : 6,
+          "phones" : "EH1 N IY0 TH IH0 NG",
+          "text" : "ANYTHING"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "000360343#7",
+          "index" : 7,
+          "phones" : "W AH0 T EH1 V ER0",
+          "text" : "WHATEVER"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-000540058.flac",
+      "audioSHA256" : "e49bcfbecbcd70b5f6c703641c5c08c68dce52c0aec71e3298a35036c97398d7",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-000540058",
+      "speaker" : "0054",
+      "words" : [
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "000540058#0",
+          "index" : 0,
+          "phones" : "SH AE2 NG HH AY1",
+          "text" : "SHANGHAI"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "000540058#1",
+          "index" : 1,
+          "phones" : "K W AY1 AH0",
+          "text" : "QUIRE"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "000540058#2",
+          "index" : 2,
+          "phones" : "T AH0 D EY1",
+          "text" : "TODAY"
+        },
+        {
+          "index" : 3,
+          "phones" : "W AH0 N S",
+          "text" : "ONCE"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "000540058#4",
+          "index" : 4,
+          "phones" : "T AH0 M AH1 R OW0",
+          "text" : "TOMORROW"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-001450171.flac",
+      "audioSHA256" : "44f92718b73fcba963860456a3e6a89be47004833258dafd209a99f8717eb554",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-001450171",
+      "speaker" : "0145",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "DH IH0 S",
+          "text" : "THIS"
+        },
+        {
+          "index" : 1,
+          "phones" : "IH0 Z",
+          "text" : "IS"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "001450171#2",
+          "index" : 2,
+          "phones" : "T AH0 D EY1",
+          "text" : "TODAY"
+        },
+        {
+          "index" : 3,
+          "phones" : "P IH0 G S",
+          "text" : "PIG'S"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "001450171#4",
+          "index" : 4,
+          "phones" : "AH1 F IH0 S AH0",
+          "text" : "OFFICER"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-004820329.flac",
+      "audioSHA256" : "fd49ab15623da266382eb9573b919f53a7f5ccba05134734b539096f98526136",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-004820329",
+      "speaker" : "0482",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "B AH0 T",
+          "text" : "BUT"
+        },
+        {
+          "index" : 1,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "004820329#2",
+          "index" : 2,
+          "phones" : "S IH1 T IY0",
+          "text" : "CITY"
+        },
+        {
+          "index" : 3,
+          "phones" : "W AH0 Z",
+          "text" : "WAS"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "004820329#4",
+          "index" : 4,
+          "phones" : "AO0 L R EH1 D IY0",
+          "text" : "ALREADY"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "004820329#5",
+          "index" : 5,
+          "phones" : "D ER1 T IY0",
+          "text" : "DIRTY"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-004820378.flac",
+      "audioSHA256" : "ed79bea4cd08f506538a7807ba036843dcf44712c66ef92fe2aefbbba1e333aa",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-004820378",
+      "speaker" : "0482",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "AY0",
+          "text" : "I"
+        },
+        {
+          "index" : 1,
+          "phones" : "SH AH0 L",
+          "text" : "SHALL"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "004820378#2",
+          "index" : 2,
+          "phones" : "N EH1 V ER0",
+          "text" : "NEVER"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "004820378#3",
+          "index" : 3,
+          "phones" : "F AH0 G IH0 V",
+          "text" : "FORGIVE"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "004820378#4",
+          "index" : 4,
+          "phones" : "M AY0 S EH1 L F",
+          "text" : "MYSELF"
+        },
+        {
+          "index" : 5,
+          "phones" : "F AO0",
+          "text" : "FOR"
+        },
+        {
+          "index" : 6,
+          "phones" : "DH IH0 S",
+          "text" : "THIS"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "004820378#7",
+          "index" : 7,
+          "phones" : "IH0 K S P OW1 ZH AH0",
+          "text" : "EXPOSURE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-008130346.flac",
+      "audioSHA256" : "e8359bcc795af56af68888d63d18720484bca67c1385c2b5d552189be79d89e0",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-008130346",
+      "speaker" : "0813",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "IH0 T",
+          "text" : "IT"
+        },
+        {
+          "index" : 1,
+          "phones" : "W AH0 Z",
+          "text" : "WAS"
+        },
+        {
+          "index" : 2,
+          "phones" : "AH0",
+          "text" : "A"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "008130346#3",
+          "index" : 3,
+          "phones" : "S AH0 F IH1 SH N T",
+          "text" : "SUFFICIENT"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "008130346#4",
+          "index" : 4,
+          "phones" : "AA1 N S AH0",
+          "text" : "ANSWER"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-009600335.flac",
+      "audioSHA256" : "38b0603311d8f72a0f69f93047a694c62d4ff9962e5c5348b12ba1240b89012a",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-009600335",
+      "speaker" : "0960",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "AE0 N D",
+          "text" : "AND"
+        },
+        {
+          "index" : 1,
+          "phones" : "DH IH0 S",
+          "text" : "THIS"
+        },
+        {
+          "index" : 2,
+          "phones" : "IH0 Z",
+          "text" : "IS"
+        },
+        {
+          "index" : 3,
+          "phones" : "M AY0",
+          "text" : "MY"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "009600335#4",
+          "index" : 4,
+          "phones" : "AH0 P IH1 N Y AH0 N",
+          "text" : "OPINION"
+        },
+        {
+          "index" : 5,
+          "phones" : "AE0 N D",
+          "text" : "AND"
+        },
+        {
+          "index" : 6,
+          "phones" : "IH0 T S",
+          "text" : "IT'S"
+        },
+        {
+          "index" : 7,
+          "phones" : "AH0",
+          "text" : "A"
+        },
+        {
+          "index" : 8,
+          "phones" : "F AY1 N L",
+          "text" : "FINAL"
+        },
+        {
+          "index" : 9,
+          "phones" : "W AH0 N",
+          "text" : "ONE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-010120265.flac",
+      "audioSHA256" : "9e85d75331793c0a376ca3e25d94ab539da88b4dfa3d142ba4011e6f9d9a5f69",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-010120265",
+      "speaker" : "1012",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "010120265#0",
+          "index" : 0,
+          "phones" : "AY1 ER0 N",
+          "text" : "IRON"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "010120265#1",
+          "index" : 1,
+          "phones" : "B AE1 N ER0",
+          "text" : "BANNER"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "010120265#2",
+          "index" : 2,
+          "phones" : "K AH0 N T R OW1 L",
+          "text" : "CONTROL"
+        },
+        {
+          "index" : 3,
+          "phones" : "IH0 Z",
+          "text" : "IS"
+        },
+        {
+          "index" : 4,
+          "phones" : "B AE0 K",
+          "text" : "BACK"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-010330103.flac",
+      "audioSHA256" : "c077458e1aee5b062ba78f1616238df1731adeb3270a136e496a40c406775b26",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-010330103",
+      "speaker" : "1033",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "010330103#0",
+          "index" : 0,
+          "phones" : "S AH1 M TH IH0 NG",
+          "text" : "SOMETHING"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "010330103#1",
+          "index" : 1,
+          "phones" : "AO1 L W EY0 Z",
+          "text" : "ALWAYS"
+        },
+        {
+          "index" : 2,
+          "phones" : "S IY0 M",
+          "text" : "SEEM"
+        },
+        {
+          "index" : 3,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "010330103#4",
+          "index" : 4,
+          "phones" : "HH AE1 P AH0 N",
+          "text" : "HAPPEN"
+        },
+        {
+          "index" : 5,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "index" : 6,
+          "phones" : "HH ER0",
+          "text" : "HER"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-010640280.flac",
+      "audioSHA256" : "717c8f3f98bad37b6e97fe9183beafad02d219a2f834e2257d17090f813498c6",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-010640280",
+      "speaker" : "1064",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "AY0",
+          "text" : "I"
+        },
+        {
+          "index" : 1,
+          "phones" : "TH IH0 NG K",
+          "text" : "THINK"
+        },
+        {
+          "index" : 2,
+          "phones" : "IH0 T S",
+          "text" : "IT'S"
+        },
+        {
+          "index" : 3,
+          "phones" : "T AY0 M",
+          "text" : "TIME"
+        },
+        {
+          "index" : 4,
+          "phones" : "W IY0",
+          "text" : "WE"
+        },
+        {
+          "index" : 5,
+          "phones" : "HH AE0 V",
+          "text" : "HAVE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "010640280#6",
+          "index" : 6,
+          "phones" : "AO1 L M OW0 S T",
+          "text" : "ALMOST"
+        },
+        {
+          "index" : 7,
+          "phones" : "IH0 N",
+          "text" : "IN"
+        },
+        {
+          "index" : 8,
+          "phones" : "AH0 N",
+          "text" : "ON"
+        },
+        {
+          "index" : 9,
+          "phones" : "S IY0",
+          "text" : "SEE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-013090076.flac",
+      "audioSHA256" : "3e778ce893bf208500dc36315f1d3a97ce49c84c815558dd6cfcb81acd67576c",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-013090076",
+      "speaker" : "1309",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "AE0 N D",
+          "text" : "AND"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "013090076#1",
+          "index" : 1,
+          "phones" : "W IH0 DH AW1 T",
+          "text" : "WITHOUT"
+        },
+        {
+          "index" : 2,
+          "phones" : "F IH1 R",
+          "text" : "FEAR"
+        },
+        {
+          "index" : 3,
+          "phones" : "AH0 V",
+          "text" : "OF"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "013090076#4",
+          "index" : 4,
+          "phones" : "B IY1 IH0 NG",
+          "text" : "BEING"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "013090076#5",
+          "index" : 5,
+          "phones" : "AH0 R EH1 S T IH0 D",
+          "text" : "ARRESTED"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-013620106.flac",
+      "audioSHA256" : "4a3fccfdc0f52303529e561da89e667ed823bcb9c99b880b4952789be5be2881",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-013620106",
+      "speaker" : "1362",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "IH0 F",
+          "text" : "IF"
+        },
+        {
+          "index" : 1,
+          "phones" : "Y UW0",
+          "text" : "YOU"
+        },
+        {
+          "index" : 2,
+          "phones" : "M IH0 S",
+          "text" : "MISS"
+        },
+        {
+          "index" : 3,
+          "phones" : "DH EH0 R Z",
+          "text" : "THERE'S"
+        },
+        {
+          "index" : 4,
+          "phones" : "AH0",
+          "text" : "A"
+        },
+        {
+          "index" : 5,
+          "phones" : "R EH1 R L IY0",
+          "text" : "RARELY"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "013620106#6",
+          "index" : 6,
+          "phones" : "K AH1 N S IH0 K W AH0 N S",
+          "text" : "CONSEQUENCE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-014070304.flac",
+      "audioSHA256" : "1937545fb146e0c0586d5d1e79b71c6a9d8f313ffbcd7286b81392f4977f0e5d",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-014070304",
+      "speaker" : "1407",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "W IH0 L",
+          "text" : "WILL"
+        },
+        {
+          "index" : 1,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "index" : 2,
+          "phones" : "K IH0 NG Z",
+          "text" : "KINGS"
+        },
+        {
+          "index" : 3,
+          "phones" : "HH AE0 V",
+          "text" : "HAVE"
+        },
+        {
+          "index" : 4,
+          "phones" : "AH0",
+          "text" : "A"
+        },
+        {
+          "index" : 5,
+          "phones" : "CH AE0 N S",
+          "text" : "CHANCE"
+        },
+        {
+          "index" : 6,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "014070304#7",
+          "index" : 7,
+          "phones" : "R IH0 P IY1 T",
+          "text" : "REPEAT"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-014190062.flac",
+      "audioSHA256" : "b534654d5eae8f88fb487d74ffe574df5519eeaa453f2982f12f5a0b26ce0ecb",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-014190062",
+      "speaker" : "1419",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "N IY0 L",
+          "text" : "NEIL"
+        },
+        {
+          "index" : 1,
+          "phones" : "L AY0 K S",
+          "text" : "LIKES"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "014190062#2",
+          "index" : 2,
+          "phones" : "S AH1 S IH0 JH",
+          "text" : "SAUSAGE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-014190073.flac",
+      "audioSHA256" : "28c87fe51fd3205ee1eb583644202f2d71b583cd49970794298465dd3fdcba52",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-014190073",
+      "speaker" : "1419",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "L EH0 T S",
+          "text" : "LET'S"
+        },
+        {
+          "index" : 1,
+          "phones" : "D R AO0",
+          "text" : "DRAW"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "014190073#2",
+          "index" : 2,
+          "phones" : "JH EY1 M IY0 Z",
+          "text" : "JAYME'S"
+        },
+        {
+          "index" : 3,
+          "phones" : "T OW0",
+          "text" : "TOE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-014350127.flac",
+      "audioSHA256" : "7efd17d75b86d012dbdf12953a823ed502c19f497fba69217a46523e54ac7c7f",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-014350127",
+      "speaker" : "1435",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "014350127#0",
+          "index" : 0,
+          "phones" : "S T IY1 V AH0 N",
+          "text" : "STEEVEN"
+        },
+        {
+          "index" : 1,
+          "phones" : "G AH0 T",
+          "text" : "GOT"
+        },
+        {
+          "index" : 2,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "014350127#3",
+          "index" : 3,
+          "phones" : "K Y UW1 K AH0 M B ER0",
+          "text" : "CUCUMBER"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-020590077.flac",
+      "audioSHA256" : "fdd4166f9a1f4719c2fe183c20ef715add961c58d7a420f91563e17d8fce8eb6",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-020590077",
+      "speaker" : "2059",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "AY0",
+          "text" : "I"
+        },
+        {
+          "index" : 1,
+          "phones" : "W AH0 Z",
+          "text" : "WAS"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "020590077#2",
+          "index" : 2,
+          "phones" : "P R AH1 B AH0 B L IY0",
+          "text" : "PROBABLY"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "020590077#3",
+          "index" : 3,
+          "phones" : "F IY1 L IH0 NG",
+          "text" : "FEELING"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "020590077#4",
+          "index" : 4,
+          "phones" : "S AH1 R IY0",
+          "text" : "SORRY"
+        },
+        {
+          "index" : 5,
+          "phones" : "F AO0",
+          "text" : "FOR"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "020590077#6",
+          "index" : 6,
+          "phones" : "M AY0 S EH1 L F",
+          "text" : "MYSELF"
+        },
+        {
+          "index" : 7,
+          "phones" : "M AO0",
+          "text" : "MORE"
+        },
+        {
+          "index" : 8,
+          "phones" : "DH AE0 N",
+          "text" : "THAN"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "020590077#9",
+          "index" : 9,
+          "phones" : "EH1 N IY0 TH IH0 NG",
+          "text" : "ANYTHING"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-020610174.flac",
+      "audioSHA256" : "ebf722b24756c5569c9096b0f0cd969f482d91af90e267aaf8b7ec22a14c7504",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-020610174",
+      "speaker" : "2061",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "HH OW0 P",
+          "text" : "HOPE"
+        },
+        {
+          "index" : 1,
+          "phones" : "IH0 T S",
+          "text" : "IT'S"
+        },
+        {
+          "index" : 2,
+          "phones" : "JH AH0 S T",
+          "text" : "JUST"
+        },
+        {
+          "index" : 3,
+          "phones" : "AH0",
+          "text" : "A"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "020610174#4",
+          "index" : 4,
+          "phones" : "Y UH1 R AH0 P",
+          "text" : "EUROPE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "020610174#5",
+          "index" : 5,
+          "phones" : "IH1 SH UW0",
+          "text" : "ISSUE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-020890003.flac",
+      "audioSHA256" : "1109e94ea1226a2ffaf720d638ea70167742f515a440e57533a6b6f93005b033",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-020890003",
+      "speaker" : "2089",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "IH0 T",
+          "text" : "IT"
+        },
+        {
+          "index" : 1,
+          "phones" : "W AH0 Z",
+          "text" : "WAS"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "020890003#2",
+          "index" : 2,
+          "phones" : "S AH1 M TH IH0 NG",
+          "text" : "SOMETHING"
+        },
+        {
+          "index" : 3,
+          "phones" : "DH AE0 T",
+          "text" : "THAT"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "020890003#4",
+          "index" : 4,
+          "phones" : "N EH1 V ER0",
+          "text" : "NEVER"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "020890003#5",
+          "index" : 5,
+          "phones" : "HH AE1 P AH0 N D",
+          "text" : "HAPPENED"
+        },
+        {
+          "index" : 6,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "index" : 7,
+          "phones" : "AH0 S",
+          "text" : "US"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "020890003#8",
+          "index" : 8,
+          "phones" : "B IH0 F AO1 R",
+          "text" : "BEFORE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-022360321.flac",
+      "audioSHA256" : "55995bc5fa7ae3afe8d94607ff8f519b6fd47a4e2841b756365b10ec10df26d4",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-022360321",
+      "speaker" : "2236",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "DH EH0 R Z",
+          "text" : "THERE'S"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "022360321#1",
+          "index" : 1,
+          "phones" : "N AH1 TH IH0 NG",
+          "text" : "NOTHING"
+        },
+        {
+          "index" : 2,
+          "phones" : "DH AE0 T",
+          "text" : "THAT"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "022360321#3",
+          "index" : 3,
+          "phones" : "AH0 N Y UW1 ZH AH0 L",
+          "text" : "UNUSUAL"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "022360321#4",
+          "index" : 4,
+          "phones" : "AH0 B AW1 T",
+          "text" : "ABOUT"
+        },
+        {
+          "index" : 5,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "022360321#6",
+          "index" : 6,
+          "phones" : "S T R AH1 K CH AH0",
+          "text" : "STRUCTURE"
+        },
+        {
+          "index" : 7,
+          "phones" : "AH0 V",
+          "text" : "OF"
+        },
+        {
+          "index" : 8,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "index" : 9,
+          "phones" : "P L AE0 N",
+          "text" : "PLAN"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-022420086.flac",
+      "audioSHA256" : "b8162352c9721a617aeab105a3f1547c7f49695a755ffbad8154398aa41c5cb4",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-022420086",
+      "speaker" : "2242",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "S AE1 T AH0 D EY0",
+          "text" : "SATURDAY"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "022420086#1",
+          "index" : 1,
+          "phones" : "W IH1 N IH0 NG",
+          "text" : "WINNING"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "022420086#2",
+          "index" : 2,
+          "phones" : "K AH1 L AH0 Z",
+          "text" : "COLORS"
+        },
+        {
+          "index" : 3,
+          "phones" : "W IH0 L",
+          "text" : "WILL"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "022420086#4",
+          "index" : 4,
+          "phones" : "B IH0 K AH1 M",
+          "text" : "BECOME"
+        },
+        {
+          "index" : 5,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "022420086#6",
+          "index" : 6,
+          "phones" : "S EH1 K AH0 N D",
+          "text" : "SECOND"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-022440073.flac",
+      "audioSHA256" : "19774b3cac99eb24591299ab25be241e85f7be845be3b26d11c72acd37809b57",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-022440073",
+      "speaker" : "2244",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "022440073#1",
+          "index" : 1,
+          "phones" : "D EY1 N JH ER0 Z",
+          "text" : "DANGERS"
+        },
+        {
+          "index" : 2,
+          "phones" : "AH0 V",
+          "text" : "OF"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "022440073#3",
+          "index" : 3,
+          "phones" : "HH AE1 NG IH0 NG",
+          "text" : "HANGING"
+        },
+        {
+          "index" : 4,
+          "phones" : "AW0 T",
+          "text" : "OUT"
+        },
+        {
+          "index" : 5,
+          "phones" : "IH0 N",
+          "text" : "IN"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "022440073#6",
+          "index" : 6,
+          "phones" : "P AH1 B L IH0 K",
+          "text" : "PUBLIC"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "022440073#7",
+          "index" : 7,
+          "phones" : "P L EY1 S IH0 Z",
+          "text" : "PLACES"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-023800160.flac",
+      "audioSHA256" : "ad66ecc627a476f8542c004b70d62fa29f1c0525806ae58960b667e842de9142",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-023800160",
+      "speaker" : "2380",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "023800160#0",
+          "index" : 0,
+          "phones" : "G OW0 IH0 NG",
+          "text" : "GOING"
+        },
+        {
+          "index" : 1,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "023800160#2",
+          "index" : 2,
+          "phones" : "EH1 N IY0",
+          "text" : "ANY"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "023800160#3",
+          "index" : 3,
+          "phones" : "AH1 DH AH0",
+          "text" : "OTHER"
+        },
+        {
+          "index" : 4,
+          "phones" : "G EY0 M Z",
+          "text" : "GAMES"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-023800330.flac",
+      "audioSHA256" : "0da9c729859d84cf685db4b0546c61c94078f0524f07df919fb462146590db45",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-023800330",
+      "speaker" : "2380",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "IH0 T",
+          "text" : "IT"
+        },
+        {
+          "index" : 1,
+          "phones" : "W AH0 Z",
+          "text" : "WAS"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "023800330#2",
+          "index" : 2,
+          "phones" : "P R AH1 B AH0 B L IY0",
+          "text" : "PROBABLY"
+        },
+        {
+          "index" : 3,
+          "phones" : "AH0 B AW1 T",
+          "text" : "ABOUT"
+        },
+        {
+          "index" : 4,
+          "phones" : "F AY0 V",
+          "text" : "FIVE"
+        },
+        {
+          "index" : 5,
+          "phones" : "AH0 K L AH1 K",
+          "text" : "O'CLOCK"
+        },
+        {
+          "index" : 6,
+          "phones" : "IH0 N",
+          "text" : "IN"
+        },
+        {
+          "index" : 7,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "index" : 8,
+          "phones" : "M AO1 N IH0 NG",
+          "text" : "MORNING"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-024020142.flac",
+      "audioSHA256" : "c1a9ac48293225604f535da81c2ba45781fbeca8ed719075bdb12f06e39c342f",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-024020142",
+      "speaker" : "2402",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024020142#0",
+          "index" : 0,
+          "phones" : "IH1 N T R AH0 S T IH0 D",
+          "text" : "INTERESTED"
+        },
+        {
+          "index" : 1,
+          "phones" : "IH0 N",
+          "text" : "IN"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024020142#2",
+          "index" : 2,
+          "phones" : "L ER1 N IH0 NG",
+          "text" : "LEARNING"
+        },
+        {
+          "index" : 3,
+          "phones" : "M AO0",
+          "text" : "MORE"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "024020142#4",
+          "index" : 4,
+          "phones" : "AH0 B AW1 T",
+          "text" : "ABOUT"
+        },
+        {
+          "index" : 5,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "024020142#6",
+          "index" : 6,
+          "phones" : "IH0 V EH1 N T S",
+          "text" : "EVENTS"
+        },
+        {
+          "index" : 7,
+          "phones" : "AY0",
+          "text" : "I"
+        },
+        {
+          "index" : 8,
+          "phones" : "P R AH0 D Y UW1 S",
+          "text" : "PRODUCE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-024020175.flac",
+      "audioSHA256" : "e5a3a8b900af34f544c2db48a3808272403b5d90653e8e23fe23b709b42aab29",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-024020175",
+      "speaker" : "2402",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024020175#0",
+          "index" : 0,
+          "phones" : "AE1 L K AH0 HH AH0 L",
+          "text" : "ALCOHOL"
+        },
+        {
+          "index" : 1,
+          "phones" : "IH0 Z",
+          "text" : "IS"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024020175#2",
+          "index" : 2,
+          "phones" : "AO1 L W EY0 Z",
+          "text" : "ALWAYS"
+        },
+        {
+          "index" : 3,
+          "phones" : "DH IY0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024020175#4",
+          "index" : 4,
+          "phones" : "AA1 N S AH0",
+          "text" : "ANSWER"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-024020328.flac",
+      "audioSHA256" : "ab448490827fa5f5aa4c96471927e7a186ecc59ea10be0dd04322f6e9779271b",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-024020328",
+      "speaker" : "2402",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "HH IY0",
+          "text" : "HE"
+        },
+        {
+          "index" : 1,
+          "phones" : "W AH0 Z",
+          "text" : "WAS"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024020328#2",
+          "index" : 2,
+          "phones" : "T W EH1 N T IY0",
+          "text" : "TWENTY"
+        },
+        {
+          "index" : 3,
+          "phones" : "W EH0 N",
+          "text" : "WHEN"
+        },
+        {
+          "index" : 4,
+          "phones" : "HH IY0",
+          "text" : "HE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024020328#5",
+          "index" : 5,
+          "phones" : "L ER1 N IH0 D",
+          "text" : "LEARNED"
+        },
+        {
+          "index" : 6,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "index" : 7,
+          "phones" : "T R UW0 TH",
+          "text" : "TRUTH"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "024020328#8",
+          "index" : 8,
+          "phones" : "AH0 B AW1 T",
+          "text" : "ABOUT"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "024020328#9",
+          "index" : 9,
+          "phones" : "HH IH0 M S EH1 L F",
+          "text" : "HIMSELF"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-024270127.flac",
+      "audioSHA256" : "5ba07dd6e438e21518622a52e353fab643c8cb401bc6a46c547459b41acc8eb8",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-024270127",
+      "speaker" : "2427",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "W IY0",
+          "text" : "WE"
+        },
+        {
+          "index" : 1,
+          "phones" : "W ER0",
+          "text" : "WERE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024270127#2",
+          "index" : 2,
+          "phones" : "T AO1 K IH0 NG",
+          "text" : "TALKING"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "024270127#3",
+          "index" : 3,
+          "phones" : "AH0 B AW1 T",
+          "text" : "ABOUT"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024270127#4",
+          "index" : 4,
+          "phones" : "S AH1 K AH0",
+          "text" : "SOCCER"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-024300099.flac",
+      "audioSHA256" : "a65434c731091af0742ad7862e3987bed9ffd0942778600846fa68dec0a59c6c",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-024300099",
+      "speaker" : "2430",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "DH IY0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "024300099#1",
+          "index" : 1,
+          "phones" : "IH0 K AH1 N AH0 M IY0",
+          "text" : "ECONOMY"
+        },
+        {
+          "index" : 2,
+          "phones" : "IH0 Z",
+          "text" : "IS"
+        },
+        {
+          "index" : 3,
+          "phones" : "F AA0 R",
+          "text" : "FAR"
+        },
+        {
+          "index" : 4,
+          "phones" : "F R AH0 M",
+          "text" : "FROM"
+        },
+        {
+          "index" : 5,
+          "phones" : "S AW0 N D",
+          "text" : "SOUND"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-024500151.flac",
+      "audioSHA256" : "2b6269c1334ea4ac1f46cc524d5dfe116a662c59a668ab0e99ebda86ce995fe8",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-024500151",
+      "speaker" : "2450",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024500151#0",
+          "index" : 0,
+          "phones" : "S AH1 R IY0",
+          "text" : "SORRY"
+        },
+        {
+          "index" : 1,
+          "phones" : "F AO0",
+          "text" : "FOR"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024500151#2",
+          "index" : 2,
+          "phones" : "B IY1 IH0 NG",
+          "text" : "BEING"
+        },
+        {
+          "index" : 3,
+          "phones" : "AH0",
+          "text" : "A"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "024500151#4",
+          "index" : 4,
+          "phones" : "P L AE1 S T IH0 K",
+          "text" : "PLASTIC"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-027990156.flac",
+      "audioSHA256" : "760f994e1fd8bab6b1ae0df559a229a5b99ed491e5307ec618e74df5f0012e19",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-027990156",
+      "speaker" : "2799",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "027990156#0",
+          "index" : 0,
+          "phones" : "L UH1 K IH0 NG",
+          "text" : "LOOKING"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "027990156#1",
+          "index" : 1,
+          "phones" : "F AO1 R W ER0 D",
+          "text" : "FORWARD"
+        },
+        {
+          "index" : 2,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "027990156#3",
+          "index" : 3,
+          "phones" : "S IY1 IH0 NG",
+          "text" : "SEEING"
+        },
+        {
+          "index" : 4,
+          "phones" : "W AH0 T",
+          "text" : "WHAT"
+        },
+        {
+          "index" : 5,
+          "phones" : "Y UW0",
+          "text" : "YOU"
+        },
+        {
+          "index" : 6,
+          "phones" : "HH AE0 V",
+          "text" : "HAVE"
+        },
+        {
+          "index" : 7,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "027990156#8",
+          "index" : 8,
+          "phones" : "AH1 F AH0",
+          "text" : "OFFER"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-030230092.flac",
+      "audioSHA256" : "59f87a00014abef2435e2cb9aa2b321a4a0ffe155ebe05eba6690f671e5ed049",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-030230092",
+      "speaker" : "3023",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "AY0",
+          "text" : "I"
+        },
+        {
+          "index" : 1,
+          "phones" : "K AO0 L",
+          "text" : "CALL"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "030230092#2",
+          "index" : 2,
+          "phones" : "AH0 P AH1 N",
+          "text" : "UPON"
+        },
+        {
+          "index" : 3,
+          "phones" : "K AH1 NG G R EH0 S",
+          "text" : "CONGRESS"
+        },
+        {
+          "index" : 4,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "index" : 5,
+          "phones" : "D UH0",
+          "text" : "DO"
+        },
+        {
+          "index" : 6,
+          "phones" : "DH IH0 S",
+          "text" : "THIS"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "030230092#7",
+          "index" : 7,
+          "phones" : "IH2 M IY1 D IY2 AH0 T L IY0",
+          "text" : "IMMEDIATELY"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-040050107.flac",
+      "audioSHA256" : "3633da127abff3bd732cafcb7253b62b296d936775a0ddf2d332f10ebcec4942",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-040050107",
+      "speaker" : "4005",
+      "words" : [
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "040050107#0",
+          "index" : 0,
+          "phones" : "S IH0 K Y UH1 R AH0 T IY0",
+          "text" : "SECURITY"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "040050107#1",
+          "index" : 1,
+          "phones" : "AH0 R AW1 N D",
+          "text" : "AROUND"
+        },
+        {
+          "index" : 2,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "040050107#3",
+          "index" : 3,
+          "phones" : "HH OW0 T EH1 L",
+          "text" : "HOTEL"
+        },
+        {
+          "index" : 4,
+          "phones" : "IH0 Z",
+          "text" : "IS"
+        },
+        {
+          "index" : 5,
+          "phones" : "T AY0 T",
+          "text" : "TIGHT"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-054180022.flac",
+      "audioSHA256" : "ca3ad860a27528b5387b1fffe1badc719886694bf9c823bc7b62fc81fb1cff98",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-054180022",
+      "speaker" : "5418",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "IH0 T",
+          "text" : "IT"
+        },
+        {
+          "index" : 1,
+          "phones" : "HH AE0 Z",
+          "text" : "HAS"
+        },
+        {
+          "index" : 2,
+          "phones" : "P AE0 S T",
+          "text" : "PASSED"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "054180022#3",
+          "index" : 3,
+          "phones" : "IH1 N T UW0",
+          "text" : "INTO"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "054180022#4",
+          "index" : 4,
+          "phones" : "AH1 DH AH0",
+          "text" : "OTHER"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "054180022#5",
+          "index" : 5,
+          "phones" : "HH AE1 N D Z AA1 N",
+          "text" : "HANDS"
+        },
+        {
+          "index" : 6,
+          "phones" : "N AW0",
+          "text" : "NOW"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-054180087.flac",
+      "audioSHA256" : "d32f223e809d0edb7bfd662f8f1de18ad6b1317be1f7553aec62b5508f058587",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-054180087",
+      "speaker" : "5418",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "054180087#0",
+          "index" : 0,
+          "phones" : "AW1 ER0",
+          "text" : "OUR"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "054180087#1",
+          "index" : 1,
+          "phones" : "M IY1 T IH0 NG",
+          "text" : "MEETING"
+        },
+        {
+          "index" : 2,
+          "phones" : "K UH0 D",
+          "text" : "COULD"
+        },
+        {
+          "index" : 3,
+          "phones" : "N AH0 T",
+          "text" : "NOT"
+        },
+        {
+          "index" : 4,
+          "phones" : "HH AE0 V",
+          "text" : "HAVE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "054180087#5",
+          "index" : 5,
+          "phones" : "HH AE1 P AH0 N D",
+          "text" : "HAPPENED"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "054180087#6",
+          "index" : 6,
+          "phones" : "B EH1 T ER0",
+          "text" : "BETTER"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-055510122.flac",
+      "audioSHA256" : "011b3805994c5cb7aff187125e1016dd7e472957237cdf7ef231c5c671b21ba9",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-055510122",
+      "speaker" : "5551",
+      "words" : [
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "055510122#0",
+          "index" : 0,
+          "phones" : "F AO2 R T IY1 N",
+          "text" : "FOURTEEN"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "055510122#1",
+          "index" : 1,
+          "phones" : "F IH2 F T IY1 N",
+          "text" : "FIFTEEN"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "055510122#2",
+          "index" : 2,
+          "phones" : "EY2 T IY1 N",
+          "text" : "EIGHTEEN"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "055510122#3",
+          "index" : 3,
+          "phones" : "AH1 UW0 AH0 Z",
+          "text" : "HOURS"
+        },
+        {
+          "index" : 4,
+          "phones" : "AH0",
+          "text" : "A"
+        },
+        {
+          "index" : 5,
+          "phones" : "D EY0",
+          "text" : "DAY"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-060100037.flac",
+      "audioSHA256" : "03aa28b4c502f8d1e8b4fe0137478fa71b3a90661bc9d012b3bb9bdaba870412",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-060100037",
+      "speaker" : "6010",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "DH AE0 T S",
+          "text" : "THAT'S"
+        },
+        {
+          "index" : 1,
+          "phones" : "W AH0 Z",
+          "text" : "WAS"
+        },
+        {
+          "index" : 2,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "060100037#3",
+          "index" : 3,
+          "phones" : "D IH1 F R AH0 N S",
+          "text" : "DIFFERENCE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-061210174.flac",
+      "audioSHA256" : "1f849582b00e0b10f44fbb9e33f830262ec11b98a85711897543111abd94b0ce",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-061210174",
+      "speaker" : "6121",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "061210174#0",
+          "index" : 0,
+          "phones" : "EH1 V R IY0 W AH0 N",
+          "text" : "EVERYONE"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "061210174#1",
+          "index" : 1,
+          "phones" : "S T AA1 R T IH0 D",
+          "text" : "STARTED"
+        },
+        {
+          "index" : 2,
+          "phones" : "W IH0 DH",
+          "text" : "WITH"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "061210174#3",
+          "index" : 3,
+          "phones" : "S AH0 P R AY1 Z",
+          "text" : "SURPRISE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-080020017.flac",
+      "audioSHA256" : "79f8564e02eaf6faf48f211c133131d48c23bab2a54581a88463bc9a08155680",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-080020017",
+      "speaker" : "8002",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "F ER0 S T",
+          "text" : "FIRST"
+        },
+        {
+          "index" : 1,
+          "phones" : "P L EY0 S",
+          "text" : "PLACE"
+        },
+        {
+          "index" : 2,
+          "phones" : "IH0 N",
+          "text" : "IN"
+        },
+        {
+          "index" : 3,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "080020017#4",
+          "index" : 4,
+          "phones" : "D IH0 V IH1 ZH N",
+          "text" : "DIVISION"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-085850170.flac",
+      "audioSHA256" : "04e4d672185c918f7dcb584a6f005c496e653adb0614d62318f77751bd879f2e",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-085850170",
+      "speaker" : "8585",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "085850170#0",
+          "index" : 0,
+          "phones" : "N EH1 V AH0",
+          "text" : "NEVER"
+        },
+        {
+          "index" : 1,
+          "phones" : "S AO0",
+          "text" : "SAW"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "085850170#2",
+          "index" : 2,
+          "phones" : "EH1 N IY0 TH IH0 NG",
+          "text" : "ANYTHING"
+        },
+        {
+          "index" : 3,
+          "phones" : "L AY0 K",
+          "text" : "LIKE"
+        },
+        {
+          "index" : 4,
+          "phones" : "IH0 T",
+          "text" : "IT"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "085850170#5",
+          "index" : 5,
+          "phones" : "N EH1 V AH0",
+          "text" : "NEVER"
+        },
+        {
+          "index" : 6,
+          "phones" : "IH0 N",
+          "text" : "IN"
+        },
+        {
+          "index" : 7,
+          "phones" : "M AY0",
+          "text" : "MY"
+        },
+        {
+          "index" : 8,
+          "phones" : "L AY0 F",
+          "text" : "LIFE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-095560008.flac",
+      "audioSHA256" : "f823802173103e7324bdb5ab77bdc0634aedbd2164fd2daa6cce0aa20374589d",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-095560008",
+      "speaker" : "9556",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "HH IY0",
+          "text" : "HE"
+        },
+        {
+          "index" : 1,
+          "phones" : "M AH0 S T",
+          "text" : "MUST"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "095560008#2",
+          "index" : 2,
+          "phones" : "K AH0 N S IH1 D AH0",
+          "text" : "CONSIDER"
+        },
+        {
+          "index" : 3,
+          "phones" : "W AH0 T",
+          "text" : "WHAT"
+        },
+        {
+          "index" : 4,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "index" : 5,
+          "phones" : "D UW0",
+          "text" : "DO"
+        },
+        {
+          "index" : 6,
+          "phones" : "N EH0 K S T",
+          "text" : "NEXT"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-095560051.flac",
+      "audioSHA256" : "9ae4ac6dd936b218032808cce3895af175fb218b636bbe13862ea74e4440fe99",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-095560051",
+      "speaker" : "9556",
+      "words" : [
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "095560051#0",
+          "index" : 0,
+          "phones" : "HH AW0 EH1 V ER0",
+          "text" : "HOWEVER"
+        },
+        {
+          "index" : 1,
+          "phones" : "HH IY0",
+          "text" : "HE"
+        },
+        {
+          "index" : 2,
+          "phones" : "P UH0 L D",
+          "text" : "PULLED"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "095560051#3",
+          "index" : 3,
+          "phones" : "HH IH0 M S EH1 L F",
+          "text" : "HIMSELF"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "095560051#4",
+          "index" : 4,
+          "phones" : "T AH0 G EH0 DH AH0",
+          "text" : "TOGETHER"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "095560051#5",
+          "index" : 5,
+          "phones" : "K W IH1 K L IY0",
+          "text" : "QUICKLY"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-096000002.flac",
+      "audioSHA256" : "b4386e8d6242f2fd406b757fc75df2d9a45eff4a42c4bfd229f5c70c975f9aef",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-096000002",
+      "speaker" : "9600",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "B AH0 T",
+          "text" : "BUT"
+        },
+        {
+          "index" : 1,
+          "phones" : "IH0 T",
+          "text" : "IT"
+        },
+        {
+          "index" : 2,
+          "phones" : "IH0 Z",
+          "text" : "IS"
+        },
+        {
+          "index" : 3,
+          "phones" : "S T IH0 L",
+          "text" : "STILL"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "096000002#4",
+          "index" : 4,
+          "phones" : "OW1 N L IY0",
+          "text" : "ONLY"
+        },
+        {
+          "index" : 5,
+          "phones" : "DH IY0",
+          "text" : "THE"
+        },
+        {
+          "index" : 6,
+          "phones" : "F ER0 S T",
+          "text" : "FIRST"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "096000002#7",
+          "index" : 7,
+          "phones" : "K W AO1 R T ER0",
+          "text" : "QUARTER"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-096060001.flac",
+      "audioSHA256" : "6e7c80e5707e2053e20acff9f5ada851f3c099e0b4c8a446d034f703fa9b997e",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-096060001",
+      "speaker" : "9606",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "HH IY0",
+          "text" : "HE"
+        },
+        {
+          "index" : 1,
+          "phones" : "HH AE0 D",
+          "text" : "HAD"
+        },
+        {
+          "index" : 2,
+          "phones" : "K AH0 M",
+          "text" : "COME"
+        },
+        {
+          "index" : 3,
+          "phones" : "AW0 T",
+          "text" : "OUT"
+        },
+        {
+          "index" : 4,
+          "phones" : "AH0 N",
+          "text" : "ON"
+        },
+        {
+          "index" : 5,
+          "phones" : "JH OW0 B S",
+          "text" : "JOBS"
+        },
+        {
+          "index" : 6,
+          "phones" : "W IH0 DH",
+          "text" : "WITH"
+        },
+        {
+          "index" : 7,
+          "phones" : "M IY0",
+          "text" : "ME"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "096060001#8",
+          "index" : 8,
+          "phones" : "B IH0 F AO1",
+          "text" : "BEFORE"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-096160010.flac",
+      "audioSHA256" : "a04f2f53b293c4c9b6ee123b582e349a747aaec7aa5f2f5e3a51039e50339b7f",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-096160010",
+      "speaker" : "9616",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "DH EY0",
+          "text" : "THEY"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "096160010#1",
+          "index" : 1,
+          "phones" : "OW1 P AH0 N",
+          "text" : "OPENED"
+        },
+        {
+          "index" : 2,
+          "phones" : "DH AH0",
+          "text" : "THE"
+        },
+        {
+          "index" : 3,
+          "phones" : "D AO0",
+          "text" : "DOOR"
+        },
+        {
+          "index" : 4,
+          "phones" : "AE0 N D",
+          "text" : "AND"
+        },
+        {
+          "index" : 5,
+          "phones" : "W AO0 K T",
+          "text" : "WALKED"
+        },
+        {
+          "index" : 6,
+          "phones" : "IH0 N",
+          "text" : "IN"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-096190009.flac",
+      "audioSHA256" : "9e0b3d5076b19d504eb49cad3d36332f6afd64476f1118add68fa9e6a7faae45",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-096190009",
+      "speaker" : "9619",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "Y UW0",
+          "text" : "YOU"
+        },
+        {
+          "index" : 1,
+          "phones" : "R IH1 L IY0",
+          "text" : "REALLY"
+        },
+        {
+          "index" : 2,
+          "phones" : "TH IH0 NG K",
+          "text" : "THINK"
+        },
+        {
+          "index" : 3,
+          "phones" : "Y UW0",
+          "text" : "YOU"
+        },
+        {
+          "index" : 4,
+          "phones" : "AA0",
+          "text" : "ARE"
+        },
+        {
+          "index" : 5,
+          "phones" : "G OW0 IH0 NG",
+          "text" : "GOING"
+        },
+        {
+          "index" : 6,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "id" : "096190009#7",
+          "index" : 7,
+          "phones" : "D IH0 F IY1 T",
+          "text" : "DEFEAT"
+        },
+        {
+          "index" : 8,
+          "phones" : "M IY0",
+          "text" : "ME"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/speechocean762-096430009.flac",
+      "audioSHA256" : "8c35c71ceee604cab30b44ff00ae8422cf66cef946405957135dc212b46af111",
+      "corpus" : "speechocean762",
+      "item" : "speechocean762-096430009",
+      "speaker" : "9643",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "T UW0",
+          "text" : "TO"
+        },
+        {
+          "index" : 1,
+          "phones" : "R IH0 S T AO1 R",
+          "text" : "RESTORE"
+        },
+        {
+          "index" : 2,
+          "phones" : "Y AO1 R",
+          "text" : "YOUR"
+        },
+        {
+          "index" : 3,
+          "phones" : "L AO0 S T",
+          "text" : "LOST"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "id" : "096430009#4",
+          "index" : 4,
+          "phones" : "EH1 N ER0 JH IY0",
+          "text" : "ENERGY"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/vctk-p245_002.flac",
+      "audioSHA256" : "a84e9847db9a19873d26b6032f23d54eb4af2a687b63114ab1e4c1f0c7c4c3be",
+      "corpus" : "vctk",
+      "item" : "vctk-p245_002",
+      "speaker" : "p245",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "AE1 S K",
+          "text" : "ask"
+        },
+        {
+          "index" : 1,
+          "phones" : "HH ER1",
+          "text" : "her"
+        },
+        {
+          "index" : 2,
+          "phones" : "T UW1",
+          "text" : "to"
+        },
+        {
+          "index" : 3,
+          "phones" : "B R IH1 NG",
+          "text" : "bring"
+        },
+        {
+          "index" : 4,
+          "phones" : "DH IY1 Z",
+          "text" : "these"
+        },
+        {
+          "index" : 5,
+          "phones" : "TH IH1 NG Z",
+          "text" : "things"
+        },
+        {
+          "index" : 6,
+          "phones" : "W IH1 DH",
+          "text" : "with"
+        },
+        {
+          "index" : 7,
+          "phones" : "HH ER1",
+          "text" : "her"
+        },
+        {
+          "index" : 8,
+          "phones" : "F R AH1 M",
+          "text" : "from"
+        },
+        {
+          "index" : 9,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "index" : 10,
+          "phones" : "S T AO1 R",
+          "text" : "store"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/vctk-p245_018.flac",
+      "audioSHA256" : "20eb75654d1099c92a406f96d45f0a339c42733e22858c777435f934c487ac9c",
+      "corpus" : "vctk",
+      "item" : "vctk-p245_018",
+      "speaker" : "p245",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "index" : 0,
+          "phones" : "EH1 R AH0 S T AA2 T AH0 L",
+          "text" : "aristotle"
+        },
+        {
+          "index" : 1,
+          "phones" : "TH AO1 T",
+          "text" : "thought"
+        },
+        {
+          "index" : 2,
+          "phones" : "DH AE1 T",
+          "text" : "that"
+        },
+        {
+          "index" : 3,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "index" : 4,
+          "phones" : "R EY1 N B OW2",
+          "text" : "rainbow"
+        },
+        {
+          "index" : 5,
+          "phones" : "W AA1 Z",
+          "text" : "was"
+        },
+        {
+          "index" : 6,
+          "phones" : "K AA1 Z D",
+          "text" : "caused"
+        },
+        {
+          "index" : 7,
+          "phones" : "B AY1",
+          "text" : "by"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "index" : 8,
+          "phones" : "R IH0 F L EH1 K SH AH0 N",
+          "text" : "reflection"
+        },
+        {
+          "index" : 9,
+          "phones" : "AH1 V",
+          "text" : "of"
+        },
+        {
+          "index" : 10,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "index" : 11,
+          "phones" : "S AH1 N Z",
+          "text" : "sun's"
+        },
+        {
+          "index" : 12,
+          "phones" : "R EY1 Z",
+          "text" : "rays"
+        },
+        {
+          "index" : 13,
+          "phones" : "B AY1",
+          "text" : "by"
+        },
+        {
+          "index" : 14,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "index" : 15,
+          "phones" : "R EY1 N",
+          "text" : "rain"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/vctk-p288_002.flac",
+      "audioSHA256" : "fa218fa75ccc5eb6669d820850209bf08d9991f640800bb85aa837ea27394c89",
+      "corpus" : "vctk",
+      "item" : "vctk-p288_002",
+      "speaker" : "p288",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "AE1 S K",
+          "text" : "ask"
+        },
+        {
+          "index" : 1,
+          "phones" : "HH ER1",
+          "text" : "her"
+        },
+        {
+          "index" : 2,
+          "phones" : "T UW1",
+          "text" : "to"
+        },
+        {
+          "index" : 3,
+          "phones" : "B R IH1 NG",
+          "text" : "bring"
+        },
+        {
+          "index" : 4,
+          "phones" : "DH IY1 Z",
+          "text" : "these"
+        },
+        {
+          "index" : 5,
+          "phones" : "TH IH1 NG Z",
+          "text" : "things"
+        },
+        {
+          "index" : 6,
+          "phones" : "W IH1 DH",
+          "text" : "with"
+        },
+        {
+          "index" : 7,
+          "phones" : "HH ER1",
+          "text" : "her"
+        },
+        {
+          "index" : 8,
+          "phones" : "F R AH1 M",
+          "text" : "from"
+        },
+        {
+          "index" : 9,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "index" : 10,
+          "phones" : "S T AO1 R",
+          "text" : "store"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/vctk-p288_018.flac",
+      "audioSHA256" : "19204c979ebd68786502fbd68b8d39ec4f3bc3c713863baa01e36240895b3459",
+      "corpus" : "vctk",
+      "item" : "vctk-p288_018",
+      "speaker" : "p288",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "index" : 0,
+          "phones" : "EH1 R AH0 S T AA2 T AH0 L",
+          "text" : "aristotle"
+        },
+        {
+          "index" : 1,
+          "phones" : "TH AO1 T",
+          "text" : "thought"
+        },
+        {
+          "index" : 2,
+          "phones" : "DH AE1 T",
+          "text" : "that"
+        },
+        {
+          "index" : 3,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "index" : 4,
+          "phones" : "R EY1 N B OW2",
+          "text" : "rainbow"
+        },
+        {
+          "index" : 5,
+          "phones" : "W AA1 Z",
+          "text" : "was"
+        },
+        {
+          "index" : 6,
+          "phones" : "K AA1 Z D",
+          "text" : "caused"
+        },
+        {
+          "index" : 7,
+          "phones" : "B AY1",
+          "text" : "by"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "index" : 8,
+          "phones" : "R IH0 F L EH1 K SH AH0 N",
+          "text" : "reflection"
+        },
+        {
+          "index" : 9,
+          "phones" : "AH1 V",
+          "text" : "of"
+        },
+        {
+          "index" : 10,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "index" : 11,
+          "phones" : "S AH1 N Z",
+          "text" : "sun's"
+        },
+        {
+          "index" : 12,
+          "phones" : "R EY1 Z",
+          "text" : "rays"
+        },
+        {
+          "index" : 13,
+          "phones" : "B AY1",
+          "text" : "by"
+        },
+        {
+          "index" : 14,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "index" : 15,
+          "phones" : "R EY1 N",
+          "text" : "rain"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/vctk-p360_002.flac",
+      "audioSHA256" : "0fc773de11187283ca75f6507927668925eb99e38b45587fdd366b9da365f108",
+      "corpus" : "vctk",
+      "item" : "vctk-p360_002",
+      "speaker" : "p360",
+      "words" : [
+        {
+          "index" : 0,
+          "phones" : "AE1 S K",
+          "text" : "ask"
+        },
+        {
+          "index" : 1,
+          "phones" : "HH ER1",
+          "text" : "her"
+        },
+        {
+          "index" : 2,
+          "phones" : "T UW1",
+          "text" : "to"
+        },
+        {
+          "index" : 3,
+          "phones" : "B R IH1 NG",
+          "text" : "bring"
+        },
+        {
+          "index" : 4,
+          "phones" : "DH IY1 Z",
+          "text" : "these"
+        },
+        {
+          "index" : 5,
+          "phones" : "TH IH1 NG Z",
+          "text" : "things"
+        },
+        {
+          "index" : 6,
+          "phones" : "W IH1 DH",
+          "text" : "with"
+        },
+        {
+          "index" : 7,
+          "phones" : "HH ER1",
+          "text" : "her"
+        },
+        {
+          "index" : 8,
+          "phones" : "F R AH1 M",
+          "text" : "from"
+        },
+        {
+          "index" : 9,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "index" : 10,
+          "phones" : "S T AO1 R",
+          "text" : "store"
+        }
+      ]
+    },
+    {
+      "audio" : "audio/vctk-p360_018.flac",
+      "audioSHA256" : "c92c3ec91fd93269e177d5b1e76bd8617dba3ad387432ec76c82bb9bb149e2bb",
+      "corpus" : "vctk",
+      "item" : "vctk-p360_018",
+      "speaker" : "p360",
+      "words" : [
+        {
+          "accepted" : [
+            0
+          ],
+          "index" : 0,
+          "phones" : "EH1 R AH0 S T AA2 T AH0 L",
+          "text" : "aristotle"
+        },
+        {
+          "index" : 1,
+          "phones" : "TH AO1 T",
+          "text" : "thought"
+        },
+        {
+          "index" : 2,
+          "phones" : "DH AE1 T",
+          "text" : "that"
+        },
+        {
+          "index" : 3,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "accepted" : [
+            0
+          ],
+          "index" : 4,
+          "phones" : "R EY1 N B OW2",
+          "text" : "rainbow"
+        },
+        {
+          "index" : 5,
+          "phones" : "W AA1 Z",
+          "text" : "was"
+        },
+        {
+          "index" : 6,
+          "phones" : "K AA1 Z D",
+          "text" : "caused"
+        },
+        {
+          "index" : 7,
+          "phones" : "B AY1",
+          "text" : "by"
+        },
+        {
+          "accepted" : [
+            1
+          ],
+          "index" : 8,
+          "phones" : "R IH0 F L EH1 K SH AH0 N",
+          "text" : "reflection"
+        },
+        {
+          "index" : 9,
+          "phones" : "AH1 V",
+          "text" : "of"
+        },
+        {
+          "index" : 10,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "index" : 11,
+          "phones" : "S AH1 N Z",
+          "text" : "sun's"
+        },
+        {
+          "index" : 12,
+          "phones" : "R EY1 Z",
+          "text" : "rays"
+        },
+        {
+          "index" : 13,
+          "phones" : "B AY1",
+          "text" : "by"
+        },
+        {
+          "index" : 14,
+          "phones" : "DH AH0",
+          "text" : "the"
+        },
+        {
+          "index" : 15,
+          "phones" : "R EY1 N",
+          "text" : "rain"
+        }
+      ]
+    }
+  ]
+}
