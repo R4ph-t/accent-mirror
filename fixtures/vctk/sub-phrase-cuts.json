@@ -1,0 +1,5739 @@
+{
+  "aligner" : {
+    "acousticModel" : "english_mfa.zip",
+    "acousticModelSHA256" : "2c08bd4f82c3943dd57ac09aeac99dbce17a1e1bfe9fd932c8d95cd13d971068",
+    "command" : "mfa align --clean --overwrite --output_format json --num_jobs 4 CORPUS english_mfa.dict english_mfa.zip OUTPUT",
+    "dictionary" : "english_mfa.dict",
+    "dictionarySHA256" : "975bf9c7791535c5aec57995e0bd2b77eb7ca364d1d974c2134e07bb0f16b079",
+    "name" : "Montreal Forced Aligner",
+    "version" : "3.4.4"
+  },
+  "alignmentsSHA256" : "487e5fd2c4f12473a35bbe7c44d46f9bf6431057c15144436d46db73137af5b8",
+  "entries" : [
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.85,
+          "start" : 0.85,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p225",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.1,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p226",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.11,
+          "start" : 0.93,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p227",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.88,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p232",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.69,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p233",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.27,
+          "start" : 0.95,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p238",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.14,
+          "start" : 0.94,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p239",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.46,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p241",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.49,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p245",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.17,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p246",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.5,
+          "start" : 0.95,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p248",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.63,
+          "start" : 0.43,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p251",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.82,
+          "start" : 0.93,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p255",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.78,
+          "start" : 0.82,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p256",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.6,
+          "start" : 0.77,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p261",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.72,
+          "start" : 0,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p262",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.67,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p266",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.61,
+          "start" : 0.65,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p270",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.87,
+          "start" : 0.79,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p271",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.58,
+          "start" : 0.95,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p283",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.08,
+          "start" : 0.86,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p284",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.34,
+          "start" : 0.94,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p285",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.46,
+          "start" : 0.94,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p288",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.38,
+          "start" : 0.91,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p298",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.78,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p301",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.96,
+          "start" : 0.81,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p303",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.38,
+          "start" : 0.83,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p304",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.7,
+          "start" : 0.89,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p305",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.13,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p310",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.88,
+          "start" : 0.97,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p311",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.42,
+          "start" : 0.94,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p314",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.63,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p317",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.57,
+          "start" : 0.91,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p323",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.41,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p326",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.07,
+          "start" : 0.67,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p333",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.15,
+          "start" : 0.92,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p334",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.94,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p336",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.25,
+          "start" : 0.64,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p345",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.54,
+          "start" : 0.95,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p347",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.48,
+          "start" : 0.95,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p351",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.39,
+          "start" : 0.8,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p360",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.22,
+          "start" : 0.91,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p363",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.22,
+          "start" : 0.93,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p374",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.45,
+          "start" : 0.94,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "p376",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.08,
+          "start" : 0.96,
+          "words" : [
+            "the",
+            "difference",
+            "in",
+            "the",
+            "rainbow",
+            "depends",
+            "considerably",
+            "upon",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops"
+          ]
+        }
+      },
+      "speaker" : "s5",
+      "subPhrase" : "021-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.98,
+          "start" : 5.15,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p225",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.38,
+          "start" : 5.47,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p226",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.15,
+          "start" : 5.58,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p227",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.81,
+          "start" : 5.3,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p232",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.9,
+          "start" : 5.06,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p233",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.04,
+          "start" : 5.53,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p238",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.71,
+          "start" : 4.45,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p239",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.46,
+          "start" : 4.81,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p241",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.37,
+          "start" : 6.05,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p245",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.82,
+          "start" : 5.72,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p246",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.093604,
+          "start" : 6.1,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p248",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.44,
+          "start" : 4.94,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p251",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.155479,
+          "start" : 5.06,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p255",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.28,
+          "start" : 5.24,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p256",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.662771,
+          "start" : 4.88,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p261",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.476292,
+          "start" : 5.07,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p262",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.688354,
+          "start" : 4.94,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p266",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.26,
+          "start" : 5.08,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p270",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.15,
+          "start" : 5.94,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p271",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.38,
+          "start" : 4.58,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p283",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.56,
+          "start" : 4.37,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p284",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.86,
+          "start" : 4.34,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p285",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.64,
+          "start" : 4.79,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p288",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.03,
+          "start" : 4.65,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p298",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.1,
+          "start" : 5.16,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p301",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.52,
+          "start" : 5.26,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p303",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.26,
+          "start" : 4.54,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p304",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.27,
+          "start" : 5.05,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p305",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.45,
+          "start" : 5.48,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p310",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.02,
+          "start" : 5.4,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p311",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.4,
+          "start" : 4.45,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p314",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.4,
+          "start" : 5.02,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p317",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.64,
+          "start" : 5.82,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p323",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.51,
+          "start" : 4.77,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p326",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.96,
+          "start" : 4.13,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p333",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.89,
+          "start" : 4.44,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p334",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.94,
+          "start" : 5.1,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p336",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.79,
+          "start" : 4.46,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p345",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.23,
+          "start" : 5.92,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p347",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.15,
+          "start" : 4.51,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p351",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.28,
+          "start" : 4.69,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p360",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.71,
+          "start" : 4.43,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p363",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.15,
+          "start" : 5.51,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p374",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.41,
+          "start" : 4.71,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "p376",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.69,
+          "start" : 5.39,
+          "words" : [
+            "and",
+            "the",
+            "width",
+            "of",
+            "the",
+            "colored",
+            "band",
+            "increases",
+            "as",
+            "the",
+            "size",
+            "of",
+            "the",
+            "drops",
+            "increases"
+          ]
+        }
+      },
+      "speaker" : "s5",
+      "subPhrase" : "021-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.75,
+          "start" : 0.79,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p225",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.55,
+          "start" : 0.95,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p226",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.44,
+          "start" : 0.93,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p227",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.69,
+          "start" : 0.81,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p232",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.98,
+          "start" : 0.96,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p233",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.03,
+          "start" : 0.94,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p238",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.83,
+          "start" : 0.91,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p239",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.91,
+          "start" : 0.97,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p241",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.71,
+          "start" : 0.97,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p245",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.71,
+          "start" : 0.79,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p246",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.67,
+          "start" : 0.82,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p248",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.84,
+          "start" : 0.95,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p251",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.32,
+          "start" : 0.97,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p252",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.93,
+          "start" : 0.95,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p255",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.55,
+          "start" : 0.96,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p256",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.72,
+          "start" : 0.8,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p261",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.16,
+          "start" : 0.97,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p262",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.2,
+          "start" : 0.95,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p266",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.08,
+          "start" : 0.97,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p269",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.63,
+          "start" : 0.96,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p270",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.64,
+          "start" : 0.89,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p271",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.44,
+          "start" : 1.41,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p283",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.5,
+          "start" : 0.81,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p284",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.83,
+          "start" : 0.94,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p285",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.83,
+          "start" : 0.8,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p288",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.59,
+          "start" : 0.81,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p298",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.2,
+          "start" : 0.97,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p301",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.16,
+          "start" : 0.96,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p303",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.8,
+          "start" : 0.66,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p304",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.99,
+          "start" : 0.59,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p305",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.01,
+          "start" : 0.93,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p310",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.95,
+          "start" : 0.97,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p311",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.14,
+          "start" : 0.91,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p313",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.1,
+          "start" : 0.82,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p314",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.14,
+          "start" : 0.95,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p317",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.35,
+          "start" : 0.95,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p323",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.22,
+          "start" : 0.8,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p326",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.58,
+          "start" : 0.43,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p333",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.3,
+          "start" : 0.61,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p334",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.07,
+          "start" : 0.76,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p345",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.65,
+          "start" : 0.92,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p347",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.99,
+          "start" : 0.95,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p351",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.27,
+          "start" : 0.95,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p360",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 3.82,
+          "start" : 0.96,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p363",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 5.18,
+          "start" : 0.94,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p374",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4,
+          "start" : 0.95,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "p376",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 4.07,
+          "start" : 0.96,
+          "words" : [
+            "if",
+            "the",
+            "red",
+            "of",
+            "the",
+            "second",
+            "bow",
+            "falls",
+            "upon",
+            "the",
+            "green",
+            "of",
+            "the",
+            "first"
+          ]
+        }
+      },
+      "speaker" : "s5",
+      "subPhrase" : "023-a"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.12,
+          "start" : 4.03,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p225",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.55,
+          "start" : 4.92,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p226",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.69,
+          "start" : 4.81,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p227",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.14,
+          "start" : 4.06,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p232",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.39,
+          "start" : 4.39,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p233",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.28,
+          "start" : 5.36,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p238",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 6.96,
+          "start" : 3.83,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p239",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.35,
+          "start" : 4.32,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p241",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.64,
+          "start" : 5.11,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p245",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.63,
+          "start" : 4.19,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p246",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.7,
+          "start" : 5.03,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p248",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.87,
+          "start" : 3.95,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p251",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.14,
+          "start" : 4.59,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p252",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.7,
+          "start" : 5.23,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p255",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.51,
+          "start" : 4.71,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p256",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.02,
+          "start" : 3.72,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p261",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.19,
+          "start" : 4.39,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p262",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.54,
+          "start" : 4.36,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p266",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.5,
+          "start" : 4.36,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p269",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.35,
+          "start" : 4.99,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p270",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 12.23,
+          "start" : 6.41,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p271",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.82,
+          "start" : 4.82,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p283",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 6.6,
+          "start" : 3.68,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p284",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.12,
+          "start" : 3.83,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p285",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.55,
+          "start" : 4.16,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p288",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 6.75,
+          "start" : 3.7,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p298",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.81,
+          "start" : 4.65,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p301",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.05,
+          "start" : 4.16,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p303",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.33,
+          "start" : 4.09,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p304",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.8,
+          "start" : 4.22,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p305",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.7,
+          "start" : 5.21,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p310",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.19,
+          "start" : 3.95,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p311",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.25,
+          "start" : 4.42,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p313",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.89,
+          "start" : 4.41,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p314",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.91,
+          "start" : 4.51,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p317",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.94,
+          "start" : 5.63,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p323",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.56,
+          "start" : 4.22,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p326",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.03,
+          "start" : 3.86,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p333",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 6.5,
+          "start" : 3.39,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p334",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.57,
+          "start" : 4.07,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p345",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.15,
+          "start" : 4.94,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p347",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.05,
+          "start" : 3.99,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p351",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 8.34,
+          "start" : 4.54,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p360",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.07,
+          "start" : 4.06,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p363",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.82,
+          "start" : 5.39,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p374",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.7,
+          "start" : 4,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "p376",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 7.77,
+          "start" : 4.33,
+          "words" : [
+            "the",
+            "result",
+            "is",
+            "to",
+            "give",
+            "a",
+            "bow",
+            "with",
+            "an",
+            "abnormally",
+            "wide",
+            "yellow",
+            "band"
+          ]
+        }
+      },
+      "speaker" : "s5",
+      "subPhrase" : "023-b"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.13,
+          "start" : 7.5,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p225",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.81,
+          "start" : 8.96,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p226",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 12.4,
+          "start" : 9.37,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p227",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.76,
+          "start" : 7.39,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p232",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.23,
+          "start" : 7.73,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p233",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 12.56,
+          "start" : 9.59,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p238",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.15,
+          "start" : 7.27,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p239",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.97,
+          "start" : 7.76,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p241",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 12.84,
+          "start" : 10.02,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p245",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.28,
+          "start" : 8.89,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p246",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 13.25,
+          "start" : 9.96,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p248",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.78,
+          "start" : 8.3,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p251",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.09,
+          "start" : 8.17,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p252",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 12.807063,
+          "start" : 10.08,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p255",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.37,
+          "start" : 8.82,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p256",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.73,
+          "start" : 7.33,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p261",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.09,
+          "start" : 8.29,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p262",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.12,
+          "start" : 7.89,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p266",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.18,
+          "start" : 7.94,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p269",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 12.78,
+          "start" : 9.78,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p270",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 16.01,
+          "start" : 12.31,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p271",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.42,
+          "start" : 8.82,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p283",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.37,
+          "start" : 6.93,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p284",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.79,
+          "start" : 7.12,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p285",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.65,
+          "start" : 7.95,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p288",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.25,
+          "start" : 6.95,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p298",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.55,
+          "start" : 8.13,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p301",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.52,
+          "start" : 8.67,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p303",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.08,
+          "start" : 7.48,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p304",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.62,
+          "start" : 8.06,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p305",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 12.69,
+          "start" : 9.89,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p310",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.37,
+          "start" : 7.87,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p311",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.88,
+          "start" : 7.61,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p313",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.9,
+          "start" : 8.32,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p314",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.82,
+          "start" : 8.29,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p317",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 13.51,
+          "start" : 10.32,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p323",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.13,
+          "start" : 7.85,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p326",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.53,
+          "start" : 7.26,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p333",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.25,
+          "start" : 6.85,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p334",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.6,
+          "start" : 7.63,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p345",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 12.25,
+          "start" : 9.46,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p347",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.62,
+          "start" : 7.37,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p351",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.36,
+          "start" : 8.62,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p360",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 9.58,
+          "start" : 7.27,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p363",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 12.65,
+          "start" : 9.82,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p374",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 10.11,
+          "start" : 7.7,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "p376",
+      "subPhrase" : "023-c"
+    },
+    {
+      "outcome" : {
+        "cut" : {
+          "end" : 11.13,
+          "start" : 8.09,
+          "words" : [
+            "since",
+            "red",
+            "and",
+            "green",
+            "light",
+            "when",
+            "mixed",
+            "form",
+            "yellow"
+          ]
+        }
+      },
+      "speaker" : "s5",
+      "subPhrase" : "023-c"
+    }
+  ],
+  "subPhrasesSHA256" : "648afb3e5a16bc52609288dd88e812ec80fb7ca329c4b8ea8bac0285201dd2c8"
+}
