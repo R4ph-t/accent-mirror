@@ -19,13 +19,12 @@ struct ScreenshotTests {
         let names = try library.allNames()
         #expect(!names.isEmpty)
         try FileManager.default.createDirectory(at: Self.outputDirectory, withIntermediateDirectories: true)
-        defer { WindowRenderer.closeAll() }
         for name in names {
             let loaded = try library.load(name)
             for appearance in WindowRenderer.Appearance.allCases {
-                let window = WindowRenderer.window(model: ShellModel(fixture: loaded), appearance: appearance)
+                let window = WindowRenderer.makeWindow(model: ShellModel(fixture: loaded), appearance: appearance)
                 let png = try await WindowRenderer.capture(window)
-                WindowRenderer.clear(window)
+                await WindowRenderer.dispose(window)
                 try png.write(to: Self.outputDirectory.appendingPathComponent("\(name)-\(appearance.rawValue)@2x.png"))
             }
         }

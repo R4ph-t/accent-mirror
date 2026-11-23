@@ -61,34 +61,15 @@ enum WindowRenderer {
         return png
     }
 
-    /// One window per appearance, reused for every fixture: a fresh hosting controller (so fresh SwiftUI state)
-    /// goes into the same window each time. Closing a window per frame didn't free it, and 124 frames passed
-    /// AppKit's 100-live-window warning.
-    private static var windows: [Appearance: NSWindow] = [:]
-
-    static func window(model: ShellModel, appearance: Appearance) -> NSWindow {
-        guard let window = windows[appearance] else {
-            let window = makeWindow(model: model, appearance: appearance)
-            windows[appearance] = window
-            return window
-        }
-        let host = NSHostingController(rootView: ShellView(model: model))
-        host.sizingOptions = []
-        window.contentViewController = host
-        window.setContentSize(pointSize)
-        return window
-    }
-
-    /// Takes the fixture out of a reused window after its capture.
-    static func clear(_ window: NSWindow) {
+    /// Tears a captured window down so it is deallocated before the next one: 124 frames otherwise leave over
+    /// 100 live windows (AppKit's excessive-window warning). Runs after the capture, so the frames don't change.
+    static func dispose(_ window: NSWindow) async {
         window.orderOut(nil)
+        window.toolbar = nil
         window.contentViewController = nil
-    }
-
-    /// Closes the reused windows at the end of a run.
-    static func closeAll() {
-        for window in windows.values { window.close() }
-        windows = [:]
+        window.close()
+        // One run-loop turn so the autorelease pool drains and the window goes away.
+        try? await Task.sleep(for: .milliseconds(10))
     }
 
     enum RenderError: Error { case noFrameView, bitmap, encode }
