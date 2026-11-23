@@ -18,7 +18,7 @@ import AMEvaluation
 
     @Test("288 headline pairs (12 × 24 phrases); held-out speakers are never a reference, a band voice or in A(w)") func pairs() throws {
         let manifest = try SyntheticVCTK.manifest()
-        let pairs = VCTKPairs(manifest: manifest, available: SyntheticVCTK.allClips(manifest))
+        let pairs = VCTKPairs(manifest: manifest, available: SyntheticVCTK.allClips(manifest), phrases: VCTK.phrases)
         #expect(pairs.headline.count == 12 * 24)
         #expect(pairs.shortfalls().isEmpty)
         let heldOut = Set(manifest.heldOutSpeakers.map(\.id))
@@ -38,11 +38,11 @@ import AMEvaluation
         let manifest = try SyntheticVCTK.manifest()
         var clips = SyntheticVCTK.allClips(manifest)
         for phrase in ["001", "002", "003", "004", "021", "022", "023"] { clips.remove(VCTKClip(speaker: "p225", phrase: phrase)) }
-        let fewPhrases = VCTKPairs(manifest: manifest, available: clips)
+        let fewPhrases = VCTKPairs(manifest: manifest, available: clips, phrases: VCTK.phrases)
         #expect(fewPhrases.headline.count == 204)
-        #expect(fewPhrases.shortfalls() == ["phrases 17 < 18"])
+        #expect(fewPhrases.shortfalls() == ["phrases 17 < 18 (17 distinct source prompts)"])
         let small = try SyntheticVCTK.manifest(tuning: 18, heldOut: 6)
-        let smallPairs = VCTKPairs(manifest: small, available: SyntheticVCTK.allClips(small))
+        let smallPairs = VCTKPairs(manifest: small, available: SyntheticVCTK.allClips(small), phrases: VCTK.phrases)
         #expect(smallPairs.shortfalls() == ["pairs 144 < 150", "held-out speakers 6 < 12"])
     }
 
@@ -50,7 +50,7 @@ import AMEvaluation
         let manifest = try SyntheticVCTK.manifest()
         let rejected = [VCTKClip(speaker: "p225", phrase: "003"), VCTKClip(speaker: "p429", phrase: "003"),
                         VCTKClip(speaker: "p400", phrase: "005")]
-        #expect(VCTKPairs.rejectionsByPhrase(rejected: rejected, manifest: manifest) == [
+        #expect(VCTKPairs.rejectionsByPhrase(trimmed: rejected, phrases: VCTK.phrases, manifest: manifest) == [
             "003: 2 rejected (1 held-out), reference p225 rejected: phrase dropped",
             "005: 1 rejected (0 held-out)",
         ])
