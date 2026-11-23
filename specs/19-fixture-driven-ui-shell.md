@@ -1,12 +1,12 @@
 # 19: Fixture-driven UI shell
 
-Status: Done · Branch: factory/18-19-ui-shell (PR #4), fixes on factory/18-19-fixes · Depends on: 18 (UI foundation) · Estimate: 6–8 h agent run + 1.5 h Raph review
+Status: Done · Branch: factory/18-19-ui-shell (PR #4), fixes on factory/18-19-fixes (PR #11) and factory/18-19-fixes-r3 · Depends on: 18 (UI foundation) · Estimate: 6–8 h agent run + 1.5 h Raph review
 
-Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)"), including Addendum 2026-11-23 (r2), which wins wherever it differs. Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px for a 1200 × 800 pt window). This spec does not depend on spec 11 (scoring).
+Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)"), including Addendum 2026-11-23 (r2) and Addendum 2026-11-23 (r3, items B1–B11). r3 wins over r2 and spec v2 wherever they differ; r2 wins over spec v2. Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px for a 1200 × 800 pt window). This spec does not depend on spec 11 (scoring).
 
 ## Goal
 
-Render every milestone-1 UI state from Designer's spec v2 and Addendum r2, driven only by committed JSON fixtures, and capture scripted native light and dark screenshots of each state from a test target. No hand-clicking, no microphone, no live analysis, no scoring.
+Render every milestone-1 UI state from Designer's spec v2 and Addenda r2 and r3, driven only by committed JSON fixtures, and capture scripted native light and dark screenshots of each state from a test target. No hand-clicking, no microphone, no live analysis, no scoring.
 
 ## Behaviour
 
@@ -18,6 +18,36 @@ Render every milestone-1 UI state from Designer's spec v2 and Addendum r2, drive
 - The selected sidebar phrase in the four mocked states is "Photography is harder than it looks." under My Phrases, subtitle "My Phrases · From demo-talk.m4a", as in the final2 mockups.
 
 ### Addendum rules that win over earlier sections
+
+**Addendum r3 (wins over everything below where they differ):**
+
+- **B1 inferenceFailed:** "Something went wrong inside Accent Mirror while {stage}. This isn't about your take." (§13 item 2).
+- **B2 italics:** the real bundled Geist Italic, never a synthetic slant. Geist Mono Italic is not used or bundled.
+- **B3 mistakes in card-1 sentences (§10):** bold caps in mistake blue only, no triangle and no dotted underline; the
+  word order carries it ("Stress TOG, not PHO"). The triangle and dotted underline go only on strip row labels. This
+  narrows §4.3.
+- **B4 placement marker:** only on a high-confidence result with your stress outside the accepted set (A5); never on
+  inconclusive or noClearDifference, where your row follows what was heard with no marker.
+- **B5 noClearDifference:** the first §13 item 1 reason that applies (in the order pitchShapeBelowClose,
+  optionalMeasuresUnavailable, mediumConfidenceOnly, timingRough) gives its full sentence. Only when none applies is it
+  the bare "No clear difference in stress or rhythm.". Always `equal.circle` in secondary, the first row in card 1,
+  above any A6 quiet line.
+- **B6 your unstressed bars:** `strip.you`, rgba(28,26,23,0.50) light and rgba(247,244,238,0.58) dark (final2 values).
+  Native unstressed bars and inserted words stay `strip.bar`.
+- **B7 take-problem YOU row:** a flat waveform, one cluster per syllable, with a caption centred under it in Geist 12 /
+  400 secondary: too quiet "Too quiet to measure", clipped "Too loud to measure" (bars cut flat at the top), too short
+  "Too short to measure", words don't match "Words didn't match the phrase". Too short and words don't match use the
+  same near-silent waveform as too quiet.
+- **B8 wordsDontMatch:** playable but not saved; the take menu reads "LAST TRY · NOT SAVED" (extends A7).
+- **B9 no pitch:** "No pitch to show for this take" has no backing. It is centred horizontally in the pitch plot, its
+  baseline 8 pt above the bottom of the plot, in Geist 12 / 400 secondary, in both themes.
+- **B10 final-direction icons:** `arrow.up.right` for "End higher, the way the model does." and `arrow.down.right` for
+  "End lower, the way the model does.".
+- **B11 fixtures:** each row fixture's charts show its own difference, from its own take (never the close-match take):
+  range a flatter line, final direction a different ending, contrast weaker or stronger stressed bars. Missing-word
+  copy uses words from the fixture's own phrase.
+
+**Addendum r2:**
 
 - **Recording bars (A3):** while recording, live bars use `strip.bar` (neutral). Lime appears only on the 2 pt playhead, the "● RECORDING 0:02" label, and the Stop button itself. The card 1 mic icon is secondary. This supersedes "bars draw live in Lime" in Designer spec v2 §7.
 - **Close sentence (A4):** the close row names only what was actually evaluated for this take. It never claims a dimension that was `notApplicable` or `unavailable`.
@@ -63,7 +93,7 @@ Each bullet is at least one fixture. Light and dark screenshots are required for
 13. `feedback-quiet-priority` — a take that has insertions, incomplete non-target words, and a partial count; only the insertions line shows in card 1; the inspector lists all three.
 14. `placement-only-too-few-unstressed` — info line "This phrase gets stress placement feedback only. It's too short to compare strong and weak syllables."
 
-**noClearDifference** (card 1 titled "WHAT TO CHANGE", icon `equal.circle`, secondary). Show the first reason; inspector lists all present:
+**noClearDifference** (card 1 titled "WHAT TO CHANGE", icon `equal.circle`, secondary). Show the first §13 item 1 reason's full sentence; the bare "No clear difference in stress or rhythm." only when none applies (r3 B5). The inspector lists all present:
 
 15. `ncd-pitchShapeBelowClose` — "No clear difference in stress or rhythm. Your pitch moves a little differently from the model's, but not in one place we can point to."
 16. `ncd-optionalMeasuresUnavailable` — "No clear difference in stress or rhythm. Some pitch measures couldn't be taken on this take."
@@ -74,9 +104,9 @@ Each bullet is at least one fixture. Light and dark screenshots are required for
 
 **inconclusive** (icon `questionmark.circle`, secondary; Try Again unless noted; no blue, no take-problem styling):
 
-21. `inc-targetWordsMissing-one` — "We didn't hear "explained", so we can't check its stress. Say the whole phrase and try again."
-22. `inc-targetWordsMissing-two` — two words, "explained" and "rainbow".
-23. `inc-targetWordsMissing-many` — "some of the key words".
+21. `inc-targetWordsMissing-one` — "We didn't hear "harder", so we can't check its stress. Say the whole phrase and try again." Your strip has a missing slot for "harder" (r3 B11).
+22. `inc-targetWordsMissing-two` — two words, "harder" and "looks", each with its missing slot.
+23. `inc-targetWordsMissing-many` — "some of the key words" (photography, harder and looks are missing from the take).
 24. `inc-timingUnreliable` — "We couldn't line your take up with the model well enough to compare. Try again at an even pace."
 25. `inc-comparableCoverageLow` — "Only part of your take lined up with the model (about 55%). Say the whole phrase in one go." The % is rounded to 5 and comes from the fixture.
 26. `inc-requiredMeasureUnavailable` — "We couldn't measure stress on this take. Try again a little louder and closer to the mic."
@@ -88,9 +118,9 @@ Each bullet is at least one fixture. Light and dark screenshots are required for
 29. `tp-noMicrophone` — Record disabled, no Try Again.
 30. `tp-micDenied` — "Open System Settings…" (the button may be inert in fixtures).
 31. `tp-noSpeech`
-32. `tp-tooShort` — You enabled if the fixture says audio is present; take menu "LAST TRY · NOT SAVED".
+32. `tp-tooShort` — You enabled if the fixture says audio is present; take menu "LAST TRY · NOT SAVED". Your row is the too-quiet near-silent waveform captioned "Too short to measure" (r3 B7).
 33. `tp-clipped` — same unsaved-attempt menu rule.
-34. `tp-wordsDontMatch`
+34. `tp-wordsDontMatch` — playable, take menu "LAST TRY · NOT SAVED" (r3 B8); your row is the too-quiet near-silent waveform captioned "Words didn't match the phrase" (r3 B7).
 
 (`tooQuiet` is already item 4.)
 
@@ -114,12 +144,12 @@ Each bullet is at least one fixture. Light and dark screenshots are required for
 47. `stress-like-p311` — placement row "Stress TOG, not PHO: phoTOGraphy, like p311 says it." Marker only on the syllable after "not".
 48. `stress-lowConfidence` — no row, no marker; inspector "photography: not clear enough to check."
 49. `unalignable` — take menu "TAKE 02" plus "NOT COMPARABLE" in Geist Mono tertiary; card 1 "This take was recorded for the old wording, so it can't be compared." No Try Again. Your strip is plain grey bars with no labels; pitch is native only. Play You looks enabled.
-50. `noVoicedFrames` — native band as usual, "No pitch to show for this take" centred in Geist 12 secondary. Inspector pitch measures show "—", never zero, with "Not measured: too little voicing".
+50. `noVoicedFrames` — native band as usual, "No pitch to show for this take" with no backing, centred horizontally, its baseline 8 pt above the bottom of the plot, in Geist 12 / 400 secondary (r3 B9). Inspector pitch measures show "—", never zero, with "Not measured: too little voicing".
 51. `rough-timing-first` — rough-timing row first, at most 3 rows in total.
 52. `inspector-open` — Details inspector visible, listing measure states (`evaluated` / `unavailable` / `notApplicable` with reasons), STRESS lines, and save state when the take is not saved.
 53. `coming-soon-expanded` — Noun and Verb Pairs expanded to the non-selectable "No phrases yet…" line.
 
-Diff-row kinds, order, icons and sentences that are not already covered by the result mockup (range, final direction, too much contrast) each have a fixture so their copy can be screenshotted.
+Diff-row kinds, order, icons and sentences that are not already covered by the result mockup (range, final direction, too much contrast) each have a fixture so their copy can be screenshotted. Each of those fixtures draws its own take, so the charts agree with the sentence (r3 B11): `rows-range` a flatter YOU line and smaller HAR and LOOKS bars (it also carries the too-little-contrast row); `rows-final-direction-higher` an ending that falls where the native rises; `rows-final-direction-lower` an ending that rises where the native falls; `rows-too-much-contrast` bigger HAR and LOOKS bars. The final-direction icon is `arrow.up.right` for "End higher" and `arrow.down.right` for "End lower" (r3 B10).
 
 Hover ghosts, Option-to-show-earlier-takes, and the 150 ms voice-switch ease may be still in 19 (a fixture that *would* show ghosts is enough if the still cannot animate). They are finished in spec 20. The recording playhead must be visible in the `recording` screenshots. Interpolated pitch (45% opacity, 1.5 pt) and breaks at pauses over 250 ms / `modelOnly` / `youOnly` should already follow Designer spec v2 §9 and §13.7 when the fixture provides that geometry, so the written states are honest.
 
@@ -132,7 +162,7 @@ Hover ghosts, Option-to-show-earlier-takes, and the 150 ms voice-switch ease may
 
 ### Visual and copy rules already in spec 18 that this shell must keep
 
-Tokens, fonts, grain, sidebar selection (pick B), secondary pack headers, contrast, no red/purple/gold/amber, disabled buttons as no fill plus tertiary text, and the wordmark all still apply. A mistake is always blue + triangle + dotted underline together. Dictionary / accepted stress is caps labels; measured prominence is bar height and Lime.
+Tokens, fonts, grain, sidebar selection (pick B), secondary pack headers, contrast, no red/purple/gold/amber, disabled buttons as no fill plus tertiary text, and the wordmark all still apply. On a strip row label a mistake is always blue + triangle + dotted underline together; inside a card-1 sentence it is bold caps in mistake blue only, as in §10 (r3 B3). Dictionary / accepted stress is caps labels; measured prominence is bar height and Lime.
 
 ## Defaults
 
@@ -205,15 +235,37 @@ Addendum A5 says: "A(w) = the context-compatible dictionary pronunciation plus t
   - noClearDifference always has its `equal.circle` row. When only quiet-line reasons are present it uses the
     shared §13.1 stem, "No clear difference in stress or rhythm.", and the quiet line sits under it.
   - Your unstressed bars use the new `stripBarYou` token: rgba(28,26,23,0.50) light, rgba(242,239,233,0.60) dark,
-    sampled from `mockup-result-dark-final2`.
+    sampled from `mockup-result-dark-final2` (dark replaced by the r3 B6 value in round 3).
   - A take problem with audio draws the take grouped by syllable: near-silent for too quiet ("Too quiet to
-    measure"), cut flat for clipped ("Too loud to measure"), plain grey for too short and words don't match. The
+    measure"), cut flat for clipped ("Too loud to measure"), plain grey for too short and words don't match (both near-silent and captioned since round 3). The
     take menu reads LAST TRY · NOT SAVED.
-  - "No pitch to show for this take" sits on a card-coloured backing.
-  - Heard words use the real Geist italics, and the inferenceFailed stage is typed.
+  - "No pitch to show for this take" sits on a card-coloured backing (removed in round 3, r3 B9).
+  - Heard words use the real Geist italics, and the inferenceFailed stage is typed. (Round 3 dropped the unused Geist
+    Mono italic.)
   - The `AccentMirror` scheme's Test action runs `AccentMirror.xctestplan` (the AccentKit unit tests, the shell
     contract tests and the screenshot renderer). It launches the app as a test host, so it runs in CI or the test
     VM, never on Raph's desktop.
   - The "Fixture <name>" schemes run the app on one fixture. A pre-build phase fails with "project.yml changed:
     run make generate" when the generated project is stale.
   - Committed screenshots shrank from 29.4 MiB to 6.9 MiB (`docs/screenshots/ui-shell/README.md`).
+- **Fixes round 3 (2026-11-23).** After the Designer's final batch and Addendum r3 (B1–B11):
+  - noClearDifference: the first applicable §13 item 1 reason's full sentence wins; the bare stem only when none
+    applies (B5). The code already did this; `ShellContractTests` now pins each reason alone, the order when several
+    apply, and the none-applies case.
+  - "No pitch to show for this take" has no backing: centred, baseline 8 pt above the bottom of the plot
+    (`Metrics.noPitchBaselineInset`), Geist 12 secondary (B9).
+  - Too short and words don't match draw the too-quiet near-silent waveform, captioned "Too short to measure" and
+    "Words didn't match the phrase" (B7). Captions stay secondary.
+  - `GeistMono-Italic[wght].ttf` is deleted with every reference to it; mono labels stay upright (B2).
+  - Card-1 sentences show a mistake as bold blue caps only; the triangle and dotted underline stay on strip labels
+    (B3). The code already did this; a test pins it.
+  - Dark `stripBarYou` is rgba(247,244,238,0.58) (B6).
+  - The final-direction icon follows the direction (B10).
+  - Row fixtures draw their own takes (B11): `photography-take04-flat` (rows-range), `-end-falls` with the phrase
+    variant `photography-rising-end` (rows-final-direction-higher), `-end-rises` (rows-final-direction-lower) and
+    `-strong-contrast` (rows-too-much-contrast). There is no separate too-little-contrast fixture: the contrast row
+    ("Make HAR and LOOKS stronger…") shows in `result-feedback` (take 03, already its own take) and `rows-range`.
+  - The targetWordsMissing fixtures name words of "Photography is harder than it looks." and their takes have the
+    matching missing slots and pitch breaks: "harder" (`-missing-harder`), "harder" and "looks"
+    (`-missing-harder-looks`), and photography, harder and looks for `-many` (`-missing-three`).
+  - Renders come from the test VM (`make screenshots-vm`), never the host.
