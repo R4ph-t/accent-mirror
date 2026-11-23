@@ -61,6 +61,10 @@ band-coverage metric.
 - With spec 02's harness, the positive-set report gains **band coverage: median over pairs ≥ 80%** (§6.7, "as in the
   first v2") on the 12 held-out VCTK speakers. A FAIL goes to CTO with the numbers; nothing is tuned on held-out
   clips.
+- **This gate consumes the positive-set result, so it is blocked on spec 24** (CTO ruling, 2026-11-23 14:18). While
+  spec 02's positive set reads NOT EVALUATED (15 phrases against ≥ 18), band coverage prints NOT EVALUATED (blocked
+  on spec 24). That's never a pass and never a waiver. The smoke-set golden below isn't affected. "12 held-out" is a
+  floor (≥ 12; the manifest records the actual count).
 
 ## Defaults
 
