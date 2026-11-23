@@ -1,4 +1,5 @@
 import AMAlignment
+import AMCore
 import AMTimestampEval
 import Foundation
 import Testing
@@ -39,18 +40,27 @@ struct IdentityTests {
         #expect(recipe == "\(SourceTree.hash(lsTree: lsTree))  -")
     }
 
-    @Test("configDigest is the SHA-256 of sorted, whitespace-free JSON with placeholder IDs")
-    func configDigest() throws {
-        let config = ConfigIdentity.spec03(asrModelID: "openai_whisper-base.en@c#12345678")
-        let digest = try ConfigDigest(config: config, thresholds: .plan)
-        #expect(digest.canonicalJSON.hasPrefix(#"{"config":{"algorithmVersion":1,"asrModelID":"openai_whisper-base.en@c#12345678","contractVersion":1,"pitchTrackerID":"none","thresholdsVersion":1,"voicingID":"none"},"thresholds":{"#))
-        #expect(!digest.canonicalJSON.contains(" "))
-        #expect(digest.canonicalJSON.contains(#""medianErrorMaxMs":40"#))
-        #expect(digest.canonicalJSON.contains(#""minShareWithinTolerance":0.85"#))
-        #expect(digest.sha256 == Digest.sha256(digest.canonicalJSON))
-        var lowered = TimestampGate.plan
-        lowered.medianErrorMaxMs = 45
-        #expect(try ConfigDigest(config: config, thresholds: lowered).sha256 != digest.sha256)
+    @Test("configDigest is AMCore's, over the identity with placeholder IDs and the full Thresholds")
+    func configDigestRecord() throws {
+        let config = ConfigIdentity.timestampFeasibility(asrModelID: "openai_whisper-base.en@c#12345678")
+        let record = try ConfigDigestRecord(config: config)
+        #expect(record.sha256 == (try configDigest(config)))
+        #expect(record.sha256 == Digest.sha256(record.canonicalJSON))
+        #expect(record.canonicalJSON.hasPrefix(#"{"config":{"algorithmVersion":1,"asrModelID":"openai_whisper-base.en@c#12345678","contractVersion":1,"pitchTrackerID":"none","thresholdsVersion":1,"voicingID":"none"},"thresholds":{"#))
+        #expect(record.canonicalJSON.contains(#""wordTimestamps":{"medianErrorMaxMs":40,"withinToleranceMs":80,"withinToleranceShareMin":0.85}"#))
+        var lowered = Thresholds.current
+        lowered.wordTimestamps.medianErrorMaxMs = 45
+        #expect(try ConfigDigestRecord(config: config, thresholds: lowered).sha256 != record.sha256)
+    }
+
+    @Test("The gate reads the plan's numbers from Thresholds")
+    func gateFromThresholds() {
+        let gate = TimestampGate.plan
+        #expect(gate.medianErrorMaxMs == 40)
+        #expect(gate.toleranceMs == 80)
+        #expect(gate.minShareWithinTolerance == 0.85)
+        #expect(gate.spanPaddingMs == Thresholds.current.alignment.asrPaddingMs)
+        #expect(gate.asrWarmBudgetMs == Thresholds.current.performance.asrWarmMs)
     }
 
     @Test("The corpus manifest hash depends on the files, not their order")
@@ -87,8 +97,8 @@ struct EvaluationSetTests {
 struct ReportTests {
     static func report(accuracy: AccuracyResult?, asrMs: [Double]) throws -> TimestampReport {
         let manifest = try ModelManifest(contentsOf: repoRoot.appending(path: "Resources/Models/openai_whisper-base.en/manifest.json"))
-        let config = ConfigIdentity.spec03(asrModelID: manifest.asrModelID)
-        let digest = try ConfigDigest(config: config, thresholds: .plan)
+        let config = ConfigIdentity.timestampFeasibility(asrModelID: manifest.asrModelID)
+        let digest = try ConfigDigestRecord(config: config)
         return TimestampReport(
             generatedAt: Date(timeIntervalSince1970: 0),
             identity: .init(config: config, configDigest: digest, corpusManifestHash: "c", labelHash: nil,
@@ -96,8 +106,8 @@ struct ReportTests {
                             toolchain: .init(xcode: "Xcode", swift: "Swift", macOS: "26", hardware: "M", runnerImage: nil)),
             model: .init(manifest: manifest, decoding: "greedy", shippingModel: manifest.model),
             baseline: nil,
-            corpus: .init(name: "VCTK 0.92", archiveSHA256: nil, clips: 159, speakers: [], textIDs: [], audio: "",
-                          attribution: ""),
+            corpus: .init(name: "VCTK 0.92", archiveSHA256: nil, specifiedClips: 159, absentClips: ["p227_007"],
+                          clips: 158, speakers: [], textIDs: [], audio: "", attribution: ""),
             gate: .plan, accuracy: accuracy,
             timing: .init(verifyMs: 1, loadMs: 2, asrMs: asrMs, clipSeconds: [3], budgetMs: 900),
             comparator: .init(name: "SpeechAnalyzer", status: "comparator not present", locale: "en_US",
@@ -115,6 +125,8 @@ struct ReportTests {
         #expect(markdown.contains(report.identity.sourceTreeHash))
         #expect(markdown.contains(report.identity.configDigest))
         #expect(markdown.contains("comparator not present"))
+        #expect(markdown.contains("158 of 159 specified clips"))
+        #expect(markdown.contains("p227_007"))
     }
 
     @Test("Cold and warm ASR times are split, and a warm median over 900 ms fails the budget")

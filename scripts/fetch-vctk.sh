@@ -7,7 +7,8 @@
 #
 # Pins (spec 03, Open question 2): the first fetch records the archive digest in
 # fixtures/vctk/vctk-0.92-archive.sha256 and the extracted files' digests in fixtures/vctk/vctk-0.92-clips.sha256.
-# Every later fetch must match both, or it fails and keeps nothing.
+# Every later fetch must match both, or it fails and keeps nothing. Clips the archive does not contain are listed
+# and left out of the pins; the evaluation reports them as absent.
 #
 # VCTK 0.92 is CC BY 4.0 (Yamagishi, Veaux, MacDonald, University of Edinburgh CSTR). Audio is never committed.
 set -euo pipefail
@@ -40,11 +41,29 @@ mkfifo "$work/stream"
 shasum -a 256 < "$work/stream" | cut -d' ' -f1 > "$work/archive.sha256" &
 hasher=$!
 
-echo "fetch-vctk: streaming $url (about 11 GB), extracting ${#patterns[@]} files"
-curl -fsSL --retry 3 "$url" | tee "$work/stream" | bsdtar -xf - -C "$work/out" "${patterns[@]}"
+echo "fetch-vctk: streaming $url (about 11 GB), extracting up to ${#patterns[@]} files"
+# bsdtar reads the whole stream and exits 1 if a requested member is absent; absent clips are reported below,
+# so only the download and the digest must succeed.
+set +e
+curl -fsSL --retry 3 "$url" | tee "$work/stream" | bsdtar -xf - -C "$work/out" "${patterns[@]}" 2> "$work/bsdtar.log"
+status=("${PIPESTATUS[@]}")
+set -e
 wait "$hasher"
+if [[ "${status[0]}" != 0 || "${status[1]}" != 0 ]]; then
+  echo "fetch-vctk: download failed (curl ${status[0]}, tee ${status[1]})" >&2
+  exit 1
+fi
+if grep -v "Not found in archive" "$work/bsdtar.log" | grep -v "Error exit delayed" | grep -q .; then
+  cat "$work/bsdtar.log" >&2
+  exit 1
+fi
 digest="$(cat "$work/archive.sha256")"
 echo "fetch-vctk: archive SHA-256 $digest"
+
+present=()
+for pattern in "${patterns[@]}"; do
+  if [[ -f "$work/out/$pattern" ]]; then present+=("$pattern"); else echo "fetch-vctk: not in VCTK 0.92: $pattern"; fi
+done
 
 if [[ -f "$archive_pin" ]]; then
   pinned="$(cut -d' ' -f1 "$archive_pin")"
@@ -63,10 +82,10 @@ if [[ -f "$files_pin" ]]; then
     exit 1
   }
 else
-  (cd "$work/out" && printf '%s\n' "${patterns[@]}" | LC_ALL=C sort | xargs shasum -a 256) > "$files_pin"
-  echo "fetch-vctk: first fetch, recorded ${#patterns[@]} file digests in ${files_pin#"$root"/}"
+  (cd "$work/out" && printf '%s\n' "${present[@]}" | LC_ALL=C sort | xargs shasum -a 256) > "$files_pin"
+  echo "fetch-vctk: first fetch, recorded ${#present[@]} file digests in ${files_pin#"$root"/}"
 fi
 
 rm -rf "$dest"
 mv "$work/out" "$dest"
-echo "fetch-vctk: OK, ${#patterns[@]} files in $dest ($(du -sh "$dest" | cut -f1))"
+echo "fetch-vctk: OK, ${#present[@]} of ${#patterns[@]} files in $dest ($(du -sh "$dest" | cut -f1))"

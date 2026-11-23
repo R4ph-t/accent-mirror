@@ -93,7 +93,10 @@ struct FixtureTimestamperTests {
         let timestamper = try FixtureTimestamper(directory: committedReplay)
         let manifest = try ModelManifest(contentsOf: baseEnManifestURL)
         #expect(timestamper.asrModelID == manifest.asrModelID)
-        #expect(timestamper.clipIDs.count == 159)
+        // One recording per clip the pinned VCTK fetch holds (some specified clips are not in VCTK 0.92).
+        let pinnedClips = try String(contentsOf: repoRoot.appending(path: "fixtures/vctk/vctk-0.92-clips.sha256"),
+                                     encoding: .utf8).split(separator: "\n").filter { $0.hasSuffix("_mic1.flac") }
+        #expect(timestamper.clipIDs.count == pinnedClips.count)
         let words = try await timestamper.wordTimestamps(for: TimestampRequest(clipID: "p225_002", samples: []))
         #expect(!words.isEmpty)
         #expect(words.allSatisfy { $0.start <= $0.end && (0...1).contains($0.probability) })

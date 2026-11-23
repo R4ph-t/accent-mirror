@@ -1,4 +1,5 @@
 import AMAlignment
+import AMCore
 import AMTimestampEval
 import Foundation
 
@@ -14,7 +15,7 @@ struct AMTimestamps {
           baseline      --clips F --mfa-output D --out F --mfa-version V --acoustic-model F --dictionary F --command S
                         Convert MFA JSON alignments into the committed word baseline.
           eval          --repo D --clips F --corpus D --manifest M --model-dir D --out D
-                        [--baseline F] [--archive-pin F] [--release] [--no-comparator]
+                        [--baseline F] [--archive-pin F] [--files-pin F] [--release] [--no-comparator]
                         Run WhisperKit, compare with the baseline, write the report. Exit 1 on FAIL; on a --release
                         run, exit 2 on a dirty tree and 3 on NOT EVALUATED.
           cancel-check  --clips F --corpus D --manifest M --model-dir D
@@ -56,18 +57,33 @@ struct AMTimestamps {
         return (timestamper, manifest, verifyMs, loadMs)
     }
 
-    static func clips(_ options: Options) throws -> [Clip] {
-        let clips = try Clip.load(list: try options.url("clips"), corpus: try options.url("corpus"))
-        for clip in clips where !FileManager.default.fileExists(atPath: clip.audio.path) {
-            throw ToolError.failed("missing \(clip.audio.path); run scripts/fetch-vctk.sh")
+    /// The specified clips, split into those on disk and those the archive does not contain. A clip is absent only
+    /// when `--files-pin` (the fetch's pinned file list) leaves it out; any other missing file is an error.
+    static func clips(_ options: Options) throws -> (present: [Clip], absent: [String]) {
+        let corpus = try options.url("corpus")
+        let clips = try Clip.load(list: try options.url("clips"), corpus: corpus)
+        let pinned: Set<String>? = try options.optional("files-pin").map { path in
+            Set(try String(contentsOf: URL(filePath: path), encoding: .utf8).split(separator: "\n")
+                .compactMap { $0.split(separator: " ", maxSplits: 1).last.map { $0.trimmingCharacters(in: .whitespaces) } })
         }
-        return clips
+        var present: [Clip] = [], absent: [String] = []
+        for clip in clips {
+            if FileManager.default.fileExists(atPath: clip.audio.path) {
+                present.append(clip)
+            } else if let pinned, !pinned.contains(String(clip.audio.path.dropFirst(corpus.path.count + 1))) {
+                absent.append(clip.id)
+            } else {
+                throw ToolError.failed("missing \(clip.audio.path); run scripts/fetch-vctk.sh")
+            }
+        }
+        if !absent.isEmpty { log("not in the archive, skipped: \(absent.joined(separator: ", "))") }
+        return (present, absent)
     }
 
     // MARK: - record
 
     static func record(_ options: Options) async throws -> Int32 {
-        let clips = try clips(options)
+        let clips = try clips(options).present
         let out = try options.url("out")
         let (timestamper, manifest, _, _) = try await loadTimestamper(options)
         try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
@@ -144,7 +160,8 @@ struct AMTimestamps {
                 "\(ProcessInfo.processInfo.environment["ImageOS"] ?? "") \($0)"
             })
 
-        let clips = try clips(options)
+        let (clips, absentClips) = try clips(options)
+        let specifiedClips = clips.count + absentClips.count
         let transcripts = try clips.map { try $0.text() }
         let corpusHash = CorpusHash.hash(fileSHA256s: try clips.map { try Digest.sha256(fileAt: $0.audio) })
         let archivePin = try options.optional("archive-pin").map {
@@ -219,8 +236,8 @@ struct AMTimestamps {
             }
         }
 
-        let config = ConfigIdentity.spec03(asrModelID: manifest.asrModelID)
-        let digest = try ConfigDigest(config: config, thresholds: .plan)
+        let config = ConfigIdentity.timestampFeasibility(asrModelID: manifest.asrModelID)
+        let digest = try ConfigDigestRecord(config: config)
         let timing = TimestampReport.Timing(verifyMs: verifyMs, loadMs: loadMs, asrMs: asrMs, clipSeconds: clipSeconds,
                                             budgetMs: TimestampGate.plan.asrWarmBudgetMs)
         if timing.budgetOutcome == .fail {
@@ -228,7 +245,9 @@ struct AMTimestamps {
         }
         notes.append("Clips are the official VCTK 0.92 wav48_silence_trimmed mic1 files, untrimmed by this spec: no shared 02/15 trim exists yet.")
         notes.append("Comparable tokens: the longest in-order match of normalised words (lower case, punctuation stripped) against the transcript's phrase tokens, on each side. Padded spans are not clamped to the clip.")
-        notes.append("configDigest covers ConfigIdentity plus the spec 03 gate (TimestampGate); spec 01's full Thresholds does not exist yet, so the digest changes when it lands.")
+        if !absentClips.isEmpty {
+            notes.append("\(absentClips.count) of the \(specifiedClips) specified clips are not in the VCTK 0.92 archive (\(absentClips.joined(separator: ", "))). They are reported, not replaced.")
+        }
         let report = TimestampReport(
             generatedAt: Date(),
             identity: .init(config: config, configDigest: digest, corpusManifestHash: corpusHash,
@@ -238,7 +257,8 @@ struct AMTimestamps {
                          decoding: "greedy (temperature 0, WhisperKit fallback), English, word timestamps",
                          shippingModel: timing.budgetOutcome == .fail ? "openai_whisper-tiny.en (fallback, not yet gated)" : manifest.model),
             baseline: baseline?.aligner,
-            corpus: .init(name: "VCTK 0.92", archiveSHA256: archivePin, clips: clips.count,
+            corpus: .init(name: "VCTK 0.92", archiveSHA256: archivePin, specifiedClips: specifiedClips,
+                          absentClips: absentClips, clips: clips.count,
                           speakers: Array(Set(clips.map(\.speaker))).sorted(),
                           textIDs: Array(Set(clips.map { String($0.id.split(separator: "_")[1]) })).sorted(),
                           audio: "wav48_silence_trimmed/<speaker>/<speaker>_<text>_mic1.flac, as published",
@@ -263,7 +283,7 @@ struct AMTimestamps {
     // MARK: - cancel-check
 
     static func cancelCheck(_ options: Options) async throws -> Int32 {
-        let clips = try clips(options)
+        let clips = try clips(options).present
         let (timestamper, _, _, _) = try await loadTimestamper(options)
         let first = try WhisperKitTimestamper.samples(fromFileAt: clips[0].audio)
         _ = try await timestamper.transcribe(TimestampRequest(clipID: clips[0].id, samples: first))

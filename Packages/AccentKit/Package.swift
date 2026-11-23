@@ -44,9 +44,9 @@ let package = Package(
         ]
     } + [
         // Local evaluation tooling (spec 03): never linked into the app, never run by CI.
-        .target(name: "AMTimestampEval", dependencies: ["AMAlignment"]),
-        .testTarget(name: "AMTimestampEvalTests", dependencies: ["AMTimestampEval"]),
-        .executableTarget(name: "am-timestamps", dependencies: ["AMTimestampEval", "AMAlignment"]),
+        .target(name: "AMTimestampEval", dependencies: ["AMCore", "AMAlignment"]),
+        .testTarget(name: "AMTimestampEvalTests", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),
+        .executableTarget(name: "am-timestamps", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),
     ],
     swiftLanguageModes: [.v6]
 )

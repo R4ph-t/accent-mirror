@@ -1,4 +1,5 @@
 import AMAlignment
+import AMCore
 import Foundation
 
 /// The spec 03 timestamp-feasibility report (`docs/agreement/reports/timestamp-feasibility-<configDigest8>.{json,md}`).
@@ -25,6 +26,7 @@ public struct TimestampReport: Codable, Sendable {
         public var config: ConfigIdentity
         public var configCanonicalJSON: String
         public var configDigest: String
+        public var configDigestRecipe: String
         public var corpusManifestHash: String
         public var corpusManifestRecipe: String
         /// SHA-256 of the committed baseline file; `nil` when there is no baseline.
@@ -36,12 +38,13 @@ public struct TimestampReport: Codable, Sendable {
         public var cleanTree: Bool
         public var toolchain: Toolchain
 
-        public init(config: ConfigIdentity, configDigest: ConfigDigest, corpusManifestHash: String,
+        public init(config: ConfigIdentity, configDigest: ConfigDigestRecord, corpusManifestHash: String,
                     labelHash: String?, labelFile: String?, sourceTreeHash: String, evaluatedCommit: String,
                     cleanTree: Bool, toolchain: Toolchain) {
             self.config = config
             self.configCanonicalJSON = configDigest.canonicalJSON
             self.configDigest = configDigest.sha256
+            self.configDigestRecipe = ConfigDigestRecord.recipe
             self.corpusManifestHash = corpusManifestHash
             self.corpusManifestRecipe = CorpusHash.recipe
             self.labelHash = labelHash
@@ -80,16 +83,23 @@ public struct TimestampReport: Codable, Sendable {
     public struct Corpus: Codable, Sendable {
         public var name: String
         public var archiveSHA256: String?
+        /// Clips in the specified evaluation set (`fixtures/vctk/starter-clips.txt`).
+        public var specifiedClips: Int
+        /// Specified clips the archive does not contain; they are not evaluated.
+        public var absentClips: [String]
+        /// Clips evaluated.
         public var clips: Int
         public var speakers: [String]
         public var textIDs: [String]
         public var audio: String
         public var attribution: String
 
-        public init(name: String, archiveSHA256: String?, clips: Int, speakers: [String], textIDs: [String],
-                    audio: String, attribution: String) {
+        public init(name: String, archiveSHA256: String?, specifiedClips: Int, absentClips: [String], clips: Int,
+                    speakers: [String], textIDs: [String], audio: String, attribution: String) {
             self.name = name
             self.archiveSHA256 = archiveSHA256
+            self.specifiedClips = specifiedClips
+            self.absentClips = absentClips
             self.clips = clips
             self.speakers = speakers
             self.textIDs = textIDs
@@ -243,8 +253,8 @@ extension TimestampReport {
         md.append("```sh")
         md.append("# sourceTreeHash")
         md.append(identity.sourceTreeRecipe.replacingOccurrences(of: "<commit>", with: identity.evaluatedCommit))
-        md.append("# configDigest: SHA-256 of the canonical JSON below (no trailing newline)")
-        md.append("printf '%s' '\(identity.configCanonicalJSON)' | shasum -a 256")
+        md.append("# configDigest: SHA-256 of identity.configCanonicalJSON in the JSON report (no trailing newline)")
+        md.append(identity.configDigestRecipe.replacingOccurrences(of: "<report>", with: baseName))
         md.append("# corpus manifest hash, in the VCTK cache folder")
         md.append(identity.corpusManifestRecipe)
         md.append("```")
@@ -275,7 +285,10 @@ extension TimestampReport {
         md.append("")
         md.append("## Corpus")
         md.append("")
-        md.append("- \(corpus.name), archive SHA-256 `\(corpus.archiveSHA256 ?? "not recorded")`; \(corpus.clips) clips; voices \(corpus.speakers.joined(separator: ", ")); texts \(corpus.textIDs.joined(separator: ", "))")
+        md.append("- \(corpus.name), archive SHA-256 `\(corpus.archiveSHA256 ?? "not recorded")`; \(corpus.clips) of \(corpus.specifiedClips) specified clips evaluated; voices \(corpus.speakers.joined(separator: ", ")); texts \(corpus.textIDs.joined(separator: ", "))")
+        if !corpus.absentClips.isEmpty {
+            md.append("- Not in the archive, so not evaluated: \(corpus.absentClips.joined(separator: ", ")) (no substitutes chosen)")
+        }
         md.append("- Audio: \(corpus.audio)")
         md.append("- \(corpus.attribution)")
         md.append("")

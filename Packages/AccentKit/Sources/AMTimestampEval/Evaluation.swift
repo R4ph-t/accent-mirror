@@ -1,8 +1,10 @@
 import AMAlignment
+import AMCore
 import Foundation
 
-/// The spec 03 word-boundary bars and the warm-ASR budget, verbatim from the plan (`docs/thresholds.md`).
-/// Never lowered quietly: a result under a bar goes back to CTO.
+/// The numbers the spec 03 gate reads, all from `Thresholds` (mirrored in `docs/thresholds.md`): the word-boundary
+/// bars, the ASR span padding (CTO decision 4) and the warm-ASR budget. Never lowered quietly: a result under a bar
+/// goes back to CTO.
 public struct TimestampGate: Codable, Sendable, Equatable {
     /// Median absolute boundary error must be at most this.
     public var medianErrorMaxMs: Double
@@ -10,13 +12,20 @@ public struct TimestampGate: Codable, Sendable, Equatable {
     public var toleranceMs: Double
     /// At least this share of boundaries must be within `toleranceMs`.
     public var minShareWithinTolerance: Double
-    /// Planned expansion of each Whisper word span on both sides (CTO decision 4). The gate uses padded spans.
+    /// Expansion of each Whisper word span on both sides. The gate uses padded spans (Open question 3 default).
     public var spanPaddingMs: Double
     /// Warm ASR budget; over it, `tiny.en` is the fallback.
     public var asrWarmBudgetMs: Double
 
-    public static let plan = TimestampGate(
-        medianErrorMaxMs: 40, toleranceMs: 80, minShareWithinTolerance: 0.85, spanPaddingMs: 80, asrWarmBudgetMs: 900)
+    public init(_ thresholds: Thresholds) {
+        medianErrorMaxMs = thresholds.wordTimestamps.medianErrorMaxMs
+        toleranceMs = thresholds.wordTimestamps.withinToleranceMs
+        minShareWithinTolerance = thresholds.wordTimestamps.withinToleranceShareMin
+        spanPaddingMs = thresholds.alignment.asrPaddingMs
+        asrWarmBudgetMs = thresholds.performance.asrWarmMs
+    }
+
+    public static let plan = TimestampGate(.current)
 }
 
 public enum Outcome: String, Codable, Sendable {

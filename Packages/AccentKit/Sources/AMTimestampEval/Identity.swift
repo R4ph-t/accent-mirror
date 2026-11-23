@@ -1,50 +1,42 @@
 import AMAlignment
+import AMCore
 import Foundation
 
-// Report identity (plan §6.6). Spec 01 owns `ConfigIdentity`, `CanonicalJSON` and `configDigest` in AMCore; it has
-// not landed, so this is the minimal local copy spec 01 says to replace ("If spec 03 lands first with its own copy,
-// this spec moves callers to the AMCore one and deletes the copy").
+// Report identity (plan §6.6). `ConfigIdentity`, `CanonicalJSON` and `configDigest` are spec 01's, in AMCore; this
+// file adds only what the timestamp report needs on top: the canonical JSON kept for recomputing by hand, the source
+// tree hash and the corpus hash.
 
-/// The analysis configuration identity. IDs this spec does not own are the explicit placeholder `none`.
-public struct ConfigIdentity: Codable, Sendable, Equatable {
-    public var algorithmVersion: Int
-    public var thresholdsVersion: Int
-    public var contractVersion: Int
-    public var asrModelID: String
-    public var pitchTrackerID: String
-    public var voicingID: String
-
-    /// Versions are spec 01's initial values (1, 1, 1); pitch tracker (spec 04) and voicing (spec 05) are not built.
-    public static func spec03(asrModelID: String) -> ConfigIdentity {
-        ConfigIdentity(algorithmVersion: 1, thresholdsVersion: 1, contractVersion: 1,
-                       asrModelID: asrModelID, pitchTrackerID: "none", voicingID: "none")
+extension ConfigIdentity {
+    /// Spec 03's identity: AMCore's current versions, the pinned ASR model, and the explicit placeholder `none` for
+    /// the pitch tracker (spec 04) and voicing (spec 05), which are not built yet.
+    public static func timestampFeasibility(asrModelID: String) -> ConfigIdentity {
+        ConfigIdentity(asrModelID: asrModelID, pitchTrackerID: "none", voicingID: "none")
     }
 }
 
-/// JSON with sorted keys, no whitespace, unescaped slashes, and Swift's shortest round-trip number formatting.
-public enum CanonicalJSON {
-    public static func string<T: Encodable>(_ value: T) throws -> String {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
-        return String(decoding: try encoder.encode(value), as: UTF8.self)
-    }
-}
-
-/// `configDigest`: SHA-256 of the canonical JSON of `ConfigIdentity` plus the thresholds.
-/// Until spec 01's full `Thresholds` exists, the thresholds part is the spec 03 gate (`TimestampGate`).
-public struct ConfigDigest: Codable, Sendable, Equatable {
+/// AMCore's `configDigest` together with the canonical JSON it hashes, so a reader can recompute it by hand.
+public struct ConfigDigestRecord: Codable, Sendable, Equatable {
     public var canonicalJSON: String
     public var sha256: String
 
-    private struct Input: Encodable {
-        var config: ConfigIdentity
-        var thresholds: TimestampGate
+    /// The same `{config, thresholds}` value `configDigest` hashes.
+    private struct Digested: Encodable {
+        let config: ConfigIdentity
+        let thresholds: Thresholds
     }
 
-    public init(config: ConfigIdentity, thresholds: TimestampGate) throws {
-        canonicalJSON = try CanonicalJSON.string(Input(config: config, thresholds: thresholds))
-        sha256 = Digest.sha256(canonicalJSON)
+    public init(config: ConfigIdentity, thresholds: Thresholds = .current) throws {
+        canonicalJSON = String(decoding: try CanonicalJSON.encode(Digested(config: config, thresholds: thresholds)),
+                               as: UTF8.self)
+        sha256 = try configDigest(config, thresholds: thresholds)
+        guard Digest.sha256(canonicalJSON) == sha256 else {
+            throw ModelVerificationError.manifestInconsistent(computed: Digest.sha256(canonicalJSON), recorded: sha256)
+        }
     }
+
+    /// The shell recipe, for recomputing by hand from the report JSON.
+    public static let recipe =
+        #"printf '%s' "$(plutil -extract identity.configCanonicalJSON raw -o - <report>.json)" | shasum -a 256"#
 }
 
 public enum SourceTree {

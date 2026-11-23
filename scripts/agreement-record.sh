@@ -12,6 +12,7 @@ model="openai_whisper-base.en"
 "$root/scripts/am-timestamps.sh" record \
   --clips "$root/fixtures/vctk/starter-clips.txt" \
   --corpus "${VCTK_CACHE:-$root/.cache/vctk}/VCTK-Corpus-0.92" \
+  --files-pin "$root/fixtures/vctk/vctk-0.92-clips.sha256" \
   --manifest "$root/Resources/Models/$model/manifest.json" \
   --model-dir "${MODELS_CACHE:-$root/.cache/models}/$model" \
   --out "$root/fixtures/timestamps/$model"

@@ -25,6 +25,7 @@ fi
   --repo "$root" \
   --clips "$root/fixtures/vctk/starter-clips.txt" \
   --corpus "${VCTK_CACHE:-$root/.cache/vctk}/VCTK-Corpus-0.92" \
+  --files-pin "$root/fixtures/vctk/vctk-0.92-clips.sha256" \
   --archive-pin "$root/fixtures/vctk/vctk-0.92-archive.sha256" \
   --baseline "$root/fixtures/vctk/mfa-word-baseline.json" \
   --manifest "$root/Resources/Models/$model/manifest.json" \

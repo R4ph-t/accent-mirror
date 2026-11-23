@@ -25,6 +25,10 @@ mkdir -p "$work/corpus" "$work/aligned"
 while IFS= read -r clip; do
   [[ -z "$clip" || "$clip" == \#* ]] && continue
   speaker="${clip%%_*}"
+  if [[ ! -f "$corpus/wav48_silence_trimmed/$speaker/${clip}_mic1.flac" ]]; then
+    echo "mfa-align: $clip is not in the VCTK cache (absent from VCTK 0.92?), skipped"
+    continue
+  fi
   mkdir -p "$work/corpus/$speaker"
   ln -s "$corpus/wav48_silence_trimmed/$speaker/${clip}_mic1.flac" "$work/corpus/$speaker/$clip.flac"
   cp "$corpus/txt/$speaker/$clip.txt" "$work/corpus/$speaker/$clip.lab"
