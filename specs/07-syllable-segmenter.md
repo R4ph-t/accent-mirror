@@ -80,6 +80,11 @@ code nor spec 23's refiner.
    sets), and the MFA syllable-boundary bar below, run only once spec 23 has shipped a refiner. Until then, the report
    prints those lines as NOT EVALUATED (waiting on spec 23), which is not a pass. The code paths and the report shape
    are built now.
+   **CTO ruling, 2026-11-23 14:05:** the boundaries these gates run on are spec 23's b2 (`ctc-w2v2b960-1`), through
+   the same injected `WordSpan` source. A word below b2's CTC confidence threshold arrives with probability 0, so
+   it is inconclusive under the existing c_w rule. The oracle-vs-b2 comparison harness (the downstream ship gate for
+   b2) is in **spec 23**, which runs this segmenter. This spec doesn't import spec 23, and nothing here changes in
+   code.
 1. **Real-speech bar with MFA instead of hand labels.** The first v2 asked for 200+ hand-labelled VCTK held-out
    boundaries from ≥ 6 speakers, median ≤ 30 ms and ≥ 80% within 50 ms, with calibrated confidence. Raph dropped hand
    labels (09:14) and the row now says "MFA as a baseline". Default: Montreal Forced Aligner phone alignments of
