@@ -34,12 +34,24 @@ Neither licence file declares a Reserved Font Name.
 
 ## WhisperKit (MIT)
 
-Not yet bundled; notice added by spec 03.
+Linked into `AMAlignment` by spec 03 for on-device word timestamps, as a Swift package pinned to release 1.1.1
+(commit `1bbc57cb7fe6410248a685b1c5a3c6d56adc2ed4`), `https://github.com/argmaxinc/WhisperKit`. Its own dependency
+swift-argument-parser (Apple, Apache-2.0) is resolved but not linked by AccentKit.
+
+- Copyright: "Copyright (c) 2024 argmax, inc.", as in the package's `LICENSE`.
+- Licence: MIT.
 
 ## Whisper base.en Core ML weights
 
-Not yet bundled; notice added by spec 03. The weights' LICENSE/NOTICE will also live next to their manifest in
-`Resources/Models/`.
+Not committed and not yet bundled with the app (bundling waits for the licence check). Fetched by
+`scripts/fetch-models.sh` at pinned commits and SHA-256 checked against `Resources/Models/openai_whisper-base.en/manifest.json`;
+the full licence texts are in that folder's `LICENSE` and `NOTICE`.
+
+- Whisper base.en model: "Copyright (c) 2022 OpenAI", MIT (`https://github.com/openai/whisper`).
+- Core ML conversion: `argmaxinc/whisperkit-coreml` at commit `0f63a7800b00dd0226abd051b906c246e1907482`, model card
+  licence MIT.
+- Tokenizer files: `openai/whisper-base.en` at commit `911407f4214e0e1d82085af863093ec0b66f9cd6`, model card licence
+  Apache-2.0.
 
 ## CMUdict (BSD-style)
 

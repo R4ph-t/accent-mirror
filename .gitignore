@@ -65,3 +65,6 @@ fastlane/test_output
 *.xcodeproj/
 eval-local/
 /screenshots/
+
+# Local caches (spec 03): model weights, VCTK clips, MFA. Never committed.
+/.cache/
