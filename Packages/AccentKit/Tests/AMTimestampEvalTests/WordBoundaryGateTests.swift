@@ -67,3 +67,38 @@ struct WordBoundaryGateTests {
         #expect(bar.outcome == .fail)
     }
 }
+
+@Suite("Reference sanity check (CTO review)")
+struct ReferenceCheckTests {
+    @Test("per side: MFA minus the marker gives the median, the share within 80 ms and the mean signed error")
+    func perSideFigures() throws {
+        let markers = [BaselineWord(word: "Please", start: 0.10, end: 0.40),
+                       BaselineWord(word: "call", start: 0.40, end: 0.60),
+                       BaselineWord(word: "Stella.", start: 0.60, end: 1.00)]
+        // Starts off by −20, +30, −100 ms; ends by −40, +10, −200 ms.
+        let aligned = [BaselineWord(word: "please", start: 0.08, end: 0.36),
+                       BaselineWord(word: "call", start: 0.43, end: 0.61),
+                       BaselineWord(word: "stella", start: 0.50, end: 0.80)]
+        let check = ReferenceCheck.compare(
+            [.init(clipID: "tts_001", transcript: "Please call Stella.", markers: markers, aligned: aligned)],
+            voice: "v", aligner: "MFA", markerResolutionMs: 11.6)
+        #expect(check.phraseTokens == 3 && check.starts.n == 3 && check.ends.n == 3)
+        #expect(check.starts.medianAbsErrorMs == 30)
+        #expect(try #require(check.starts.shareWithinTolerance) == 2.0 / 3)
+        #expect(abs(try #require(check.starts.meanSignedErrorMs) - (-30)) < 1e-9)
+        #expect(check.ends.medianAbsErrorMs == 40)
+        #expect(abs(try #require(check.ends.meanSignedErrorMs) - (-230.0 / 3)) < 1e-9)
+        // "Stella." ends with punctuation, so the no-punctuation ends are the first two.
+        #expect(check.endsWithoutPunctuation.n == 2)
+        #expect(check.endsWithoutPunctuation.shareWithinTolerance == 1)
+        #expect(check.line.contains("not a gate") && check.line.contains("11.6 ms"))
+    }
+
+    @Test("a word MFA did not align is left out of both sides") func unalignedWord() {
+        let markers = [BaselineWord(word: "a", start: 0, end: 0.2), BaselineWord(word: "b", start: 0.2, end: 0.4)]
+        let check = ReferenceCheck.compare(
+            [.init(clipID: "tts_001", transcript: "a b", markers: markers, aligned: [BaselineWord(word: "a", start: 0, end: 0.2)])],
+            voice: "v", aligner: "MFA", markerResolutionMs: 11.6)
+        #expect(check.starts.n == 1 && check.ends.n == 1 && check.phraseTokens == 2)
+    }
+}

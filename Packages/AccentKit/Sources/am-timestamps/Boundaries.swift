@@ -113,6 +113,16 @@ extension AMTimestamps {
         let correlation = CorrelationGate.notEvaluated(
             "Spec 02's unmodified-control and sham-control sets are not on this machine (spec 02 is not merged), so Δr cannot be computed. NOT EVALUATED is not a pass.",
             seed: correlationSeed)
+        var reference: ReferenceCheck?
+        var referenceStatus = "NOT RUN: no --reference given (scripts/reference-check.sh skipped or was not run)"
+        if let path = options.optional("reference") {
+            if FileManager.default.fileExists(atPath: path) {
+                reference = try JSONDecoder().decode(ReferenceCheck.self, from: Data(contentsOf: URL(filePath: path)))
+                referenceStatus = "run"
+            } else {
+                referenceStatus = "NOT RUN: \(try String(contentsOf: URL(filePath: path + ".skipped"), encoding: .utf8).trimmingCharacters(in: .whitespacesAndNewlines))"
+            }
+        }
         let snapBar = aligners.first { $0.id == DSPSnapRefiner.aligner }?.bar.outcome ?? .notEvaluated
         let ctcBar = aligners.first { $0.id == CTCAligner.aligner }?.bar.outcome
         let decision = BoundaryDecision.decide(
@@ -146,7 +156,8 @@ extension AMTimestamps {
                           textIDs: Array(Set(clips.map { String($0.id.split(separator: "_")[1]) })).sorted(),
                           audio: "wav48_silence_trimmed/<speaker>/<speaker>_<text>_mic1.flac, as published",
                           attribution: vctkAttribution),
-            aligners: aligners, correlation: correlation, ctc: ctcRun, decision: decision, notes: notes)
+            aligners: aligners, correlation: correlation, reference: reference,
+            referenceStatus: referenceStatus, ctc: ctcRun, decision: decision, notes: notes)
 
         let out = try options.url("out")
         try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)

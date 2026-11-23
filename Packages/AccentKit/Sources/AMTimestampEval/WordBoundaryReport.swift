@@ -134,6 +134,9 @@ public struct WordBoundaryReport: Codable, Sendable {
     public var thresholds: Thresholds.WordBoundaries
     public var aligners: [Aligner]
     public var correlation: CorrelationGate
+    /// MFA's own error against synthesised word markers; nil when the check was skipped (`referenceStatus` says why).
+    public var reference: ReferenceCheck?
+    public var referenceStatus: String
     /// b2's model facts, when b2 was built.
     public var ctc: CTCRun?
     /// §6.7's ≤ 2% placement-diff rule: needs specs 08 and 10, checked in spec 11's agreement run.
@@ -143,7 +146,7 @@ public struct WordBoundaryReport: Codable, Sendable {
 
     public init(generatedAt: Date, identity: TimestampReport.Identity, asrModelID: String, whisperSource: String,
                 baseline: WordBaseline.Aligner?, corpus: TimestampReport.Corpus, aligners: [Aligner],
-                correlation: CorrelationGate, ctc: CTCRun?, decision: BoundaryDecision.Result, notes: [String]) {
+                correlation: CorrelationGate, reference: ReferenceCheck?, referenceStatus: String, ctc: CTCRun?, decision: BoundaryDecision.Result, notes: [String]) {
         self.generatedAt = generatedAt
         self.identity = identity
         self.asrModelID = asrModelID
@@ -154,6 +157,8 @@ public struct WordBoundaryReport: Codable, Sendable {
         self.thresholds = Thresholds.current.wordBoundaries
         self.aligners = aligners
         self.correlation = correlation
+        self.reference = reference
+        self.referenceStatus = referenceStatus
         self.ctc = ctc
         self.placementRule = "PENDING: checked in spec 11's agreement run with `aligner` in the identity (needs specs 08 and 10)"
         self.decision = decision
@@ -201,6 +206,7 @@ public struct WordBoundaryReport: Codable, Sendable {
         }
         md.append("  - Bootstrap: \(correlation.resamples) resamples over clips, seed \(correlation.seed)")
         md.append("- ≤ 2% placement-diff rule (§6.7): \(placementRule)")
+        md.append("- \(reference?.line ?? "Reference sanity check (MFA's own error, not a gate): \(referenceStatus)")")
         if let ctc {
             md.append("")
             md.append("## b2 model (`ctc-w2v2b960-1`)")
