@@ -26,6 +26,13 @@ public enum CanonicalJSON {
         return try canonicalize(plain)
     }
 
+    /// A decoder that reads what `encode` writes (dates as seconds since 1970).
+    public static func decoder() -> JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .secondsSince1970
+        return decoder
+    }
+
     /// Canonical bytes of an existing JSON document (for example a golden file on disk).
     public static func canonicalize(_ json: Data) throws -> Data {
         let object = try JSONSerialization.jsonObject(with: json, options: [.fragmentsAllowed])

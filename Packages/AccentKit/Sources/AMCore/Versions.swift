@@ -26,6 +26,6 @@ public enum Versions {
     public static let goldenDigests: [GoldenDigest] = [
         GoldenDigest(
             algorithmVersion: 1, thresholdsVersion: 1, contractVersion: 1,
-            digest: "0000000000000000000000000000000000000000000000000000000000000000"),
+            digest: "542234344d63e3fbd511f831667be6f78a2477017d2a9ab4a7314467657d598a"),
     ]
 }

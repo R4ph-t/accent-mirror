@@ -1,0 +1,26 @@
+{
+  "verdict" : {
+    "verdict" : {
+      "feedback" : {
+        "partial" : [
+          "contrast"
+        ],
+        "rows" : [
+          {
+            "acceptedSyllable" : 0,
+            "heardSyllable" : 1,
+            "kind" : "placement",
+            "syllables" : [
+              0
+            ],
+            "values" : {
+              "model" : 1.72,
+              "you" : 1.14
+            },
+            "word" : 0
+          }
+        ]
+      }
+    }
+  }
+}
