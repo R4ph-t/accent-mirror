@@ -42,6 +42,7 @@ enum Copy {
     static let analysing = "Analysing your take\u{2026}"
     static let yourTakeAppearsHere = "Your take appears here."
     static let tooQuietToMeasure = "Too quiet to measure"
+    static let tooLoudToMeasure = "Too loud to measure"
     static let noPitch = "No pitch to show for this take"
     static let unalignable = "This take was recorded for the old wording, so it can't be compared."
     static let notComparable = "NOT COMPARABLE"
@@ -157,14 +158,18 @@ enum Copy {
 
     // MARK: noClearDifference (§13.1)
 
-    /// The card 1 sentence for the first reason that has one. Reasons covered only by an A6 quiet line return nil.
-    static func noClearDifference(_ reasons: [NoClearDifferenceReason]) -> Sentence? {
+    /// The card 1 sentence for the first reason that has one. When every reason is covered only by an A6 quiet
+    /// line (insertionsPresent, nonTargetWordsIncomplete), the row still shows, with the stem the §13.1
+    /// sentences share; the quiet line then sits under it.
+    static func noClearDifference(_ reasons: [NoClearDifferenceReason]) -> Sentence {
         let ordered = NoClearDifferenceReason.allCases.filter(reasons.contains)
         for reason in ordered {
             if let sentence = noClearDifferenceSentence(reason) { return [.plain(sentence)] }
         }
-        return nil
+        return [.plain(noClearDifferenceStem)]
     }
+
+    static let noClearDifferenceStem = "No clear difference in stress or rhythm."
 
     static func noClearDifferenceSentence(_ reason: NoClearDifferenceReason) -> String? {
         switch reason {
@@ -238,6 +243,16 @@ enum Copy {
         }
     }
 
+    /// The caption under your strip row for a take problem with audio (§7.1). Only the Designer's two
+    /// captions exist; too short and words don't match have none (see the PR's open points).
+    static func takeProblemCaption(_ problem: TakeProblem) -> String? {
+        switch problem {
+        case .tooQuiet: tooQuietToMeasure
+        case .clipped: tooLoudToMeasure
+        default: nil
+        }
+    }
+
     static func takeProblemButton(_ problem: TakeProblem) -> String? {
         switch problem {
         case .noMicrophone: nil
@@ -253,13 +268,27 @@ enum Copy {
         case .modelUnavailable:
             ("Accent Mirror couldn't load its speech model, so this take wasn't checked. This isn't about your take.", "Retry")
         case .inferenceFailed:
-            ("Something went wrong inside Accent Mirror while \(error.stage ?? "comparing with the model"). This isn't about your take.", "Retry")
+            (inferenceFailed(error.stage ?? .comparing), "Retry")
         case .referenceCacheCorrupt:
             ("Accent Mirror couldn't read its copy of this native recording.", "Rebuild")
         case .audioUnreadable:
             error.source == "take"
                 ? ("Accent Mirror couldn't read the recording it just made.", "Retry")
                 : ("Accent Mirror couldn't read that audio file. Try a WAV, M4A or MP3 file.", "Choose File\u{2026}")
+        }
+    }
+
+    /// §13.2: "Something went wrong inside Accent Mirror while {stage}. This isn't about your take." No ellipsis.
+    static func inferenceFailed(_ stage: OperationalError.Stage) -> String {
+        "Something went wrong inside Accent Mirror while \(inferenceStage(stage)). This isn't about your take."
+    }
+
+    static func inferenceStage(_ stage: OperationalError.Stage) -> String {
+        switch stage {
+        case .findingWords: "finding your words"
+        case .measuringPitch: "measuring your pitch"
+        case .measuringStress: "measuring stress"
+        case .comparing: "comparing with the model"
         }
     }
 

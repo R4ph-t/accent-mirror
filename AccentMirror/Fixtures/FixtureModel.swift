@@ -274,13 +274,18 @@ struct StressLine: Decodable, Sendable {
 
 struct OperationalError: Decodable, Sendable {
     var kind: Kind
-    /// inferenceFailed: "finding your words", "measuring your pitch", "measuring stress", "comparing with the model".
-    var stage: String?
+    /// inferenceFailed: the stage that failed.
+    var stage: Stage?
     /// audioUnreadable: "clip" or "take".
     var source: String?
 
     enum Kind: String, Decodable, Sendable {
         case modelUnavailable, inferenceFailed, referenceCacheCorrupt, audioUnreadable
+    }
+
+    /// inferenceFailed stages (§13.2). `Copy.inferenceStage` holds their words.
+    enum Stage: String, Decodable, Sendable, CaseIterable {
+        case findingWords, measuringPitch, measuringStress, comparing
     }
 }
 

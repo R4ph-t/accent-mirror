@@ -4,11 +4,12 @@
   "phrase": "photography",
   "phase": "showingTake",
   "savedTakes": [
+    4,
     3,
     2,
     1
   ],
-  "take": "photography-take03-insertion",
+  "take": "photography-take04-insertion",
   "analysis": {
     "verdict": {
       "kind": "noClearDifference",

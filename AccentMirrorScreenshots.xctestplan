@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "id": "5C7B1E2A-0D1F-4E6B-9A3C-18190F1C0A02",
+      "name": "Screenshots",
+      "options": {}
+    }
+  ],
+  "defaultOptions": {
+    "targetForVariableExpansion": {
+      "containerPath": "container:AccentMirror.xcodeproj",
+      "identifier": "F2C86F492183F5E03540787F",
+      "name": "AccentMirror"
+    }
+  },
+  "testTargets": [
+    {
+      "target": {
+        "containerPath": "container:AccentMirror.xcodeproj",
+        "identifier": "46DC82F7807892D57454FBE4",
+        "name": "AccentMirrorScreenshots"
+      }
+    }
+  ],
+  "version": 1
+}

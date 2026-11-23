@@ -1,6 +1,6 @@
 # 18: UI foundation
 
-Status: Draft · Branch: – · Depends on: 00 (project skeleton) · Estimate: 3–5 h agent run + 1 h Raph review
+Status: Done · Branch: factory/18-19-ui-shell (PR #4), fixes on factory/18-19-fixes · Depends on: 00 (project skeleton) · Estimate: 3–5 h agent run + 1 h Raph review
 
 Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)", including Addendum 2026-11-23 (r2), which wins wherever it differs). Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px).
 
