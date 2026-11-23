@@ -14,7 +14,8 @@ job (specs 02 and 15): extraction, the 2–6 s trim with the same cut for every 
 §9.2 (bundle read-only, rebuilds in `Caches/`), §7 row 15 and the first v2 row 15 (a stale bundled identity fails CI;
 a corrupt cache rebuilds once, then `referenceCacheCorrupt`). Designer spec v2 §5.1 and §12 (packs, order and the
 coming-soon state come from the manifest, nothing hard-coded) and §6 (subtitle "{pack} · Native speaker {voice},
-VCTK"). Spec 06 Open question 4 (this spec defines the phrase JSON shape).
+VCTK"). Spec 06 Open question 4 (this spec defines the phrase JSON shape). Addendum r6 E7 (Notion "Accent Mirror spec v2
+(2026-11-23)", end of page): `accent`, `region` and `gender` per recording.
 
 ## Goal
 
@@ -43,7 +44,9 @@ with no ASR on the reference and no network.
 
 - `manifest.json` (`formatVersion`, packs in order with phrase IDs, and per phrase: ID, text, targets,
   pronunciations, headline voice, recordings). Per recording: speaker ID, corpus "VCTK 0.92", licence "CC BY 4.0",
-  source URL, utterance ID, trim start and end in the source clip, file name and SHA-256.
+  source URL, utterance ID, trim start and end in the source clip, file name and SHA-256, plus `accent`, `region`
+  and `gender` copied from that speaker's entry in `fixtures/vctk/eval-speakers.json` (`bundled[]`), for spec 21's
+  voice pop-up and subtitle (Addendum r6 E7). `scripts/build-starter.sh` copies them; it never types them by hand.
 - `audio/<phraseID>/<speaker>.flac`: the trimmed clip, mono, source sample rate.
 - `analysis/<phraseID>/<speaker>.json`: the L0 and L1 analysis (spec 12's `DerivedRecord`s) with its identity, built from the
   trimmed audio and the recorded WhisperKit word timings in `fixtures/timestamps/` shifted by the trim start.
@@ -83,7 +86,7 @@ with no ASR on the reference and no network.
 
 ## Out of scope
 
-- The sidebar reading this manifest and the voice pop-up (spec 21). User clips and My Phrases (spec 17). Choosing or
+- The sidebar reading this manifest and the voice pop-up and subtitle text (spec 21). User clips and My Phrases (spec 17). Choosing or
   changing phrase content, targets or packs (CPO). Recording the Noun and Verb Pairs gap.
 
 ## Open question (built with the default)
@@ -97,7 +100,8 @@ with no ASR on the reference and no network.
 1. `make check` is green, including the bundled-identity check and the manifest validation tests.
 2. `scripts/build-starter.sh` run twice leaves `git status` clean.
 3. `Resources/Starter/manifest.json` lists the four packs in order, Noun and Verb Pairs with zero phrases, and every
-   recording with speaker, corpus, licence, source URL and SHA-256. `du -sh Resources/Starter` is ≤ 30 MB.
+   recording with speaker, accent, region, gender, corpus, licence, source URL and SHA-256 (p225 reads English,
+   Southern England, F). `du -sh Resources/Starter` is ≤ 30 MB.
 4. `swift test --filter AMLibraryTests` covers: a stale identity rebuilds into a temp `Caches/` and never writes the
    bundle; a corrupt cache rebuilds once, then `referenceCacheCorrupt`; zero-phrase packs load.
 

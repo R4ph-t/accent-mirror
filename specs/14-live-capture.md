@@ -11,7 +11,8 @@ to 16 kHz mono Float32, a level stream, starts within 100 ms, cancel discards), 
 in `AMCapture/Live/`), the capture acceptance row (no mic → `.noMicrophone`, denied → `.micDenied`, 1.2 s end of take).
 Plan v2 §7 row 14 ("as in v1, plus L_stop timing hooks") and §10 (two onset timestamps, 500 ms pre-roll ring buffer,
 saved audio from max(0, t_onset − 0.2 s)). Designer spec v2 §7 (recording ends after 1.2 s of silence or at 20 s; Esc
-cancels and keeps nothing) and v1 §9 (Input device pop-up in the inspector).
+cancels and keeps nothing) and v1 §9 (Input device pop-up in the inspector). Addendum r6 E5 (Notion "Accent Mirror spec v2 (2026-11-23)", end of page): the level stream feeds spec 21's
+meter during a take only.
 
 Why it doesn't wait for 13: CI never uses the microphone, and every automated test here runs on a file-backed source.
 Only the hand test needs the entitlement, so spec 13 must be Done before Raph tries it (spec 21 depends on 13).
@@ -31,8 +32,11 @@ checks already accept, end it automatically or by hand, and hand the result to t
     `ACFVoicing`). The take ends on its own after **1.2 s** of trailing silence after speech, or at the **20 s** cap.
   - Keeps a **500 ms pre-roll ring buffer**. The saved audio starts at max(0, t_onset − 0.2 s) (§10, E16).
   - `stop()` ends the take by hand; `cancel()` discards every sample and returns nothing (Esc).
-  - Publishes: an input level stream (`AsyncStream<Float>`, dBFS per 10 ms frame) and an envelope stream (per-frame
-    RMS for spec 20's live bars), both ending when the take ends.
+  - Publishes: an input **level stream** (`AsyncStream<InputLevel>`, one value per 10 ms frame: RMS dBFS and sample
+    peak dBFS, both clamped to −60…0) and an envelope stream (per-frame RMS for spec 20's live bars), both ending when
+    the take ends. Spec 21's meter (Addendum r6 E5) reads the level stream: RMS for the fill, peak for the 1 s peak
+    tick and the "Too loud" check (peak ≥ −1 dBFS). The streams exist only during a take; nothing opens the mic just
+    to show a level.
   - Returns a `CapturedTake`: the samples, their SHA-256, `t_onset`, `t_detect`, the last speech frame time and the
     **stop timestamp** (endpoint decision or manual stop), which spec 12's L_stop / L_speech measurement reads.
 - **Permission and devices:**

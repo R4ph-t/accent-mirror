@@ -10,12 +10,13 @@ unrealignable ones marked `unalignable` and kept). First v2 §11 (importer trim 
 spec v1 §8 (15 s limit, the two error sentences, one native take so the band is ±1.5 st, out-of-dictionary words
 measured from the recording) and spec v2 §6 (subtitle "My Phrases · From {file name}"), §12, Addendum A5 (A(w) for
 imports: the POS-chosen variant saved at import plus the clip's own observed primary). Spec 06 (the persisted value
-type for import pronunciations).
+type for import pronunciations). Designer spec v2 Addendum r6 E1 and E2 (Notion, end of the v2 page) for the
+later UI only.
 
 ## Goal
 
 Turn an audio or video file into a My Phrases entry with its own native reference, entirely on device, and re-run
-it when the transcript changes. This spec has no UI; the sheet waits on Designer (see Out of scope).
+it when the transcript changes. This spec has no UI; the sheets (Addendum r6 E1 and E2) are a later UI spec (see Out of scope).
 
 ## Behaviour
 
@@ -69,9 +70,14 @@ it when the transcript changes. This spec has no UI; the sheet waits on Designer
 
 ## Out of scope
 
-- The New Phrase from Clip sheet, its entry points (⌘N, File menu, + button, drop) and post-import transcript editing.
-  Designer spec v2 has no design for the sheet and doesn't say where a clip's transcript is edited after import; both
-  go to Designer and a later UI spec. Rename and Delete Phrase.
+- **The import UI**, which a later UI spec builds on top of this one, from Designer's Addendum r6: E1 (the New
+  Phrase from Clip sheet, its states and copy, and its entry points ⌘N, File ▸ New Phrase from Clip…, "+ NEW PHRASE"
+  and drop on the window) and E2 (the Edit Transcript sheet, opened from the inspector's PHRASE section, the sidebar
+  row's context menu and File ▸ Edit Transcript…). E2 replaces v2 §12's "Return or leaving the field" commit: the
+  re-run happens only on Save, so the later UI calls `reanalyze(phraseID:transcript:)` once per Save and this spec
+  never re-runs on a keystroke or focus change. E1 already matches this spec's API: the sheet's selection limits
+  (0.5–15 s), its two error lines and "typed text is never overwritten by a late result" are the rules here.
+- Rename and Delete Phrase.
 
 ## Open question (built with the default)
 

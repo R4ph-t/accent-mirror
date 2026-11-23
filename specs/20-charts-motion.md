@@ -1,6 +1,6 @@
 # 20: Charts: live strip, playhead, earlier takes and voice-switch ease
 
-Status: Ready · Branch: – · Depends on: 19 (fixture-driven UI shell) · Estimate: 5–7 h agent run + 1.5 h Raph review
+Status: Ready · Branch: – · Depends on: 19 (fixture-driven UI shell) · Estimate: 6–8 h agent run + 1.5 h Raph review
 
 Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)") §7 (recording and analysing rows of the state
 table), §8 (strip), §9 (pitch: earlier takes on hover, playhead), §6 (take-menu hover preview), §13 items 7 and 9
@@ -9,7 +9,9 @@ table), §8 (strip), §9 (pitch: earlier takes on hover, playhead), §6 (take-me
 they touch the charts (r5 wins). Designer spec v1 §5.3 and §11 for what v2 calls "as in v1" (Reduce Motion keeps the
 playhead moving). Engineering review of spec v2 (Notion, 2026-11-23), proposed row 20 and its Designer calls 1, 2 and
 4 (Option only while the window is key and no menu is tracking; the ease starts only after L2 arrives). Specs 18 and
-19 left exactly these items to spec 20.
+19 left exactly these items to spec 20. Designer spec v2 Addendum r6 (Notion "Accent Mirror spec v2 (2026-11-23)", end of page; mockups `v2/specs11-21/specs11-21-board-{light,dark}@2x.png`): E3 (`highlight` token, hover and loop boxes), E4 (outline on the
+syllable being played, "Playing …" header), E9 (live-bar time scale and no ⇧⌘G confirmed). r6 wins over earlier
+text.
 
 ## Goal
 
@@ -18,13 +20,16 @@ can feed them live data without touching the drawing. No audio, no microphone, n
 
 ## Behaviour
 
-### Live recording strip (§7, A3)
+### Live recording strip (§7, A3, Addendum r6 E9)
 
 - While recording, your row draws bars from an **envelope stream** (per-10 ms RMS, the shape spec 14 publishes) in
   `strip.bar`, growing left to right up to a **2 pt Lime playhead**. No Lime on the bars. The native row stays drawn.
   Pitch is native only (no live pitch).
 - Drawing uses `Canvas` with pre-binned bar geometry (1.5 pt bars on a 3 pt pitch). Only the new bins are added per
   frame; the budget is a steady 60 Hz (120 Hz on ProMotion) with no dropped frames over a 20 s take.
+- **Time scale** (confirmed in E9): x = elapsed ÷ the model phrase duration × plot width. If the take runs longer than
+  the model, the whole row compresses to fit and the playhead stays at the right edge. When the result arrives, your
+  row moves onto your own timeline as in v2.
 - **Analysing:** your bars stay grey (`strip.bar`) until the result arrives (§7).
 
 ### Playhead (§9, v1 §5.3)
@@ -35,11 +40,37 @@ can feed them live data without touching the drawing. No audio, no microphone, n
 - It's driven by a playback position the view is given (time and which take); this spec doesn't play audio.
 - Reduce Motion: the playhead still moves (it carries information).
 
+### Syllable being played (Addendum r6 E4)
+
+- While Model, You, a diff row or a loop plays, the syllable being played gets a **1 pt `text.secondary` outline**,
+  radius 4, 3 pt outside its bars, on both strip rows (the matching syllable in the other row too, through the
+  syllable pairs). It jumps from syllable to syllable with no animation, together with the 1 pt playhead.
+- The strip card header shows ▶ "Playing the model" or "Playing your take" in Geist 12 `text.secondary` while audio
+  plays. The loop label (below) wins while looping.
+- Inputs: the playback position already given to the playhead, plus which take is playing. No audio here.
+
+### Hover and loop highlights (Addendum r6 E3)
+
+- New token **`highlight`**, neutral (never Lime or blue): `text.primary` at 5% (light) / 6% (dark) for hover, 9% /
+  11% for a looping slice. It's added to spec 18's token set next to the others, with both appearances.
+- **Hover on a diff row** (card 1): the row gets a `surface.well` background (radius 6, 8 pt side inset; its play
+  button sits on `surface.card`). The row's word gets a **hover box**: one rounded rectangle (radius 4, 4 pt outset)
+  behind its syllables across both strip rows, and the same fill as a full-height column in the pitch plot over that
+  word's model time.
+- **Hover on a word or syllable label:** the same box, and the pointing-hand cursor.
+- **Looping slice:** the same box at the stronger fill, plus a label at the right of the strip card header: the
+  `repeat` SF Symbol and "Looping "{word}" · Esc to stop" in Geist 12 `text.secondary`. No outline or accent colour on
+  the bars.
+- The boxes fade in over 120 ms; with Reduce Motion they appear at once.
+- Inputs: hovered word, looping word (or none). Starting and ending a loop (Esc, a click on empty space, another
+  selection) is spec 21's; this spec draws whatever state it's given.
+
 ### Earlier takes (§9, §6, criterion 7)
 
 - Hidden by default. Hovering the pitch card fades in up to the 3 previous takes over **120 ms** as 1 pt lines in
   `pitch.you` at 30%, newest strongest. Holding **Option** shows them too, only while the window is key and no menu
-  is tracking. VoiceOver: a "Show earlier takes" action. Reduce Motion: no fade.
+  is tracking. VoiceOver: a "Show earlier takes" action. Reduce Motion: no fade. There is no ⇧⌘G and no Show Earlier
+  Takes menu toggle (confirmed in E9).
 - Hovering a take in the open take menu previews it as the **only** ghost.
 - Unalignable takes are never ghosts (§13 item 6).
 
@@ -58,15 +89,17 @@ can feed them live data without touching the drawing. No audio, no microphone, n
 ### Driving it (`ChartModel`)
 
 - One value type per card (strip, pitch) holding geometry on the model axis, plus inputs: recording envelope, playback
-  position, hover and Option state, ghost list, current and pending voice. Fixtures (`-UIFixture`) and spec 21 both
+  position and playing take, playing syllable, hovered and looping word, Option state, ghost list, current and
+  pending voice. Fixtures (`-UIFixture`) and spec 21 both
   build it; views never read AMCore types directly.
 - A fixture clock drives every animation, so screenshots and tests are deterministic. New fixtures: `recording-live`
   (envelope at 0.5 s, 2 s and 19.5 s), `playback-model` and `playback-you` (playhead mid-word, and at a youOnly gap),
-  `ghosts-hover`, `ghosts-menu-preview`, `voice-switch` (before, 75 ms in, done), plus each with Reduce Motion.
+  `ghosts-hover`, `ghosts-menu-preview`, `voice-switch` (before, 75 ms in, done), `row-hover`, `word-loop`,
+  `playing-syllable-model` and `playing-syllable-you`, plus each with Reduce Motion.
 
 ## Defaults
 
-- Tokens and fonts from spec 18 only; no new colour.
+- Tokens and fonts from spec 18 only, plus the one new neutral `highlight` token from E3. No other new colour.
 - Accessibility: the pitch card's `AXChartDescriptor` (Model, You, Native range series) updates with the drawn data;
   the strip keeps one element per syllable pair, as in 19.
 
@@ -79,20 +112,11 @@ can feed them live data without touching the drawing. No audio, no microphone, n
 ## Out of scope
 
 - Wiring to live capture, playback, the coordinator or the take store (spec 21).
-- **Loop-slice selection and diff-row hover highlights.** Designer v1 §5.3 and §6.1 drew them with `selection.fill`
-  and an accent outline, tokens that spec v2 dropped, and v2 doesn't restate them. Their look goes to Designer and a
-  later spec.
-- The sounding-syllable outline during playback (v1 §5.3: a 2 pt outline on both rows). v2 doesn't restate it; it goes
-  to Designer with the highlights.
+- The input level meter (spec 21, Addendum r6 E5).
 
 ## Open question (built with the default)
 
-1. **Live bars' time scale.** v2 says your bars draw live up to the playhead but not how wide a second is before the
-   take's length is known. Default: the model's timeline (x = elapsed ÷ model phrase duration × plot width); if the
-   take runs longer than the model, the whole row compresses to fit, keeping the playhead at the right edge.
-2. **⇧⌘G "Show Earlier Takes".** v1 has it as a View menu toggle (on by default); v2 hides earlier takes until hover or
-   Option. Default: v2 wins; no toggle and no ⇧⌘G (the Option key and the VoiceOver action cover keyboard and
-   screen-reader users).
+None. Addendum r6 E9 confirmed the live-bar time scale and dropping ⇧⌘G.
 
 ## How to test (Raph)
 
@@ -102,7 +126,9 @@ can feed them live data without touching the drawing. No audio, no microphone, n
 2. `make test-ui-vm` renders every new fixture in light and dark (and Reduce Motion), and `scripts/check-screenshots.sh`
    finds no blank frame. Running it twice gives identical PNGs.
 3. In the screenshots: recording bars are `strip.bar` with Lime only on the playhead and the RECORDING label; the
-   voice-switch frame at 75 ms is between the two timelines and the band is drawn in every frame.
+   voice-switch frame at 75 ms is between the two timelines and the band is drawn in every frame. `row-hover`,
+   `word-loop` and the two `playing-syllable` frames match the r6 board (sections 3 and 4): neutral boxes only, no
+   Lime or accent on the bars, the "Looping …" and "Playing …" labels in the strip header.
 4. Hand (Raph, any fixture via the Samples menu): hover the pitch card and hold Option to see earlier takes fade in;
    with Reduce Motion on, they appear at once.
 
