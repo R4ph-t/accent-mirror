@@ -1,6 +1,7 @@
 # 23: Word-boundary refinement
 
-Status: Ready · Branch: – · Depends on: 03 (WhisperKit word timings, the unpadded bar and its eval), 04 (pYIN) ·
+Status: Ready · Branch: – · Depends on: 03 (WhisperKit word timings, the unpadded bar and its eval), 04 (pYIN),
+07 (the segmenter the downstream gate runs) ·
 Estimate: 6–8 h agent run + 1.5 h Raph review · Risk: high
 
 Source: CTO ruling on spec 03 (2026-11-23 13:00 Europe/Paris, relayed by Accent Mirror Lead). WhisperKit `base.en`
@@ -86,6 +87,65 @@ The **simplest one that passes** ships. If b1 passes, b2 isn't built beyond the 
 - Decision: ship b1 if it passes the unpadded bar on both sides and the correlation gate. Otherwise build and
   evaluate b2, and ship it if it passes the bar. If neither passes, nothing ships (`whisper` stays), the report is
   FAIL, and it goes to CTO.
+
+### CTO ruling on b2 and the ship gate (2026-11-23 14:05 Europe/Paris)
+
+This ruling came after the first build (#27): b1 missed the unpadded bar on both sides, and b2 missed it narrowly. It
+**supersedes** the Goal's "simplest one that passes", the Decision bullet above and b1's place on the ship path
+wherever they differ. The rest of this spec stands.
+
+1. **b2 (`ctc-w2v2b960-1`) is the aligner.** b1 (`dsp-snap-1`) leaves the ship path. Its code, tests and report
+   column stay as a test diagnostic only, and its Δr line is diagnostic too.
+2. **Reference error, reported, never netted out of a gate.** For each side (starts, ends), the report gives three
+   numbers (median, share within 80 ms, mean signed, n):
+   - MFA-on-TTS against the TTS markers: the reference's own error. The TTS audio is the eval phrase texts spoken by
+     a pinned on-device voice, with SSML `<mark>` bookmarks as the word truth.
+   - b2-on-TTS against the TTS markers: real ground truth.
+   - b2 against MFA on VCTK.
+
+   It also gives a quadrature estimate sqrt(max(0, obs² − ref²)) of b2's own VCTK error, where obs is b2-vs-MFA and
+   ref is MFA-on-TTS. It is labelled **estimate**, and no gate reads it.
+3. **The v1 ship gate is downstream.** Run spec 07's segmenter on oracle boundaries (TTS markers for the synthetic
+   set, MFA for VCTK) and on b2's boundaries, with everything else identical. Compare the per-word verdicts:
+   - The word verdict at this stage is spec 07's output for the word: inconclusive (any syllable at low confidence),
+     the syllable count, the index of the longest syllable and the index of the syllable with the highest mean
+     intensity. A word's verdict differs if any part differs.
+   - **Pass** if verdicts differ on ≤ 2% of comparable words **and** the inconclusive rate under b2 is at most 2
+     points above the rate under the oracle. This is checked separately for the synthetic set and for VCTK, and both
+     must pass.
+   - When spec 08 lands, it re-runs the same harness with its placement verdicts. A FAIL there sends b2 back to CTO.
+   - The 40 ms / 85% numbers become a **reported target, not a gate**. The `wordTimestamps` rows keep their values.
+4. **Confidence gating.** b2 gives each word a CTC confidence (0–1). State its definition in the PR, for example the
+   mean posterior of the word's aligned characters. A word below `Thresholds.wordBoundaries.ctcConfidenceMin` gets
+   an inconclusive verdict: the adapter into spec 07's `WordSpan` sets its probability to 0, so c_w = 0 and every
+   syllable is low.
+   - The threshold is set on **spec 02's tuning speakers only**. Until spec 02's split is on main, it is the default
+     0.5, marked untuned, and b2 doesn't ship.
+   - Those inconclusives count inside the existing ≤ 10% inconclusive budget (`agreement.inconclusivePairsMax`).
+     They are not a new allowance.
+   - The threshold and the two gate values (`verdictDiffMax` 0.02, `inconclusiveRiseMaxPoints` 0.02) go in
+     `Thresholds.wordBoundaries`, with a `thresholdsVersion` bump.
+   - `ConfigIdentity` (reached through `AnalysisIdentity.config`) gains `alignerModelSHA256`: the converted package's
+     SHA-256 for b2, and `none` for `whisper` and `dsp-snap-1`. That's part of the contract change already in this
+     spec.
+5. **The number of record** is the re-run on spec 02's 12 held-out speakers once spec 02 is on main. It doesn't block
+   spec 07, and it never tunes anything.
+6. **Before b2 ships, the report has:**
+   - the licence verified on the model card at the pinned commit;
+   - the SHA-256 pin;
+   - the size on disk;
+   - latency on the `macos-26` runner, from the manual workflow Raph adds; until then that line is NOT RUN and b2
+     doesn't ship;
+   - a passing cancel test (cancel at 100 ms, return within about 300 ms).
+7. **Shipping b2:**
+   - sets the shipped aligner to `ctc-w2v2b960-1` and bumps `algorithmVersion`;
+   - moves the manifest, LICENSE and NOTICE to `Resources/Models/wav2vec2-base-960h/`;
+   - adds the `THIRD_PARTY_NOTICES.md` section with the full Apache-2.0 text.
+
+   The `Resources/Models/` and `THIRD_PARTY_NOTICES.md` changes need Raph's OK at merge. If the ship conditions
+   aren't all met when this spec's PR is otherwise ready, it merges with `whisper` still shipped and the ship lines
+   marked PENDING, and the ship flip follows as its own small PR.
+8. **If b2 fails gate 3**, it goes back to CTO. There's no retuning, and nothing is ever chosen on held-out data.
 
 ## Defaults
 
