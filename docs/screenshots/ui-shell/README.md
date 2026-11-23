@@ -5,7 +5,7 @@ Reviewed frames from the screenshot run, shrunk for the repo (the full 2400 × 1
 - `result-feedback-{light,dark}.png`, `tooQuiet-{light,dark}.png`: two of the four primary states, full window at 1x
   (1200 × 800).
 - `narrow-inspector-open-{light,dark}.png`: the narrow-window regression fixture (fixes round 5), full window at 1x
-  (960 × 732).
+  (960 × 680).
 - `fixes/<fixture>-light.png`: 1x crops of the region each Designer fix touches
   (`inc-requiredMeasureUnavailable-lowConfidence`, `ncd-insertionsPresent`, `tp-clipped`, `tp-wordsDontMatch`,
   `noVoicedFrames`).
@@ -33,6 +33,10 @@ under 10 MiB (their dark twins are in the dark contact sheet). The crops cover t
 `fixes/` and `round3/` are the detail column (x 240 to 1200 pt) from the top (`noVoicedFrames` from y 400, the pitch
 card), and `round4/` is x 250 to 1190, y 60 to 780. All of them come from the test VM, and two runs gave
 byte-identical PNGs (130 frames).
+
+Round 5b (2026-11-23, Addendum r4) refreshed the contact sheets, `narrow-inspector-open-*` (now the real
+960 × 680 pt window, C8), `round4/rows-too-much-contrast-light` (C4) and `round4/rows-final-direction-higher-light`
+(C1), from two test-VM runs whose 130 PNGs were byte-identical. The other committed frames didn't change.
 
 Frames are downscaled, cropped and re-encoded losslessly as 8-bit RGB PNG (zlib level 9, per-row filters). Up to
 round 4 the downscale used `sips`; round 5 used Core Graphics with high-quality interpolation. Renders come only from CI or the test VM, never the host.

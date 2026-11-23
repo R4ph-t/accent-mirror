@@ -185,6 +185,6 @@ If `NavigationSplitView` fights solid chrome on macOS 26, use the AppKit split-v
 - **Fixes round 5b (2026-11-23).** Toolbar per Addendum r4 C7: `ToolbarCompaction.decide` is the pure decision, and
   `ToolbarView` measures the controls and draws the chosen level. At 960 pt with the inspector open the controls
   need 6 pt more than there is (414 pt for 408), so the title gets 154 pt; see spec 19's round 5b note. Minimum
-  window per C8: `ShellView` applies 960 × 680 to the whole window (before `ignoresSafeArea`), and `WindowChrome`
-  leaves the 52 pt title bar out of `contentMinSize`. The screenshot renderer still gets a 732 pt window at
-  960 × 680 (an open point in spec 19 and PR #29).
+  window per C8: 960 × 680 pt for the whole window, title bar included. The window takes its minimum from
+  `ShellView`'s minimum frame (`.windowResizability(.contentMinSize)`), which SwiftUI measures below the 52 pt
+  title bar, so that frame asks for 960 × 628; asking for 680 there held windows at 732 pt.

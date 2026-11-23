@@ -359,12 +359,16 @@ Addendum A5 says: "A(w) = the context-compatible dictionary pronunciation plus t
     154 pt (an open point for Designer).
   - **C8.** `DetailContent` puts the cards in a `ViewThatFits`: as they are when they fit, else in a vertical
     `ScrollView` (the toolbar is outside it). The pitch plot's `GeometryReader` has a minimum of 120 pt plus the
-    22 pt word-label row. `ShellView` now applies its 960 × 680 minimum before `ignoresSafeArea`, and `WindowChrome`
-    leaves the 52 pt title bar out of `contentMinSize`. Even so, the renderer's 960 × 680 window still comes out
-    960 × 732. The size error now reports `contentMinSize` 0 × 0, `minSize` 0 × 0 and a `contentLayoutRect` of
-    960 × 680, so 680 pt is held below the title bar by something else. Open, see PR #29.
+    22 pt word-label row. The 732 pt window came from `ShellView`'s minimum frame: SwiftUI measures it below the
+    52 pt title bar (the window's `contentLayoutRect`), so a 680 pt minimum there held the whole window at 732 pt,
+    re-grown on every layout pass while `contentMinSize` and `minSize` read 0 × 0. The frame now asks for
+    960 × 628 (680 less the title bar), which keeps the app's whole-window minimum at 960 × 680
+    (`.windowResizability(.contentMinSize)`), and `WindowChrome` no longer sets `contentMinSize`. The renderer sets
+    the whole window frame and logs each layout pass that changes it. `narrow-inspector-open` renders at
+    960 × 680, light and dark, with all three cards fitting (no scroll at this size).
   - **C5** is round 5's geometry fix, unchanged. **C9:** the window-count warning stays an open point; it doesn't
     block design sign-off.
-  - The last full render run is `20261123-144014` (everything passed except `narrow-inspector-open`). The test VM's
-    disk then filled up (ENOSPC under `wg-results` in run `20261123-144236`), so this round has no final pair of
-    runs and the committed frames are round 5's.
+  - Renders: two `make screenshots-vm` runs after the C8 fix, `20261123-173059` and `20261123-173315`, gave
+    byte-identical PNGs (130 frames, `narrow-inspector-open` included) and pass `check-screenshots`. The committed
+    frames that changed were refreshed: `narrow-inspector-open-*`, `round4/rows-too-much-contrast-light`,
+    `round4/rows-final-direction-higher-light` and both contact sheets.
