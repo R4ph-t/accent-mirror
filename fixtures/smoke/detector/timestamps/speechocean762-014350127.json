@@ -1,0 +1,45 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "7efd17d75b86d012dbdf12953a823ed502c19f497fba69217a46523e54ac7c7f",
+  "clipID" : "speechocean762-014350127",
+  "formatVersion" : 1,
+  "text" : "sleep and go to the kukuman",
+  "words" : [
+    {
+      "end" : 0.72,
+      "probability" : 0.55,
+      "start" : 0.48,
+      "word" : " sleep"
+    },
+    {
+      "end" : 1,
+      "probability" : 0.99,
+      "start" : 0.72,
+      "word" : " and"
+    },
+    {
+      "end" : 1.16,
+      "probability" : 1,
+      "start" : 1,
+      "word" : " go"
+    },
+    {
+      "end" : 1.38,
+      "probability" : 1,
+      "start" : 1.16,
+      "word" : " to"
+    },
+    {
+      "end" : 1.58,
+      "probability" : 1,
+      "start" : 1.38,
+      "word" : " the"
+    },
+    {
+      "end" : 2.4,
+      "probability" : 0.44,
+      "start" : 1.58,
+      "word" : " kukuman"
+    }
+  ]
+}

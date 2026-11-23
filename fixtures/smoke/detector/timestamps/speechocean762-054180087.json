@@ -1,0 +1,57 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "d32f223e809d0edb7bfd662f8f1de18ad6b1317be1f7553aec62b5508f058587",
+  "clipID" : "speechocean762-054180087",
+  "formatVersion" : 1,
+  "text" : "Our meeting could not have happened no better.",
+  "words" : [
+    {
+      "end" : 0.7,
+      "probability" : 0.89,
+      "start" : 0.48,
+      "word" : " Our"
+    },
+    {
+      "end" : 0.98,
+      "probability" : 0.99,
+      "start" : 0.7,
+      "word" : " meeting"
+    },
+    {
+      "end" : 1.36,
+      "probability" : 0.92,
+      "start" : 0.98,
+      "word" : " could"
+    },
+    {
+      "end" : 1.58,
+      "probability" : 1,
+      "start" : 1.36,
+      "word" : " not"
+    },
+    {
+      "end" : 1.92,
+      "probability" : 0.98,
+      "start" : 1.58,
+      "word" : " have"
+    },
+    {
+      "end" : 2.3,
+      "probability" : 0.98,
+      "start" : 1.92,
+      "word" : " happened"
+    },
+    {
+      "end" : 2.48,
+      "probability" : 0.27,
+      "start" : 2.3,
+      "word" : " no"
+    },
+    {
+      "end" : 2.78,
+      "probability" : 0.98,
+      "start" : 2.48,
+      "word" : " better."
+    }
+  ]
+}

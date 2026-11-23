@@ -1,0 +1,45 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "fd49ab15623da266382eb9573b919f53a7f5ccba05134734b539096f98526136",
+  "clipID" : "speechocean762-004820329",
+  "formatVersion" : 1,
+  "text" : "but the city was already dirty.",
+  "words" : [
+    {
+      "end" : 0.62,
+      "probability" : 0.5,
+      "start" : 0.54,
+      "word" : " but"
+    },
+    {
+      "end" : 0.8,
+      "probability" : 0.98,
+      "start" : 0.62,
+      "word" : " the"
+    },
+    {
+      "end" : 1.02,
+      "probability" : 0.98,
+      "start" : 0.8,
+      "word" : " city"
+    },
+    {
+      "end" : 1.52,
+      "probability" : 0.99,
+      "start" : 1.02,
+      "word" : " was"
+    },
+    {
+      "end" : 1.92,
+      "probability" : 0.98,
+      "start" : 1.52,
+      "word" : " already"
+    },
+    {
+      "end" : 2.28,
+      "probability" : 1,
+      "start" : 1.92,
+      "word" : " dirty."
+    }
+  ]
+}
