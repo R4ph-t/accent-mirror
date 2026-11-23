@@ -20,11 +20,7 @@ enum WindowChrome {
         }
         window.toolbarStyle = .unified
         window.isOpaque = true
-        // The 960 × 680 minimum is the whole window (spec 18; Addendum r4 C8). AppKit measures `contentMinSize`
-        // below the title bar even with a full-size content view, so 680 there held windows at 732 pt (fixes
-        // round 5b). This chrome's title bar is the 52 pt toolbar height, so the minimum leaves it out.
-        window.contentMinSize = NSSize(width: Metrics.minimumWindow.width,
-                                       height: Metrics.minimumWindow.height - Metrics.toolbarHeight)
+        // The 960 × 680 window minimum comes from `ShellView`'s minimum frame (see there), not from here.
     }
 }
 

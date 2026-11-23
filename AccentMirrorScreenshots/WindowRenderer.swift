@@ -53,21 +53,32 @@ enum WindowRenderer {
     /// window isn't exactly `size` points, so a frame can never again be a smaller window scaled up.
     static func capture(_ window: NSWindow, size: CGSize = Metrics.defaultWindow) async throws -> Data {
         NSApp.activate()
-        window.setFrameOrigin(NSPoint(x: 40, y: 40))
+        // The whole window is `size` (full-size content view): set the frame itself. `contentRect:` and
+        // `setContentSize` measure below the title bar, which the toolbar adds after init, so they leave a
+        // window 52 pt taller than asked (r4 C8, fixes round 5b).
+        let target = NSRect(origin: NSPoint(x: 40, y: 40), size: size)
+        window.setFrame(target, display: false)
         window.makeKeyAndOrderFront(nil)
+        var settled: [String] = []
         // A few run-loop turns so SwiftUI and the split view finish layout.
         for _ in 0..<6 {
             window.layoutIfNeeded()
+            if window.frame.size != size {
+                settled.append("frame \(window.frame.size) after layout")
+                window.setFrame(target, display: false)
+            }
             window.displayIfNeeded()
             try await Task.sleep(for: .milliseconds(60))
+        }
+        if !settled.isEmpty || size != Metrics.defaultWindow {
+            print("[screenshots] size \(size): \(sizeReport(window)); \(settled.joined(separator: ", "))")
         }
         window.makeFirstResponder(nil)
         guard let frameView = window.contentView?.superview else { throw RenderError.noFrameView }
         guard frameView.bounds.size == size, window.contentView?.bounds.size == size else {
             throw RenderError.wrongSize(
                 expected: size, frame: frameView.bounds.size, content: window.contentView?.bounds.size ?? .zero,
-                why: "contentMinSize \(window.contentMinSize), minSize \(window.minSize), "
-                    + "contentLayoutRect \(window.contentLayoutRect.size)"
+                why: sizeReport(window)
             )
         }
         let pixels = NSSize(width: size.width * CGFloat(scale), height: size.height * CGFloat(scale))
@@ -82,6 +93,35 @@ enum WindowRenderer {
               let png = srgb.representation(using: .png, properties: [:])
         else { throw RenderError.encode }
         return png
+    }
+
+    /// The window's minimums and the fitting size of each view that could hold it taller, for size errors.
+    private static func sizeReport(_ window: NSWindow) -> String {
+        var parts = [
+            "contentMinSize \(window.contentMinSize)", "minSize \(window.minSize)",
+            "contentLayoutRect \(window.contentLayoutRect.size)",
+            "content fittingSize \(window.contentView?.fittingSize ?? .zero)",
+        ]
+        if let content = window.contentView {
+            let vertical = content.constraintsAffectingLayout(for: .vertical)
+                + (content.superview?.constraintsAffectingLayout(for: .vertical) ?? [])
+            parts.append("vertical constraints [\(vertical.map { "\($0)" }.joined(separator: "; "))]")
+        }
+        if let split = window.contentViewController.flatMap(firstSplit) {
+            parts.append("split fittingSize \(split.splitView.fittingSize)")
+            for (index, item) in split.splitViewItems.enumerated() {
+                let view = item.viewController.view
+                parts.append("pane \(index) \(item.isCollapsed ? "collapsed" : "open") fittingSize \(view.fittingSize) "
+                    + "frame \(view.frame.size)")
+            }
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    private static func firstSplit(_ controller: NSViewController) -> NSSplitViewController? {
+        if let split = controller as? NSSplitViewController { return split }
+        for child in controller.children { if let found = firstSplit(child) { return found } }
+        return nil
     }
 
     /// Builds the window, captures it, then tears it down. The teardown runs after the capture, so the frames don't
