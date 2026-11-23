@@ -66,18 +66,24 @@ enum WindowRenderer {
     }
 
     /// Tears a captured window down so it is deallocated before the next one: 124 frames otherwise leave over
-    /// 100 live windows (AppKit's excessive-window warning). Runs after the capture, so the frames don't change.
-    static func dispose(_ window: NSWindow) async {
+    /// 100 live windows (AppKit's excessive-window warning). A shown window is only released once its window-server
+    /// events are handled inside an autorelease pool that drains, which the async test never does on its own, so
+    /// this pumps events for a moment inside one. It runs after the capture, so the frames don't change.
+    static func dispose(_ window: NSWindow) {
         autoreleasepool {
             window.orderOut(nil)
             window.toolbar = nil
             window.contentViewController = nil
-            window.delegate = nil
             window.close()
+            let end = Date().addingTimeInterval(0.3)
+            while Date() < end {
+                if let event = NSApp.nextEvent(
+                    matching: .any, until: Date().addingTimeInterval(0.01), inMode: .default, dequeue: true
+                ) {
+                    NSApp.sendEvent(event)
+                }
+            }
         }
-        // Let the run loop turn so AppKit and SwiftUI drop their last references.
-        try? await Task.sleep(for: .milliseconds(30))
-        await Task.yield()
     }
 
     enum RenderError: Error { case noFrameView, bitmap, encode }

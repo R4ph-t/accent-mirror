@@ -24,7 +24,7 @@ struct ScreenshotTests {
             for appearance in WindowRenderer.Appearance.allCases {
                 let window = WindowRenderer.makeWindow(model: ShellModel(fixture: loaded), appearance: appearance)
                 let png = try await WindowRenderer.capture(window)
-                await WindowRenderer.dispose(window)
+                WindowRenderer.dispose(window)
                 try png.write(to: Self.outputDirectory.appendingPathComponent("\(name)-\(appearance.rawValue)@2x.png"))
             }
         }
