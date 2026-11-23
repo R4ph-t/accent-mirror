@@ -1,0 +1,57 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "ed79bea4cd08f506538a7807ba036843dcf44712c66ef92fe2aefbbba1e333aa",
+  "clipID" : "speechocean762-004820378",
+  "formatVersion" : 1,
+  "text" : "I sure never forgive myself for this exposure.",
+  "words" : [
+    {
+      "end" : 0.7,
+      "probability" : 0.98,
+      "start" : 0.6,
+      "word" : " I"
+    },
+    {
+      "end" : 0.92,
+      "probability" : 0.51,
+      "start" : 0.7,
+      "word" : " sure"
+    },
+    {
+      "end" : 1.26,
+      "probability" : 0.99,
+      "start" : 0.92,
+      "word" : " never"
+    },
+    {
+      "end" : 1.52,
+      "probability" : 0.56,
+      "start" : 1.26,
+      "word" : " forgive"
+    },
+    {
+      "end" : 2.18,
+      "probability" : 0.99,
+      "start" : 1.52,
+      "word" : " myself"
+    },
+    {
+      "end" : 2.6,
+      "probability" : 0.98,
+      "start" : 2.18,
+      "word" : " for"
+    },
+    {
+      "end" : 2.84,
+      "probability" : 0.99,
+      "start" : 2.6,
+      "word" : " this"
+    },
+    {
+      "end" : 3.42,
+      "probability" : 0.54,
+      "start" : 2.84,
+      "word" : " exposure."
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "a04f2f53b293c4c9b6ee123b582e349a747aaec7aa5f2f5e3a51039e50339b7f",
+  "clipID" : "speechocean762-096160010",
+  "formatVersion" : 1,
+  "text" : "There, open the dog and the blank.",
+  "words" : [
+    {
+      "end" : 0.9,
+      "probability" : 0.5,
+      "start" : 0.54,
+      "word" : " There,"
+    },
+    {
+      "end" : 1.98,
+      "probability" : 0.79,
+      "start" : 1.8,
+      "word" : " open"
+    },
+    {
+      "end" : 2.34,
+      "probability" : 0.95,
+      "start" : 1.98,
+      "word" : " the"
+    },
+    {
+      "end" : 3.24,
+      "probability" : 0.91,
+      "start" : 2.34,
+      "word" : " dog"
+    },
+    {
+      "end" : 3.84,
+      "probability" : 0.89,
+      "start" : 3.24,
+      "word" : " and"
+    },
+    {
+      "end" : 4.56,
+      "probability" : 0.21,
+      "start" : 3.84,
+      "word" : " the"
+    },
+    {
+      "end" : 4.68,
+      "probability" : 0.27,
+      "start" : 4.56,
+      "word" : " blank."
+    }
+  ]
+}

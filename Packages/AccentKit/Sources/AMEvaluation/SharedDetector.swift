@@ -69,6 +69,8 @@ public enum PlacementSuppression: String, Sendable, Hashable, Codable, CaseItera
     case lowSyllableConfidence
     case missingTarget
     case exposedSyllable
+    /// Stress confidence below high (spec 08, §3.3: a placement flag needs high stress confidence).
+    case stressConfidenceBelowHigh
 }
 
 /// The detector's verdict on one word.
@@ -89,7 +91,7 @@ public struct PlacementOutcome: Sendable, Hashable, Codable {
     public var flaggedAfterSuppression: Bool { present && flaggedBeforeSuppression && suppression == nil }
 }
 
-/// The shared detector. Spec 08 wires the real one; until then only stubs conform.
+/// The shared detector. Spec 08's real one is `am-eval`'s `ReplayedPlacementDetector` over AMPipeline's stages.
 public protocol PlacementDetector: Sendable {
     var id: String { get }
     /// Word id → outcome, for the utterance's words.

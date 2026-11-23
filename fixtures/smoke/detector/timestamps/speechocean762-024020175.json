@@ -1,0 +1,39 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "e5a3a8b900af34f544c2db48a3808272403b5d90653e8e23fe23b709b42aab29",
+  "clipID" : "speechocean762-024020175",
+  "formatVersion" : 1,
+  "text" : "Alco is always the answer.",
+  "words" : [
+    {
+      "end" : 0.88,
+      "probability" : 0.63,
+      "start" : 0.52,
+      "word" : " Alco"
+    },
+    {
+      "end" : 1.16,
+      "probability" : 0.99,
+      "start" : 0.88,
+      "word" : " is"
+    },
+    {
+      "end" : 1.5,
+      "probability" : 0.99,
+      "start" : 1.16,
+      "word" : " always"
+    },
+    {
+      "end" : 1.78,
+      "probability" : 1,
+      "start" : 1.5,
+      "word" : " the"
+    },
+    {
+      "end" : 2.08,
+      "probability" : 0.93,
+      "start" : 1.78,
+      "word" : " answer."
+    }
+  ]
+}

@@ -1,0 +1,273 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "attribution" : "Word timings recognised from the smoke set's audio (fixtures/smoke/ATTRIBUTION.md): speechocean762 (OpenSLR 101, SpeechOcean) and CSTR VCTK Corpus 0.92, both CC BY 4.0",
+  "clips" : [
+    {
+      "clipID" : "speechocean762-000360343",
+      "file" : "speechocean762-000360343.json",
+      "sha256" : "34b8b96c707bbb5a44c6fd256a74af5fb7cfd336a9ff957f139f095feec0a1cb"
+    },
+    {
+      "clipID" : "speechocean762-000540058",
+      "file" : "speechocean762-000540058.json",
+      "sha256" : "2622f8ec92bb46eca350d04e6ce73f0c3282fbc026de2c62b2ba8d7b20031902"
+    },
+    {
+      "clipID" : "speechocean762-001450171",
+      "file" : "speechocean762-001450171.json",
+      "sha256" : "12abc4a92ae6fbcbed658738c6c49b0899a9341a15e3de47c95457bac9a774ad"
+    },
+    {
+      "clipID" : "speechocean762-004820329",
+      "file" : "speechocean762-004820329.json",
+      "sha256" : "b489dc738f8a4a11bb9bbc7078ad601f62abaaf653c30a9dede0b5be87f397ae"
+    },
+    {
+      "clipID" : "speechocean762-004820378",
+      "file" : "speechocean762-004820378.json",
+      "sha256" : "957e59522e7143963683e7dfd2ffa20978fd1269288fd5add5f4b8e439ad1ee9"
+    },
+    {
+      "clipID" : "speechocean762-008130346",
+      "file" : "speechocean762-008130346.json",
+      "sha256" : "1d74f107a050f73941fe31d2de2d1dbb634c55c75372dcee5159d4f48b954e5f"
+    },
+    {
+      "clipID" : "speechocean762-009600335",
+      "file" : "speechocean762-009600335.json",
+      "sha256" : "ecdea25a17bc13c3494756a1ae16c54d4aa8e6fb4bff8899c3746dab7cedb72f"
+    },
+    {
+      "clipID" : "speechocean762-010120265",
+      "file" : "speechocean762-010120265.json",
+      "sha256" : "6d8fec7809ddd8c9e3f4dce7a2c4eb79a01c8b8fd62f90ffc80de28e68357c43"
+    },
+    {
+      "clipID" : "speechocean762-010330103",
+      "file" : "speechocean762-010330103.json",
+      "sha256" : "7e6eac6ed35529b0278281b8a0e9ca0bf70e5f6623711e7087e955c85f1c02b3"
+    },
+    {
+      "clipID" : "speechocean762-010640280",
+      "file" : "speechocean762-010640280.json",
+      "sha256" : "656a8472469182da461c8380052480176dc8bd3fe522a08813994db8d17157b7"
+    },
+    {
+      "clipID" : "speechocean762-013090076",
+      "file" : "speechocean762-013090076.json",
+      "sha256" : "1bb33c94e052448d467c765dd6f999a801aa5a7fd33062e6f48b623ba8d06fd9"
+    },
+    {
+      "clipID" : "speechocean762-013620106",
+      "file" : "speechocean762-013620106.json",
+      "sha256" : "220862063570723ca1a8a6aaef02ef83a8c66ed6bd52ace83ba155b644a66274"
+    },
+    {
+      "clipID" : "speechocean762-014070304",
+      "file" : "speechocean762-014070304.json",
+      "sha256" : "ea0d92b50e0794bdcb27dd771475e25f4a8c46a65f7765de64bcde738e24d823"
+    },
+    {
+      "clipID" : "speechocean762-014190062",
+      "file" : "speechocean762-014190062.json",
+      "sha256" : "f74a3e2ae7c64ddcb2beb9177bb157120bb1073ae83ead7139cdfb711f56c603"
+    },
+    {
+      "clipID" : "speechocean762-014190073",
+      "file" : "speechocean762-014190073.json",
+      "sha256" : "ebb8bb8a19ac2b3f99b144ac17609b9c6ac42ff67e2558bcadf69ff70cba16fd"
+    },
+    {
+      "clipID" : "speechocean762-014350127",
+      "file" : "speechocean762-014350127.json",
+      "sha256" : "2ce7ab6e8541c9d0392d731b2cf0a6b5a8b99f1204a122708502b2041cf07c17"
+    },
+    {
+      "clipID" : "speechocean762-020590077",
+      "file" : "speechocean762-020590077.json",
+      "sha256" : "57d0d5b7238ba3d66b308a9d3da39551eb67f11a4ba3a6e61ed6f40d9abf926d"
+    },
+    {
+      "clipID" : "speechocean762-020610174",
+      "file" : "speechocean762-020610174.json",
+      "sha256" : "cc05d58a12d0a587cc567a8a9a6cf24d4407a4bd36e2fcb6165511177de7dda0"
+    },
+    {
+      "clipID" : "speechocean762-020890003",
+      "file" : "speechocean762-020890003.json",
+      "sha256" : "7e7a41d68ceec96550b230a2be41a4c89bb193c29f85ba993b11943f89eac8ff"
+    },
+    {
+      "clipID" : "speechocean762-022360321",
+      "file" : "speechocean762-022360321.json",
+      "sha256" : "e94795cdce7dc49130dd569d4533037eba7bb6f80559e55c2bd66d8ae13397cd"
+    },
+    {
+      "clipID" : "speechocean762-022420086",
+      "file" : "speechocean762-022420086.json",
+      "sha256" : "9479f4aa2a9cf07bb8201aa61215047ad3241184a776f2f5cfa1a3362f00f14c"
+    },
+    {
+      "clipID" : "speechocean762-022440073",
+      "file" : "speechocean762-022440073.json",
+      "sha256" : "17d6997754d0afcc2842d84c7a31b932eab5adcf2c254906b5c77bf2efc78bbc"
+    },
+    {
+      "clipID" : "speechocean762-023800160",
+      "file" : "speechocean762-023800160.json",
+      "sha256" : "93a3e091f4af88b01d7e04b76f6efa728fe9193acb8ab7a02036e5a4fe55d8b8"
+    },
+    {
+      "clipID" : "speechocean762-023800330",
+      "file" : "speechocean762-023800330.json",
+      "sha256" : "72eafe957fa72f7f8095200e80996d7e83b0d336ea3db153b0196231c6ba5502"
+    },
+    {
+      "clipID" : "speechocean762-024020142",
+      "file" : "speechocean762-024020142.json",
+      "sha256" : "ce4dcdf9440eef0b55a9836760468ec00181cc5d4a9d7b9245bc9a00fe02618c"
+    },
+    {
+      "clipID" : "speechocean762-024020175",
+      "file" : "speechocean762-024020175.json",
+      "sha256" : "941477226b90237f973b858d181c9736b77444fe6387fcd10eb2a51b2bcb924c"
+    },
+    {
+      "clipID" : "speechocean762-024020328",
+      "file" : "speechocean762-024020328.json",
+      "sha256" : "d5451d96e508a58c715420233c66071bc616be708c29d7c36e8f93fba4d46745"
+    },
+    {
+      "clipID" : "speechocean762-024270127",
+      "file" : "speechocean762-024270127.json",
+      "sha256" : "3c77c49a5c9e2ef91bb3e0080e6cfe23f5b43f86514736325ddb7a57e1854d54"
+    },
+    {
+      "clipID" : "speechocean762-024300099",
+      "file" : "speechocean762-024300099.json",
+      "sha256" : "d16a223ef9e9ec5c1fc76da243c50cf833290d35042ebbdd3e48fc1954e16ba8"
+    },
+    {
+      "clipID" : "speechocean762-024500151",
+      "file" : "speechocean762-024500151.json",
+      "sha256" : "fd4b703ca76f8bdedae579503b7ce28c2eba81f995fa0dad95514790c435ae62"
+    },
+    {
+      "clipID" : "speechocean762-027990156",
+      "file" : "speechocean762-027990156.json",
+      "sha256" : "4cc70f4e9726f780cdf6f9a7bc36aa057444e5d1560d1b9e013f29a5796829ca"
+    },
+    {
+      "clipID" : "speechocean762-030230092",
+      "file" : "speechocean762-030230092.json",
+      "sha256" : "ad43c116f2a3b20985f57c5526cfa996debc77ad8701b610bfc0b19231b408c8"
+    },
+    {
+      "clipID" : "speechocean762-040050107",
+      "file" : "speechocean762-040050107.json",
+      "sha256" : "9bbbc4f6b883449b7b41cb2b0110b71c03f7d25f52769be63c8593437bbc2cb9"
+    },
+    {
+      "clipID" : "speechocean762-054180022",
+      "file" : "speechocean762-054180022.json",
+      "sha256" : "a26331f56086755ad9586e28961c106c196c39d77aefb8bfeb29840d4ed5f647"
+    },
+    {
+      "clipID" : "speechocean762-054180087",
+      "file" : "speechocean762-054180087.json",
+      "sha256" : "b2a50ae31cc4796ea3ccd7b6484f93ff62adaee8c6222a4c2dcd0966ae6b3fc7"
+    },
+    {
+      "clipID" : "speechocean762-055510122",
+      "file" : "speechocean762-055510122.json",
+      "sha256" : "7a8c33201ff79abf852032ac6d378165d4c9511c676ae0f2e9c95206fc7cf30c"
+    },
+    {
+      "clipID" : "speechocean762-060100037",
+      "file" : "speechocean762-060100037.json",
+      "sha256" : "d2662f5adb4e2c486bda92f7b8cc681f2e51e53486a40139de46766162b6f596"
+    },
+    {
+      "clipID" : "speechocean762-061210174",
+      "file" : "speechocean762-061210174.json",
+      "sha256" : "ef62230d545de232fa113e166c9060cfb074779a944917a2a828c2ec43612bdc"
+    },
+    {
+      "clipID" : "speechocean762-080020017",
+      "file" : "speechocean762-080020017.json",
+      "sha256" : "508180cbf3ba9e13018c83eb01fe342bd8c1769da2e88ba68374872ea69597cd"
+    },
+    {
+      "clipID" : "speechocean762-085850170",
+      "file" : "speechocean762-085850170.json",
+      "sha256" : "be7d0db295c4b28148cb89db2c34418c8f2c7055797294f5813944f97de425ab"
+    },
+    {
+      "clipID" : "speechocean762-095560008",
+      "file" : "speechocean762-095560008.json",
+      "sha256" : "2aa3a15fe9d2dc4aad4ebfe76425f525de53e9d79a1e2bdf5331e95ac0923647"
+    },
+    {
+      "clipID" : "speechocean762-095560051",
+      "file" : "speechocean762-095560051.json",
+      "sha256" : "e68e315c69e399e49b2ea5060a929f87021aa55ca2145f26936325d2d61286a3"
+    },
+    {
+      "clipID" : "speechocean762-096000002",
+      "file" : "speechocean762-096000002.json",
+      "sha256" : "78eec1e9eaa1b7455d0e8e38f389e40631476d06d6cddb7b4e8e380a571e48ff"
+    },
+    {
+      "clipID" : "speechocean762-096060001",
+      "file" : "speechocean762-096060001.json",
+      "sha256" : "ef3f9b96acd60b435647ba2160ef7688eafe6266c9c3309c0b4a6c9e1a253900"
+    },
+    {
+      "clipID" : "speechocean762-096160010",
+      "file" : "speechocean762-096160010.json",
+      "sha256" : "d25e148ade3205b398f9a0ddfddd341c56738cef1c9573926a8e255436641e52"
+    },
+    {
+      "clipID" : "speechocean762-096190009",
+      "file" : "speechocean762-096190009.json",
+      "sha256" : "b0fd19a5f0bcb01b6ada42835a8887204086acdb64b0f825bc3d9f6a35a38544"
+    },
+    {
+      "clipID" : "speechocean762-096430009",
+      "file" : "speechocean762-096430009.json",
+      "sha256" : "db177c0b3cf6868ead464ee7ffd128fdef2f080bf3e14436f1ac0a4a08305b5e"
+    },
+    {
+      "clipID" : "vctk-p245_002",
+      "file" : "vctk-p245_002.json",
+      "sha256" : "4eca28b9921b18f1ae84945f59b79e445c0f1ae653938f05181287dfb08d62c0"
+    },
+    {
+      "clipID" : "vctk-p245_018",
+      "file" : "vctk-p245_018.json",
+      "sha256" : "9cf0c008c71118c91205089533e69f47f3fc6c980b18cff281b7128c5f1485ee"
+    },
+    {
+      "clipID" : "vctk-p288_002",
+      "file" : "vctk-p288_002.json",
+      "sha256" : "3b41f5832a4b25371ea57d29b9b1c6dfa9d9154fdb969dad3c4e42ed53645d91"
+    },
+    {
+      "clipID" : "vctk-p288_018",
+      "file" : "vctk-p288_018.json",
+      "sha256" : "72f8de8e4ccf57f33590789b6e463e2630295e09784266048843e42c94097948"
+    },
+    {
+      "clipID" : "vctk-p360_002",
+      "file" : "vctk-p360_002.json",
+      "sha256" : "1f3b46806b9bd2203ed0edc20aa20989ba743561bc19048606091819a911b8d9"
+    },
+    {
+      "clipID" : "vctk-p360_018",
+      "file" : "vctk-p360_018.json",
+      "sha256" : "782ddafb7ca2bb280881cd343712e9d65fe2a23474d43e98346bf6197e7d4354"
+    }
+  ],
+  "formatVersion" : 1,
+  "recordingsSHA256" : "4c72a1464b68407edf768b49b0dac7aae281bf133d8fb942d63208a48287ff70"
+}
