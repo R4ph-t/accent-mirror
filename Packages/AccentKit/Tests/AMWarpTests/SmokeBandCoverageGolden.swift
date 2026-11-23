@@ -2,9 +2,10 @@
 // model time, band, coverage) on the smoke set's six VCTK clips, as a deterministic regression golden. Never a rate
 // gate, never an evaluation: the gate is the positive-set median, blocked on spec 24.
 //
-// The smoke set holds only held-out speakers' clips (p245, p288, p360 × phrases 002, 018) and no word timings, so
-// each pair uses one comparable segment over the voiced span with edge anchors only (Poor, so DTW maps time), and the
-// band is built from the other two smoke speakers of the phrase. The test speaker is never in its own band.
+// The smoke set holds only tuning-split speakers' clips (p245, p288, p360 × phrases 002, 018; all three are `tuning`
+// in fixtures/vctk/eval-speakers.json, none held-out) and no word timings, so each pair uses one comparable segment
+// over the voiced span with edge anchors only (Poor, so DTW maps time), and the band is built from the other two smoke
+// speakers of the phrase. The test speaker is never in its own band.
 //
 // Run with `AM_RECORD_GOLDEN=1` to print new values; paste them into `expected` only with a reason in the PR.
 

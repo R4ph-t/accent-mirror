@@ -138,11 +138,12 @@ Built by hand in Claude Code (Opus), 2026-11-23. No threshold, version or golden
   each held-out take's word timings and syllables, which the pipeline (spec 12) produces.
 - **Smoke golden** (`AMWarpTests/SmokeBandCoverageGolden.swift`): the whole path (pYIN, MFCC, DTW, band, coverage)
   runs on the smoke set's six VCTK clips and is checked against values rounded to 4 decimals. It is a regression
-  golden only, not a gate. The smoke set has only held-out clips and no word timings, so each pair uses one Poor
+  golden only, not a gate. The smoke set has only tuning-split clips (p245, p288 and p360 are `tuning` in
+  `fixtures/vctk/eval-speakers.json`, none held-out) and no word timings, so each pair uses one Poor
   segment over the voiced span, and its band comes from the other two smoke speakers of the phrase.
 
 Gaps, built least-committal: (1) Poor anchors are judged per word, from spec 07's timing on each side. (2) "Sets
 timing to Rough" is read as a cap: Good → Rough, and Poor stays Poor, because DTW never raises a confidence.
 (3) A band frame that only one take covers gets ±1.5 st around that take. (4) The smoke golden's band voices are
-held-out smoke speakers, because the smoke set has no bundled takes, and adding 16 bundled clips would break its
-5 MB cap.
+the other tuning-split smoke speakers (never the test speaker), which the split allows, because the smoke set has no
+bundled takes, and adding 16 bundled clips would break its 5 MB cap.
