@@ -9,7 +9,7 @@
     2,
     1
   ],
-  "take": "photography-take04-close",
+  "take": "photography-take04-end-rises",
   "analysis": {
     "verdict": {
       "kind": "feedback",
@@ -78,7 +78,7 @@
       },
       {
         "word": "photography",
-        "outcome": "outsideAccepted",
+        "outcome": "matchesDictionary",
         "pattern": "phoTOGraphy"
       }
     ]

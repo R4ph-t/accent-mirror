@@ -9,15 +9,15 @@
     2,
     1
   ],
-  "take": "photography-take04-close",
+  "take": "photography-take04-missing-harder-looks",
   "analysis": {
     "verdict": {
       "kind": "inconclusive",
       "inconclusive": {
         "reason": "targetWordsMissing",
         "words": [
-          "explained",
-          "rainbow"
+          "harder",
+          "looks"
         ]
       }
     },

@@ -101,8 +101,7 @@ struct Palette: Equatable, Sendable {
         textSecondary: Color(hex: 0xA39D93),
         textTertiary: Color(hex: 0x6E6961),
         stripBar: Color(rgb: 240, 235, 225, 0.20),
-        // Sampled from mockup-result-dark-final2@2x.png, your row's grey bars (see the PR).
-        stripBarYou: Color(rgb: 242, 239, 233, 0.60),
+        stripBarYou: Color(rgb: 247, 244, 238, 0.58), // Designer Addendum r3 B6: rgba(247,244,238,0.58)
         pitchNative: Color(rgb: 165, 158, 147, 0.40),
         pitchYou: Color(hex: 0xF7F4EE),
         pitchTexture: Color(rgb: 240, 235, 225, 0.045),

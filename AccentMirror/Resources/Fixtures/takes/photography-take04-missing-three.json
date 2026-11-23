@@ -1,0 +1,157 @@
+{
+  "id": "photography-take04-missing-three",
+  "number": 4,
+  "hasAudio": true,
+  "alignment": "aligned",
+  "level": "normal",
+  "words": [
+    {
+      "kind": "missing",
+      "expected": "photography",
+      "syllables": [],
+      "slot": 0.194
+    },
+    {
+      "kind": "present",
+      "expected": "is",
+      "heard": "is",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "is",
+          "start": 0.39,
+          "end": 0.45,
+          "prominence": 0.32,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "missing",
+      "expected": "harder",
+      "syllables": [],
+      "slot": 0.561
+    },
+    {
+      "kind": "present",
+      "expected": "than",
+      "heard": "than",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "than",
+          "start": 0.673,
+          "end": 0.718,
+          "prominence": 0.3,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "it",
+      "heard": "it",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "it",
+          "start": 0.724,
+          "end": 0.762,
+          "prominence": 0.26,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "missing",
+      "expected": "looks",
+      "syllables": [],
+      "slot": 0.883
+    }
+  ],
+  "pitch": [
+    {
+      "points": [
+        {
+          "t": 0.388,
+          "st": -0.552
+        },
+        {
+          "t": 0.395,
+          "st": -0.635
+        },
+        {
+          "t": 0.399,
+          "st": -0.451
+        },
+        {
+          "t": 0.41,
+          "st": 0.057
+        },
+        {
+          "t": 0.421,
+          "st": 0.564
+        },
+        {
+          "t": 0.432,
+          "st": 1.071
+        },
+        {
+          "t": 0.443,
+          "st": 1.578
+        }
+      ]
+    },
+    {
+      "points": [
+        {
+          "t": 0.674,
+          "st": -0.498
+        },
+        {
+          "t": 0.685,
+          "st": -0.758
+        },
+        {
+          "t": 0.696,
+          "st": -1.017
+        },
+        {
+          "t": 0.707,
+          "st": -1.277
+        },
+        {
+          "t": 0.718,
+          "st": -1.537
+        },
+        {
+          "t": 0.723,
+          "st": -1.655
+        },
+        {
+          "t": 0.729,
+          "st": -1.459
+        },
+        {
+          "t": 0.74,
+          "st": -1.099
+        },
+        {
+          "t": 0.749,
+          "st": -0.805
+        },
+        {
+          "t": 0.751,
+          "st": -0.687
+        },
+        {
+          "t": 0.762,
+          "st": -0.038
+        }
+      ]
+    }
+  ]
+}

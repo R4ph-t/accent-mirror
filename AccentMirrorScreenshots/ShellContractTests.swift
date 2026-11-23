@@ -221,6 +221,58 @@ struct ShellContractTests {
         }
     }
 
+    // MARK: Round 3, Addendum r3 and the 12:19 batch
+
+    /// B6: your unstressed bars use the final2 values in both themes.
+    @Test func yourUnstressedBarTokensAreTheFinal2Values() {
+        func rgba(_ c: Color) -> [Int] {
+            let r = c.resolve(in: EnvironmentValues())
+            return [r.red, r.green, r.blue, r.opacity].map { Int(($0 * 255).rounded()) }
+        }
+        #expect(rgba(Palette.light.stripBarYou) == rgba(Color(.sRGB, red: 28 / 255, green: 26 / 255, blue: 23 / 255, opacity: 0.50)))
+        #expect(rgba(Palette.dark.stripBarYou) == rgba(Color(.sRGB, red: 247 / 255, green: 244 / 255, blue: 238 / 255, opacity: 0.58)))
+    }
+
+    /// B3 (§10): in a card-1 sentence the mistake is only bold caps in mistake blue. The sentence carries no
+    /// triangle or underline glyph; those belong to strip labels (`ClusterLabel.Style.mistake`).
+    @Test func cardSentenceMistakeIsCapsOnly() throws {
+        let row = try card("result-feedback").rows.first { $0.sentence.contains { $0.role == .mistake } }
+        let mistakes = row?.sentence.filter { $0.role == .mistake }.map(\.text)
+        #expect(mistakes == ["PHO"])
+        #expect(row?.sentence.plain.contains { "\u{25B2}\u{25B4}\u{26A0}".contains($0) } == false)
+    }
+
+    /// B11 / 12:19 a: each row fixture draws its own take, not the close-match one, and no two share one.
+    @Test func rowFixturesUseTheirOwnTake() throws {
+        let names = ["rows-range", "rows-final-direction-higher", "rows-final-direction-lower", "rows-too-much-contrast"]
+        var takes: [String] = []
+        for name in names {
+            let take = try #require(try library.load(name).fixture.take, "\(name)")
+            #expect(take != "photography-take04-close", "\(name)")
+            takes.append(take)
+        }
+        #expect(Set(takes).count == names.count)
+    }
+
+    /// B11 / 12:19 b: targetWordsMissing names words of the fixture's own phrase, and the take has a missing
+    /// slot for exactly those words.
+    @Test func missingWordsComeFromThePhraseAndMatchTheSlots() throws {
+        let expected = [
+            "inc-targetWordsMissing-one": ["harder"],
+            "inc-targetWordsMissing-two": ["harder", "looks"],
+        ]
+        for name in try library.allNames() where name.hasPrefix("inc-targetWordsMissing") {
+            let loaded = try library.load(name)
+            let words = loaded.fixture.analysis?.verdict?.inconclusive?.words ?? []
+            if let want = expected[name] { #expect(words == want, "\(name)") }
+            let phraseWords = Set(loaded.phrase.words.map { $0.text.lowercased().trimmingCharacters(in: .punctuationCharacters) })
+            #expect(!words.isEmpty && words.allSatisfy(phraseWords.contains), "\(name)")
+            guard case .bars(_, let slots, _) = ShellPresenter.strip(loaded).you else { Issue.record("\(name)"); continue }
+            #expect(slots.map(\.expected) == words, "\(name)")
+            #expect(ShellPresenter.pitch(loaded).message == nil, "\(name) still has pitch to show")
+        }
+    }
+
     // MARK: Round 3, 12:19 batch c: final-direction icons
 
     @Test func finalDirectionIconFollowsTheDirection() throws {
