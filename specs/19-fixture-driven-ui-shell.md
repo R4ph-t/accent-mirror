@@ -170,4 +170,33 @@ Addendum A5 says: "A(w) = the context-compatible dictionary pronunciation plus t
 
 ## Implementation notes
 
-_(filled in by the agent)_
+- **Command.** `make screenshots` is local only: it is not called by `make check` or `.github/workflows/ci.yml`. It
+  regenerates the project and runs the `AccentMirrorScreenshots` scheme (a unit-test bundle hosted by the app; the
+  `AccentMirror` scheme that CI builds does not include it). It writes `screenshots/ui-shell/<fixture>-{light,dark}@2x.png`
+  (git-ignored), then runs `scripts/check-screenshots.sh`, which fails on a wrong size, a missing light/dark twin or a
+  near-uniform frame. Two runs give byte-identical PNGs (SHA-256 of all 124 frames compared).
+- **Renderer.** `WindowRenderer` builds a real 1200 × 800 pt `NSWindow` with the app's own chrome and `ShellView`,
+  forces Aqua or Dark Aqua on the window, and draws the window's frame view into a 2400 × 1600 bitmap with
+  `cacheDisplay`. That is native SwiftUI, not a screen grab: no cursor, no overlays, nothing else on screen. The
+  test host never becomes the active app, so the traffic lights always render in their inactive (grey) state.
+  That keeps the frames deterministic.
+- **Fixtures.** The JSON is in `AccentMirror/Resources/Fixtures/` (`states/`, `phrases/`, `takes/`, documented in
+  `SCHEMA.md`) and is bundled as a folder reference. `-UIFixture <name>` picks one at launch; without it the app shows
+  `empty`. There are 62 states: the 53 listed above (with `op-audioUnreadable-clip/-take` and
+  `op-savedPruneFailed`/`cancelled` as separate files), plus `rows-range`, `rows-final-direction-lower/-higher`,
+  `rows-too-much-contrast`, `stress-differs-but-accepted`, `tp-first-in-plan-order` and
+  `pitch-interpolated-and-breaks`.
+- **No second domain model.** AMCore has no contract types yet (spec 01), so the Decodable types in
+  `AccentMirror/Fixtures/FixtureModel.swift` use the plan v2 names and are the only model. `ShellPresenter` maps them
+  to what each card draws, and `Copy` holds every sentence. Both are pure and UI-free; the views only draw. When
+  spec 01 lands, the fixtures and this decoding layer move to the AMCore types.
+- **Tests.** `AccentMirrorScreenshots/ShellContractTests.swift` checks that every fixture decodes, the copy rules (A4
+  close, A6 quiet-line priority, rough row first and the 3-row cap, banner precedence, never "wrong", "like p311"),
+  the toolbar rules (recording, LAST TRY · NOT SAVED) and the token contrast guardrails. It needs the app target, so
+  it runs with `make screenshots`, not in CI.
+- **Drawing.** Strip bars are drawn from each syllable's span and measured prominence, with a seeded per-bar jitter.
+  The pitch lines are Catmull-Rom curves through the fixture points. The band is the P10 to P90 ribbon unioned with a
+  7 pt round-capped stroke. Bridged frames are drawn at 45%, 1.5 pt. Breaks are wherever the fixture's segments
+  break, and a segment under 3 points is not drawn. Hover ghosts and voice-switch easing are left to spec 20.
+- **Controls.** Play, Record, Try Again and the banner buttons are visual only: no microphone, no audio, no network.
+

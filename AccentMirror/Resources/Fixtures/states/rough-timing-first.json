@@ -1,0 +1,103 @@
+{
+  "name": "rough-timing-first",
+  "summary": "Rough timing: the rough row comes first and there are at most 3 rows.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-take03",
+  "analysis": {
+    "verdict": {
+      "kind": "feedback",
+      "rows": [
+        {
+          "kind": "placement",
+          "word": "photography",
+          "syllables": [
+            "pho",
+            "tog",
+            "ra",
+            "phy"
+          ],
+          "acceptedIndex": 1,
+          "heardIndex": 0
+        },
+        {
+          "kind": "contrast",
+          "targets": [
+            "HAR",
+            "LOOKS"
+          ]
+        },
+        {
+          "kind": "reduction",
+          "targets": [
+            "ra",
+            "phy",
+            "der",
+            "than"
+          ]
+        },
+        {
+          "kind": "roughTiming"
+        }
+      ]
+    },
+    "measures": [
+      {
+        "measure": "stressPlacement",
+        "state": "evaluated"
+      },
+      {
+        "measure": "contrast",
+        "state": "evaluated",
+        "value": 0.58
+      },
+      {
+        "measure": "reduction",
+        "state": "evaluated",
+        "value": 0.64
+      },
+      {
+        "measure": "rhythm",
+        "state": "evaluated",
+        "value": 0.71
+      },
+      {
+        "measure": "pitchShape",
+        "state": "evaluated",
+        "value": 0.62
+      },
+      {
+        "measure": "range",
+        "state": "evaluated",
+        "value": 0.88
+      },
+      {
+        "measure": "finalDirection",
+        "state": "evaluated"
+      }
+    ],
+    "timing": "rough",
+    "stress": [
+      {
+        "word": "harder",
+        "outcome": "matchesDictionary",
+        "pattern": "HARder"
+      },
+      {
+        "word": "looks",
+        "outcome": "matchesDictionary",
+        "pattern": "LOOKS"
+      },
+      {
+        "word": "photography",
+        "outcome": "outsideAccepted",
+        "pattern": "phoTOGraphy"
+      }
+    ]
+  }
+}

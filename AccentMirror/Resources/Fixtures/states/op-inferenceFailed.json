@@ -1,0 +1,11 @@
+{
+  "name": "op-inferenceFailed",
+  "summary": "Inference failed while measuring stress; the cards keep the empty state.",
+  "phrase": "photography",
+  "phase": "empty",
+  "savedTakes": [],
+  "operationalError": {
+    "kind": "inferenceFailed",
+    "stage": "measuring stress"
+  }
+}

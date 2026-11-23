@@ -1,0 +1,17 @@
+{
+  "name": "tp-noMicrophone",
+  "summary": "No microphone: Record disabled, no Try Again.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-attempt-no-audio",
+  "analysis": {
+    "takeProblems": [
+      "noMicrophone"
+    ]
+  }
+}

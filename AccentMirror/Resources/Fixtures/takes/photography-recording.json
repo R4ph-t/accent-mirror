@@ -1,0 +1,66 @@
+{
+  "id": "photography-recording",
+  "number": null,
+  "hasAudio": true,
+  "alignment": "aligned",
+  "level": "normal",
+  "words": [
+    {
+      "kind": "present",
+      "expected": "photography",
+      "heard": "photography",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "pho",
+          "start": 0.003,
+          "end": 0.121,
+          "prominence": 0.8,
+          "stressed": false,
+          "label": "lower"
+        },
+        {
+          "text": "tog",
+          "start": 0.128,
+          "end": 0.222,
+          "prominence": 0.55,
+          "stressed": false,
+          "label": "lower"
+        },
+        {
+          "text": "ra",
+          "start": 0.227,
+          "end": 0.312,
+          "prominence": 0.5,
+          "stressed": false,
+          "label": "lower"
+        },
+        {
+          "text": "phy",
+          "start": 0.316,
+          "end": 0.403,
+          "prominence": 0.5,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "is",
+      "heard": "is",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "is",
+          "start": 0.411,
+          "end": 0.479,
+          "prominence": 0.45,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    }
+  ],
+  "pitch": []
+}

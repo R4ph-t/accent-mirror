@@ -1,0 +1,73 @@
+{
+  "id": "record",
+  "text": "Record.",
+  "subtitle": "My Phrases · From record.m4a",
+  "rangeSemitones": 12,
+  "words": [
+    {
+      "text": "Record.",
+      "stressCheck": "checked",
+      "start": 0.08,
+      "end": 0.92,
+      "syllables": [
+        {
+          "text": "re",
+          "start": 0.08,
+          "end": 0.46,
+          "prominence": 1.0,
+          "stressed": true,
+          "label": "caps"
+        },
+        {
+          "text": "cord",
+          "start": 0.5,
+          "end": 0.92,
+          "prominence": 0.35,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    }
+  ],
+  "band": [
+    {
+      "points": [
+        {
+          "t": 0.1,
+          "st": 1.0,
+          "half": 0.45
+        },
+        {
+          "t": 0.22,
+          "st": 4.5,
+          "half": 0.45
+        },
+        {
+          "t": 0.36,
+          "st": 5.2,
+          "half": 0.45
+        },
+        {
+          "t": 0.48,
+          "st": 2.0,
+          "half": 0.45
+        },
+        {
+          "t": 0.62,
+          "st": -1.5,
+          "half": 0.45
+        },
+        {
+          "t": 0.78,
+          "st": -4.0,
+          "half": 0.45
+        },
+        {
+          "t": 0.9,
+          "st": -6.0,
+          "half": 0.45
+        }
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ PACKAGE      := Packages/AccentKit
 DERIVED_DATA := .build/DerivedData
 
 .PHONY: generate build test check-corpus check-ui-frameworks check \
-        fetch-models bench eval agreement-record
+        fetch-models bench eval agreement-record screenshots
 
 generate:
 	xcodegen generate
@@ -40,3 +40,13 @@ eval:
 
 agreement-record:
 	@echo "agreement-record: not yet: spec 03"
+
+# Local only (spec 19): renders every UI fixture in light and dark at 2400 x 1600 into screenshots/ui-shell/,
+# then checks no frame is blank. Launches the app as a test host, so it is never part of `check` or CI.
+SCREENSHOT_DIR := $(CURDIR)/screenshots/ui-shell
+
+screenshots: generate
+	rm -rf $(SCREENSHOT_DIR)
+	TEST_RUNNER_SCREENSHOT_DIR=$(SCREENSHOT_DIR) xcodebuild -project $(PROJECT) -scheme AccentMirrorScreenshots \
+		-destination 'platform=macOS' -derivedDataPath $(DERIVED_DATA) test
+	scripts/check-screenshots.sh $(SCREENSHOT_DIR)

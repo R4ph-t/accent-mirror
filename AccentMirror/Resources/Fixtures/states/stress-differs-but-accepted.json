@@ -1,0 +1,73 @@
+{
+  "name": "stress-differs-but-accepted",
+  "summary": "Different from the selected voice but accepted: inspector line, no row.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-take04-close",
+  "analysis": {
+    "verdict": {
+      "kind": "feedback",
+      "rows": [
+        {
+          "kind": "reduction",
+          "targets": [
+            "ra",
+            "phy",
+            "der",
+            "than"
+          ]
+        }
+      ]
+    },
+    "measures": [
+      {
+        "measure": "stressPlacement",
+        "state": "evaluated"
+      },
+      {
+        "measure": "contrast",
+        "state": "evaluated",
+        "value": 1.04
+      },
+      {
+        "measure": "reduction",
+        "state": "evaluated",
+        "value": 0.93
+      },
+      {
+        "measure": "rhythm",
+        "state": "evaluated",
+        "value": 0.91
+      },
+      {
+        "measure": "pitchShape",
+        "state": "evaluated",
+        "value": 0.82
+      },
+      {
+        "measure": "range",
+        "state": "evaluated",
+        "value": 0.95
+      },
+      {
+        "measure": "finalDirection",
+        "state": "evaluated"
+      }
+    ],
+    "timing": "good",
+    "stress": [
+      {
+        "word": "photography",
+        "outcome": "differsButAccepted",
+        "voice": "p311",
+        "selectedVoice": "p225"
+      }
+    ]
+  },
+  "inspectorOpen": true
+}

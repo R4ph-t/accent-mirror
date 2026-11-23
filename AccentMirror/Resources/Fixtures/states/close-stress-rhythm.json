@@ -1,0 +1,53 @@
+{
+  "name": "close-stress-rhythm",
+  "summary": "Close, pitch shape not evaluated.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-take04-close",
+  "analysis": {
+    "verdict": {
+      "kind": "close"
+    },
+    "measures": [
+      {
+        "measure": "stressPlacement",
+        "state": "evaluated"
+      },
+      {
+        "measure": "contrast",
+        "state": "evaluated",
+        "value": 1.02
+      },
+      {
+        "measure": "reduction",
+        "state": "evaluated",
+        "value": 0.91
+      },
+      {
+        "measure": "rhythm",
+        "state": "evaluated",
+        "value": 0.9
+      },
+      {
+        "measure": "pitchShape",
+        "state": "unavailable",
+        "reason": "lowConfidence"
+      },
+      {
+        "measure": "range",
+        "state": "evaluated",
+        "value": 0.94
+      },
+      {
+        "measure": "finalDirection",
+        "state": "evaluated"
+      }
+    ],
+    "timing": "good"
+  }
+}

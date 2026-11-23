@@ -1,0 +1,15 @@
+{
+  "name": "coming-soon-expanded",
+  "summary": "Noun and Verb Pairs expanded to its non-selectable line.",
+  "phrase": "photography",
+  "phase": "empty",
+  "savedTakes": [],
+  "sidebar": {
+    "selectedPhraseID": "photography",
+    "expandedPackIDs": [
+      "my-phrases",
+      "stress-shifts",
+      "noun-verb-pairs"
+    ]
+  }
+}

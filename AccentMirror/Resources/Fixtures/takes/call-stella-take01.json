@@ -1,0 +1,111 @@
+{
+  "id": "call-stella-take01",
+  "number": 1,
+  "hasAudio": true,
+  "alignment": "aligned",
+  "level": "normal",
+  "words": [
+    {
+      "kind": "present",
+      "expected": "please",
+      "heard": "please",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "please",
+          "start": 0.02,
+          "end": 0.27,
+          "prominence": 0.8,
+          "stressed": true,
+          "label": "caps"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "call",
+      "heard": "call",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "call",
+          "start": 0.31,
+          "end": 0.56,
+          "prominence": 0.75,
+          "stressed": true,
+          "label": "caps"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "stella",
+      "heard": "stella",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "stel",
+          "start": 0.6,
+          "end": 0.8,
+          "prominence": 0.95,
+          "stressed": true,
+          "label": "caps"
+        },
+        {
+          "text": "la",
+          "start": 0.82,
+          "end": 0.98,
+          "prominence": 0.35,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    }
+  ],
+  "pitch": [
+    {
+      "points": [
+        {
+          "t": 0.03,
+          "st": 1.6
+        },
+        {
+          "t": 0.14,
+          "st": 3.2
+        },
+        {
+          "t": 0.26,
+          "st": 1.2
+        },
+        {
+          "t": 0.33,
+          "st": 2.4
+        },
+        {
+          "t": 0.45,
+          "st": 1.8
+        },
+        {
+          "t": 0.55,
+          "st": 0.8
+        },
+        {
+          "t": 0.62,
+          "st": 3.6
+        },
+        {
+          "t": 0.72,
+          "st": 2.6
+        },
+        {
+          "t": 0.84,
+          "st": -1.6
+        },
+        {
+          "t": 0.96,
+          "st": -4.4
+        }
+      ]
+    }
+  ]
+}

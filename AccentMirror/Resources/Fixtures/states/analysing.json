@@ -1,0 +1,12 @@
+{
+  "name": "analysing",
+  "summary": "Analysing the take just recorded; Record stays enabled (it would cancel).",
+  "phrase": "photography",
+  "phase": "analysing",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-take03"
+}

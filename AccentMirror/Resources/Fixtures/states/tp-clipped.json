@@ -1,0 +1,17 @@
+{
+  "name": "tp-clipped",
+  "summary": "Clipped, with audio: You plays it; LAST TRY · NOT SAVED.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-lasttry-audio",
+  "analysis": {
+    "takeProblems": [
+      "clipped"
+    ]
+  }
+}

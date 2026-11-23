@@ -1,0 +1,91 @@
+{
+  "name": "stress-match-p311",
+  "summary": "Your stress is accepted: no placement row; the inspector names the voice you match.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-take04-close",
+  "analysis": {
+    "verdict": {
+      "kind": "feedback",
+      "rows": [
+        {
+          "kind": "contrast",
+          "targets": [
+            "HAR",
+            "LOOKS"
+          ]
+        },
+        {
+          "kind": "reduction",
+          "targets": [
+            "ra",
+            "phy",
+            "der",
+            "than"
+          ]
+        }
+      ]
+    },
+    "measures": [
+      {
+        "measure": "stressPlacement",
+        "state": "evaluated"
+      },
+      {
+        "measure": "contrast",
+        "state": "evaluated",
+        "value": 1.04
+      },
+      {
+        "measure": "reduction",
+        "state": "evaluated",
+        "value": 0.93
+      },
+      {
+        "measure": "rhythm",
+        "state": "evaluated",
+        "value": 0.91
+      },
+      {
+        "measure": "pitchShape",
+        "state": "evaluated",
+        "value": 0.82
+      },
+      {
+        "measure": "range",
+        "state": "evaluated",
+        "value": 0.95
+      },
+      {
+        "measure": "finalDirection",
+        "state": "evaluated"
+      }
+    ],
+    "timing": "good",
+    "stress": [
+      {
+        "word": "photography",
+        "outcome": "matchesVoice",
+        "voice": "p311",
+        "pattern": "phoTOGraphy"
+      },
+      {
+        "word": "harder",
+        "outcome": "matchesVoice",
+        "voice": "p311",
+        "pattern": "HARder"
+      },
+      {
+        "word": "looks",
+        "outcome": "matchesDictionary",
+        "pattern": "LOOKS"
+      }
+    ]
+  },
+  "inspectorOpen": true
+}

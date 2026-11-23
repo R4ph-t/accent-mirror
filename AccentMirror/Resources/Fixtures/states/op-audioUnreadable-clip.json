@@ -1,0 +1,11 @@
+{
+  "name": "op-audioUnreadable-clip",
+  "summary": "An imported clip couldn't be read.",
+  "phrase": "photography",
+  "phase": "empty",
+  "savedTakes": [],
+  "operationalError": {
+    "kind": "audioUnreadable",
+    "source": "clip"
+  }
+}

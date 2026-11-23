@@ -1,0 +1,138 @@
+{
+  "id": "photography-lasttry-audio",
+  "number": null,
+  "hasAudio": true,
+  "alignment": "aligned",
+  "level": "normal",
+  "words": [
+    {
+      "kind": "present",
+      "expected": "photography",
+      "heard": "photography",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "pho",
+          "start": 0.003,
+          "end": 0.121,
+          "prominence": 0.03,
+          "stressed": false,
+          "label": "lower"
+        },
+        {
+          "text": "tog",
+          "start": 0.128,
+          "end": 0.222,
+          "prominence": 0.03,
+          "stressed": false,
+          "label": "lower"
+        },
+        {
+          "text": "ra",
+          "start": 0.227,
+          "end": 0.312,
+          "prominence": 0.03,
+          "stressed": false,
+          "label": "lower"
+        },
+        {
+          "text": "phy",
+          "start": 0.316,
+          "end": 0.403,
+          "prominence": 0.03,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "is",
+      "heard": "is",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "is",
+          "start": 0.411,
+          "end": 0.479,
+          "prominence": 0.03,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "harder",
+      "heard": "harder",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "har",
+          "start": 0.486,
+          "end": 0.593,
+          "prominence": 0.03,
+          "stressed": false,
+          "label": "lower"
+        },
+        {
+          "text": "der",
+          "start": 0.599,
+          "end": 0.687,
+          "prominence": 0.03,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "than",
+      "heard": "than",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "than",
+          "start": 0.695,
+          "end": 0.762,
+          "prominence": 0.03,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "it",
+      "heard": "it",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "it",
+          "start": 0.769,
+          "end": 0.832,
+          "prominence": 0.03,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "looks",
+      "heard": "looks",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "looks",
+          "start": 0.839,
+          "end": 0.995,
+          "prominence": 0.03,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    }
+  ],
+  "pitch": []
+}

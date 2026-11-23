@@ -1,0 +1,17 @@
+{
+  "name": "tp-micDenied",
+  "summary": "Microphone access denied.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-attempt-no-audio",
+  "analysis": {
+    "takeProblems": [
+      "micDenied"
+    ]
+  }
+}

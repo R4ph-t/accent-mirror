@@ -1,0 +1,17 @@
+{
+  "name": "tooQuiet",
+  "summary": "Unsaved too-quiet last try, playable with You (mockup: error).",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-lasttry-quiet",
+  "analysis": {
+    "takeProblems": [
+      "tooQuiet"
+    ]
+  }
+}
