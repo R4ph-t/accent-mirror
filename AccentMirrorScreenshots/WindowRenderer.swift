@@ -64,8 +64,11 @@ enum WindowRenderer {
         window.makeFirstResponder(nil)
         guard let frameView = window.contentView?.superview else { throw RenderError.noFrameView }
         guard frameView.bounds.size == size, window.contentView?.bounds.size == size else {
-            throw RenderError.wrongSize(expected: size, frame: frameView.bounds.size,
-                                        content: window.contentView?.bounds.size ?? .zero)
+            throw RenderError.wrongSize(
+                expected: size, frame: frameView.bounds.size, content: window.contentView?.bounds.size ?? .zero,
+                why: "contentMinSize \(window.contentMinSize), minSize \(window.minSize), "
+                    + "contentLayoutRect \(window.contentLayoutRect.size)"
+            )
         }
         let pixels = NSSize(width: size.width * CGFloat(scale), height: size.height * CGFloat(scale))
         guard let rep = NSBitmapImageRep(
@@ -116,6 +119,6 @@ enum WindowRenderer {
 
     enum RenderError: Error {
         case noFrameView, bitmap, encode
-        case wrongSize(expected: CGSize, frame: CGSize, content: CGSize)
+        case wrongSize(expected: CGSize, frame: CGSize, content: CGSize, why: String)
     }
 }

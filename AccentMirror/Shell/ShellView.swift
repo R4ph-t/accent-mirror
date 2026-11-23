@@ -12,8 +12,10 @@ struct ShellView: View {
             detail: { DetailPane(model: model) },
             inspector: { InspectorPane(model: model) }
         )
-        .ignoresSafeArea()
+        // The minimum is the whole window, title bar included (spec 18; Addendum r4 C8). Applied after
+        // `ignoresSafeArea` it measured below the 52 pt title bar and held windows at 732 pt (fixes round 5b).
         .frame(minWidth: Metrics.minimumWindow.width, minHeight: Metrics.minimumWindow.height)
+        .ignoresSafeArea()
         .background(WindowChromeConfigurator())
     }
 }
