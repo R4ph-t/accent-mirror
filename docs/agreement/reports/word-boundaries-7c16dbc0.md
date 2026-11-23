@@ -1,6 +1,6 @@
 # Word-boundary refinement (spec 23): FAIL
 
-Generated 2026-11-23T12:38:12Z. Refined WhisperKit word boundaries against the MFA word baseline (Montreal Forced Aligner 3.4.4, english_mfa.zip) on 155 VCTK 0.92 clips. **No stress claims.**
+Generated 2026-11-23T13:10:04Z. Refined WhisperKit word boundaries against the MFA word baseline (Montreal Forced Aligner 3.4.4, english_mfa.zip) on 155 VCTK 0.92 clips. **No stress claims.**
 
 ## Decision
 
@@ -16,20 +16,21 @@ dsp-snap-1 misses the unpadded bar (FAIL); ctc-w2v2b960-1 misses it too (FAIL). 
 | Comparable boundaries per side | 2390 | 2390 | 2390 |
 | Mean signed start / end (negative: early) | -120.0 ms / -137.5 ms | -67.6 ms / -94.1 ms | -1.2 ms / -53.3 ms |
 | Boundaries moved | 0.0% | 61.6% | 97.8% |
-| Refinement per clip: median / p90 / max | 0.0 ms / 0.0 ms / 0.0 ms | 5.1 ms / 7.1 ms / 9.6 ms | 27.9 ms / 36.0 ms / 46.3 ms |
+| Refinement per clip: median / p90 / max | 0.0 ms / 0.0 ms / 0.0 ms | 6.4 ms / 9.2 ms / 17.1 ms | 28.3 ms / 35.9 ms / 76.8 ms |
 | **Unpadded bar** | **FAIL** | **FAIL** | **FAIL** |
 
 - Correlation gate (b1 only, spec 02's control pairs): **NOT EVALUATED**. Spec 02's unmodified-control and sham-control sets are not on this machine (spec 02 is not merged), so Δr cannot be computed. NOT EVALUATED is not a pass.
   - Bootstrap: 2000 resamples over clips, seed 23
 - ≤ 2% placement-diff rule (§6.7): PENDING: checked in spec 11's agreement run with `aligner` in the identity (needs specs 08 and 10)
+- Reference sanity check (MFA's own error, **not a gate**): Montreal Forced Aligner 3.4.4 (english_mfa.zip) on 20 phrases synthesised by `com.apple.voice.compact.en-US.Samantha`, against SSML `<mark>` bookmarks (marker resolution 11.6 ms). Starts: median 23.5 ms, within 80 ms 98.4%, mean signed -24.3 ms, n 313. Ends: median 25.1 ms, within 80 ms 94.2%, mean signed -36.8 ms, n 313. Ends of words with no punctuation after them: median 24.3 ms, within 80 ms 97.9%, mean signed -28.1 ms, n 281. Words without both markers: 0.
 
 ## b2 model (`ctc-w2v2b960-1`)
 
 - facebook/wav2vec2-base-960h at `22aad52d435eb6dbaf354bdad9b0da84ce7d6156`, Apache-2.0. Licence evidence: README.md front matter `license: apache-2.0` at https://huggingface.co/facebook/wav2vec2-base-960h/raw/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/README.md; Hub API cardData.license apache-2.0 at that revision
 - Converted package (Core ML mlprogram, float32): `packageSHA256` `9ae95d751153f85e2282590668e2ab1ffd4db3b1a10292ccdd3660b50f7ee4d8`, 360.2 MiB on disk; fp16: not converted (the spec names float32)
-- Verify 192.7 ms; compile and load 2088.6 ms; compute units `all`
-- Per clip on this Mac (Apple M3 Max, Mac15,11), warm: median 27.9 ms, p90 36.0 ms, max 46.3 ms over 154 clips
-- Cancellation: a 17.0 s call takes 91.5 ms with compute units `all`, too short to cancel 100 ms in, so the trials load the same verified package with `cpuOnly`, where the call takes 458.7 ms. Cancel 100 ms in, 5 trials: all CancellationError: yes; returned 0.1, 0.0, 0.0, 0.0, 43.0 ms after the cancel (about 300 ms allowed); model still loaded: yes. **PASS**
+- Verify 307.4 ms; compile and load 2685.9 ms; compute units `all`
+- Per clip on this Mac (Apple M3 Max, Mac15,11), warm: median 28.3 ms, p90 35.9 ms, max 76.8 ms over 154 clips
+- Cancellation: a 17.0 s call takes 81.5 ms with compute units `all`, too short to cancel 100 ms in, so the trials load the same verified package with `cpuOnly`, where the call takes 637.1 ms. Cancel 100 ms in, 5 trials: all CancellationError: yes; returned 0.1, 0.0, 0.0, 0.0, 0.0 ms after the cancel (about 300 ms allowed); model still loaded: yes. **PASS**
 - `macos-26` runner latency: NOT RUN: needs a manual workflow on GitHub's macos-26 runner that Raph adds by hand (.github/ is off-limits to agents)
 
 Under the bar, or not evaluated: this report goes to CTO. Thresholds are not changed to pass.
@@ -37,8 +38,8 @@ Under the bar, or not evaluated: this report goes to CTO. Thresholds are not cha
 ## Identity (plan §6.6)
 
 - `configDigest` (the shipped aligner's identity): `7c16dbc075a694d4ad1b48fcdd27e836878e7f5c29a7543ab041ded867d8c47c`
-- `sourceTreeHash`: `ce4562d17c166f39761106e4f29795e4e4cf500a228a6a85d8b43d9a2f493b26`
-- Evaluated commit: `688c06bc0b97184a7b2494beb8c82cfe325fd760`; clean tree: yes
+- `sourceTreeHash`: `a67c8688c27e8916171d3d60cd34deec4be9c742d7e96c989fa2d1c8ced9cb2f`
+- Evaluated commit: `47fafd903414d4d87f3ad297f9b3a8282d981ea9`; clean tree: yes
 - `ConfigIdentity`: algorithmVersion 1, thresholdsVersion 4, contractVersion 2, asrModelID `openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631`, pitchTrackerID `none`, voicingID `none`, aligner `whisper`
   - `whisper`: configDigest `7c16dbc075a694d4ad1b48fcdd27e836878e7f5c29a7543ab041ded867d8c47c` (pitchTrackerID `none`)
   - `dsp-snap-1`: configDigest `1e5749998aeada31471de1327085fb5c3fed25b85a7d9ca7f90be546ba150027` (pitchTrackerID `pyin-1`)
@@ -53,7 +54,7 @@ Recompute by hand:
 
 ```sh
 # sourceTreeHash
-git ls-tree -r --full-tree 688c06bc0b97184a7b2494beb8c82cfe325fd760 | grep -v "$(printf '\t')docs/agreement/reports/" | LC_ALL=C sort | shasum -a 256
+git ls-tree -r --full-tree 47fafd903414d4d87f3ad297f9b3a8282d981ea9 | grep -v "$(printf '\t')docs/agreement/reports/" | LC_ALL=C sort | shasum -a 256
 # configDigest: SHA-256 of identity.configCanonicalJSON in the JSON report (no trailing newline)
 printf '%s' "$(plutil -extract identity.configCanonicalJSON raw -o - word-boundaries-7c16dbc0.json)" | shasum -a 256
 ```

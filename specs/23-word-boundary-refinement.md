@@ -173,6 +173,14 @@ fails the bar. The placement-diff rule (§6.7) is recorded as pending spec 11.
   them, and a package test replays them with networking denied.
 - **Identity.** `ConfigIdentity.aligner` (contract 2), `Thresholds.wordBoundaries` (thresholds 4), goldens
   re-recorded and digest appended. `algorithmVersion` is unchanged: the shipped aligner is still `whisper`.
+- **Reference sanity check (CTO review, not a gate).** `scripts/reference-check.sh` synthesises the 20 eval phrases
+  with `com.apple.voice.compact.en-US.Samantha`, with SSML `<mark>` bookmarks around every word. The bookmarks come
+  back through the delegate during `write`, in whole 256-sample buffers, so the resolution is 11.6 ms. The audio is
+  aligned through `scripts/mfa-align.sh` (same MFA, models and command, new opt-in input-corpus mode). MFA against the
+  marks, MFA minus mark: starts median 23.5 ms, 98.4% within 80 ms, mean signed −24.3 ms; ends median 25.1 ms,
+  94.2%, −36.8 ms (n 313); ends of words with no punctuation after them median 24.3 ms, 97.9%, −28.1 ms (n 281).
+  End marks fire where the next word starts, so a pause after a word counts as part of it. The check skips cleanly
+  with no voice or no MFA, and fetches nothing.
 - **Diagnostic, not a fix.** b2's ends are early by a fairly constant amount (median signed −40 ms), the usual
   peaky-CTC effect. Any change to b2's end rule would have to be chosen on spec 02's tuning speakers, which aren't on
   main. Choosing it on these clips would be tuning on the gate.

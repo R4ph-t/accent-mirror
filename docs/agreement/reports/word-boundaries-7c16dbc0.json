@@ -816,9 +816,9 @@
       "id" : "whisper",
       "latency" : {
         "count" : 154,
-        "maxMs" : 0.026083,
-        "medianMs" : 0.0016665,
-        "p90Ms" : 0.003333
+        "maxMs" : 0.012667,
+        "medianMs" : 0.00225,
+        "p90Ms" : 0.003833
       },
       "movedShare" : 0
     },
@@ -1638,9 +1638,9 @@
       "id" : "dsp-snap-1",
       "latency" : {
         "count" : 154,
-        "maxMs" : 9.600875,
-        "medianMs" : 5.0923125,
-        "p90Ms" : 7.099542
+        "maxMs" : 17.094416,
+        "medianMs" : 6.418583,
+        "p90Ms" : 9.24
       },
       "movedShare" : 0.6157312576812781,
       "replay" : {
@@ -2478,9 +2478,9 @@
       "id" : "ctc-w2v2b960-1",
       "latency" : {
         "count" : 154,
-        "maxMs" : 46.317417,
-        "medianMs" : 27.8520835,
-        "p90Ms" : 36.03575
+        "maxMs" : 76.77225,
+        "medianMs" : 28.3065835,
+        "p90Ms" : 35.904084
       },
       "movedShare" : 0.9778779188857026,
       "replay" : {
@@ -2562,27 +2562,27 @@
       "modelStillLoaded" : true,
       "outcome" : "PASS",
       "returnMs" : [
-        0.084042,
-        0.022,
-        0.021958,
-        0.026375,
-        42.981417
+        0.064875,
+        0.030459,
+        0.031875,
+        0.0245,
+        0.033708
       ],
       "trials" : 5,
-      "uncancelledCallMs" : 91.539667,
-      "uncancelledTrialCallMs" : 458.703416
+      "uncancelledCallMs" : 81.498875,
+      "uncancelledTrialCallMs" : 637.144708
     },
     "computeUnits" : "all",
     "fp16" : "not converted (the spec names float32)",
     "fp32PackageBytes" : 377745248,
     "license" : "Apache-2.0",
     "licenseEvidence" : "README.md front matter `license: apache-2.0` at https://huggingface.co/facebook/wav2vec2-base-960h/raw/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/README.md; Hub API cardData.license apache-2.0 at that revision",
-    "loadMs" : 2088.563125,
+    "loadMs" : 2685.943375,
     "manifest" : "fixtures/models/wav2vec2-base-960h/manifest.json",
     "packageSHA256" : "9ae95d751153f85e2282590668e2ab1ffd4db3b1a10292ccdd3660b50f7ee4d8",
     "runnerLatency" : "NOT RUN: needs a manual workflow on GitHub's macos-26 runner that Raph adds by hand (.github/ is off-limits to agents)",
     "sourceCommit" : "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
-    "verifyMs" : 192.653167
+    "verifyMs" : 307.369875
   },
   "decision" : {
     "b1" : "FAIL",
@@ -2597,7 +2597,7 @@
     "minShareWithinTolerance" : 0.85,
     "toleranceMs" : 80
   },
-  "generatedAt" : "2026-11-23T12:38:12Z",
+  "generatedAt" : "2026-11-23T13:10:04Z",
   "identity" : {
     "cleanTree" : true,
     "config" : {
@@ -2614,10 +2614,10 @@
     "configDigestRecipe" : "printf '%s' \"$(plutil -extract identity.configCanonicalJSON raw -o - <report>.json)\" | shasum -a 256",
     "corpusManifestHash" : "1ba061d2ca470e64ae96b6aeab93251255e0505226348eb962f423fc0723e716",
     "corpusManifestRecipe" : "shasum -a 256 <clip files> | cut -d' ' -f1 | LC_ALL=C sort | shasum -a 256",
-    "evaluatedCommit" : "688c06bc0b97184a7b2494beb8c82cfe325fd760",
+    "evaluatedCommit" : "47fafd903414d4d87f3ad297f9b3a8282d981ea9",
     "labelFile" : "fixtures/vctk/mfa-word-baseline.json",
     "labelHash" : "e2751a293ac6a886775d0ae1bd608d6d27ef9c48a0c1f09362859899ec8dcb59",
-    "sourceTreeHash" : "ce4562d17c166f39761106e4f29795e4e4cf500a228a6a85d8b43d9a2f493b26",
+    "sourceTreeHash" : "a67c8688c27e8916171d3d60cd34deec4be9c742d7e96c989fa2d1c8ced9cb2f",
     "sourceTreeRecipe" : "git ls-tree -r --full-tree <commit> | grep -v \"$(printf '\\t')docs/agreement/reports/\" | LC_ALL=C sort | shasum -a 256",
     "toolchain" : {
       "hardware" : "Apple M3 Max, Mac15,11",
@@ -2636,6 +2636,35 @@
     "4 specified clips are not in the VCTK 0.92 archive (p227_007, p233_010, p241_015, p241_020), as in spec 03."
   ],
   "placementRule" : "PENDING: checked in spec 11's agreement run with `aligner` in the identity (needs specs 08 and 10)",
+  "reference" : {
+    "aligner" : "Montreal Forced Aligner 3.4.4 (english_mfa.zip)",
+    "clips" : 20,
+    "ends" : {
+      "meanSignedErrorMs" : -36.79054905710954,
+      "medianAbsErrorMs" : 25.125,
+      "n" : 313,
+      "shareWithinTolerance" : 0.9424920127795527
+    },
+    "endsWithoutPunctuation" : {
+      "meanSignedErrorMs" : -28.051984732208428,
+      "medianAbsErrorMs" : 24.286,
+      "n" : 281,
+      "shareWithinTolerance" : 0.9786476868327402
+    },
+    "markerResolutionMs" : 11.609977324263038,
+    "note" : "Reference sanity check, not a gate: MFA's own error against SSML <mark> bookmarks in synthesised audio of the eval phrases.",
+    "phraseTokens" : 313,
+    "starts" : {
+      "meanSignedErrorMs" : -24.34461324465889,
+      "medianAbsErrorMs" : 23.537,
+      "n" : 313,
+      "shareWithinTolerance" : 0.9840255591054313
+    },
+    "toleranceMs" : 80,
+    "voice" : "com.apple.voice.compact.en-US.Samantha",
+    "wordsWithoutMarkers" : 0
+  },
+  "referenceStatus" : "run",
   "thresholds" : {
     "intensityDropDB" : 10,
     "snapWindowMs" : 150
