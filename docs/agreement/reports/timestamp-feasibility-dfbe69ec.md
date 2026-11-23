@@ -1,24 +1,28 @@
 # Timestamp feasibility (spec 03): FAIL
 
-Generated 2026-11-23T11:31:46Z. WhisperKit word timings against Montreal Forced Aligner 3.4.4 on 155 VCTK 0.92 clips. **No stress claims.**
+Generated 2026-11-23T12:06:44Z. WhisperKit word timings against the MFA word baseline (Montreal Forced Aligner 3.4.4, english_mfa.zip) on 155 VCTK 0.92 clips. **No stress claims.**
 
 ## Verdict
 
-| Line | Bar | Result | Outcome |
-|---|---|---|---|
-| Median boundary error (padded spans) | ≤ 40.0 ms | 120.0 ms | FAIL |
-| Boundaries within 80.0 ms (padded spans) | ≥ 85.0% | 36.8% | FAIL |
-| Calibration: low-probability bin has more error than high | low > high | 145.1 ms vs 143.1 ms | PASS |
-| Warm ASR, median over clips | ≤ 900.0 ms | 146.8 ms | PASS |
-| **Overall** | | | **FAIL** |
+The gate (CTO ruling 2026-11-23 13:00): absolute error per boundary on **unpadded** WhisperKit word starts and ends against the MFA word baseline, each side judged on its own. A side that misses fails the gate.
+
+| Line | Bar | Result | n | Outcome |
+|---|---|---|---|---|
+| Starts: median error | ≤ 40.0 ms | 90.0 ms | 2390 | FAIL |
+| Starts: within 80.0 ms | ≥ 85.0% | 46.1% | 2390 | FAIL |
+| Ends: median error | ≤ 40.0 ms | 110.0 ms | 2390 | FAIL |
+| Ends: within 80.0 ms | ≥ 85.0% | 38.5% | 2390 | FAIL |
+| Calibration (unpadded): low-probability bin has more error than high | low > high | 134.4 ms vs 128.2 ms | 2216 + 2564 | PASS |
+| Warm ASR, median over clips | ≤ 900.0 ms | 108.4 ms | 154 | PASS |
+| **Overall** | | | | **FAIL** |
 
 Under the bar, or not evaluated: this report goes to CTO. Thresholds are not changed to pass.
 
 ## Identity (plan §6.6)
 
 - `configDigest`: `dfbe69ecb19fc4dee69801d68d5a34d91f594f18446afbd7462dd3adc1dba430`
-- `sourceTreeHash`: `d78b33bdd12cd2b674c986abff9f29e17d706a3e9e0cd66690900636b455c144`
-- Evaluated commit: `8b68625fd6b70d00940001d5bc4ebb0eb9daa72d`; clean tree: yes
+- `sourceTreeHash`: `8054118f65c468ceac9c381df78e0a6aa2af3923cacb2869a0b0a4b99858e5bb`
+- Evaluated commit: `4398c83fc50d254f887a636a9f44be45681f4ac1`; clean tree: yes
 - `ConfigIdentity`: algorithmVersion 1, thresholdsVersion 3, contractVersion 1, asrModelID `openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631`, pitchTrackerID `none`, voicingID `none`
 - Corpus manifest hash: `1ba061d2ca470e64ae96b6aeab93251255e0505226348eb962f423fc0723e716`
 - Label (baseline) hash: `e2751a293ac6a886775d0ae1bd608d6d27ef9c48a0c1f09362859899ec8dcb59` (`fixtures/vctk/mfa-word-baseline.json`)
@@ -28,7 +32,7 @@ Recompute by hand:
 
 ```sh
 # sourceTreeHash
-git ls-tree -r --full-tree 8b68625fd6b70d00940001d5bc4ebb0eb9daa72d | grep -v "$(printf '\t')docs/agreement/reports/" | LC_ALL=C sort | shasum -a 256
+git ls-tree -r --full-tree 4398c83fc50d254f887a636a9f44be45681f4ac1 | grep -v "$(printf '\t')docs/agreement/reports/" | LC_ALL=C sort | shasum -a 256
 # configDigest: SHA-256 of identity.configCanonicalJSON in the JSON report (no trailing newline)
 printf '%s' "$(plutil -extract identity.configCanonicalJSON raw -o - timestamp-feasibility-dfbe69ec.json)" | shasum -a 256
 # corpus manifest hash, in the VCTK cache folder
@@ -84,68 +88,76 @@ shasum -a 256 <clip files> | cut -d' ' -f1 | LC_ALL=C sort | shasum -a 256
 
 ## Accuracy
 
-Coverage: 2390 of 2437 phrase tokens comparable (98.1%); skipped: 47 missing from WhisperKit only, 0 missing from the baseline only, 0 missing from both. n = 4780 comparable boundaries (starts and ends).
+Coverage: 2390 of 2437 phrase tokens comparable (98.1%); skipped: 47 missing from WhisperKit only, 0 missing from the baseline only, 0 missing from both. Each comparable token gives one start and one end.
 
-| Spans | n | Median error | Within 80.0 ms | Mean error |
+Mean signed unpadded error (ASR minus baseline; negative is early): starts -120.0 ms, ends -137.5 ms.
+
+### Per speaker (unpadded, the gate's figures by voice)
+
+| Speaker | n | Starts: median | Starts: within 80.0 ms | Starts | Ends: median | Ends: within 80.0 ms | Ends |
+|---|---|---|---|---|---|---|---|
+| p225 | 289 | 90.0 ms | 49.8% | FAIL | 110.0 ms | 41.2% | FAIL |
+| p226 | 310 | 100.0 ms | 43.9% | FAIL | 130.0 ms | 35.8% | FAIL |
+| p227 | 294 | 100.0 ms | 43.5% | FAIL | 120.0 ms | 37.1% | FAIL |
+| p233 | 301 | 100.0 ms | 42.9% | FAIL | 130.0 ms | 35.9% | FAIL |
+| p241 | 282 | 90.0 ms | 48.9% | FAIL | 115.0 ms | 40.4% | FAIL |
+| p252 | 306 | 90.0 ms | 46.1% | FAIL | 110.0 ms | 38.9% | FAIL |
+| p311 | 304 | 80.0 ms | 50.3% | FAIL | 110.0 ms | 42.1% | FAIL |
+| p345 | 304 | 100.0 ms | 43.4% | FAIL | 120.0 ms | 37.2% | FAIL |
+
+### Padded (not the gate; padding belongs to spec 07)
+
+Kept for comparison with the first report only. Whisper spans expanded by 80.0 ms on both sides.
+
+| Padded boundaries | n | Median error | Within 80.0 ms | Mean error |
 |---|---|---|---|---|
-| Padded ±80.0 ms (gate) | 4780 | 120.0 ms | 36.8% | 144.0 ms |
-| Raw (information) | 4780 | 100.0 ms | 42.3% | 131.0 ms |
+| Starts | 2390 | 170.0 ms | 9.3% | 200.6 ms |
+| Ends | 2390 | 60.0 ms | 64.2% | 87.4 ms |
+| Starts and ends pooled | 4780 | 120.0 ms | 36.8% | 144.0 ms |
 
-Raw bias (information, ASR minus baseline; negative is early): starts -120.0 ms, ends -137.5 ms on average.
+### End-bias diagnostic (diagnostic baseline only, not a fix, not the gate)
 
-### Calibration
+Constant end-bias correction, fitted on these same clips (median signed end error): -110.0 ms. Unpadded ends after subtracting it: n 2390, median 70.0 ms, within 80.0 ms 62.5%, mean 83.1 ms. It is applied nowhere in the code path, and it is fitted and measured on the same clips, so it overstates what a correction would achieve.
+
+### Calibration (unpadded)
 
 Two bins split at the median word probability over comparable tokens (low: below it; high: at or above it).
 
-| Spans | Split | Low bin: words, p range, mean error | High bin: words, p range, mean error | Outcome |
-|---|---|---|---|---|
-| Padded (gate) | 0.980 | 1108, 0.330–0.970, 145.1 ms | 1282, 0.980–1.000, 143.1 ms | PASS |
-| Raw (information) | 0.980 | 1108, 0.330–0.970, 134.4 ms | 1282, 0.980–1.000, 128.2 ms | PASS |
+| Split | Low bin: words, p range, mean error | High bin: words, p range, mean error | Outcome |
+|---|---|---|---|
+| 0.980 | 1108, 0.330–0.970, 134.4 ms | 1282, 0.980–1.000, 128.2 ms | PASS |
 
-### Per voice (information, no gate)
+### Per phrase (unpadded, information)
 
-| Voice | n | Median (padded) | Within 80.0 ms (padded) | Median (raw) | Within 80.0 ms (raw) |
-|---|---|---|---|---|---|
-| p225 | 578 | 110.0 ms | 37.4% | 100.0 ms | 45.5% |
-| p226 | 620 | 130.0 ms | 33.5% | 110.0 ms | 39.8% |
-| p227 | 588 | 130.0 ms | 35.4% | 110.0 ms | 40.3% |
-| p233 | 602 | 120.0 ms | 36.0% | 110.0 ms | 39.4% |
-| p241 | 564 | 110.0 ms | 39.2% | 100.0 ms | 44.7% |
-| p252 | 612 | 110.0 ms | 37.9% | 100.0 ms | 42.5% |
-| p311 | 608 | 120.0 ms | 38.5% | 90.0 ms | 46.2% |
-| p345 | 608 | 120.0 ms | 36.5% | 100.0 ms | 40.3% |
-
-### Per phrase (information, no gate)
-
-| Text | n | Median (padded) | Within 80.0 ms (padded) | Median (raw) | Within 80.0 ms (raw) |
-|---|---|---|---|---|---|
-| 002 | 176 | 100.0 ms | 40.3% | 100.0 ms | 42.0% |
-| 003 | 286 | 125.0 ms | 33.2% | 140.0 ms | 27.6% |
-| 004 | 240 | 110.0 ms | 36.2% | 100.0 ms | 42.5% |
-| 005 | 316 | 125.0 ms | 39.6% | 100.0 ms | 43.4% |
-| 006 | 258 | 100.0 ms | 41.5% | 80.0 ms | 51.9% |
-| 007 | 164 | 140.0 ms | 30.5% | 120.0 ms | 32.9% |
-| 008 | 350 | 130.0 ms | 35.1% | 120.0 ms | 29.7% |
-| 009 | 208 | 100.0 ms | 39.9% | 90.0 ms | 42.3% |
-| 010 | 112 | 120.0 ms | 39.3% | 90.0 ms | 44.6% |
-| 011 | 410 | 100.0 ms | 45.4% | 90.0 ms | 49.5% |
-| 012 | 176 | 150.0 ms | 24.4% | 180.0 ms | 34.7% |
-| 013 | 156 | 155.0 ms | 32.7% | 130.0 ms | 36.5% |
-| 014 | 240 | 110.0 ms | 42.9% | 60.0 ms | 66.2% |
-| 015 | 220 | 110.0 ms | 34.5% | 95.0 ms | 46.8% |
-| 016 | 332 | 110.0 ms | 36.7% | 100.0 ms | 47.6% |
-| 017 | 128 | 140.0 ms | 28.1% | 165.0 ms | 42.2% |
-| 018 | 250 | 130.0 ms | 32.8% | 80.0 ms | 50.4% |
-| 019 | 302 | 140.0 ms | 33.1% | 120.0 ms | 37.1% |
-| 020 | 126 | 160.0 ms | 33.3% | 125.0 ms | 32.5% |
-| 024 | 330 | 120.0 ms | 40.0% | 110.0 ms | 38.2% |
+| Text | n | Starts: median | Starts: within 80.0 ms | Starts | Ends: median | Ends: within 80.0 ms | Ends |
+|---|---|---|---|---|---|---|---|
+| 002 | 88 | 100.0 ms | 42.0% | FAIL | 100.0 ms | 42.0% | FAIL |
+| 003 | 143 | 140.0 ms | 28.7% | FAIL | 140.0 ms | 26.6% | FAIL |
+| 004 | 120 | 95.0 ms | 45.8% | FAIL | 110.0 ms | 39.2% | FAIL |
+| 005 | 158 | 95.0 ms | 45.6% | FAIL | 110.0 ms | 41.1% | FAIL |
+| 006 | 129 | 70.0 ms | 55.8% | FAIL | 90.0 ms | 48.1% | FAIL |
+| 007 | 82 | 120.0 ms | 37.8% | FAIL | 145.0 ms | 28.0% | FAIL |
+| 008 | 175 | 120.0 ms | 32.6% | FAIL | 130.0 ms | 26.9% | FAIL |
+| 009 | 104 | 80.0 ms | 51.9% | FAIL | 110.0 ms | 32.7% | FAIL |
+| 010 | 56 | 85.0 ms | 50.0% | FAIL | 100.0 ms | 39.3% | FAIL |
+| 011 | 205 | 80.0 ms | 52.2% | FAIL | 90.0 ms | 46.8% | FAIL |
+| 012 | 88 | 160.0 ms | 39.8% | FAIL | 195.0 ms | 29.5% | FAIL |
+| 013 | 78 | 105.0 ms | 41.0% | FAIL | 160.0 ms | 32.1% | FAIL |
+| 014 | 120 | 60.0 ms | 69.2% | FAIL | 70.0 ms | 63.3% | FAIL |
+| 015 | 110 | 90.0 ms | 48.2% | FAIL | 100.0 ms | 45.5% | FAIL |
+| 016 | 166 | 80.0 ms | 51.8% | FAIL | 115.0 ms | 43.4% | FAIL |
+| 017 | 64 | 115.0 ms | 48.4% | FAIL | 185.0 ms | 35.9% | FAIL |
+| 018 | 125 | 70.0 ms | 54.4% | FAIL | 90.0 ms | 46.4% | FAIL |
+| 019 | 151 | 110.0 ms | 41.7% | FAIL | 130.0 ms | 32.5% | FAIL |
+| 020 | 63 | 110.0 ms | 38.1% | FAIL | 140.0 ms | 27.0% | FAIL |
+| 024 | 165 | 90.0 ms | 43.6% | FAIL | 110.0 ms | 32.7% | FAIL |
 
 ## Timing
 
-- Manifest verification (SHA-256 of every file): 144.7 ms
-- Model load and prewarm: 1055.8 ms
-- Cold ASR (first clip after load): 296.5 ms
-- Warm ASR over 154 clips: median 146.8 ms, p90 199.0 ms, max 257.3 ms
+- Manifest verification (SHA-256 of every file): 77.0 ms
+- Model load and prewarm: 704.9 ms
+- Cold ASR (first clip after load): 168.8 ms
+- Warm ASR over 154 clips: median 108.4 ms, p90 143.1 ms, max 224.2 ms
 - Budget: warm ASR ≤ 900.0 ms (median): PASS
 - Clip length: median 5.928 s, max 9.028 s
 
@@ -156,6 +168,6 @@ Status: comparator not present (AssetInventory status: supported) (en_US). Its a
 ## Notes
 
 - Clips are the official VCTK 0.92 wav48_silence_trimmed mic1 files, untrimmed by this spec: no shared 02/15 trim exists yet.
-- Comparable tokens: the longest in-order match of normalised words (lower case, punctuation stripped) against the transcript's phrase tokens, on each side. Padded spans are not clamped to the clip.
+- Comparable tokens: the longest in-order match of normalised words (lower case, punctuation stripped) against the transcript's phrase tokens, on each side. The padded comparison spans are not clamped to the clip.
 - 4 of the 159 specified clips are not in the VCTK 0.92 archive (p227_007, p233_010, p241_015, p241_020). They are reported, not replaced.
 

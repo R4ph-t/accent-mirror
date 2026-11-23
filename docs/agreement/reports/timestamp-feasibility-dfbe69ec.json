@@ -3,469 +3,6 @@
     "calibration" : {
       "high" : {
         "boundaries" : 2564,
-        "meanAbsErrorMs" : 143.08502340093602,
-        "probabilityMax" : 1,
-        "probabilityMin" : 0.98,
-        "words" : 1282
-      },
-      "low" : {
-        "boundaries" : 2216,
-        "meanAbsErrorMs" : 145.10379061371842,
-        "probabilityMax" : 0.97,
-        "probabilityMin" : 0.33,
-        "words" : 1108
-      },
-      "medianProbability" : 0.98,
-      "outcome" : "PASS"
-    },
-    "coverage" : {
-      "comparable" : 2390,
-      "missingFromASROnly" : 47,
-      "missingFromBaselineOnly" : 0,
-      "missingFromBoth" : 0,
-      "phraseTokens" : 2437
-    },
-    "medianOutcome" : "FAIL",
-    "outcome" : "FAIL",
-    "padded" : {
-      "boundaries" : 4780,
-      "meanErrorMs" : 144.02092050209205,
-      "medianErrorMs" : 120,
-      "shareWithinTolerance" : 0.3677824267782427
-    },
-    "perPhrase" : [
-      {
-        "key" : "002",
-        "padded" : {
-          "boundaries" : 176,
-          "meanErrorMs" : 120.2840909090909,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.4034090909090909
-        },
-        "raw" : {
-          "boundaries" : 176,
-          "meanErrorMs" : 104.82954545454545,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.42045454545454547
-        }
-      },
-      {
-        "key" : "003",
-        "padded" : {
-          "boundaries" : 286,
-          "meanErrorMs" : 152.9020979020979,
-          "medianErrorMs" : 125,
-          "shareWithinTolerance" : 0.3321678321678322
-        },
-        "raw" : {
-          "boundaries" : 286,
-          "meanErrorMs" : 141.2237762237762,
-          "medianErrorMs" : 140,
-          "shareWithinTolerance" : 0.2762237762237762
-        }
-      },
-      {
-        "key" : "004",
-        "padded" : {
-          "boundaries" : 240,
-          "meanErrorMs" : 142.33333333333334,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.3625
-        },
-        "raw" : {
-          "boundaries" : 240,
-          "meanErrorMs" : 125,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.425
-        }
-      },
-      {
-        "key" : "005",
-        "padded" : {
-          "boundaries" : 316,
-          "meanErrorMs" : 148.86075949367088,
-          "medianErrorMs" : 125,
-          "shareWithinTolerance" : 0.39556962025316456
-        },
-        "raw" : {
-          "boundaries" : 316,
-          "meanErrorMs" : 139.0506329113924,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.43354430379746833
-        }
-      },
-      {
-        "key" : "006",
-        "padded" : {
-          "boundaries" : 258,
-          "meanErrorMs" : 123.87596899224806,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.41472868217054265
-        },
-        "raw" : {
-          "boundaries" : 258,
-          "meanErrorMs" : 102.48062015503876,
-          "medianErrorMs" : 80,
-          "shareWithinTolerance" : 0.5193798449612403
-        }
-      },
-      {
-        "key" : "007",
-        "padded" : {
-          "boundaries" : 164,
-          "meanErrorMs" : 161.34146341463415,
-          "medianErrorMs" : 140,
-          "shareWithinTolerance" : 0.3048780487804878
-        },
-        "raw" : {
-          "boundaries" : 164,
-          "meanErrorMs" : 150,
-          "medianErrorMs" : 120,
-          "shareWithinTolerance" : 0.32926829268292684
-        }
-      },
-      {
-        "key" : "008",
-        "padded" : {
-          "boundaries" : 350,
-          "meanErrorMs" : 154.6,
-          "medianErrorMs" : 130,
-          "shareWithinTolerance" : 0.3514285714285714
-        },
-        "raw" : {
-          "boundaries" : 350,
-          "meanErrorMs" : 145.8,
-          "medianErrorMs" : 120,
-          "shareWithinTolerance" : 0.29714285714285715
-        }
-      },
-      {
-        "key" : "009",
-        "padded" : {
-          "boundaries" : 208,
-          "meanErrorMs" : 121.875,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.39903846153846156
-        },
-        "raw" : {
-          "boundaries" : 208,
-          "meanErrorMs" : 113.41346153846153,
-          "medianErrorMs" : 90,
-          "shareWithinTolerance" : 0.4230769230769231
-        }
-      },
-      {
-        "key" : "010",
-        "padded" : {
-          "boundaries" : 112,
-          "meanErrorMs" : 125.53571428571429,
-          "medianErrorMs" : 120,
-          "shareWithinTolerance" : 0.39285714285714285
-        },
-        "raw" : {
-          "boundaries" : 112,
-          "meanErrorMs" : 116.60714285714286,
-          "medianErrorMs" : 90,
-          "shareWithinTolerance" : 0.44642857142857145
-        }
-      },
-      {
-        "key" : "011",
-        "padded" : {
-          "boundaries" : 410,
-          "meanErrorMs" : 118.82926829268293,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.45365853658536587
-        },
-        "raw" : {
-          "boundaries" : 410,
-          "meanErrorMs" : 103.1219512195122,
-          "medianErrorMs" : 90,
-          "shareWithinTolerance" : 0.4951219512195122
-        }
-      },
-      {
-        "key" : "012",
-        "padded" : {
-          "boundaries" : 176,
-          "meanErrorMs" : 181.875,
-          "medianErrorMs" : 150,
-          "shareWithinTolerance" : 0.24431818181818182
-        },
-        "raw" : {
-          "boundaries" : 176,
-          "meanErrorMs" : 171.07954545454547,
-          "medianErrorMs" : 180,
-          "shareWithinTolerance" : 0.3465909090909091
-        }
-      },
-      {
-        "key" : "013",
-        "padded" : {
-          "boundaries" : 156,
-          "meanErrorMs" : 163.07692307692307,
-          "medianErrorMs" : 155,
-          "shareWithinTolerance" : 0.3269230769230769
-        },
-        "raw" : {
-          "boundaries" : 156,
-          "meanErrorMs" : 156.4102564102564,
-          "medianErrorMs" : 130,
-          "shareWithinTolerance" : 0.36538461538461536
-        }
-      },
-      {
-        "key" : "014",
-        "padded" : {
-          "boundaries" : 240,
-          "meanErrorMs" : 114.375,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.42916666666666664
-        },
-        "raw" : {
-          "boundaries" : 240,
-          "meanErrorMs" : 91.45833333333333,
-          "medianErrorMs" : 60,
-          "shareWithinTolerance" : 0.6625
-        }
-      },
-      {
-        "key" : "015",
-        "padded" : {
-          "boundaries" : 220,
-          "meanErrorMs" : 148.5,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.34545454545454546
-        },
-        "raw" : {
-          "boundaries" : 220,
-          "meanErrorMs" : 129.5909090909091,
-          "medianErrorMs" : 95,
-          "shareWithinTolerance" : 0.4681818181818182
-        }
-      },
-      {
-        "key" : "016",
-        "padded" : {
-          "boundaries" : 332,
-          "meanErrorMs" : 144.4879518072289,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.3674698795180723
-        },
-        "raw" : {
-          "boundaries" : 332,
-          "meanErrorMs" : 127.07831325301204,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.4759036144578313
-        }
-      },
-      {
-        "key" : "017",
-        "padded" : {
-          "boundaries" : 128,
-          "meanErrorMs" : 165.234375,
-          "medianErrorMs" : 140,
-          "shareWithinTolerance" : 0.28125
-        },
-        "raw" : {
-          "boundaries" : 128,
-          "meanErrorMs" : 151.953125,
-          "medianErrorMs" : 165,
-          "shareWithinTolerance" : 0.421875
-        }
-      },
-      {
-        "key" : "018",
-        "padded" : {
-          "boundaries" : 250,
-          "meanErrorMs" : 161.2,
-          "medianErrorMs" : 130,
-          "shareWithinTolerance" : 0.328
-        },
-        "raw" : {
-          "boundaries" : 250,
-          "meanErrorMs" : 146.88,
-          "medianErrorMs" : 80,
-          "shareWithinTolerance" : 0.504
-        }
-      },
-      {
-        "key" : "019",
-        "padded" : {
-          "boundaries" : 302,
-          "meanErrorMs" : 165.0662251655629,
-          "medianErrorMs" : 140,
-          "shareWithinTolerance" : 0.33112582781456956
-        },
-        "raw" : {
-          "boundaries" : 302,
-          "meanErrorMs" : 158.97350993377484,
-          "medianErrorMs" : 120,
-          "shareWithinTolerance" : 0.3708609271523179
-        }
-      },
-      {
-        "key" : "020",
-        "padded" : {
-          "boundaries" : 126,
-          "meanErrorMs" : 179.52380952380952,
-          "medianErrorMs" : 160,
-          "shareWithinTolerance" : 0.3333333333333333
-        },
-        "raw" : {
-          "boundaries" : 126,
-          "meanErrorMs" : 172.06349206349208,
-          "medianErrorMs" : 125,
-          "shareWithinTolerance" : 0.3253968253968254
-        }
-      },
-      {
-        "key" : "024",
-        "padded" : {
-          "boundaries" : 330,
-          "meanErrorMs" : 127.87878787878788,
-          "medianErrorMs" : 120,
-          "shareWithinTolerance" : 0.4
-        },
-        "raw" : {
-          "boundaries" : 330,
-          "meanErrorMs" : 119.93939393939394,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.38181818181818183
-        }
-      }
-    ],
-    "perVoice" : [
-      {
-        "key" : "p225",
-        "padded" : {
-          "boundaries" : 578,
-          "meanErrorMs" : 141.3840830449827,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.3737024221453287
-        },
-        "raw" : {
-          "boundaries" : 578,
-          "meanErrorMs" : 126.9204152249135,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.45501730103806226
-        }
-      },
-      {
-        "key" : "p226",
-        "padded" : {
-          "boundaries" : 620,
-          "meanErrorMs" : 156.9516129032258,
-          "medianErrorMs" : 130,
-          "shareWithinTolerance" : 0.33548387096774196
-        },
-        "raw" : {
-          "boundaries" : 620,
-          "meanErrorMs" : 144.17741935483872,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.39838709677419354
-        }
-      },
-      {
-        "key" : "p227",
-        "padded" : {
-          "boundaries" : 588,
-          "meanErrorMs" : 152.5,
-          "medianErrorMs" : 130,
-          "shareWithinTolerance" : 0.35374149659863946
-        },
-        "raw" : {
-          "boundaries" : 588,
-          "meanErrorMs" : 141.37755102040816,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.4030612244897959
-        }
-      },
-      {
-        "key" : "p233",
-        "padded" : {
-          "boundaries" : 602,
-          "meanErrorMs" : 146.4451827242525,
-          "medianErrorMs" : 120,
-          "shareWithinTolerance" : 0.36046511627906974
-        },
-        "raw" : {
-          "boundaries" : 602,
-          "meanErrorMs" : 134.58471760797343,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.39368770764119604
-        }
-      },
-      {
-        "key" : "p241",
-        "padded" : {
-          "boundaries" : 564,
-          "meanErrorMs" : 137.53546099290782,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.39184397163120566
-        },
-        "raw" : {
-          "boundaries" : 564,
-          "meanErrorMs" : 124.37943262411348,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.44680851063829785
-        }
-      },
-      {
-        "key" : "p252",
-        "padded" : {
-          "boundaries" : 612,
-          "meanErrorMs" : 137.46732026143792,
-          "medianErrorMs" : 110,
-          "shareWithinTolerance" : 0.3790849673202614
-        },
-        "raw" : {
-          "boundaries" : 612,
-          "meanErrorMs" : 123.80718954248366,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.42483660130718953
-        }
-      },
-      {
-        "key" : "p311",
-        "padded" : {
-          "boundaries" : 608,
-          "meanErrorMs" : 137.38486842105263,
-          "medianErrorMs" : 120,
-          "shareWithinTolerance" : 0.3848684210526316
-        },
-        "raw" : {
-          "boundaries" : 608,
-          "meanErrorMs" : 122.51644736842105,
-          "medianErrorMs" : 90,
-          "shareWithinTolerance" : 0.4621710526315789
-        }
-      },
-      {
-        "key" : "p345",
-        "padded" : {
-          "boundaries" : 608,
-          "meanErrorMs" : 141.99013157894737,
-          "medianErrorMs" : 120,
-          "shareWithinTolerance" : 0.3651315789473684
-        },
-        "raw" : {
-          "boundaries" : 608,
-          "meanErrorMs" : 130.04934210526315,
-          "medianErrorMs" : 100,
-          "shareWithinTolerance" : 0.4029605263157895
-        }
-      }
-    ],
-    "raw" : {
-      "boundaries" : 4780,
-      "meanErrorMs" : 131.0418410041841,
-      "medianErrorMs" : 100,
-      "shareWithinTolerance" : 0.42301255230125523
-    },
-    "rawCalibration" : {
-      "high" : {
-        "boundaries" : 2564,
         "meanAbsErrorMs" : 128.17082683307333,
         "probabilityMax" : 1,
         "probabilityMin" : 0.98,
@@ -481,9 +18,772 @@
       "medianProbability" : 0.98,
       "outcome" : "PASS"
     },
-    "rawMeanSignedEndMs" : -137.5062761506277,
-    "rawMeanSignedStartMs" : -120.02510460251054,
-    "shareOutcome" : "FAIL"
+    "coverage" : {
+      "comparable" : 2390,
+      "missingFromASROnly" : 47,
+      "missingFromBaselineOnly" : 0,
+      "missingFromBoth" : 0,
+      "phraseTokens" : 2437
+    },
+    "endBias" : {
+      "correctedEnds" : {
+        "boundaries" : 2390,
+        "meanErrorMs" : 83.10460251046025,
+        "medianErrorMs" : 70,
+        "shareWithinTolerance" : 0.6251046025104603
+      },
+      "medianSignedEndErrorMs" : -110
+    },
+    "ends" : {
+      "medianOutcome" : "FAIL",
+      "outcome" : "FAIL",
+      "shareOutcome" : "FAIL",
+      "stats" : {
+        "boundaries" : 2390,
+        "meanErrorMs" : 138.1673640167364,
+        "medianErrorMs" : 110,
+        "shareWithinTolerance" : 0.38535564853556487
+      }
+    },
+    "meanSignedEndMs" : -137.5062761506277,
+    "meanSignedStartMs" : -120.02510460251054,
+    "outcome" : "FAIL",
+    "padded" : {
+      "ends" : {
+        "boundaries" : 2390,
+        "meanErrorMs" : 87.44769874476988,
+        "medianErrorMs" : 60,
+        "shareWithinTolerance" : 0.6422594142259415
+      },
+      "paddingMs" : 80,
+      "pooled" : {
+        "boundaries" : 4780,
+        "meanErrorMs" : 144.02092050209205,
+        "medianErrorMs" : 120,
+        "shareWithinTolerance" : 0.3677824267782427
+      },
+      "starts" : {
+        "boundaries" : 2390,
+        "meanErrorMs" : 200.5941422594142,
+        "medianErrorMs" : 170,
+        "shareWithinTolerance" : 0.09330543933054393
+      }
+    },
+    "perPhrase" : [
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 88,
+            "meanErrorMs" : 108.4090909090909,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.42045454545454547
+          }
+        },
+        "key" : "002",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 88,
+            "meanErrorMs" : 101.25,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.42045454545454547
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 143,
+            "meanErrorMs" : 144.6153846153846,
+            "medianErrorMs" : 140,
+            "shareWithinTolerance" : 0.26573426573426573
+          }
+        },
+        "key" : "003",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 143,
+            "meanErrorMs" : 137.83216783216784,
+            "medianErrorMs" : 140,
+            "shareWithinTolerance" : 0.2867132867132867
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 120,
+            "meanErrorMs" : 131.91666666666666,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.39166666666666666
+          }
+        },
+        "key" : "004",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 120,
+            "meanErrorMs" : 118.08333333333333,
+            "medianErrorMs" : 95,
+            "shareWithinTolerance" : 0.4583333333333333
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 158,
+            "meanErrorMs" : 136.58227848101265,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.41139240506329117
+          }
+        },
+        "key" : "005",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 158,
+            "meanErrorMs" : 141.51898734177215,
+            "medianErrorMs" : 95,
+            "shareWithinTolerance" : 0.45569620253164556
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 129,
+            "meanErrorMs" : 107.67441860465117,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.4806201550387597
+          }
+        },
+        "key" : "006",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 129,
+            "meanErrorMs" : 97.28682170542636,
+            "medianErrorMs" : 70,
+            "shareWithinTolerance" : 0.5581395348837209
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 82,
+            "meanErrorMs" : 158.41463414634146,
+            "medianErrorMs" : 145,
+            "shareWithinTolerance" : 0.2804878048780488
+          }
+        },
+        "key" : "007",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 82,
+            "meanErrorMs" : 141.58536585365854,
+            "medianErrorMs" : 120,
+            "shareWithinTolerance" : 0.3780487804878049
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 175,
+            "meanErrorMs" : 142.4,
+            "medianErrorMs" : 130,
+            "shareWithinTolerance" : 0.26857142857142857
+          }
+        },
+        "key" : "008",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 175,
+            "meanErrorMs" : 149.2,
+            "medianErrorMs" : 120,
+            "shareWithinTolerance" : 0.32571428571428573
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 104,
+            "meanErrorMs" : 135.28846153846155,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.3269230769230769
+          }
+        },
+        "key" : "009",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 104,
+            "meanErrorMs" : 91.53846153846153,
+            "medianErrorMs" : 80,
+            "shareWithinTolerance" : 0.5192307692307693
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 56,
+            "meanErrorMs" : 125.53571428571429,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.39285714285714285
+          }
+        },
+        "key" : "010",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 56,
+            "meanErrorMs" : 107.67857142857143,
+            "medianErrorMs" : 85,
+            "shareWithinTolerance" : 0.5
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 205,
+            "meanErrorMs" : 112.14634146341463,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.4682926829268293
+          }
+        },
+        "key" : "011",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 205,
+            "meanErrorMs" : 94.09756097560975,
+            "medianErrorMs" : 80,
+            "shareWithinTolerance" : 0.5219512195121951
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 88,
+            "meanErrorMs" : 184.88636363636363,
+            "medianErrorMs" : 195,
+            "shareWithinTolerance" : 0.29545454545454547
+          }
+        },
+        "key" : "012",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 88,
+            "meanErrorMs" : 157.27272727272728,
+            "medianErrorMs" : 160,
+            "shareWithinTolerance" : 0.3977272727272727
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 78,
+            "meanErrorMs" : 172.43589743589743,
+            "medianErrorMs" : 160,
+            "shareWithinTolerance" : 0.32051282051282054
+          }
+        },
+        "key" : "013",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 78,
+            "meanErrorMs" : 140.3846153846154,
+            "medianErrorMs" : 105,
+            "shareWithinTolerance" : 0.41025641025641024
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 120,
+            "meanErrorMs" : 99.33333333333333,
+            "medianErrorMs" : 70,
+            "shareWithinTolerance" : 0.6333333333333333
+          }
+        },
+        "key" : "014",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 120,
+            "meanErrorMs" : 83.58333333333333,
+            "medianErrorMs" : 60,
+            "shareWithinTolerance" : 0.6916666666666667
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 110,
+            "meanErrorMs" : 132.8181818181818,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.45454545454545453
+          }
+        },
+        "key" : "015",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 110,
+            "meanErrorMs" : 126.36363636363636,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.4818181818181818
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 166,
+            "meanErrorMs" : 130.36144578313252,
+            "medianErrorMs" : 115,
+            "shareWithinTolerance" : 0.43373493975903615
+          }
+        },
+        "key" : "016",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 166,
+            "meanErrorMs" : 123.79518072289157,
+            "medianErrorMs" : 80,
+            "shareWithinTolerance" : 0.5180722891566265
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 64,
+            "meanErrorMs" : 173.75,
+            "medianErrorMs" : 185,
+            "shareWithinTolerance" : 0.359375
+          }
+        },
+        "key" : "017",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 64,
+            "meanErrorMs" : 130.15625,
+            "medianErrorMs" : 115,
+            "shareWithinTolerance" : 0.484375
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 125,
+            "meanErrorMs" : 153.84,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.464
+          }
+        },
+        "key" : "018",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 125,
+            "meanErrorMs" : 139.92,
+            "medianErrorMs" : 70,
+            "shareWithinTolerance" : 0.544
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 151,
+            "meanErrorMs" : 170.72847682119206,
+            "medianErrorMs" : 130,
+            "shareWithinTolerance" : 0.32450331125827814
+          }
+        },
+        "key" : "019",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 151,
+            "meanErrorMs" : 147.2185430463576,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.41721854304635764
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 63,
+            "meanErrorMs" : 184.12698412698413,
+            "medianErrorMs" : 140,
+            "shareWithinTolerance" : 0.2698412698412698
+          }
+        },
+        "key" : "020",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 63,
+            "meanErrorMs" : 160,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.38095238095238093
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 165,
+            "meanErrorMs" : 127.75757575757575,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.32727272727272727
+          }
+        },
+        "key" : "024",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 165,
+            "meanErrorMs" : 112.12121212121212,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.43636363636363634
+          }
+        }
+      }
+    ],
+    "perSpeaker" : [
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 289,
+            "meanErrorMs" : 132.62975778546712,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.4117647058823529
+          }
+        },
+        "key" : "p225",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 289,
+            "meanErrorMs" : 121.21107266435986,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.4982698961937716
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 310,
+            "meanErrorMs" : 151.19354838709677,
+            "medianErrorMs" : 130,
+            "shareWithinTolerance" : 0.3580645161290323
+          }
+        },
+        "key" : "p226",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 310,
+            "meanErrorMs" : 137.16129032258064,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.43870967741935485
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 294,
+            "meanErrorMs" : 147.72108843537416,
+            "medianErrorMs" : 120,
+            "shareWithinTolerance" : 0.3707482993197279
+          }
+        },
+        "key" : "p227",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 294,
+            "meanErrorMs" : 135.03401360544217,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.43537414965986393
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 301,
+            "meanErrorMs" : 140.7641196013289,
+            "medianErrorMs" : 130,
+            "shareWithinTolerance" : 0.3588039867109635
+          }
+        },
+        "key" : "p233",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 301,
+            "meanErrorMs" : 128.40531561461793,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.42857142857142855
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 282,
+            "meanErrorMs" : 130.74468085106383,
+            "medianErrorMs" : 115,
+            "shareWithinTolerance" : 0.40425531914893614
+          }
+        },
+        "key" : "p241",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 282,
+            "meanErrorMs" : 118.01418439716312,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.48936170212765956
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 306,
+            "meanErrorMs" : 129.9346405228758,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.3888888888888889
+          }
+        },
+        "key" : "p252",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 306,
+            "meanErrorMs" : 117.6797385620915,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.46078431372549017
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 304,
+            "meanErrorMs" : 133.38815789473685,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.42105263157894735
+          }
+        },
+        "key" : "p311",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 304,
+            "meanErrorMs" : 111.64473684210526,
+            "medianErrorMs" : 80,
+            "shareWithinTolerance" : 0.5032894736842105
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 304,
+            "meanErrorMs" : 138.28947368421052,
+            "medianErrorMs" : 120,
+            "shareWithinTolerance" : 0.3717105263157895
+          }
+        },
+        "key" : "p345",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 304,
+            "meanErrorMs" : 121.8092105263158,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.4342105263157895
+          }
+        }
+      }
+    ],
+    "starts" : {
+      "medianOutcome" : "FAIL",
+      "outcome" : "FAIL",
+      "shareOutcome" : "FAIL",
+      "stats" : {
+        "boundaries" : 2390,
+        "meanErrorMs" : 123.9163179916318,
+        "medianErrorMs" : 90,
+        "shareWithinTolerance" : 0.4606694560669456
+      }
+    }
   },
   "baseline" : {
     "acousticModel" : "english_mfa.zip",
@@ -549,10 +849,9 @@
     "asrWarmBudgetMs" : 900,
     "medianErrorMaxMs" : 40,
     "minShareWithinTolerance" : 0.85,
-    "spanPaddingMs" : 80,
     "toleranceMs" : 80
   },
-  "generatedAt" : "2026-11-23T11:31:46Z",
+  "generatedAt" : "2026-11-23T12:06:44Z",
   "identity" : {
     "cleanTree" : true,
     "config" : {
@@ -568,10 +867,10 @@
     "configDigestRecipe" : "printf '%s' \"$(plutil -extract identity.configCanonicalJSON raw -o - <report>.json)\" | shasum -a 256",
     "corpusManifestHash" : "1ba061d2ca470e64ae96b6aeab93251255e0505226348eb962f423fc0723e716",
     "corpusManifestRecipe" : "shasum -a 256 <clip files> | cut -d' ' -f1 | LC_ALL=C sort | shasum -a 256",
-    "evaluatedCommit" : "8b68625fd6b70d00940001d5bc4ebb0eb9daa72d",
+    "evaluatedCommit" : "4398c83fc50d254f887a636a9f44be45681f4ac1",
     "labelFile" : "fixtures/vctk/mfa-word-baseline.json",
     "labelHash" : "e2751a293ac6a886775d0ae1bd608d6d27ef9c48a0c1f09362859899ec8dcb59",
-    "sourceTreeHash" : "d78b33bdd12cd2b674c986abff9f29e17d706a3e9e0cd66690900636b455c144",
+    "sourceTreeHash" : "8054118f65c468ceac9c381df78e0a6aa2af3923cacb2869a0b0a4b99858e5bb",
     "sourceTreeRecipe" : "git ls-tree -r --full-tree <commit> | grep -v \"$(printf '\\t')docs/agreement/reports/\" | LC_ALL=C sort | shasum -a 256",
     "toolchain" : {
       "hardware" : "Apple M3 Max, Mac15,11",
@@ -739,7 +1038,7 @@
   },
   "notes" : [
     "Clips are the official VCTK 0.92 wav48_silence_trimmed mic1 files, untrimmed by this spec: no shared 02/15 trim exists yet.",
-    "Comparable tokens: the longest in-order match of normalised words (lower case, punctuation stripped) against the transcript's phrase tokens, on each side. Padded spans are not clamped to the clip.",
+    "Comparable tokens: the longest in-order match of normalised words (lower case, punctuation stripped) against the transcript's phrase tokens, on each side. The padded comparison spans are not clamped to the clip.",
     "4 of the 159 specified clips are not in the VCTK 0.92 archive (p227_007, p233_010, p241_015, p241_020). They are reported, not replaced."
   ],
   "suite" : "timestamp-feasibility",
@@ -751,22 +1050,24 @@
       "medianMs" : 5.928375,
       "p90Ms" : 7.723625
     },
-    "coldASRMs" : 296.483208,
-    "loadMs" : 1055.843667,
-    "verifyMs" : 144.748125,
+    "coldASRMs" : 168.769042,
+    "loadMs" : 704.943459,
+    "verifyMs" : 77.047708,
     "warmASR" : {
       "count" : 154,
-      "maxMs" : 257.3465,
-      "medianMs" : 146.8330835,
-      "p90Ms" : 199.023875
+      "maxMs" : 224.210416,
+      "medianMs" : 108.422792,
+      "p90Ms" : 143.102125
     },
     "warmBudgetMs" : 900
   },
   "verdict" : {
     "calibration" : "PASS",
-    "medianError" : "FAIL",
+    "endsMedian" : "FAIL",
+    "endsShare" : "FAIL",
     "overall" : "FAIL",
-    "shareWithinTolerance" : "FAIL",
+    "startsMedian" : "FAIL",
+    "startsShare" : "FAIL",
     "warmBudget" : "PASS"
   }
 }
