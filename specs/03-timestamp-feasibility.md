@@ -257,4 +257,59 @@ A nightly workflow that re-runs real WhisperKit is called out in v1 and needs a
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Built by hand through Claude Code (Opus) on 2026-11-23, on M3 Max, macOS 26.3, Xcode 26.2.
+
+**Result: FAIL, goes to CTO.** On the 155 available clips the padded-span gate gives median 120 ms (bar ≤ 40) and
+36.8% within 80 ms (bar ≥ 85%). Raw spans are no better: median 100 ms, 42.3% within 80 ms. Calibration passes
+(low bin 145.1 ms > high bin 143.1 ms, a thin margin). Warm ASR median 127.7 ms is well inside the 900 ms budget, so
+`base.en` ships and `tiny.en` was not pinned. The report is `docs/agreement/reports/timestamp-feasibility-<digest8>`.
+WhisperKit's word boundaries are systematically early against MFA (mean signed error: starts −120 ms, ends −138 ms),
+and the 80 ms padding makes starts worse while helping ends. No threshold or number was changed to pass.
+
+What was built:
+
+- `AMAlignment`: `WordTimestamper` protocol; `WhisperKitTimestamper` (actor; `ModelManifest.verify` runs before
+  WhisperKit sees a file; `download: false`; local tokenizer folder); `FixtureTimestamper` (replays
+  `fixtures/timestamps/<model>/`, checks every file hash and `recordingsSHA256`). WhisperKit 1.1.1 is pinned
+  `exact:`. `@preconcurrency import WhisperKit` because its class is not `Sendable` (Swift 5 mode); the actor owns
+  the only instance and refuses overlapping calls (`busy`; queueing is spec 12). No `@unchecked Sendable`.
+- Cancellation: on the pinned 1.1.1 the hook is `TranscriptionCallback = @Sendable (TranscriptionProgress) -> Bool?`;
+  returning `false` sets WhisperKit's early-stop flag. It runs inside `withTaskCancellationHandler`, then
+  `Task.checkCancellation()` throws. `scripts/asr-cancel-check.sh`: 5 trials, cancel 100 ms into a 119 s input,
+  worst return 3.2 ms, model still loaded, next request correct.
+- `AMTimestampEval` (library) and `am-timestamps` (executable): local tooling only, not linked into the app. Token
+  rule: whitespace split, punctuation stripped, lower case; each side is paired with the phrase tokens by the
+  longest in-order exact match (nothing richer: spec 06). Errors are rounded to the microsecond so an exact 80 ms is
+  not pushed outside the tolerance by floating point.
+- Identity uses spec 01's `ConfigIdentity`, `CanonicalJSON` and `configDigest` from AMCore (spec 01 landed first, so
+  no local copy remains). `pitchTrackerID` and `voicingID` are `none`. `Thresholds.wordTimestamps` holds the bars
+  (three keyed rows, because the mirror needs one number per row).
+- Scripts (the Makefile stays a stub; see the PR's hand follow-up): `fetch-models.sh` (`--verify` too),
+  `fetch-vctk.sh`, `setup-mfa.sh`, `mfa-align.sh`, `agreement-record.sh`, `eval-timestamps.sh` (`--dev` for a
+  dirty tree), `asr-cancel-check.sh`. ASR runs under `sandbox-exec` with `(deny network*)`.
+- VCTK is streamed once through SHA-256 into `bsdtar`, which keeps only the clips; the 11 GB archive never lands on
+  disk. Archive SHA-256 `f96258be9fdc2cbff6559541aae7ea4f59df3fcaf5cf963aae5ca647357e359c`, pinned on first fetch.
+- Baseline: MFA 3.4.4 (conda-forge, via micromamba 2.10.0-0, all inside the git-ignored `.cache/mfa`), acoustic
+  model and dictionary `english_mfa` v3.1.0, pinned by SHA-256 in `fixtures/vctk/mfa-models.sha256`. Output
+  committed as `fixtures/vctk/mfa-word-baseline.json` (the label hash).
+
+Gaps and decisions for review:
+
+1. **Four specified clips are not in VCTK 0.92**: p227_007, p233_010, p241_015, p241_020 (no audio, no transcript).
+   155 of 159 were evaluated; no substitutes were chosen. CPO may want to amend the set.
+2. **Padding against the bar.** With the gate on padded spans (Open question 3 default), a perfectly timed word
+   scores 80 ms on each boundary, which is over the 40 ms median bar by construction. The padded gate can pass only
+   if the raw spans are about 80 ms too narrow on each side. CTO should confirm which times the bar means.
+3. **Apple SpeechAnalyzer**: `SpeechTranscriber.installedLocales` lists en_US, but `AssetInventory.status` reports
+   `supported`, not `installed`. As the spec keys on AssetInventory, the report says `comparator not present`. The
+   comparator code exists but has not run on real assets.
+4. The fallback is keyed on the median warm ASR time (the spec gives no statistic); p90 and max are reported.
+5. Padded spans are not clamped to the clip (the conservative choice).
+6. Calibration's two bins split at the median probability: low is below it, high is at or above it.
+7. `Thresholds.wordTimestamps` was added without bumping `thresholdsVersion`. No existing value changed and no
+   analysis output reads these bars; a bump would need a new golden record with a duplicate digest, which spec 01's
+   test forbids. `configDigest` changes anyway, since it covers the full `Thresholds`.
+8. The committed replay and baseline JSON hold VCTK transcript words (CC BY 4.0); attribution is in both files'
+   `attribution` field. The VCTK section of `THIRD_PARTY_NOTICES.md` belongs to spec 02 and was not edited.
+9. AGENTS.md's module map doesn't list the tooling targets `AMTimestampEval` and `am-timestamps`; AGENTS.md is not
+   on this spec's edit list.
