@@ -49,7 +49,32 @@ Linked into `AMAlignment` by spec 03 for on-device word timestamps, as a Swift p
 swift-argument-parser (Apple, Apache-2.0) is resolved but not linked by AccentKit.
 
 - Copyright: "Copyright (c) 2024 argmax, inc.", as in the package's `LICENSE`.
-- Licence: MIT.
+- Licence: MIT. GPL-3.0-compatible. Full text, verbatim from `LICENSE` at commit
+  `1bbc57cb7fe6410248a685b1c5a3c6d56adc2ed4`:
+
+```text
+MIT License
+
+Copyright (c) 2024 argmax, inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 ## Whisper base.en Core ML weights
 
