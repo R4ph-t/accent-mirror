@@ -217,4 +217,52 @@ cache, and the nightly / release speechocean762 job.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Built by hand on 2026-11-23 (Claude Code, Opus) on `factory/02-agreement-harness`.
+
+**Layout.** `AMEvaluation` (AMCore only; module map row added to AGENTS.md) holds the label model and §6.3 set
+builder (`SpeechOcean.swift`), rev 4 folds and tuning pools (`Folds.swift`), the VCTK manifest, tuning-only API, pair
+builder and CV folds (`VCTK.swift`), Wilson / McNemar / clustered bootstraps (`Statistics.swift`), the §6.5 rule and
+B0–B2 (`Baselines.swift`), metrics and summary lines (`Metrics.swift`), the matched-config fold runner
+(`FoldRunner.swift`), the shared-detector runner behind `PlacementDetector` (`SharedDetector.swift`), the tuning grid
+and selection rule (`Tuning.swift`), the reporter and hashes (`Report.swift`), split manifests, the trim rule and the
+smoke manifest. `am-eval` (AMPipeline + AMEvaluation) is the CLI the scripts call; the app links neither. Python
+tools: `tools/pick_vctk_eval_speakers.py`, `tools/pick_smoke_set.py`. Scripts: `fetch-speechocean762.sh`,
+`fetch-vctk.sh`, `agreement.sh`, `tune.sh`, `check-report-identity.sh` (+ `test-check-report-identity.sh`),
+`am-eval.sh`.
+
+**Set definitions** (all 38 stated counts reproduce exactly, from the corpus and from the committed label-only
+fixture `fixtures/speechocean762/labels.tsv`): syllables are the ref-phones phones with a stress digit; stress-wrong
+is ≥ 3 of 5 raters scoring 5 (identical to the merged `scores.json` label on all 287); a rater "scored every phone 0"
+when every non-inserted phone of their transcription is in `( )`; unintelligible is ≥ 3 such raters. The 157 are
+the unintelligible words that are polysyllabic or stress-wrong. The clean set drops every speaker of the recall set
+(the only speakers with tokens in both halves' tuning material).
+
+**Recount that differs (to CTO).** The plan's monosyllable split (25 true / 8 syllabic-consonant / 1 empty phone
+string) has no stated rule. The explicit rule here gives 28 / 5 / 0, plus 1 word ("HERE", `HH IH AH0`) whose vowel has
+no stress digit. The total (107 = 73 + 34) matches. The test keeps the plan's numbers and records the difference as
+a Swift Testing known issue; nothing was edited to pass.
+
+**Pins (Open question 1).** speechocean762: archive SHA-256 `876c34b8…3bdd5`; the plan's `scores.json`
+(`31c847b8…a1159f8`) is the repo's file at `613968e3`, not the tarball's (which hashes `52366844…`), so labels come from
+that commit; `scores-detail.json` `8a90ff40…a989e1` (identical in both); corpus manifest `fec07c74…11cc6`. VCTK 0.92:
+official MD5 `8a6ba294…f4bfa` checked, SHA-256 `f96258be…359c` recorded. All in `fixtures/corpora/*.pin.json`.
+
+**VCTK positive set: NOT EVALUATED under the stated trim (to CTO).** The trim (Open question 2 default, spec 05's
+level rule from `Thresholds.capture`; spec 05's voicing condition is not on main, so it is not applied) rejects 201
+of 755 clips as longer than 6 s. The speech itself is long: phrases 003, 008, 011, 016, 019 and 024 run 6–8 s for most
+speakers, references included. That leaves 149 headline pairs over 14 phrases (minimums 150 and 18), so every
+positive-set number is NOT EVALUATED. The rule was not loosened. Also, 4 bundled-voice files are missing from the
+archive (p227_007, p233_010, p241_015, p241_020), so the bundled set is 155 clips, not spec 03's 159.
+
+**Eval speakers.** 63 candidates; the picker chose 30 across all 11 accent groups (15 F / 15 M), including `s5`
+(VCTK 0.92 lists it with accent "British"; the stated filters don't exclude it).
+
+**Smoke set.** 47 speechocean762 utterances (20 stress-wrong + 100 unanimous correct words, train speakers only) and
+6 VCTK clips (p245, p288, p360 × 002, 018): 4.3 MB. The 5 MB cap is read as 5,000,000 bytes for the whole folder.
+
+**Choices the spec left open** (least-committal, listed in the PR): λ grid step 0.1 (11 values); the full grid is
+6.3 × 10⁸ points, so the runner walks any slice and the search strategy is for spec 08/11; FP tie-break order
+shared-detector, VCTK placement, any-diff; the §2 constraints 1.6% / 4% live in `TuningSelectionRule`, not
+`Thresholds`; bootstrap intervals are 95% percentile (2.5th / 97.5th); B1/B2 ties go to the earliest syllable;
+the trim's 300 ms tail and 2–6 s limits are constants in `TrimRule`; seeds are fixed in the split manifests. No
+threshold changed (`thresholdsVersion` stays 1).
