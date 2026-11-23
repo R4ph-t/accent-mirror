@@ -47,6 +47,8 @@ final class ShellModel {
     var toolbar: ToolbarState
     /// The cards, banner and inspector content; nil shows the plain spec 18 surface.
     var detail: DetailPresentation?
+    /// The fixture on screen, if the shell came from one. Samples ▸ checks it.
+    private(set) var fixtureName: String?
 
     init(manifest: LibraryManifest, sidebar: SidebarState, toolbar: ToolbarState, detail: DetailPresentation? = nil) {
         self.manifest = manifest
@@ -57,12 +59,17 @@ final class ShellModel {
 
     /// A shell seeded entirely from one fixture (spec 19).
     convenience init(fixture loaded: LoadedFixture) {
-        self.init(
-            manifest: loaded.fixture.manifest ?? .stub,
-            sidebar: loaded.fixture.sidebar ?? .stub,
-            toolbar: ShellPresenter.toolbar(for: loaded),
-            detail: ShellPresenter.detail(for: loaded)
-        )
+        self.init(manifest: .stub, sidebar: .stub, toolbar: ShellPresenter.toolbar(for: loaded))
+        apply(loaded)
+    }
+
+    /// Switches this window to another fixture in place. Fixtures don't set sidebar visibility, so it stays.
+    func apply(_ loaded: LoadedFixture) {
+        manifest = loaded.fixture.manifest ?? .stub
+        sidebar = loaded.fixture.sidebar ?? .stub
+        toolbar = ShellPresenter.toolbar(for: loaded)
+        detail = ShellPresenter.detail(for: loaded)
         inspectorVisible = loaded.fixture.inspectorOpen ?? false
+        fixtureName = loaded.fixture.name
     }
 }
