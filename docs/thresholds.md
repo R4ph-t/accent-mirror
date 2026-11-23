@@ -95,6 +95,13 @@ thresholds table and "first v2" the first v2 (09:10), both carried over "as befo
 | Pitch-measure confidence, medium | `confidence.pitchMedium` | 0.5 | voiced coverage of comparable frames | first v2 §5 | 10 | |
 | Final-direction confidence, high | `confidence.finalDirectionHighFrames` | 15 | voiced frames in window | first v2 §5 | 10 | |
 | Final-direction confidence, medium | `confidence.finalDirectionMediumFrames` | 10 | voiced frames in window | first v2 §5 | 10 | |
+| Span sanity, shortest | `confidence.spanSanityMinMs` | 60 | ms | first v2 §5 | 07 | Injected word span, unpadded |
+| Span sanity, longest | `confidence.spanSanityMaxMs` | 1500 | ms | first v2 §5 | 07 | |
+| Span sanity, failed | `confidence.spanSanityFailed` | 0.3 | 0–1 | first v2 §5 | 07 | Outside the range above, or overlapping a neighbour; else 1.0. c_w = min(ASR probability, span sanity) |
+| Syllable split: valley depth | `confidence.splitValleyMinDB` | 3 | dB | first v2 §5 | 07 | Nuclei separated by a shallower valley count as one peak |
+| Syllable split: exact | `confidence.splitExact` | 0.9 | 0–1 | first v2 §5 | 07 | s_w when the peak count matches the dictionary count |
+| Syllable split: per mismatch | `confidence.splitPerMismatch` | 0.3 | 0–1 per syllable | first v2 §5 | 07 | s_w = exact − this × \|peaks − dictionary\|, floored at 0 |
+| Syllable split: fallback | `confidence.splitFallback` | 0.35 | 0–1 | first v2 §5 | 07 | s_w for the phone-count proportional split |
 
 ## Prominence and stress
 
@@ -220,6 +227,18 @@ spec 07's and is not applied here. Under a bar, the report goes to CTO.
 | Word-boundary median error | `wordTimestamps.medianErrorMaxMs` | 40 | ms | first v2 | 03 | Per side: median absolute error of unpadded starts, and of unpadded ends |
 | Word-boundary tolerance | `wordTimestamps.withinToleranceMs` | 80 | ms | first v2 | 03 | The "within 80 ms" of the next row |
 | Word boundaries within tolerance | `wordTimestamps.withinToleranceShareMin` | 0.85 | share of one side's comparable boundaries | first v2 | 03 | Per side: at least 85% of unpadded starts, and of unpadded ends, within 80 ms |
+
+## Syllable boundaries (`Thresholds.syllableBoundaries`)
+
+Spec 07's real-speech bars (first v2, Open question 1): segmenter syllable boundaries against MFA phone alignments
+(MFA 3.4.4, english_mfa v3.1.0) of the held-out VCTK speakers, syllabified by spec 06. They wait on spec 23 and print
+NOT EVALUATED until then, which is not a pass. Under a bar, the report goes to CTO.
+
+| Name | Key | Value | Unit | Plan | Owner spec | Notes |
+|---|---|---|---|---|---|---|
+| Syllable-boundary median error | `syllableBoundaries.medianErrorMaxMs` | 30 | ms | first v2 | 07 | Median absolute error of word-internal syllable boundaries |
+| Syllable-boundary tolerance | `syllableBoundaries.withinToleranceMs` | 50 | ms | first v2 | 07 | The "within 50 ms" of the next row |
+| Syllable boundaries within tolerance | `syllableBoundaries.withinToleranceShareMin` | 0.80 | share of boundaries | first v2 | 07 | |
 
 ## Performance
 
