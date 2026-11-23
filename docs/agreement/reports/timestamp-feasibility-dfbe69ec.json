@@ -552,7 +552,7 @@
     "spanPaddingMs" : 80,
     "toleranceMs" : 80
   },
-  "generatedAt" : "2026-11-23T11:30:41Z",
+  "generatedAt" : "2026-11-23T11:31:46Z",
   "identity" : {
     "cleanTree" : true,
     "config" : {
@@ -568,10 +568,10 @@
     "configDigestRecipe" : "printf '%s' \"$(plutil -extract identity.configCanonicalJSON raw -o - <report>.json)\" | shasum -a 256",
     "corpusManifestHash" : "1ba061d2ca470e64ae96b6aeab93251255e0505226348eb962f423fc0723e716",
     "corpusManifestRecipe" : "shasum -a 256 <clip files> | cut -d' ' -f1 | LC_ALL=C sort | shasum -a 256",
-    "evaluatedCommit" : "f26d055f9f088b10c090b5bdb79e516a96112e28",
+    "evaluatedCommit" : "8b68625fd6b70d00940001d5bc4ebb0eb9daa72d",
     "labelFile" : "fixtures/vctk/mfa-word-baseline.json",
     "labelHash" : "e2751a293ac6a886775d0ae1bd608d6d27ef9c48a0c1f09362859899ec8dcb59",
-    "sourceTreeHash" : "8d3fcc25e401ce0ec8ce3dab8ffde9536fc1e48db8c7649f04c83b623ae95aee",
+    "sourceTreeHash" : "d78b33bdd12cd2b674c986abff9f29e17d706a3e9e0cd66690900636b455c144",
     "sourceTreeRecipe" : "git ls-tree -r --full-tree <commit> | grep -v \"$(printf '\\t')docs/agreement/reports/\" | LC_ALL=C sort | shasum -a 256",
     "toolchain" : {
       "hardware" : "Apple M3 Max, Mac15,11",
@@ -751,14 +751,14 @@
       "medianMs" : 5.928375,
       "p90Ms" : 7.723625
     },
-    "coldASRMs" : 309.746625,
-    "loadMs" : 951.446792,
-    "verifyMs" : 102.893125,
+    "coldASRMs" : 296.483208,
+    "loadMs" : 1055.843667,
+    "verifyMs" : 144.748125,
     "warmASR" : {
       "count" : 154,
-      "maxMs" : 528.164583,
-      "medianMs" : 150.04075,
-      "p90Ms" : 292.96075
+      "maxMs" : 257.3465,
+      "medianMs" : 146.8330835,
+      "p90Ms" : 199.023875
     },
     "warmBudgetMs" : 900
   },
