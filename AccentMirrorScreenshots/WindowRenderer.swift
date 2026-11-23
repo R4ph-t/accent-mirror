@@ -61,5 +61,16 @@ enum WindowRenderer {
         return png
     }
 
+    /// Tears a captured window down so it is deallocated before the next one: 124 frames otherwise leave over
+    /// 100 live windows (AppKit's excessive-window warning). Runs after the capture, so the frames don't change.
+    static func dispose(_ window: NSWindow) async {
+        window.orderOut(nil)
+        window.toolbar = nil
+        window.contentViewController = nil
+        window.close()
+        // One run-loop turn so the autorelease pool drains and the window goes away.
+        try? await Task.sleep(for: .milliseconds(10))
+    }
+
     enum RenderError: Error { case noFrameView, bitmap, encode }
 }
