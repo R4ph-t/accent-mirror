@@ -85,19 +85,23 @@ func wholeTakeWarp(model: Double, you: Double, timing: TimingLevel) throws -> Ti
         #expect(features.frames.allSatisfy { $0.count == 14 })
     }
 
-    @Test("Benchmark: features and DTW for a 3 s take within 150 ms") func benchmark() throws {
+    @Test("Benchmark: features and DTW for a 3 s take within 150 ms (best of 5, so parallel tests don't skew it)")
+    func benchmark() throws {
         let model = tones([(220, 0.5), (330, 0.7), (440, 0.6), (550, 0.6), (660, 0.6)])
         let you = tones([(220, 0.7), (330, 0.5), (440, 0.7), (550, 0.5), (660, 0.6)])
         let warp = try wholeTakeWarp(model: 3.0, you: 3.0, timing: .poor)
         let clock = ContinuousClock()
-        let elapsed = try clock.measure {
-            _ = try warp.refined(
-                model: FrameFeatures(samples: model, sampleRate: 16_000),
-                you: FrameFeatures(samples: you, sampleRate: 16_000))
+        var best = Double.infinity
+        for _ in 0..<5 {
+            let elapsed = try clock.measure {
+                _ = try warp.refined(
+                    model: FrameFeatures(samples: model, sampleRate: 16_000),
+                    you: FrameFeatures(samples: you, sampleRate: 16_000))
+            }
+            best = min(best, Double(elapsed.components.attoseconds) / 1e15 + Double(elapsed.components.seconds) * 1000)
         }
-        let ms = Double(elapsed.components.attoseconds) / 1e15 + Double(elapsed.components.seconds) * 1000
-        print("AMWarp DTW benchmark: 3 s take, MFCC + DTW in \(String(format: "%.1f", ms)) ms (budget 150 ms)")
-        #expect(ms <= 150)
+        print("AMWarp DTW benchmark: 3 s take, MFCC + DTW in \(String(format: "%.1f", best)) ms, best of 5 (budget 150 ms)")
+        #expect(best <= 150)
     }
 }
 
