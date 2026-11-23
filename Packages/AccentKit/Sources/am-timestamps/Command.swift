@@ -18,6 +18,11 @@ struct AMTimestamps {
                         [--baseline F] [--archive-pin F] [--files-pin F] [--release] [--no-comparator]
                         Run WhisperKit, compare with the baseline, write the report. Exit 1 on FAIL; on a --release
                         run, exit 2 on a dirty tree and 3 on NOT EVALUATED.
+          boundaries    --repo D --clips F --corpus D --baseline F --replay D --out D
+                        [--files-pin F] [--archive-pin F] [--record D] [--release]
+                        Spec 23: refine the replayed Whisper words with each aligner, judge them against the
+                        baseline, write the word-boundaries report. --record writes the refined replays under D.
+                        Exit 1 on FAIL, 4 when a run differs from its recorded replay; on --release, 2 on a dirty tree.
           cancel-check  --clips F --corpus D --manifest M --model-dir D
                         Cancel a transcription 100 ms in; check it returns within about 300 ms and the model stays loaded.
         """
@@ -32,6 +37,7 @@ struct AMTimestamps {
             case "record": status = try await record(options)
             case "baseline": status = try baseline(options)
             case "eval": status = try await evaluate(options)
+            case "boundaries": status = try await boundaries(options)
             case "cancel-check": status = try await cancelCheck(options)
             default: throw ToolError.usage(usage)
             }

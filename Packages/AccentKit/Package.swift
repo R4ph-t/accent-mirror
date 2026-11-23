@@ -49,7 +49,9 @@ let package = Package(
         // Local evaluation tooling (spec 03): never linked into the app, never run by CI.
         .target(name: "AMTimestampEval", dependencies: ["AMCore", "AMAlignment"]),
         .testTarget(name: "AMTimestampEvalTests", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),
-        .executableTarget(name: "am-timestamps", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),
+        // Spec 23 adds the refiners (dsp-snap-1 lives in AMProsody) to the same local tool.
+        .executableTarget(name: "am-timestamps",
+                          dependencies: ["AMCore", "AMAlignment", "AMPitch", "AMProsody", "AMTimestampEval"]),
     ],
     swiftLanguageModes: [.v6]
 )
