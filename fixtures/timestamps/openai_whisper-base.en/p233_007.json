@@ -1,0 +1,81 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "82089b1292242d3e1f2021df924554496d1a18685d86c8cc396a7051b2fa3696",
+  "clipID" : "p233_007",
+  "formatVersion" : 1,
+  "text" : "The rainbow is a division of white light into many beautiful colours.",
+  "words" : [
+    {
+      "end" : 1.02,
+      "probability" : 0.9,
+      "start" : 0.96,
+      "word" : " The"
+    },
+    {
+      "end" : 1.2,
+      "probability" : 0.98,
+      "start" : 1.02,
+      "word" : " rainbow"
+    },
+    {
+      "end" : 1.66,
+      "probability" : 0.99,
+      "start" : 1.2,
+      "word" : " is"
+    },
+    {
+      "end" : 1.78,
+      "probability" : 0.98,
+      "start" : 1.66,
+      "word" : " a"
+    },
+    {
+      "end" : 2.1,
+      "probability" : 0.98,
+      "start" : 1.78,
+      "word" : " division"
+    },
+    {
+      "end" : 2.36,
+      "probability" : 0.99,
+      "start" : 2.1,
+      "word" : " of"
+    },
+    {
+      "end" : 2.56,
+      "probability" : 0.97,
+      "start" : 2.36,
+      "word" : " white"
+    },
+    {
+      "end" : 2.86,
+      "probability" : 0.83,
+      "start" : 2.56,
+      "word" : " light"
+    },
+    {
+      "end" : 3.36,
+      "probability" : 0.88,
+      "start" : 2.86,
+      "word" : " into"
+    },
+    {
+      "end" : 3.7,
+      "probability" : 0.99,
+      "start" : 3.36,
+      "word" : " many"
+    },
+    {
+      "end" : 4.02,
+      "probability" : 0.99,
+      "start" : 3.7,
+      "word" : " beautiful"
+    },
+    {
+      "end" : 4.46,
+      "probability" : 0.58,
+      "start" : 4.02,
+      "word" : " colours."
+    }
+  ]
+}

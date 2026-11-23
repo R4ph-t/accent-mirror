@@ -359,7 +359,7 @@ func positive(_ args: Arguments, root: URL) throws -> Int32 {
         let report = try JSONSerialization.jsonObject(with: data) as? [String: Any],
         let kept = report["kept"] as? [String]
     else {
-        print("positive: NOT EVALUATED (no trimmed VCTK cache: run scripts/fetch-vctk.sh)")
+        print("positive: NOT EVALUATED (no trimmed VCTK cache: run scripts/fetch-vctk-eval.sh)")
         return 0
     }
     let clips = Set(kept.compactMap { name -> VCTKClip? in

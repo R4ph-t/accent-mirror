@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Picks the 30 VCTK eval speakers and splits them 18 tuning / 12 held-out (spec 02, plan §6.1).
 
-Pure Python 3, standard library only. Reads the VCTK 0.92 archive fetched by scripts/fetch-vctk.sh (no network) and
+Pure Python 3, standard library only. Reads the VCTK 0.92 archive fetched by scripts/fetch-vctk-eval.sh (no network) and
 writes fixtures/vctk/eval-speakers.json: speaker, accent, gender, split and the SHA-256 of each of CPO's 20 phrase
 files, plus the same hashes for the 8 bundled voices.
 
@@ -89,7 +89,7 @@ def main():
     parser.add_argument("--seed", type=int, default=SEED)
     args = parser.parse_args()
     if not os.path.exists(args.archive):
-        sys.exit("pick_vctk_eval_speakers: %s missing: run scripts/fetch-vctk.sh first" % args.archive)
+        sys.exit("pick_vctk_eval_speakers: %s missing: run scripts/fetch-vctk-eval.sh first" % args.archive)
 
     with zipfile.ZipFile(args.archive) as archive:
         names = set(archive.namelist())

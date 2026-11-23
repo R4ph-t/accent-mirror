@@ -74,4 +74,11 @@ import AMEvaluation
         let rebuilt = VCTKSplitManifest(evalSpeakers: manifest, evalSpeakersSHA256: hash, foldSeed: split.foldSeed, bootstrapSeed: split.bootstrapSeed)
         #expect(rebuilt == split)
     }
+
+    @Test("One VCTK archive pin: spec 03's digest file and spec 02's pin hold the same SHA-256") func vctkArchivePinsAgree() throws {
+        let line = try String(contentsOf: Repo.url("fixtures/vctk/vctk-0.92-archive.sha256"), encoding: .utf8)
+        let digest = try #require(line.split(whereSeparator: \.isWhitespace).first.map(String.init))
+        #expect(digest.count == 64)
+        #expect(digest == (try Repo.pin("vctk", "archiveSHA256")))
+    }
 }

@@ -17,16 +17,26 @@ let modules: [(name: String, dependencies: [String])] = [
     ("AMEvaluation", ["AMCore"]),
 ]
 
+/// Third-party products a module links, by module name.
+/// WhisperKit (Argmax, MIT): on-device word timestamps, the plan's chosen ASR (spec 03). Pinned to a released
+/// version; its weights are fetched separately and SHA-256 checked (Resources/Models/).
+let externalDependencies: [String: [Target.Dependency]] = [
+    "AMAlignment": [.product(name: "WhisperKit", package: "WhisperKit")],
+]
+
 let package = Package(
     name: "AccentKit",
     platforms: [.macOS(.v26), .iOS(.v26)],
     products: modules.map { .library(name: $0.name, targets: [$0.name]) }
         + [.executable(name: "am-eval", targets: ["am-eval"])],
+    dependencies: [
+        .package(url: "https://github.com/argmaxinc/WhisperKit.git", exact: "1.1.1"),
+    ],
     targets: modules.flatMap { module -> [Target] in
         [
             .target(
                 name: module.name,
-                dependencies: module.dependencies.map { .target(name: $0) },
+                dependencies: module.dependencies.map { .target(name: $0) } + (externalDependencies[module.name] ?? []),
                 // AMAlignment bundles CMUdict and its word lists (spec 06), copied verbatim.
                 resources: module.name == "AMAlignment" ? [.copy("Resources")] : nil
             ),
@@ -46,6 +56,10 @@ let package = Package(
             dependencies: [.target(name: "AMPipeline"), .target(name: "AMEvaluation")],
             path: "Sources/am-eval"
         ),
+        // Local evaluation tooling (spec 03): never linked into the app, never run by CI.
+        .target(name: "AMTimestampEval", dependencies: ["AMCore", "AMAlignment"]),
+        .testTarget(name: "AMTimestampEvalTests", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),
+        .executableTarget(name: "am-timestamps", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),
     ],
     swiftLanguageModes: [.v6]
 )

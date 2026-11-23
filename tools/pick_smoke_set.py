@@ -13,7 +13,7 @@ tuning speakers. Utterances are chosen to cover several words each, by a seeded 
      shared phrases after a seeded shuffle.
 Then it calls `scripts/am-eval.sh smoke-build`, which writes 16 kHz FLAC and fixtures/smoke/manifest.json.
 
-Needs scripts/fetch-speechocean762.sh and scripts/fetch-vctk.sh to have run (reads eval-cache/ only).
+Needs scripts/fetch-speechocean762.sh and scripts/fetch-vctk-eval.sh to have run (reads eval-cache/ only).
 
   python3 tools/pick_smoke_set.py
 """

@@ -89,7 +89,7 @@ the only L2 recall number is the CV estimate of the tuning procedure.
   accent region and gender with a stratified round-robin over speaker-info accent groups, fixed seed; picks 30;
   splits by speaker **18 tuning / 12 held-out**. It writes `fixtures/vctk/eval-speakers.json` (speaker, accent,
   gender, split, file SHA-256s).
-- `scripts/fetch-vctk.sh`: fetches the VCTK 0.92 archive (about 11 GB) into a git-ignored cache, verifies its
+- `scripts/fetch-vctk-eval.sh`: fetches the VCTK 0.92 archive (about 11 GB) into a git-ignored cache, verifies its
   SHA-256 pin, extracts and trims only CPO's 20 phrases for the bundled 8 and the 30 eval speakers (about 40 MB),
   and caches them keyed by the eval-speakers manifest hash. Trim: 2–6 s, the same cut rule for every speaker (Open
   question 2).
@@ -161,7 +161,7 @@ the only L2 recall number is the CV estimate of the tuning procedure.
 
 ### Commands
 
-The agent must not edit the `Makefile` or `.github/`. It ships scripts (`scripts/fetch-vctk.sh`,
+The agent must not edit the `Makefile` or `.github/`. It ships scripts (`scripts/fetch-vctk-eval.sh`,
 `scripts/fetch-speechocean762.sh`, `scripts/agreement.sh [--suite …]`, `scripts/tune.sh`,
 `scripts/check-report-identity.sh`) and lists, in the PR body, the exact Makefile lines (`make agreement`, `make
 tune`) and the workflow changes Raph would apply by hand: the weekly VCTK cache-warm job, PR jobs restoring that
@@ -209,7 +209,7 @@ cache, and the nightly / release speechocean762 job.
    pool), the matched-config stub test, and the tuning-only API.
 3. On a Mac with disk space: `scripts/fetch-speechocean762.sh` then `scripts/agreement.sh --suite sets` prints the
    §6.3 counts (134 / 72, 1,400 / 90, 1,868 / 124, 406 / 34, 1,299 / 86, 157) and they match.
-4. `scripts/fetch-vctk.sh` then `python3 tools/pick_vctk_eval_speakers.py` writes `fixtures/vctk/eval-speakers.json`
+4. `scripts/fetch-vctk-eval.sh` then `python3 tools/pick_vctk_eval_speakers.py` writes `fixtures/vctk/eval-speakers.json`
    with 18 tuning and 12 held-out speakers and none of the bundled 8, p280 or p315.
 5. `du -sh fixtures/smoke` is ≤ 5 MB and `fixtures/smoke/ATTRIBUTION.md` names both corpora and licences.
 6. `scripts/check-report-identity.sh` self-test passes, and a report with a non-report file changed in the
@@ -227,7 +227,7 @@ B0–B2 (`Baselines.swift`), metrics and summary lines (`Metrics.swift`), the ma
 and selection rule (`Tuning.swift`), the reporter and hashes (`Report.swift`), split manifests, the trim rule and the
 smoke manifest. `am-eval` (AMPipeline + AMEvaluation) is the CLI the scripts call; the app links neither. Python
 tools: `tools/pick_vctk_eval_speakers.py`, `tools/pick_smoke_set.py`. Scripts: `fetch-speechocean762.sh`,
-`fetch-vctk.sh`, `agreement.sh`, `tune.sh`, `check-report-identity.sh` (+ `test-check-report-identity.sh`),
+`fetch-vctk-eval.sh`, `agreement.sh`, `tune.sh`, `check-report-identity.sh` (+ `test-check-report-identity.sh`),
 `am-eval.sh`.
 
 **Set definitions** (all 38 stated counts reproduce exactly, from the corpus and from the committed label-only

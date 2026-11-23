@@ -44,12 +44,49 @@ Neither licence file declares a Reserved Font Name.
 
 ## WhisperKit (MIT)
 
-Not yet bundled; notice added by spec 03.
+Linked into `AMAlignment` by spec 03 for on-device word timestamps, as a Swift package pinned to release 1.1.1
+(commit `1bbc57cb7fe6410248a685b1c5a3c6d56adc2ed4`), `https://github.com/argmaxinc/WhisperKit`. Its own dependency
+swift-argument-parser (Apple, Apache-2.0) is resolved but not linked by AccentKit.
+
+- Copyright: "Copyright (c) 2024 argmax, inc.", as in the package's `LICENSE`.
+- Licence: MIT. GPL-3.0-compatible. Full text, verbatim from `LICENSE` at commit
+  `1bbc57cb7fe6410248a685b1c5a3c6d56adc2ed4`:
+
+```text
+MIT License
+
+Copyright (c) 2024 argmax, inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 ## Whisper base.en Core ML weights
 
-Not yet bundled; notice added by spec 03. The weights' LICENSE/NOTICE will also live next to their manifest in
-`Resources/Models/`.
+Not committed and not yet bundled with the app (bundling waits for the licence check). Fetched by
+`scripts/fetch-models.sh` at pinned commits and SHA-256 checked against `Resources/Models/openai_whisper-base.en/manifest.json`;
+the full licence texts are in that folder's `LICENSE` and `NOTICE`.
+
+- Whisper base.en model: "Copyright (c) 2022 OpenAI", MIT (`https://github.com/openai/whisper`).
+- Core ML conversion: `argmaxinc/whisperkit-coreml` at commit `0f63a7800b00dd0226abd051b906c246e1907482`, model card
+  licence MIT.
+- Tokenizer files: `openai/whisper-base.en` at commit `911407f4214e0e1d82085af863093ec0b66f9cd6`, model card licence
+  Apache-2.0.
 
 ## CMUdict (BSD-style)
 
@@ -114,7 +151,7 @@ Not yet bundled; notice added by spec 02.
 ## Evaluation corpora (CC BY 4.0)
 
 Committed by spec 02 for the agreement harness only: never bundled with the app, never read at runtime. The full
-archives are fetched by `scripts/fetch-vctk.sh` and `scripts/fetch-speechocean762.sh` into the git-ignored
+archives are fetched by `scripts/fetch-vctk-eval.sh` and `scripts/fetch-speechocean762.sh` into the git-ignored
 `eval-cache/` and never committed. Details and file hashes: `fixtures/smoke/ATTRIBUTION.md`,
 `fixtures/smoke/manifest.json`, `fixtures/corpora/*.pin.json`.
 

@@ -1,0 +1,141 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "268ac5dc5197c2bd7c46f418584e1a31cdc9db2a78ea23cfd97634d83f1fc944",
+  "clipID" : "p345_008",
+  "formatVersion" : 1,
+  "text" : "These take the shape of a long round arc, with its path high above and its two ends apparently beyond the horizon.",
+  "words" : [
+    {
+      "end" : 1.04,
+      "probability" : 0.84,
+      "start" : 0.94,
+      "word" : " These"
+    },
+    {
+      "end" : 1.3,
+      "probability" : 0.99,
+      "start" : 1.04,
+      "word" : " take"
+    },
+    {
+      "end" : 1.5,
+      "probability" : 0.99,
+      "start" : 1.3,
+      "word" : " the"
+    },
+    {
+      "end" : 1.64,
+      "probability" : 1,
+      "start" : 1.5,
+      "word" : " shape"
+    },
+    {
+      "end" : 1.88,
+      "probability" : 0.99,
+      "start" : 1.64,
+      "word" : " of"
+    },
+    {
+      "end" : 2,
+      "probability" : 0.99,
+      "start" : 1.88,
+      "word" : " a"
+    },
+    {
+      "end" : 2.22,
+      "probability" : 1,
+      "start" : 2,
+      "word" : " long"
+    },
+    {
+      "end" : 2.52,
+      "probability" : 0.63,
+      "start" : 2.22,
+      "word" : " round"
+    },
+    {
+      "end" : 2.9,
+      "probability" : 0.69,
+      "start" : 2.52,
+      "word" : " arc,"
+    },
+    {
+      "end" : 3.58,
+      "probability" : 0.87,
+      "start" : 3.39,
+      "word" : " with"
+    },
+    {
+      "end" : 3.72,
+      "probability" : 0.9,
+      "start" : 3.58,
+      "word" : " its"
+    },
+    {
+      "end" : 3.96,
+      "probability" : 0.98,
+      "start" : 3.72,
+      "word" : " path"
+    },
+    {
+      "end" : 4.24,
+      "probability" : 0.98,
+      "start" : 3.96,
+      "word" : " high"
+    },
+    {
+      "end" : 4.5,
+      "probability" : 0.98,
+      "start" : 4.24,
+      "word" : " above"
+    },
+    {
+      "end" : 4.94,
+      "probability" : 0.53,
+      "start" : 4.5,
+      "word" : " and"
+    },
+    {
+      "end" : 5.12,
+      "probability" : 0.85,
+      "start" : 4.94,
+      "word" : " its"
+    },
+    {
+      "end" : 5.52,
+      "probability" : 0.87,
+      "start" : 5.12,
+      "word" : " two"
+    },
+    {
+      "end" : 5.76,
+      "probability" : 0.96,
+      "start" : 5.52,
+      "word" : " ends"
+    },
+    {
+      "end" : 6.26,
+      "probability" : 0.72,
+      "start" : 5.76,
+      "word" : " apparently"
+    },
+    {
+      "end" : 6.66,
+      "probability" : 0.52,
+      "start" : 6.26,
+      "word" : " beyond"
+    },
+    {
+      "end" : 6.88,
+      "probability" : 0.98,
+      "start" : 6.66,
+      "word" : " the"
+    },
+    {
+      "end" : 7.18,
+      "probability" : 1,
+      "start" : 6.88,
+      "word" : " horizon."
+    }
+  ]
+}
