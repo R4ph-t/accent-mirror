@@ -69,7 +69,7 @@ public struct VCTKSplitManifest: Sendable, Hashable, Codable {
     public let evalSpeakersSHA256: String
     public let foldSeed: UInt64
     public let bootstrapSeed: UInt64
-    /// The VCTK CV estimate's 6 folds over the 24 tuning speakers.
+    /// The VCTK CV estimate's 6 folds over the tuning speakers (≥ 18).
     public let cvFolds: [[String]]
     public let tuning: [String]
     public let heldOut: [String]

@@ -118,6 +118,10 @@ public struct AgreementReport: Sendable, Hashable, Codable {
     /// Per fold: its `configDigest`, recorded once, with every path's results under it.
     public let folds: FoldRunRecord?
     public let summary: ReleaseSummary
+    /// `summary.lines` as written, so a report check can read the overall lines without the Swift types.
+    public let summaryLines: [String]
+    /// The VCTK positive set's status for this report (nil when the suite has no positive set).
+    public let positiveSet: PositiveSetStatus?
     public let notes: [String]
     public let limitations: [String]
 
@@ -132,6 +136,8 @@ public struct AgreementReport: Sendable, Hashable, Codable {
         self.metrics = metrics
         self.folds = folds
         self.summary = summary
+        self.summaryLines = summary.lines
+        self.positiveSet = summary.positiveSet
         self.notes = notes
         self.limitations = [Self.limitation]
     }

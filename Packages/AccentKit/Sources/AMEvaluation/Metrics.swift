@@ -34,20 +34,29 @@ public struct Gate: Sendable, Hashable, Codable {
     }
 }
 
-/// PASS, FAIL, NOT EVALUATED, or REPORTED for a number with no gate. Only `.pass` passes.
+/// PASS, FAIL, NOT EVALUATED, or REPORTED for a number with no gate. Only `.pass` passes: `.notEvaluated`,
+/// `.blocked` and `.reported` are never a pass, and `isPass` is the only Bool view of a status.
 public enum MetricStatus: Sendable, Hashable, Codable {
     case pass
     case fail
     case notEvaluated(n: Int, minimum: Int)
+    /// NOT EVALUATED because an input it depends on is NOT EVALUATED (the positive set, blocked on spec 24).
+    case blocked(on: String, reason: String)
     case reported
 
-    public var isPass: Bool { self == .pass }
+    public var isPass: Bool {
+        switch self {
+        case .pass: true
+        case .fail, .notEvaluated, .blocked, .reported: false
+        }
+    }
 
     public var text: String {
         switch self {
         case .pass: "PASS"
         case .fail: "FAIL"
         case .notEvaluated(let n, let minimum): "NOT EVALUATED (n=\(n), min=\(minimum))"
+        case .blocked(let spec, let reason): "NOT EVALUATED (blocked on \(spec): \(reason))"
         case .reported: "REPORTED (no gate)"
         }
     }
@@ -108,11 +117,16 @@ public struct MetricResult: Sendable, Hashable, Codable {
     public let intervals: [Interval]
     public let worstSpeaker: WorstCluster?
     public let worstPhrase: WorstCluster?
+    /// True for a line that consumes the VCTK positive set (built by `PositiveSetGates.line`). The report check
+    /// (`scripts/check-positive-set-guard.sh`) fails a report where such a line passes while the set is NOT EVALUATED.
+    public let dependsOnPositiveSet: Bool?
 
     public init(
         name: String, layer: ValidationLayer, n: Int, value: Double?, gate: Gate?, status: MetricStatus,
-        intervals: [Interval] = [], worstSpeaker: WorstCluster? = nil, worstPhrase: WorstCluster? = nil
+        intervals: [Interval] = [], worstSpeaker: WorstCluster? = nil, worstPhrase: WorstCluster? = nil,
+        dependsOnPositiveSet: Bool? = nil
     ) {
+        self.dependsOnPositiveSet = dependsOnPositiveSet
         self.name = name
         self.layer = layer
         self.n = n
@@ -171,25 +185,32 @@ public struct MetricResult: Sendable, Hashable, Codable {
 }
 
 /// The report's closing lines. Until spec 11 wires the speechocean762 gate, the negative set is NOT EVALUATED and
-/// the release gate is NOT MET, whatever the other metrics say.
+/// the release gate is NOT MET, whatever the other metrics say. The release gate also needs an evaluable positive
+/// set: while it is NOT EVALUATED (or not given), the release gate is NOT MET.
 public struct ReleaseSummary: Sendable, Hashable, Codable {
     /// The speechocean762 (negative set) gate, or nil while it is not wired.
     public let negativeSet: MetricStatus?
+    /// The VCTK positive set, or nil when the report has none (then the release gate can't be met).
+    public let positiveSet: PositiveSetStatus?
     public let gated: [MetricResult]
 
-    public init(negativeSet: MetricStatus?, gated: [MetricResult]) {
+    public init(negativeSet: MetricStatus?, positiveSet: PositiveSetStatus? = nil, gated: [MetricResult]) {
         self.negativeSet = negativeSet
+        self.positiveSet = positiveSet
         self.gated = gated
     }
 
     public var releaseGateMet: Bool {
-        guard let negativeSet, negativeSet.isPass, !gated.isEmpty else { return false }
+        guard let negativeSet, negativeSet.isPass, positiveSet?.isEvaluable == true, !gated.isEmpty else {
+            return false
+        }
         return gated.allSatisfy(\.status.isPass)
     }
 
     public var lines: [String] {
         [
             "Negative set: " + (negativeSet.map(\.text) ?? "NOT EVALUATED"),
+            "Positive set: " + (positiveSet.map(\.text) ?? "NOT EVALUATED"),
             "Release gate: " + (releaseGateMet ? "MET" : "NOT MET"),
         ]
     }

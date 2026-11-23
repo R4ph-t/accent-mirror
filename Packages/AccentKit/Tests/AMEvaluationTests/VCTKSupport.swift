@@ -18,6 +18,7 @@ enum SyntheticVCTK {
         let object: [String: Any] = [
             "corpus": "VCTK 0.92", "seed": 1, "phrases": VCTK.phrases,
             "bundled": VCTK.bundledVoices.map { entry($0, split: nil, gender: "F") }, "speakers": speakers,
+            "tuningCount": tuning, "heldOutCount": heldOut,
         ]
         return try JSONDecoder().decode(
             VCTKEvalSpeakersManifest.self, from: JSONSerialization.data(withJSONObject: object))

@@ -11,7 +11,8 @@
 #     the rest sorted by byte value, each followed by a newline; the same definition as AMEvaluation.ReportHashes);
 #   - the release commit is the evaluated commit or a descendant whose `git diff --name-only <evaluated>..<release>`
 #     touches only docs/agreement/reports/;
-#   - the report is under 7 days old.
+#   - the report is under 7 days old;
+#   - scripts/check-positive-set-guard.sh passes: no line reads a NOT EVALUATED positive set as a pass, no waiver.
 # Self-test: scripts/test-check-report-identity.sh.
 set -euo pipefail
 
@@ -57,5 +58,8 @@ git merge-base --is-ancestor "$evaluated" "$release" || fail "release $release d
 changed="$(git diff --name-only "$evaluated..$release" | grep -v "^$reports_prefix" || true)"
 [[ -z "$changed" ]] || fail "the release changes files outside $reports_prefix since $evaluated: $(echo $changed)"
 (( age >= 0 && age < 7 * 24 * 3600 )) || fail "the report is $((age / 86400)) days old (limit 7)"
+
+"$(dirname "$0")/check-positive-set-guard.sh" "$report" >/dev/null \
+  || fail "the positive-set guard failed (scripts/check-positive-set-guard.sh $report)"
 
 echo "check-report-identity: OK ($report valid for $release)"

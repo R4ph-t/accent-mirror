@@ -61,11 +61,18 @@ import AMEvaluation
         }
     }
 
-    @Test("eval-speakers.json: 24 tuning, 16 held-out, none bundled, p280 or p315") func evalSpeakers() throws {
+    @Test("eval-speakers.json: recorded counts match the listed speakers and meet the floors (≥ 18 / ≥ 12)")
+    func evalSpeakers() throws {
         let manifest = try VCTKEvalSpeakersManifest.load(Repo.url("fixtures/vctk/eval-speakers.json"))
-        #expect(manifest.tuningSpeakers.count == 24 && manifest.heldOutSpeakers.count == 16)
+        #expect(manifest.tuningCount == manifest.tuningSpeakers.count)
+        #expect(manifest.heldOutCount == manifest.heldOutSpeakers.count)
+        #expect(manifest.tuningCount >= VCTKEvalSpeakersManifest.minimumTuningSpeakers)
+        #expect(manifest.heldOutCount >= VCTKEvalSpeakersManifest.minimumHeldOutSpeakers())
+        #expect(manifest.meetsFloors())
+        // Today's recorded counts (CTO ruling): 24 / 16.
+        #expect(manifest.tuningCount == 24 && manifest.heldOutCount == 16)
         let picked = Set(manifest.speakers.map(\.speaker))
-        #expect(picked.count == 40)
+        #expect(picked.count == manifest.tuningCount + manifest.heldOutCount)
         #expect(picked.isDisjoint(with: VCTK.bundledVoices + VCTK.excludedSpeakers))
         #expect(manifest.phrases == VCTK.phrases && VCTK.phrases.count == 24)
         // Every eval speaker has all of CPO's 20; an added prompt is listed only where its transcript matched.

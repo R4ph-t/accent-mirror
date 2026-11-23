@@ -23,12 +23,15 @@ import AMEvaluation
     func summaryLines() {
         let pass = MetricResult(name: "x", layer: .shippedConfigCheck, n: 10, value: 1, gate: Self.recallGate, status: .pass)
         let pending = ReleaseSummary(negativeSet: nil, gated: [pass])
-        #expect(pending.lines == ["Negative set: NOT EVALUATED", "Release gate: NOT MET"])
+        #expect(pending.lines == ["Negative set: NOT EVALUATED", "Positive set: NOT EVALUATED", "Release gate: NOT MET"])
         let notEvaluated = ReleaseSummary(negativeSet: .notEvaluated(n: 0, minimum: 1400), gated: [pass])
         #expect(!notEvaluated.releaseGateMet)
         let failing = MetricResult(name: "y", layer: .shippedConfigCheck, n: 10, value: 0, gate: Self.recallGate, status: .notEvaluated(n: 10, minimum: 20))
-        #expect(!ReleaseSummary(negativeSet: .pass, gated: [pass, failing]).releaseGateMet)
-        #expect(ReleaseSummary(negativeSet: .pass, gated: [pass]).lines == ["Negative set: PASS", "Release gate: MET"])
+        #expect(!ReleaseSummary(negativeSet: .pass, positiveSet: .evaluable, gated: [pass, failing]).releaseGateMet)
+        // A passing negative set and passing lines still need an evaluable positive set.
+        #expect(!ReleaseSummary(negativeSet: .pass, gated: [pass]).releaseGateMet)
+        #expect(ReleaseSummary(negativeSet: .pass, positiveSet: .evaluable, gated: [pass]).lines
+            == ["Negative set: PASS", "Positive set: EVALUABLE", "Release gate: MET"])
     }
 
     @Test("A rate prints n, value, gate, status, the Wilson and bootstrap intervals and the worst speaker and phrase")

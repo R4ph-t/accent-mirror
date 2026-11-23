@@ -52,17 +52,34 @@ public struct VCTKEvalSpeakersManifest: Sendable, Hashable, Codable {
     public let phrases: [String]
     public let bundled: [Entry]
     public let speakers: [Entry]
+    /// The recorded split sizes (24 / 16 after the CTO ruling). Floors, not exact counts: `meetsFloors`.
+    public let tuningCount: Int
+    public let heldOutCount: Int
+
+    /// Speaker floors (spec 02, CTO ruling 2026-11-23 14:18): at least 18 tuning and at least
+    /// `agreement.positiveHeldOutSpeakers` (12) held-out. Not a tunable: the plan's split floor.
+    public static let minimumTuningSpeakers = 18
+    public static func minimumHeldOutSpeakers(thresholds: Thresholds = .current) -> Int {
+        Int(thresholds.agreement.positiveHeldOutSpeakers)
+    }
+
+    /// The recorded counts match the listed speakers and meet the floors.
+    public func meetsFloors(thresholds: Thresholds = .current) -> Bool {
+        tuningCount == tuningSpeakers.count && heldOutCount == heldOutSpeakers.count
+            && tuningCount >= Self.minimumTuningSpeakers
+            && heldOutCount >= Self.minimumHeldOutSpeakers(thresholds: thresholds)
+    }
 
     public static func load(_ url: URL) throws -> VCTKEvalSpeakersManifest {
         try JSONDecoder().decode(VCTKEvalSpeakersManifest.self, from: Data(contentsOf: url))
     }
 
-    /// The tuning speakers (24). The only way to get a `TuningSpeaker`.
+    /// The tuning speakers (at least 18). The only way to get a `TuningSpeaker`.
     public var tuningSpeakers: [TuningSpeaker] {
         speakers.filter { $0.split == .tuning }.map { TuningSpeaker(id: $0.speaker, accent: $0.accent, gender: $0.gender) }
     }
 
-    /// The held-out speakers (16), for the pair builder only.
+    /// The held-out speakers (at least 12), for the pair builder only.
     public var heldOutSpeakers: [HeldOutSpeaker] {
         speakers.filter { $0.split == .heldOut }.map { HeldOutSpeaker(id: $0.speaker) }
     }
@@ -187,7 +204,7 @@ public struct VCTKPairs: Sendable, Hashable {
     }
 }
 
-/// The VCTK CV estimate's folds: 6 speaker-disjoint outer folds over the tuning speakers (24), stratified by gender.
+/// The VCTK CV estimate's folds: 6 speaker-disjoint outer folds over the tuning speakers (≥ 18), stratified by gender.
 public enum VCTKFolds {
     public static func make(_ speakers: [TuningSpeaker], count: Int = 6, seed: UInt64) -> [OuterFold] {
         FoldAssignment.stratified(speakers: speakers.map { ($0.id, $0.gender) }, count: count, seed: seed)

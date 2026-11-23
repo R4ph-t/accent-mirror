@@ -1,7 +1,7 @@
 // Speaker-disjoint nested-CV folds with Raph's rev 4 speaker isolation (plan §2, review 4 at 09:56).
 //
 // For outer fold k the tuning pool is the other folds' stress-wrong words, the train-half correct words of speakers
-// not in fold k, and the 18 VCTK tuning speakers. Every token of every fold-k speaker is excluded, correct words
+// not in fold k, and the VCTK tuning speakers (≥ 18). Every token of every fold-k speaker is excluded, correct words
 // included, and test-half correct words are never in any tuning pool.
 
 import Foundation
@@ -53,7 +53,7 @@ public struct TuningPool: Sendable, Hashable {
     public let stressWrong: [SpeechOceanWord]
     /// Train-half unanimous correct words of speakers not in fold k.
     public let correct: [SpeechOceanWord]
-    /// The 18 VCTK tuning speakers.
+    /// The VCTK tuning speakers (≥ 18).
     public let vctkTuningSpeakers: [TuningSpeaker]
 
     /// Every speechocean762 speaker with a token in the pool.

@@ -53,6 +53,9 @@ BUNDLED = ["p225", "p226", "p227", "p233", "p241", "p252", "p311", "p345"]
 EXCLUDED = ["p280", "p315"]
 SEED = 20261123
 PICK, TUNING_PATTERN = 40, (True, False, True, False, True)
+# Floors, not exact counts (spec 02, CTO ruling 2026-11-23 14:18): >= 18 tuning, >= 12 held-out. The actual counts
+# are written to the manifest as tuningCount / heldOutCount.
+MIN_TUNING, MIN_HELD_OUT = 18, 12
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -144,6 +147,11 @@ def main():
             return e
 
         speakers = [entry(s, "tuning" if TUNING_PATTERN[i % 5] else "heldOut") for i, s in enumerate(picked)]
+        tuning_count = sum(1 for s in speakers if s["split"] == "tuning")
+        held_out_count = len(speakers) - tuning_count
+        if tuning_count < MIN_TUNING or held_out_count < MIN_HELD_OUT:
+            sys.exit("pick_vctk_eval_speakers: %d tuning / %d held-out is below the floors (>= %d / >= %d)"
+                     % (tuning_count, held_out_count, MIN_TUNING, MIN_HELD_OUT))
         manifest = {
             "corpus": "VCTK 0.92 (VCTK-Corpus-0.92.zip), mic1",
             "licence": "CC BY 4.0",
@@ -157,6 +165,8 @@ def main():
             "phraseText": PHRASE_TEXT,
             "bundled": [entry(s) for s in BUNDLED],
             "speakers": speakers,
+            "tuningCount": tuning_count,
+            "heldOutCount": held_out_count,
         }
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     with open(args.out, "w") as f:
@@ -164,9 +174,8 @@ def main():
         f.write("\n")
     for clip in dropped:
         print("pick_vctk_eval_speakers: left out %s (transcript is not the shared text)" % clip)
-    tuning = sum(1 for s in speakers if s["split"] == "tuning")
     print("pick_vctk_eval_speakers: %d candidates; picked %d (%d tuning, %d held-out) -> %s"
-          % (len(candidates), len(speakers), tuning, len(speakers) - tuning, os.path.relpath(args.out, ROOT)))
+          % (len(candidates), len(speakers), tuning_count, held_out_count, os.path.relpath(args.out, ROOT)))
 
 
 if __name__ == "__main__":

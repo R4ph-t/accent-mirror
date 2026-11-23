@@ -376,10 +376,15 @@ func positive(_ args: Arguments, root: URL) throws -> Int32 {
     print("positive: \(kept.count) clips kept, \(rejectedClips.count) rejected by the 2–6 s trim")
     for line in VCTKPairs.rejectionsByPhrase(rejected: rejectedClips, manifest: manifest) { print("positive: trim \(line)") }
     print("positive: headline pairs \(pairs.headline.count) (\(Set(pairs.headline.map(\.phrase)).count) phrases, \(Set(pairs.headline.map(\.speaker)).count) held-out speakers), secondary pairs \(pairs.secondary.count) (correlated)")
-    let shortfalls = pairs.shortfalls()
-    print(shortfalls.isEmpty
-        ? "positive: pair set evaluable; metrics NOT EVALUATED until spec 10 wires measures and verdicts"
-        : "positive: NOT EVALUATED (\(shortfalls.joined(separator: "; ")))")
+    let status = pairs.status()
+    print("positive: \(status.text)")
+    // Every positive-set gate goes through the one consumer (PositiveSetGates.line); none is measured until specs
+    // 09, 10 and 22 wire them, and none can read PASS while the set is NOT EVALUATED.
+    let lines = PositiveSetGates.lines(positiveSet: status, pairs: pairs.headline.count)
+    for m in lines {
+        print("positive: \(m.name): gate \(m.gate!.direction == .atLeast ? "≥" : "≤") \(m.gate!.bound): \(m.status.text)")
+    }
+    for line in ReleaseSummary(negativeSet: nil, positiveSet: status, gated: lines).lines { print(line) }
     print("VCTK CV estimate (6 folds over the \(manifest.tuningSpeakers.count) tuning speakers): NOT EVALUATED until spec 08")
     return 0
 }

@@ -37,7 +37,7 @@ import AMEvaluation
         #expect(report.baseName == "l2-shared-" + report.identity.configDigest.prefix(8))
         let md = report.markdown
         for needle in ["configDigest", "sourceTreeHash", "Split seed", "syntheticReference", "`none`", "CV estimate, not shipped",
-                       "NOT EVALUATED (n=1, min=134)", AgreementReport.limitation, "Negative set: NOT EVALUATED", "Release gate: NOT MET"] {
+                       "NOT EVALUATED (n=1, min=134)", AgreementReport.limitation, "Negative set: NOT EVALUATED", "Positive set: NOT EVALUATED", "Release gate: NOT MET"] {
             #expect(md.contains(needle), "\(needle)")
         }
         let json = try JSONEncoder().encode(report)
