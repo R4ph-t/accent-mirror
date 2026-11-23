@@ -1,0 +1,165 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "386795e92f7e3fb5af1236a4280a14dcb9127c44c1a7769816bc9e20cd813548",
+  "clipID" : "p252_011",
+  "formatVersion" : 1,
+  "text" : "When a man looks for something beyond his reach, his friends say he is looking for the pot of gold at the end of the rainbow.",
+  "words" : [
+    {
+      "end" : 1.04,
+      "probability" : 0.86,
+      "start" : 0.96,
+      "word" : " When"
+    },
+    {
+      "end" : 1.18,
+      "probability" : 0.99,
+      "start" : 1.04,
+      "word" : " a"
+    },
+    {
+      "end" : 1.36,
+      "probability" : 0.99,
+      "start" : 1.18,
+      "word" : " man"
+    },
+    {
+      "end" : 1.6,
+      "probability" : 0.99,
+      "start" : 1.36,
+      "word" : " looks"
+    },
+    {
+      "end" : 1.82,
+      "probability" : 0.99,
+      "start" : 1.6,
+      "word" : " for"
+    },
+    {
+      "end" : 2.12,
+      "probability" : 1,
+      "start" : 1.82,
+      "word" : " something"
+    },
+    {
+      "end" : 2.44,
+      "probability" : 0.98,
+      "start" : 2.12,
+      "word" : " beyond"
+    },
+    {
+      "end" : 2.76,
+      "probability" : 0.99,
+      "start" : 2.44,
+      "word" : " his"
+    },
+    {
+      "end" : 3,
+      "probability" : 0.99,
+      "start" : 2.76,
+      "word" : " reach,"
+    },
+    {
+      "end" : 3.6,
+      "probability" : 0.86,
+      "start" : 3.46,
+      "word" : " his"
+    },
+    {
+      "end" : 3.84,
+      "probability" : 0.75,
+      "start" : 3.6,
+      "word" : " friends"
+    },
+    {
+      "end" : 4.14,
+      "probability" : 1,
+      "start" : 3.84,
+      "word" : " say"
+    },
+    {
+      "end" : 4.38,
+      "probability" : 0.93,
+      "start" : 4.14,
+      "word" : " he"
+    },
+    {
+      "end" : 4.52,
+      "probability" : 0.99,
+      "start" : 4.38,
+      "word" : " is"
+    },
+    {
+      "end" : 4.7,
+      "probability" : 0.98,
+      "start" : 4.52,
+      "word" : " looking"
+    },
+    {
+      "end" : 5.02,
+      "probability" : 0.95,
+      "start" : 4.7,
+      "word" : " for"
+    },
+    {
+      "end" : 5.12,
+      "probability" : 0.88,
+      "start" : 5.02,
+      "word" : " the"
+    },
+    {
+      "end" : 5.3,
+      "probability" : 0.92,
+      "start" : 5.22,
+      "word" : " pot"
+    },
+    {
+      "end" : 5.5,
+      "probability" : 0.98,
+      "start" : 5.3,
+      "word" : " of"
+    },
+    {
+      "end" : 5.66,
+      "probability" : 0.99,
+      "start" : 5.5,
+      "word" : " gold"
+    },
+    {
+      "end" : 5.92,
+      "probability" : 0.99,
+      "start" : 5.66,
+      "word" : " at"
+    },
+    {
+      "end" : 6.02,
+      "probability" : 0.93,
+      "start" : 5.92,
+      "word" : " the"
+    },
+    {
+      "end" : 6.12,
+      "probability" : 1,
+      "start" : 6.02,
+      "word" : " end"
+    },
+    {
+      "end" : 6.24,
+      "probability" : 1,
+      "start" : 6.12,
+      "word" : " of"
+    },
+    {
+      "end" : 6.34,
+      "probability" : 0.99,
+      "start" : 6.24,
+      "word" : " the"
+    },
+    {
+      "end" : 6.48,
+      "probability" : 0.92,
+      "start" : 6.34,
+      "word" : " rainbow."
+    }
+  ]
+}

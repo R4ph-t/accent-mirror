@@ -1,0 +1,111 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "9feda233ca20515df8b3d8cb757529bbcd907443b3a7005248c5130189699b99",
+  "clipID" : "p241_006",
+  "formatVersion" : 1,
+  "text" : "When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow.",
+  "words" : [
+    {
+      "end" : 1.06,
+      "probability" : 0.83,
+      "start" : 0.96,
+      "word" : " When"
+    },
+    {
+      "end" : 1.18,
+      "probability" : 0.9,
+      "start" : 1.06,
+      "word" : " the"
+    },
+    {
+      "end" : 1.44,
+      "probability" : 0.99,
+      "start" : 1.18,
+      "word" : " sunlight"
+    },
+    {
+      "end" : 1.72,
+      "probability" : 1,
+      "start" : 1.44,
+      "word" : " strikes"
+    },
+    {
+      "end" : 2.3,
+      "probability" : 0.7,
+      "start" : 1.72,
+      "word" : " raindrops"
+    },
+    {
+      "end" : 2.52,
+      "probability" : 0.98,
+      "start" : 2.3,
+      "word" : " in"
+    },
+    {
+      "end" : 2.62,
+      "probability" : 0.99,
+      "start" : 2.52,
+      "word" : " the"
+    },
+    {
+      "end" : 2.8,
+      "probability" : 1,
+      "start" : 2.62,
+      "word" : " air,"
+    },
+    {
+      "end" : 3.4,
+      "probability" : 0.77,
+      "start" : 3.26,
+      "word" : " they"
+    },
+    {
+      "end" : 3.56,
+      "probability" : 0.99,
+      "start" : 3.4,
+      "word" : " act"
+    },
+    {
+      "end" : 3.76,
+      "probability" : 0.98,
+      "start" : 3.56,
+      "word" : " as"
+    },
+    {
+      "end" : 3.86,
+      "probability" : 0.97,
+      "start" : 3.76,
+      "word" : " a"
+    },
+    {
+      "end" : 4.04,
+      "probability" : 0.99,
+      "start" : 3.86,
+      "word" : " prism"
+    },
+    {
+      "end" : 4.34,
+      "probability" : 0.97,
+      "start" : 4.04,
+      "word" : " and"
+    },
+    {
+      "end" : 4.52,
+      "probability" : 0.98,
+      "start" : 4.34,
+      "word" : " form"
+    },
+    {
+      "end" : 4.7,
+      "probability" : 0.98,
+      "start" : 4.52,
+      "word" : " a"
+    },
+    {
+      "end" : 4.96,
+      "probability" : 0.94,
+      "start" : 4.7,
+      "word" : " rainbow."
+    }
+  ]
+}
