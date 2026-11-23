@@ -306,9 +306,8 @@ Gaps and decisions for review:
 4. The fallback is keyed on the median warm ASR time (the spec gives no statistic); p90 and max are reported.
 5. Padded spans are not clamped to the clip (the conservative choice).
 6. Calibration's two bins split at the median probability: low is below it, high is at or above it.
-7. `Thresholds.wordTimestamps` was added without bumping `thresholdsVersion`. No existing value changed and no
-   analysis output reads these bars; a bump would need a new golden record with a duplicate digest, which spec 01's
-   test forbids. `configDigest` changes anyway, since it covers the full `Thresholds`.
+7. Adding `Thresholds.wordTimestamps` bumps `thresholdsVersion` from 2 to 3, following spec 05's precedent: the
+   golden files' version fields are updated and a new golden record is appended. No existing threshold changed.
 8. The committed replay and baseline JSON hold VCTK transcript words (CC BY 4.0); attribution is in both files'
    `attribution` field. The VCTK section of `THIRD_PARTY_NOTICES.md` belongs to spec 02 and was not edited.
 9. AGENTS.md's module map doesn't list the tooling targets `AMTimestampEval` and `am-timestamps`; AGENTS.md is not
