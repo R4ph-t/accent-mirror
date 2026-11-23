@@ -308,6 +308,23 @@ enum Copy {
     }
 
     static let missingTooltip = "Not in your take."
+
+    /// VoiceOver for the mistake marker on a strip label (the triangle and underline are not read).
+    static func mistakeLabelAccessibility(_ syllable: String) -> String {
+        "\(syllable), stressed differently from the model"
+    }
+
+    /// VoiceOver for a whole line of labels (a strip row's syllables or the pitch plot's words). It reads every
+    /// label, including those hidden because the window is too narrow to show them all (fixes round 5).
+    static func labelLine(_ labels: [String]) -> String {
+        labels.joined(separator: ", ")
+    }
+
+    /// Tooltip over a label hidden because it didn't fit: the label itself, then its own note if it has one.
+    static func hiddenLabelTooltip(_ label: String, note: String?) -> String {
+        guard let note, !note.isEmpty else { return label }
+        return "\(label). \(note)"
+    }
     static let ambiguousTooltip = "Stress isn't checked on this word. It can be said more than one way."
 
     // MARK: Inspector (§13.5, §13.9, §14)

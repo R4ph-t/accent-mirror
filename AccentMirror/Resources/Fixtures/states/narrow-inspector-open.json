@@ -1,0 +1,107 @@
+{
+  "name": "narrow-inspector-open",
+  "summary": "The narrowest window (960 × 680 pt, the spec 18 minimum) with the Details inspector open: label collisions and the toolbar title (fixes round 5).",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-take03",
+  "analysis": {
+    "verdict": {
+      "kind": "feedback",
+      "rows": [
+        {
+          "kind": "placement",
+          "word": "photography",
+          "syllables": [
+            "pho",
+            "tog",
+            "ra",
+            "phy"
+          ],
+          "acceptedIndex": 1,
+          "heardIndex": 0
+        },
+        {
+          "kind": "contrast",
+          "targets": [
+            "HAR",
+            "LOOKS"
+          ]
+        },
+        {
+          "kind": "reduction",
+          "targets": [
+            "ra",
+            "phy",
+            "der",
+            "than"
+          ]
+        }
+      ]
+    },
+    "measures": [
+      {
+        "measure": "stressPlacement",
+        "state": "evaluated"
+      },
+      {
+        "measure": "contrast",
+        "state": "evaluated",
+        "value": 0.58
+      },
+      {
+        "measure": "reduction",
+        "state": "evaluated",
+        "value": 0.64
+      },
+      {
+        "measure": "rhythm",
+        "state": "evaluated",
+        "value": 0.71
+      },
+      {
+        "measure": "pitchShape",
+        "state": "evaluated",
+        "value": 0.62
+      },
+      {
+        "measure": "range",
+        "state": "unavailable",
+        "reason": "lowConfidence"
+      },
+      {
+        "measure": "finalDirection",
+        "state": "notApplicable",
+        "reason": "noFinalVoicing"
+      }
+    ],
+    "timing": "good",
+    "stress": [
+      {
+        "word": "harder",
+        "outcome": "matchesDictionary",
+        "pattern": "HARder"
+      },
+      {
+        "word": "looks",
+        "outcome": "matchesDictionary",
+        "pattern": "LOOKS"
+      },
+      {
+        "word": "photography",
+        "outcome": "outsideAccepted",
+        "pattern": "phoTOGraphy"
+      }
+    ]
+  },
+  "inspectorOpen": true,
+  "persistence": "notSaved",
+  "window": {
+    "width": 960,
+    "height": 680
+  }
+}

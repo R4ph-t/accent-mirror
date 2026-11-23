@@ -7,6 +7,8 @@ enum Metrics {
     static let sidebarWidth: CGFloat = 240
     static let inspectorWidth: CGFloat = 280
     static let toolbarHeight: CGFloat = 52
+    /// The toolbar's phrase title block never gets narrower than this; the controls compact first (fixes round 5).
+    static let toolbarTitleMinWidth: CGFloat = 160
     static let outer: CGFloat = 16
     static let inner: CGFloat = 8
     /// Row-label column (x 272 to 336 in the window) relative to the card's inner content edge.

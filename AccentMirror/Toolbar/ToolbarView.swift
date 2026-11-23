@@ -8,25 +8,43 @@ struct ToolbarView: View {
     var toggleInspector: () -> Void
 
     var body: some View {
-        HStack(spacing: 0) {
+        ToolbarLayout {
             titleBlock
-                .layoutPriority(-1)
-            Spacer(minLength: 16)
-            HStack(spacing: 8) {
-                GhostButton(title: "Model", isEnabled: state.modelEnabled)
-                RecordButton(state: state.record)
-                GhostButton(title: "You", isEnabled: state.youEnabled)
+            // The controls keep their full form while they fit next to a 160 pt title; on a narrow detail pane
+            // they compact in steps (fixes round 5): Model and You drop their words, then the take menu
+            // becomes its chevron, then Record keeps only its dot. Tooltips and VoiceOver keep every word.
+            ViewThatFits(in: .horizontal) {
+                controls(.full)
+                controls(.iconPlayback)
+                controls(.compactMenu)
+                controls(.minimal)
             }
-            // Controls keep their size; only the title truncates when the detail gets narrow.
-            .fixedSize()
-            TakeMenu(label: state.takeMenu, note: state.takeMenuNote, savedTakes: state.savedTakes)
-                .padding(.leading, 17)
-            InspectorToggle(action: toggleInspector)
-                .padding(.leading, 16)
         }
         .padding(.leading, Metrics.outer)
         .frame(height: Metrics.toolbarHeight)
         .padding(.trailing, Metrics.outer)
+    }
+
+    enum Density: Int, Comparable {
+        case full, iconPlayback, compactMenu, minimal
+        static func < (a: Density, b: Density) -> Bool { a.rawValue < b.rawValue }
+    }
+
+    private func controls(_ density: Density) -> some View {
+        HStack(spacing: 0) {
+            HStack(spacing: 8) {
+                GhostButton(title: "Model", isEnabled: state.modelEnabled, showsTitle: density < .iconPlayback)
+                RecordButton(state: state.record, showsTitle: density < .minimal)
+                GhostButton(title: "You", isEnabled: state.youEnabled, showsTitle: density < .iconPlayback)
+            }
+            TakeMenu(label: state.takeMenu, note: state.takeMenuNote, savedTakes: state.savedTakes,
+                     compact: density >= .compactMenu)
+                .padding(.leading, density >= .compactMenu ? 8 : 17)
+            InspectorToggle(action: toggleInspector)
+                .padding(.leading, density >= .compactMenu ? 8 : 16)
+        }
+        // Controls keep their size; only the title block truncates.
+        .fixedSize()
     }
 
     private var titleBlock: some View {
@@ -68,14 +86,18 @@ struct GhostButton: View {
     @Environment(\.palette) private var palette
     var title: String
     var isEnabled: Bool
+    /// False on a narrow toolbar: the play triangle only, the title in the tooltip and for VoiceOver.
+    var showsTitle = true
 
     var body: some View {
         FocusRingButton(cornerRadius: Metrics.controlRadius, action: {}) { _ in
             HStack(spacing: 9) {
                 Image(systemName: "play.fill")
                     .font(.system(size: 11))
-                Text(title)
-                    .typeRole(.body)
+                if showsTitle {
+                    Text(title)
+                        .typeRole(.body)
+                }
             }
             .foregroundStyle(isEnabled ? palette.textPrimary : palette.textTertiary)
             .padding(.horizontal, 12)
@@ -87,6 +109,7 @@ struct GhostButton: View {
             }
         }
         .disabled(!isEnabled)
+        .help(showsTitle ? "" : "Play \(title)")
         .accessibilityLabel("Play \(title)")
     }
 }
@@ -96,6 +119,9 @@ struct GhostButton: View {
 struct RecordButton: View {
     @Environment(\.palette) private var palette
     var state: ToolbarState.RecordButton
+    /// False on the narrowest toolbar: the dot (or Stop's square) only, 40 wide; the word stays in the tooltip and
+    /// for VoiceOver.
+    var showsTitle = true
 
     var body: some View {
         let isStop = state == .stop
@@ -107,11 +133,13 @@ struct RecordButton: View {
                 } else {
                     Circle().frame(width: 10, height: 10)
                 }
-                Text(isStop ? "Stop" : "Record")
-                    .typeRole(.body)
+                if showsTitle {
+                    Text(isStop ? "Stop" : "Record")
+                        .typeRole(.body)
+                }
             }
             .foregroundStyle(isEnabled ? palette.onLime : palette.textTertiary)
-            .frame(width: 104, height: Metrics.controlHeight)
+            .frame(width: showsTitle ? 104 : 40, height: Metrics.controlHeight)
             .background {
                 if isEnabled {
                     RoundedRectangle(cornerRadius: Metrics.controlRadius, style: .continuous)
@@ -129,6 +157,7 @@ struct RecordButton: View {
             }
         }
         .disabled(!isEnabled)
+        .help(showsTitle ? "" : (isStop ? "Stop" : "Record"))
         .accessibilityLabel(isStop ? "Stop recording" : "Record")
     }
 }
@@ -139,6 +168,8 @@ struct TakeMenu: View {
     var label: ToolbarState.TakeMenuLabel
     var note: String?
     var savedTakes: [Int]
+    /// True on a narrow toolbar: the chevron only, the title in the tooltip and for VoiceOver.
+    var compact = false
 
     private var title: String {
         switch label {
@@ -167,28 +198,37 @@ struct TakeMenu: View {
                 }
             }
         } label: {
-            HStack(spacing: 8) {
-                Text(title)
-                    .typeRole(.mono)
-                    .foregroundStyle(palette.textSecondary)
-                if let note {
-                    Text(note)
-                        .typeRole(.mono)
-                        .foregroundStyle(palette.textTertiary)
-                }
-                Spacer(minLength: 0)
+            if compact {
                 Image(systemName: "chevron.down")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(palette.textSecondary)
+                    .frame(width: 28, height: Metrics.controlHeight)
+                    .contentShape(Rectangle())
+            } else {
+                HStack(spacing: 8) {
+                    Text(title)
+                        .typeRole(.mono)
+                        .foregroundStyle(palette.textSecondary)
+                    if let note {
+                        Text(note)
+                            .typeRole(.mono)
+                            .foregroundStyle(palette.textTertiary)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(palette.textSecondary)
+                }
+                .frame(minWidth: 70)
+                .fixedSize()
+                .contentShape(Rectangle())
             }
-            .frame(minWidth: 70)
-            .fixedSize()
-            .contentShape(Rectangle())
         }
         .menuStyle(.button)
         .buttonStyle(.plain)
         .menuIndicator(.hidden)
         .fixedSize()
+        .help(compact ? (note.map { "\(title) \($0)" } ?? title) : "")
         .accessibilityLabel(note.map { "\(title), \($0)" } ?? title)
     }
 }
@@ -206,5 +246,29 @@ private struct InspectorToggle: View {
         }
         .help("Show or hide Details")
         .accessibilityLabel("Details")
+    }
+}
+
+/// The toolbar row: the title block on the left, the controls on the right. The title block always keeps at least
+/// `Metrics.toolbarTitleMinWidth` (160 pt): the controls are offered only what is left after it and a 16 pt gap, so
+/// they pick their compact form instead of squeezing the title. Inside the block, the title and subtitle each
+/// truncate to the block's width (fixes round 5).
+struct ToolbarLayout: Layout {
+    static let gap: CGFloat = 16
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        CGSize(width: proposal.width ?? 0, height: proposal.height ?? Metrics.toolbarHeight)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        guard subviews.count == 2 else { return }
+        let title = subviews[0], controls = subviews[1]
+        let room = max(0, bounds.width - Metrics.toolbarTitleMinWidth - Self.gap)
+        let controlsProposal = ProposedViewSize(width: room, height: bounds.height)
+        let controlsSize = controls.sizeThatFits(controlsProposal)
+        controls.place(at: CGPoint(x: bounds.maxX, y: bounds.midY), anchor: .trailing, proposal: controlsProposal)
+        let titleWidth = max(Metrics.toolbarTitleMinWidth, bounds.width - controlsSize.width - Self.gap)
+        title.place(at: CGPoint(x: bounds.minX, y: bounds.midY), anchor: .leading,
+                    proposal: ProposedViewSize(width: titleWidth, height: bounds.height))
     }
 }

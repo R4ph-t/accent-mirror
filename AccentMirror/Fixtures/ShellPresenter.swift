@@ -121,8 +121,9 @@ struct PitchPresentation: Sendable {
     var band: [BandSegment]
     var you: [PitchSegment]
     var message: String?
-    /// Native words under the baseline (model time).
-    var words: [(text: String, start: Double, end: Double)]
+    /// Native words under the baseline (model time). Target words always keep their label when the plot is
+    /// narrow; the others are hidden first (fixes round 5, `LabelLayout`).
+    var words: [(text: String, start: Double, end: Double, isTarget: Bool)]
     /// Lime marks on the baseline: the native's stressed syllables.
     var stressedSpans: [(start: Double, end: Double)]
     /// Native syllables, for the faint waveform texture behind the plot.
@@ -446,6 +447,17 @@ enum ShellPresenter {
 
     // MARK: Pitch
 
+    /// A target word under the pitch plot: one that carries a stressed native syllable (it has a Lime mark on the
+    /// baseline), or one a diff row names. Its label always shows; the other words' labels give way first when
+    /// the plot is narrow (fixes round 5).
+    static func isTargetWord(_ word: NativeWord, rowWords: Set<String>) -> Bool {
+        word.syllables.contains(where: \.stressed) || rowWords.contains(normalizedWord(word.text))
+    }
+
+    static func normalizedWord(_ text: String) -> String {
+        text.lowercased().trimmingCharacters(in: .punctuationCharacters)
+    }
+
     static func pitch(_ loaded: LoadedFixture) -> PitchPresentation {
         let phrase = loaded.phrase
         var you: [PitchSegment] = []
@@ -458,12 +470,15 @@ enum ShellPresenter {
             if you.isEmpty { message = Copy.noPitch }
         }
         let stressed = phrase.words.flatMap(\.syllables).filter(\.stressed).map { (start: $0.start, end: $0.end) }
+        let rowWords = Set((loaded.fixture.analysis?.verdict?.rows ?? []).compactMap { $0.word.map(normalizedWord) })
         return PitchPresentation(
             rangeSemitones: phrase.rangeSemitones,
             band: phrase.band,
             you: you,
             message: message,
-            words: phrase.words.map { (text: $0.text, start: $0.start, end: $0.end) },
+            words: phrase.words.map { word in
+                (text: word.text, start: word.start, end: word.end, isTarget: isTargetWord(word, rowWords: rowWords))
+            },
             stressedSpans: stressed,
             texture: nativeClusters(phrase)
         )
