@@ -62,8 +62,10 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public var preRollMs = 200.0
         public var ringBufferMs = 500.0
         public var endOfTakeS = 1.2
+        public var endpointArmSpeechS = 0.3
         public var recordingCapS = 20.0
         public var noSpeechS = 0.15
+        public var noSpeechVoicedS = 0.3
         public var tooShortS = 0.5
         public var tooQuietDBFS = -40.0
         public var clippedShare = 0.005
