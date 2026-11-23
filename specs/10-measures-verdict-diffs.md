@@ -1,6 +1,6 @@
 # 10: Measures, verdict and diffs
 
-Status: Draft · Branch: – · Depends on: 02 (harness), 08 (prominence), 09 (time map, band) · Estimate: 4–5 h agent
+Status: Ready · Branch: – · Depends on: 02 (harness), 08 (prominence), 09 (time map, band) · Estimate: 4–5 h agent
 run + 1.5 h Raph review
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
