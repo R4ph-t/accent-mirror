@@ -436,12 +436,18 @@ func positive(_ args: Arguments, root: URL) throws -> Int32 {
     print("positive: headline pairs \(pairs.headline.count) (\(Set(pairs.headline.map(\.phrase)).count) phrases, \(Set(pairs.headline.map(\.speaker)).count) held-out speakers), secondary pairs \(pairs.secondary.count) (correlated)")
     let status = pairs.status()
     print("positive: \(status.text)")
-    // Every positive-set gate goes through the one consumer (PositiveSetGates.line); none is measured until specs
-    // 09, 10 and 22 wire them, and none can read PASS while the set is NOT EVALUATED.
-    let lines = PositiveSetGates.lines(positiveSet: status, pairs: pairs.headline.count)
+    // Every positive-set gate goes through the one consumer (PositiveSetGates.line), and none can read PASS while the
+    // set is NOT EVALUATED. Band coverage (spec 09) is wired: its per-pair values need each held-out take's word
+    // timings and syllables, which the pipeline (spec 12) produces; until then no pair is measured.
+    let bandPairs: [PairBandCoverage] = []
+    let band = BandCoverageGate.measured(bandPairs)
+    let lines = PositiveSetGates.lines(
+        positiveSet: status, measured: [BandCoverageGate.dependent().name: band], pairs: pairs.headline.count)
     for m in lines {
-        print("positive: \(m.name): gate \(m.gate!.direction == .atLeast ? "≥" : "≤") \(m.gate!.bound): \(m.status.text)")
+        let value = m.value.map { String(format: "%.3f", $0) } ?? "–"
+        print("positive: \(m.name): n \(m.n), value \(value), gate \(m.gate!.direction == .atLeast ? "≥" : "≤") \(m.gate!.bound): \(m.status.text)")
     }
+    print("positive: band coverage pairs measured: \(bandPairs.count) (held-out word timings arrive with the pipeline, spec 12)")
     for line in ReleaseSummary(negativeSet: nil, positiveSet: status, gated: lines).lines { print(line) }
     // The detector exists (spec 08); the VCTK CV estimate is a positive-set number, so it waits on the set itself.
     print("VCTK CV estimate, not shipped (6 folds over the \(manifest.tuningSpeakers.count) tuning speakers): \(status.isEvaluable ? "NOT EVALUATED (the fold-tuned run is spec 11)" : "NOT EVALUATED (blocked on spec 24: positive set NOT EVALUATED)")")
