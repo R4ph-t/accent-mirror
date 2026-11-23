@@ -133,4 +133,46 @@ The **simplest one that passes** ships. If b1 passes, b2 isn't built beyond the 
 
 ## Implementation notes
 
-_(filled in by the agent)_
+**Result: FAIL, nothing ships. `whisper` stays, and this goes to CTO.** b1 misses the unpadded bar on both sides, so
+b2 was built. b2 misses it too. The report is `docs/agreement/reports/word-boundaries-<configDigest8>.{json,md}`
+(155 clips, 2,390 comparable boundaries per side):
+
+| | `whisper` | `dsp-snap-1` (b1) | `ctc-w2v2b960-1` (b2) |
+|---|---|---|---|
+| Starts: median / within 80 ms | 90 ms / 46.1% | 70 ms / 59.0% | 50 ms / 80.0% |
+| Ends: median / within 80 ms | 110 ms / 38.5% | 80 ms / 52.6% | 40 ms / 76.4% |
+| Speakers passing both sides | 0 of 8 | 0 of 8 | 0 of 8 |
+| Mean signed start / end | −120 / −138 ms | −68 / −94 ms | −1 / −53 ms |
+
+b1's correlation gate is NOT EVALUATED: spec 02's control sets aren't on main. That isn't a pass, and b1 already
+fails the bar. The placement-diff rule (§6.7) is recorded as pending spec 11.
+
+- **Seam (AMAlignment).** `WordBoundaryRefiner`, `WhisperOnly` (`whisper`) and `BoundarySearch`. `BoundarySearch`
+  is the one place the clamps live: words are refined left to right, a start window runs from the previous refined
+  end to the word's own recognised end, and an end window from its refined start to the next word's recognised end.
+  So the next word's start can always follow, and nothing leaves `[0, take]`.
+- **b1 (AMProsody, `DSPSnapRefiner`).** `AMProsody` is the lowest module allowed to import both `AMAlignment` and
+  `AMPitch`. It runs pYIN once per take (spec 04) and frame RMS in dBFS (spec 05's definition, vDSP). A voicing or
+  intensity edge counts only when it's a real transition inside the window: a window edge that is still voiced is
+  not an offset. Rule shares are in the report (Open question 2). No constant was tuned.
+- **b2 (AMAlignment, `CTCAligner`, an actor owning the `MLModel`).** One forward pass, then a banded CTC Viterbi over
+  the Whisper words' letters, each word confined to its span ± `snapWindowMs`. The model's `|` separator is folded
+  into blank. Word start is the first letter frame; word end is the frame after the last. A single Core ML
+  prediction can't stop part-way, so `CancellableWork` returns `CancellationError` at once and drops the
+  prediction's late result. The model stays loaded.
+- **b2 model.** `scripts/fetch-ctc.sh` fetches facebook/wav2vec2-base-960h at `22aad52…`, checks 7 upstream SHA-256s,
+  converts in a pinned venv under `.cache/` (`tools/convert_ctc.py`, `tools/ctc-requirements.txt`), and checks the
+  package's 3 files and `packageSHA256`. The conversion is made byte-reproducible: the protobuf spec is re-serialised
+  deterministically and `Manifest.json` gets path-derived identifiers. A clean fetch reproduces the pin. The licence
+  (Apache-2.0) was re-read at the pinned commit. Because b2 doesn't ship, its pin, LICENSE and NOTICE live in
+  `fixtures/models/wav2vec2-base-960h/` (eval-only, like spec 03's `fixtures/vctk/*.sha256`).
+  `Resources/Models/` and `THIRD_PARTY_NOTICES.md` are untouched.
+- **Eval.** `scripts/eval-word-boundaries.sh` (`am-timestamps boundaries`, sandboxed with networking denied) replays
+  spec 03's committed WhisperKit base.en words on the same VCTK audio, so no ASR runs. The refined boundaries are
+  recorded in `fixtures/timestamps/openai_whisper-base.en+<aligner>/`. A release run fails if it doesn't reproduce
+  them, and a package test replays them with networking denied.
+- **Identity.** `ConfigIdentity.aligner` (contract 2), `Thresholds.wordBoundaries` (thresholds 4), goldens
+  re-recorded and digest appended. `algorithmVersion` is unchanged: the shipped aligner is still `whisper`.
+- **Diagnostic, not a fix.** b2's ends are early by a fairly constant amount (median signed −40 ms), the usual
+  peaky-CTC effect. Any change to b2's end rule would have to be chosen on spec 02's tuning speakers, which aren't on
+  main. Choosing it on these clips would be tuning on the gate.
