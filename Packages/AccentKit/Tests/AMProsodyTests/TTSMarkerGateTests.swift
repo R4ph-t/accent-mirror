@@ -1,7 +1,9 @@
 // The synthetic gate (spec 07 Defaults): pinned phrases spoken by a pinned on-device English voice through
 // `AVSpeechSynthesizer.write`, its word markers injected as `WordSpan`s with probability 1. Every reported word
 // boundary must stay within 10 ms of its marker, and every word gets its dictionary syllable count. Audio is
-// generated at test time and never written to disk; nothing is fetched. Without the voice (normal in CI) it skips.
+// generated at test time and never written to disk; nothing is fetched. Without the voice it skips; GitHub's macos-26
+// runner has it, so the gate runs in CI. Phrases are synthesized one at a time (`.serialized`): concurrent
+// synthesizers lost markers on the runner.
 
 import AMAlignment
 import AMCore
@@ -12,8 +14,8 @@ import Synchronization
 import Testing
 
 extension SyllableSegmenterTests {
-    @Suite("TTS marker gate") struct TTSMarkerGate {
-        /// The pinned voice. Compact Samantha ships with macOS; CI runners usually have no voices at all.
+    @Suite("TTS marker gate", .serialized) struct TTSMarkerGate {
+        /// The pinned voice. Compact Samantha ships with macOS, the macos-26 runner image included.
         static let voiceIdentifier = "com.apple.voice.compact.en-US.Samantha"
         static var voiceInstalled: Bool { AVSpeechSynthesisVoice(identifier: voiceIdentifier) != nil }
 
@@ -31,7 +33,7 @@ extension SyllableSegmenterTests {
         func markerGate(phrase: Int) async throws {
             let (text, arpabet) = Self.phrases[phrase]
             let speech = try await Self.speak(text)
-            try #require(speech.wordStarts.count == arpabet.count, "\(text): one word marker per word")
+            try #require(speech.wordStarts.count == arpabet.count, "\(text): one word bookmark per word")
 
             let duration = Double(speech.samples.count) / 16_000
             let edges = speech.wordStarts + [duration]
@@ -69,48 +71,71 @@ extension SyllableSegmenterTests {
         struct Speech {
             /// 16 kHz mono.
             let samples: [Float]
-            /// Word marker times in seconds.
+            /// Word start times in seconds, one per word, from the SSML bookmark before it.
             let wordStarts: [Double]
         }
 
-        /// Collects buffers and word markers. Markers arrive through the delegate (the `toMarkerCallback` of
-        /// `write` stays silent on macOS 26 voices); both may arrive on any queue, hence the mutex.
+        /// The phrase as SSML with a bookmark `w<N>` before each word. Bookmarks are named, so a lost or stray marker
+        /// is visible as a missing or unknown name rather than a short count.
+        static func ssml(_ text: String) -> String {
+            let words = text.split(separator: " ").map { String($0).replacingOccurrences(of: "&", with: "&amp;") }
+            return "<speak>" + words.enumerated().map { #"<mark name="w\#($0)"/>\#($1)"# }.joined(separator: " ")
+                + "</speak>"
+        }
+
+        /// Collects buffers and bookmarks. Bookmarks are read from both the `write` marker callback and the
+        /// delegate (macOS 26 voices deliver them through the delegate only) and kept once per name. Synthesis ends
+        /// at the zero-length final buffer; the delegate's `didFinish` then drains the bookmarks queued before it.
         final class Collector: NSObject, AVSpeechSynthesizerDelegate, Sendable {
             struct State {
                 var samples: [Float] = []
                 var sampleRate = 0.0
                 var bytesPerFrame = 4.0
-                var markerBytes: [Int] = []
-                var finished: CheckedContinuation<Void, Never>?
-                var done = false
+                var bookmarks: [String: Int] = [:]
+                var endedBuffers = false
+                var finishedDelegate = false
+                var timedOut = false
+                var waiter: CheckedContinuation<Void, Never>?
+                var done: Bool { timedOut || (endedBuffers && finishedDelegate) }
             }
 
             let state = Mutex(State())
 
+            private func update(_ change: (inout State) -> Void) {
+                let waiter = state.withLock { state -> CheckedContinuation<Void, Never>? in
+                    change(&state)
+                    guard state.done else { return nil }
+                    defer { state.waiter = nil }
+                    return state.waiter
+                }
+                waiter?.resume()
+            }
+
             func append(_ buffer: AVAudioBuffer) {
                 guard let pcm = buffer as? AVAudioPCMBuffer, let channel = pcm.floatChannelData else { return }
                 let frames = Array(UnsafeBufferPointer(start: channel[0], count: Int(pcm.frameLength)))
-                state.withLock {
+                update {
                     $0.sampleRate = pcm.format.sampleRate
                     $0.bytesPerFrame = Double(pcm.format.streamDescription.pointee.mBytesPerFrame)
-                    $0.samples += frames
+                    if frames.isEmpty { $0.endedBuffers = true } else { $0.samples += frames }
                 }
             }
 
-            func finish() {
-                let continuation = state.withLock { state -> CheckedContinuation<Void, Never>? in
-                    state.done = true
-                    defer { state.finished = nil }
-                    return state.finished
+            func record(_ markers: [AVSpeechSynthesisMarker]) {
+                let bookmarks = markers.filter { $0.mark == .bookmark && !$0.bookmarkName.isEmpty }
+                    .map { ($0.bookmarkName, $0.byteSampleOffset) }
+                update { state in
+                    for (name, offset) in bookmarks where state.bookmarks[name] == nil { state.bookmarks[name] = offset }
                 }
-                continuation?.resume()
             }
+
+            func timeOut() { update { $0.timedOut = true } }
 
             func wait() async {
                 await withCheckedContinuation { continuation in
                     let resumeNow = state.withLock { state -> Bool in
                         if state.done { return true }
-                        state.finished = continuation
+                        state.waiter = continuation
                         return false
                     }
                     if resumeNow { continuation.resume() }
@@ -121,38 +146,45 @@ extension SyllableSegmenterTests {
                 _ synthesizer: AVSpeechSynthesizer, willSpeak marker: AVSpeechSynthesisMarker,
                 utterance: AVSpeechUtterance
             ) {
-                guard marker.mark == .word else { return }
-                state.withLock { $0.markerBytes.append(marker.byteSampleOffset) }
+                record([marker])
             }
 
             func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-                finish()
+                update { $0.finishedDelegate = true }
             }
 
             func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
-                finish()
+                update { $0.finishedDelegate = true }
             }
         }
 
         @MainActor static func speak(_ text: String) async throws -> Speech {
             let voice = try #require(AVSpeechSynthesisVoice(identifier: voiceIdentifier))
-            let utterance = AVSpeechUtterance(string: text)
+            let utterance = try #require(AVSpeechUtterance(ssmlRepresentation: ssml(text)), "invalid SSML for \(text)")
             utterance.voice = voice
             let synthesizer = AVSpeechSynthesizer()
             let collector = Collector()
             synthesizer.delegate = collector
-            synthesizer.write(utterance, toBufferCallback: { collector.append($0) }, toMarkerCallback: { _ in })
+            synthesizer.write(
+                utterance, toBufferCallback: { collector.append($0) }, toMarkerCallback: { collector.record($0) })
             let timeout = Task {
-                try? await Task.sleep(for: .seconds(20))
-                collector.finish()
+                try? await Task.sleep(for: .seconds(30))
+                collector.timeOut()
             }
             await collector.wait()
             timeout.cancel()
             withExtendedLifetime(synthesizer) {}
 
             let state = collector.state.withLock { $0 }
+            try #require(!state.timedOut, "\(text): synthesis didn't finish within 30 s")
             try #require(state.sampleRate > 0 && !state.samples.isEmpty, "the voice produced no audio")
-            let wordStarts = state.markerBytes.map { Double($0) / state.bytesPerFrame / state.sampleRate }
+            let count = text.split(separator: " ").count
+            let names = (0..<count).map { "w\($0)" }
+            try #require(Set(state.bookmarks.keys) == Set(names),
+                         "\(text): bookmarks \(state.bookmarks.keys.sorted()), expected \(names)")
+            let wordStarts = names.map { Double(state.bookmarks[$0]!) / state.bytesPerFrame / state.sampleRate }
+            try #require(zip(wordStarts, wordStarts.dropFirst()).allSatisfy { $0 < $1 },
+                         "\(text): bookmarks out of order \(wordStarts)")
             return Speech(samples: resample(state.samples, from: state.sampleRate, to: 16_000), wordStarts: wordStarts)
         }
 
