@@ -7,6 +7,9 @@ options:
   deploymentTarget:
     macOS: "26.0"
   createIntermediateGroups: true
+  # Stamps project.yml's hash into the generated project, so a build can tell when the project is stale
+  # (see the "Check project is current" phase below). Runs on every `xcodegen generate`, including CI's.
+  postGenCommand: shasum -a 256 project.yml | cut -d ' ' -f 1 > AccentMirror.xcodeproj/project.yml.sha256
 
 settings:
   base:
@@ -38,6 +41,20 @@ targets:
     dependencies:
       - package: AccentKit
         product: AMPipeline
+    preBuildScripts:
+      # Fails the build when project.yml changed after the last `make generate` (XcodeGen writes the stamp).
+      - name: Check project is current
+        basedOnDependencyAnalysis: false
+        inputFiles:
+          - $(SRCROOT)/project.yml
+          - $(PROJECT_FILE_PATH)/project.yml.sha256
+        script: |
+          stamp="${PROJECT_FILE_PATH}/project.yml.sha256"
+          current="$(shasum -a 256 "${SRCROOT}/project.yml" | cut -d ' ' -f 1)"
+          if [ ! -f "$stamp" ] || [ "$(cat "$stamp")" != "$current" ]; then
+            echo "error: project.yml changed: run make generate"
+            exit 1
+          fi
     settings:
       base:
         PRODUCT_NAME: AccentMirror
@@ -67,17 +84,77 @@ targets:
         CODE_SIGN_STYLE: Automatic
         CODE_SIGN_IDENTITY: "-"
 
+schemeTemplates:
+  # Runs the app on one UI fixture (spec 19): pick "Fixture <name>" in Xcode and Run (⌘R).
+  Fixture:
+    shared: true
+    build:
+      targets:
+        AccentMirror: [run]
+    run:
+      config: Debug
+      commandLineArguments:
+        "-UIFixture ${fixture}": true
+
 schemes:
+  # Build (⌘B) is what CI's `make build` runs: the app only. Test (⌘U) uses AccentMirror.xctestplan: the AccentKit
+  # unit tests only. They run in xctest with no host app, so ⌘U never opens a window. Test targets are built for
+  # testing only, so `xcodebuild build` never builds them.
   AccentMirror:
     shared: true
     build:
       targets:
         AccentMirror: all
+    test:
+      config: Debug
+      testPlans:
+        - path: AccentMirror.xctestplan
+          defaultPlan: true
+  # App-hosted: the shell contract tests and the screenshot renderer (AccentMirrorScreenshots.xctestplan). Testing it
+  # launches the app, so it runs in CI or the test VM, never on Raph's desktop (rule of 2026-11-23 11:48).
   AccentMirrorScreenshots:
     shared: true
     build:
       targets:
         AccentMirrorScreenshots: [test]
     test:
-      targets:
-        - AccentMirrorScreenshots
+      config: Debug
+      testPlans:
+        - path: AccentMirrorScreenshots.xctestplan
+          defaultPlan: true
+  Fixture result-feedback:
+    templates: [Fixture]
+    templateAttributes:
+      fixture: result-feedback
+  Fixture empty:
+    templates: [Fixture]
+    templateAttributes:
+      fixture: empty
+  Fixture recording:
+    templates: [Fixture]
+    templateAttributes:
+      fixture: recording
+  Fixture tooQuiet:
+    templates: [Fixture]
+    templateAttributes:
+      fixture: tooQuiet
+  Fixture inc-requiredMeasureUnavailable-lowConfidence:
+    templates: [Fixture]
+    templateAttributes:
+      fixture: inc-requiredMeasureUnavailable-lowConfidence
+  Fixture ncd-insertionsPresent:
+    templates: [Fixture]
+    templateAttributes:
+      fixture: ncd-insertionsPresent
+  Fixture noVoicedFrames:
+    templates: [Fixture]
+    templateAttributes:
+      fixture: noVoicedFrames
+  Fixture tp-wordsDontMatch:
+    templates: [Fixture]
+    templateAttributes:
+      fixture: tp-wordsDontMatch
+  Fixture op-inferenceFailed:
+    templates: [Fixture]
+    templateAttributes:
+      fixture: op-inferenceFailed
