@@ -239,11 +239,21 @@ struct ShellContractTests {
     /// The italics are the real bundled faces, not a slanted copy or a system fallback.
     @Test func italicFacesAreBundled() {
         BundledFonts.register(from: Bundle(for: ShellModel.self))
-        for name in [BundledFonts.geistItalic, BundledFonts.geistMonoMediumItalic] {
+        for name in [BundledFonts.geistItalic] {
             let font = CTFontCreateWithName(name as CFString, 12, nil)
             #expect(CTFontCopyPostScriptName(font) as String == name)
             #expect(CTFontGetSymbolicTraits(font).contains(.traitItalic), "\(name)")
         }
+    }
+
+    /// Designer answer 4 (round 3): no Geist Mono italic is bundled, and mono labels stay upright.
+    @Test func noMonoItalicIsBundled() throws {
+        let geist = try #require(BundledFonts.fontsDirectory(in: Bundle(for: ShellModel.self)))
+            .appendingPathComponent("Geist", isDirectory: true)
+        let files = try FileManager.default.contentsOfDirectory(atPath: geist.path)
+        #expect(!files.contains { $0.hasPrefix("GeistMono-Italic") })
+        #expect(!BundledFonts.allPostScriptNames.contains { $0.hasPrefix("GeistMono") && $0.hasSuffix("Italic") })
+        #expect(TypeRole.mono.italicFontName == TypeRole.mono.fontName)
     }
 
     @Test func comingSoonIsDrivenByAnEmptyPack() {
