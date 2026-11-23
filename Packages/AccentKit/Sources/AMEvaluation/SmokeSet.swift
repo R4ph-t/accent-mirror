@@ -32,8 +32,8 @@ public struct SmokeManifest: Sendable, Hashable, Codable {
     public let seed: UInt64
     public let files: [File]
 
-    /// The size cap (§6.3a).
-    public static let maximumBytes = 5 * 1024 * 1024
+    /// The size cap (§6.3a), read as decimal megabytes: 5,000,000 bytes for everything under `fixtures/smoke/`.
+    public static let maximumBytes = 5_000_000
 
     public var totalBytes: Int { files.reduce(0) { $0 + $1.bytes } }
 

@@ -62,3 +62,28 @@ Not yet bundled; notice added by spec 02.
 ## LibriTTS-R (CC BY 4.0)
 
 Not yet bundled; notice added by spec 02.
+
+## Evaluation corpora (CC BY 4.0)
+
+Committed by spec 02 for the agreement harness only: never bundled with the app, never read at runtime. The full
+archives are fetched by `scripts/fetch-vctk.sh` and `scripts/fetch-speechocean762.sh` into the git-ignored
+`eval-cache/` and never committed. Details and file hashes: `fixtures/smoke/ATTRIBUTION.md`,
+`fixtures/smoke/manifest.json`, `fixtures/corpora/*.pin.json`.
+
+### speechocean762
+
+- Committed: 47 utterances as 16 kHz FLAC under `fixtures/smoke/audio/`, and a label-only fixture derived from
+  `resource/scores-detail.json` (`fixtures/speechocean762/labels.tsv`, no audio).
+- Source: OpenSLR 101 (https://www.openslr.org/101/) and https://github.com/jimbozhang/speechocean762 at commit
+  `613968e3b0b789fc33936fb5eba1973176ba7d11`.
+- Attribution: Junbo Zhang et al., "speechocean762: An Open-Source Non-native English Speech Corpus For
+  Pronunciation Assessment", Interspeech 2021; SpeechOcean.
+- Licence: Creative Commons Attribution 4.0 International (CC BY 4.0).
+
+### CSTR VCTK Corpus 0.92
+
+- Committed: 6 trimmed clips (p245, p288, p360; phrases 002 and 018, mic1) as 16 kHz FLAC under
+  `fixtures/smoke/audio/`, and the eval-speaker manifest with file hashes (`fixtures/vctk/eval-speakers.json`).
+- Source: https://datashare.ed.ac.uk/handle/10283/3443 (https://doi.org/10.7488/ds/2645).
+- Attribution: Junichi Yamagishi, Christophe Veaux and Kirsten MacDonald, CSTR, University of Edinburgh.
+- Licence: Creative Commons Attribution 4.0 International (CC BY 4.0).
