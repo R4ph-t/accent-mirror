@@ -66,5 +66,8 @@ fastlane/test_output
 eval-local/
 /screenshots/
 
+# Test VM results (make test-vm / test-ui-vm)
+/.factory/vm-results/
+
 # Local caches (spec 03): model weights, VCTK clips, MFA. Never committed.
 /.cache/

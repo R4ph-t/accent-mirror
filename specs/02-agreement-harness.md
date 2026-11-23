@@ -1,6 +1,6 @@
 # 02: Agreement harness
 
-Status: Draft · Branch: – · Depends on: 01 (contract v2) · Estimate: 6–8 h agent run + 1.5 h Raph review
+Status: Ready · Branch: – · Depends on: 01 (contract v2) · Estimate: 6–8 h agent run + 1.5 h Raph review
 · Risk: high
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56

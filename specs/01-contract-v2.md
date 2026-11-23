@@ -1,6 +1,6 @@
 # 01: Contract v2
 
-Status: Draft · Branch: – · Depends on: 00 (project skeleton) · Estimate: 3–4 h agent run + 1 h Raph review
+Status: Done · Branch: factory/01-contract-v2 · Depends on: 00 (project skeleton) · Estimate: 3–4 h agent run + 1 h Raph review
 · Risk: high
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
@@ -177,4 +177,88 @@ nothing triggered.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Built by hand on Claude Code (Opus), 2026-11-23, branch `factory/01-contract-v2`. Type names, cases and the §1.2 order
+were checked against the rev 4.1 plan text (§1, §1.1–§1.3, §4.3, §4.4, §6.5–§6.7, §8.3, §9.1, §11).
+
+### Where things are (`Packages/AccentKit/Sources/AMCore/`)
+
+| File | What |
+|---|---|
+| `Identifiers.swift` | `RequestID` (UUID), `PhraseID`, `RecordingID`, `TakeID` (strings), `WordIndex` (int), `TimeRange` (validated). Each ID encodes as its bare value |
+| `Outcome.swift` | `AnalysisResponse`, `AnalysisOutcome`, `TakeProblem` (+ `TakeProblem.first(of:)`), `OperationalError`, `ModelFailure`, `Stage` |
+| `Measures.swift` | `MeasureKind`, `MeasureState<Value>`, `NotApplicableReason`, `UnavailableReason`, `Confidence`, `TimingLevel` |
+| `Verdict.swift` | `Verdict`, `NeutralReason`, `InconclusiveReason`, `DiffKind` (ranked), `DiffRow`, `DiffValues`, `BoundedRows` |
+| `Alignment.swift`, `PartialTimeMap.swift` | §4.3 and §4.4 data with validation at init and on decode. No `toModel` / `toYou` (spec 09) |
+| `Persistence.swift` | `PersistenceStatus`, `NotSavedReason`, `StorageError` |
+| `Identity.swift` | `ConfigIdentity`, `ReferenceIdentity`, `AnalysisIdentity`, `AnalysisInputs`, `AnalysisRequest`, `configDigest(_:thresholds:)` |
+| `VoicingSource.swift` | The protocol only, plus `voicingFrameDuration` (10 ms) |
+| `AnalysisResult.swift` | `AnalysisResult`, `SpeakerAnalysis`, `WordSpan`, `SyllableMeasure`, `PitchSegment`, `PitchFrame`, `BandPoint`, `StressLine`, `AcceptedPattern` |
+| `Applicability.swift` | `applicability(_:thresholds:) -> ApplicabilityTable` (§1.1), `MeasureApplicability`, `MeasureRequirement` |
+| `DecisionProcedure.swift` | `decide(_:thresholds:) -> Decision` (§1.2, §1.3), `DecisionInput`, `AlignmentSummary`, `MeasureAssessments` |
+| `Thresholds.swift` | `Thresholds.current`; every value is a plain `Double`, and the units are in the property names |
+| `Versions.swift` | `algorithmVersion`, `thresholdsVersion`, `contractVersion` = 1 and the append-only `goldenDigests` list |
+| `CanonicalJSON.swift`, `SHA256.swift` | Canonical JSON (sorted keys, no whitespace, integral numbers as integers, otherwise Swift's shortest round-trip form) and SHA-256 in plain Swift. CryptoKit isn't used because AGENTS.md says AMCore imports Foundation only |
+
+### Decisions worth knowing
+
+- **JSON shape.** Enum payloads use per-case CodingKeys, so the JSON reads `{"evaluated":{"value":1.65,"confidence":"high"}}`,
+  not `_0`/`_1`. Dates are seconds since 1970 (`CanonicalJSON.decoder()` reads them).
+- **Validation at the edges.** `BoundedRows`, `TimeRange`, `WordAlignment`, `PartialTimeMap` and `ApplicabilityTable` throw
+  on bad input when built and when decoded. `MeasureAssessments` refuses a missing state for an applicable measure, or
+  a state that contradicts the table. `DecisionInput` and `MeasureAssessments` are deliberately not `Codable`, so
+  decoding can't bypass that check.
+- **Decision procedure.** The input diffs are taken as already ranked by spec 10. `decide` stable-sorts them by `DiffKind`
+  (which keeps spec 10's tie order), drops any rough-timing row it was given, adds its own when timing is Rough, and
+  caps at `decision.maxDiffRows`. `noClearDifference` reasons follow `NeutralReason` declaration order.
+- **Golden digest.** `Versions.goldenDigests` is append-only. `GoldenDigestTests` hashes every file under
+  `Tests/AMCoreTests/Golden/` (sorted path, newline, canonical JSON, newline). It fails if the hash differs from the
+  last record, or if the last record's versions aren't the current ones. To re-record: `AM_RECORD_GOLDEN=1 swift test
+  --package-path Packages/AccentKit --filter recordGolden`, then bump a version and append a record.
+- **Thresholds mirror.** `ThresholdsMirrorTests` flattens `Thresholds.current` through Codable to dotted keys. It fails if
+  a doc row's value differs, a doc key doesn't exist in Swift, or a Swift value has no row (or more than one).
+- **`Package.swift`.** The AMCoreTests target excludes `Golden/`. The tests read it by path, and this keeps SPM's
+  unhandled-file warning away.
+- **Spec 03.** It isn't on `main`, so there was no duplicate `CanonicalJSON` / `configDigest` to move or delete.
+
+### Spec gaps (built least-committal, listed for CTO / later specs)
+
+1. **Contrast group in `partial` and `requiredMeasureUnavailable`.** §1.1 makes contrast, too-much-contrast and weak
+   length all required. The §1.3 examples list only `[.contrast]`. Built literally: each kind is listed on its own, and
+   the example tests have only contrast unavailable. In a real take the three share S∪U confidence, so spec 10 would
+   produce `[.contrast, .tooMuchContrast, .weakLength]` unless CTO decides the group reports as `.contrast`.
+2. **`NotApplicableReason` for |S| = 0 with |U| ≥ 2** has no exact case. It uses `.noEligibleWord`.
+3. **Final direction on a level model slope** has no exact reason. It uses `.modelHasNoFinalVoicing`, the same as too few
+   voiced frames.
+4. **An evaluated optional measure at low confidence** blocks `close`, but §1 has no reason for "low". It's reported under
+   `mediumConfidenceOnly`, which lists every applicable measure below what `close` needs (required < high,
+   others < medium).
+5. **"Every applicable measure"** in §1.3 is read literally, so it includes nPVI (inspector only).
+6. **Types the plan names without defining:** `ModelFailure` (`notInstalled`, `checksumMismatch`, `loadFailed`), `Stage`
+   (pipeline stages, `decodeAudio` … `compare`), `StorageError` (`diskFull`, `permissionDenied`, `ioFailure`),
+   `AnalysisRequest.inputs` (take audio SHA-256 + `ReferenceIdentity`), `DiffValues` (`you`, `model` in the measure's
+   unit) and `VoicingSource.voicedFrames(samples:sampleRate:) -> [Bool]` (batch). Specs 05, 07, 12 and 16 can extend
+   these with a `contractVersion` bump.
+7. **`DiffRow` indices.** `syllables` are indices into the model's `SpeakerAnalysis.syllables`; `acceptedSyllable` and
+   `heardSyllable` are indices within `word`. The plan doesn't say which, and spec 10 may want otherwise.
+8. **Applicability inputs.** |S| and |U| are passed in as counts, because spec 08 owns the S and U sets. The model's
+   final-window voiced frames and slope are passed in because spec 10 computes them.
+9. **Not in `Thresholds` yet:** spec 07's span-sanity and s_w formula constants (60 ms–1.5 s, 0.3, 0.9, 0.3·k, 0.35, 3 dB
+   valleys) and spec 10's `enabled` flags. Their specs add them with a `thresholdsVersion` bump.
+
+### UI fixture drift (for spec 21; app fixtures untouched)
+
+| App fixture (spec 19) | AMCore |
+|---|---|
+| measure `reduction`, `range`, `pitchShape` | `MeasureKind.weakLength`, `.pitchRange`, `.shapeMatch` |
+| diff kind `reduction`, `range` | `DiffKind.weakLength`, `.pitchRange` |
+| notApplicable `oneWordTwoSyllables` | `.tooFewExpectedUnstressed` |
+| notApplicable `noFinalVoicing`, `tooLittleVoicing` | `.modelHasNoFinalVoicing`, `.modelTooFewVoicedFrames` |
+| stress-line outcome `matchesVoice / matchesDictionary / differsButAccepted / outsideAccepted / lowConfidence / referenceAnomaly / notChecked` | Derived from `StressLine` (`observedPrimary`, `confidence`, `matchedAccepted`, `referenceAnomaly`, `expectedPattern == nil`) |
+| row `word` as text, `syllables` as texts, `acceptedIndex` / `heardIndex`, `targets`, `direction` | `DiffRow.word: WordIndex`, `syllables: [Int]`, `acceptedSyllable` / `heardSyllable`, `values: DiffValues` (direction is the sign of `you` / `model`) |
+| `verdict.inconclusive.words` as texts, `coverage` | `targetWordsMissing([WordIndex])`, `comparableCoverageLow(Double)` |
+| `inconclusive.cause: lowConfidence` | the measure's own `.unavailable(.lowConfidence)` |
+| `takeProblems: [..]` | `AnalysisOutcome.takeProblem(TakeProblem)` (first only, via `TakeProblem.first(of:)`) |
+| `operationalError.stage: "measuring stress"` (copy) | `Stage.measureStress` (the copy stays in the app) |
+| `audioUnreadable` with `source: clip / take` | `OperationalError.audioUnreadable` has no source |
+| `persistence: saved / notSaved / …` (bare strings) | `PersistenceStatus` with `TakeID`, `NotSavedReason` and `StorageError` payloads |
+| `notes.partial {compared, total}` | `feedback(partial: [MeasureKind])` |

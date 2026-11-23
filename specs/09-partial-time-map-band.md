@@ -1,6 +1,6 @@
 # 09: Partial time map and native band
 
-Status: Draft · Branch: – · Depends on: 02 (harness), 04 (pitch), 07 (syllables) · Estimate: 3–4 h agent run + 1 h
+Status: Ready · Branch: – · Depends on: 02 (harness), 04 (pitch), 07 (syllables) · Estimate: 3–4 h agent run + 1 h
 Raph review
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
