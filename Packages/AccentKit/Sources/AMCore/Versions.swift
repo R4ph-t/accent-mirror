@@ -7,7 +7,7 @@ public enum Versions {
     /// Bump when an algorithm change can change any output for the same inputs.
     public static let algorithmVersion = 1
     /// Bump when any value in `Thresholds` changes.
-    public static let thresholdsVersion = 2
+    public static let thresholdsVersion = 3
     /// Bump when a contract type's shape or JSON changes.
     public static let contractVersion = 1
 
@@ -31,5 +31,10 @@ public enum Versions {
         GoldenDigest(
             algorithmVersion: 1, thresholdsVersion: 2, contractVersion: 1,
             digest: "9c66917a2b02032b4788c048b02714e8425abe0e9aeb0f17d2bed8c08b1c443c"),
+        // Spec 03: `wordTimestamps.medianErrorMaxMs`, `.withinToleranceMs`, `.withinToleranceShareMin` added (first v2
+        // values, not tuned; evaluation gates only).
+        GoldenDigest(
+            algorithmVersion: 1, thresholdsVersion: 3, contractVersion: 1,
+            digest: "0af7296e5a9c9d18ba8062b7176dcecd71a12f8dbd4fd08f5633b4bb8fda730a"),
     ]
 }

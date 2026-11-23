@@ -1,0 +1,129 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "367d0c56a39e1b974cca03ce1c76ef42c7aa8688e5df0ff26a4e1c9b129b27f1",
+  "clipID" : "p252_005",
+  "formatVersion" : 1,
+  "text" : "She can scoot these things into three red bags and we will go meet her Wednesday at the train station.",
+  "words" : [
+    {
+      "end" : 1,
+      "probability" : 0.7,
+      "start" : 0.88,
+      "word" : " She"
+    },
+    {
+      "end" : 1.14,
+      "probability" : 0.99,
+      "start" : 1,
+      "word" : " can"
+    },
+    {
+      "end" : 1.4,
+      "probability" : 0.64,
+      "start" : 1.14,
+      "word" : " scoot"
+    },
+    {
+      "end" : 1.58,
+      "probability" : 0.98,
+      "start" : 1.4,
+      "word" : " these"
+    },
+    {
+      "end" : 1.82,
+      "probability" : 0.98,
+      "start" : 1.58,
+      "word" : " things"
+    },
+    {
+      "end" : 2.16,
+      "probability" : 0.96,
+      "start" : 1.82,
+      "word" : " into"
+    },
+    {
+      "end" : 2.42,
+      "probability" : 0.77,
+      "start" : 2.16,
+      "word" : " three"
+    },
+    {
+      "end" : 2.7,
+      "probability" : 0.99,
+      "start" : 2.42,
+      "word" : " red"
+    },
+    {
+      "end" : 3.04,
+      "probability" : 0.98,
+      "start" : 2.7,
+      "word" : " bags"
+    },
+    {
+      "end" : 3.42,
+      "probability" : 0.84,
+      "start" : 3.04,
+      "word" : " and"
+    },
+    {
+      "end" : 3.58,
+      "probability" : 0.97,
+      "start" : 3.42,
+      "word" : " we"
+    },
+    {
+      "end" : 3.72,
+      "probability" : 0.97,
+      "start" : 3.58,
+      "word" : " will"
+    },
+    {
+      "end" : 3.94,
+      "probability" : 0.98,
+      "start" : 3.72,
+      "word" : " go"
+    },
+    {
+      "end" : 4.22,
+      "probability" : 0.85,
+      "start" : 3.94,
+      "word" : " meet"
+    },
+    {
+      "end" : 4.46,
+      "probability" : 0.87,
+      "start" : 4.22,
+      "word" : " her"
+    },
+    {
+      "end" : 4.7,
+      "probability" : 0.99,
+      "start" : 4.46,
+      "word" : " Wednesday"
+    },
+    {
+      "end" : 5.06,
+      "probability" : 0.72,
+      "start" : 4.7,
+      "word" : " at"
+    },
+    {
+      "end" : 5.14,
+      "probability" : 0.73,
+      "start" : 5.06,
+      "word" : " the"
+    },
+    {
+      "end" : 5.3,
+      "probability" : 0.92,
+      "start" : 5.14,
+      "word" : " train"
+    },
+    {
+      "end" : 5.66,
+      "probability" : 0.99,
+      "start" : 5.3,
+      "word" : " station."
+    }
+  ]
+}

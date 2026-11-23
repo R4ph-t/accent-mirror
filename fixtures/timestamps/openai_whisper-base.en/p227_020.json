@@ -1,0 +1,63 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "257ae4d26ca92b16222362806f86d8e13351f59cfa0d5e19f1c37c8ce3135b70",
+  "clipID" : "p227_020",
+  "formatVersion" : 1,
+  "text" : "Many complicated ideas about the rainbow have been formed.",
+  "words" : [
+    {
+      "end" : 1.12,
+      "probability" : 0.91,
+      "start" : 0.94,
+      "word" : " Many"
+    },
+    {
+      "end" : 1.38,
+      "probability" : 0.99,
+      "start" : 1.12,
+      "word" : " complicated"
+    },
+    {
+      "end" : 2.2,
+      "probability" : 0.99,
+      "start" : 1.38,
+      "word" : " ideas"
+    },
+    {
+      "end" : 2.58,
+      "probability" : 0.97,
+      "start" : 2.2,
+      "word" : " about"
+    },
+    {
+      "end" : 2.78,
+      "probability" : 0.99,
+      "start" : 2.58,
+      "word" : " the"
+    },
+    {
+      "end" : 3,
+      "probability" : 0.93,
+      "start" : 2.78,
+      "word" : " rainbow"
+    },
+    {
+      "end" : 3.58,
+      "probability" : 0.97,
+      "start" : 3,
+      "word" : " have"
+    },
+    {
+      "end" : 3.78,
+      "probability" : 0.99,
+      "start" : 3.58,
+      "word" : " been"
+    },
+    {
+      "end" : 4.18,
+      "probability" : 0.99,
+      "start" : 3.78,
+      "word" : " formed."
+    }
+  ]
+}

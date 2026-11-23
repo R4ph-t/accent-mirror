@@ -1,0 +1,1073 @@
+{
+  "accuracy" : {
+    "calibration" : {
+      "high" : {
+        "boundaries" : 2564,
+        "meanAbsErrorMs" : 128.17082683307333,
+        "probabilityMax" : 1,
+        "probabilityMin" : 0.98,
+        "words" : 1282
+      },
+      "low" : {
+        "boundaries" : 2216,
+        "meanAbsErrorMs" : 134.36371841155236,
+        "probabilityMax" : 0.97,
+        "probabilityMin" : 0.33,
+        "words" : 1108
+      },
+      "medianProbability" : 0.98,
+      "outcome" : "PASS"
+    },
+    "coverage" : {
+      "comparable" : 2390,
+      "missingFromASROnly" : 47,
+      "missingFromBaselineOnly" : 0,
+      "missingFromBoth" : 0,
+      "phraseTokens" : 2437
+    },
+    "endBias" : {
+      "correctedEnds" : {
+        "boundaries" : 2390,
+        "meanErrorMs" : 83.10460251046025,
+        "medianErrorMs" : 70,
+        "shareWithinTolerance" : 0.6251046025104603
+      },
+      "medianSignedEndErrorMs" : -110
+    },
+    "ends" : {
+      "medianOutcome" : "FAIL",
+      "outcome" : "FAIL",
+      "shareOutcome" : "FAIL",
+      "stats" : {
+        "boundaries" : 2390,
+        "meanErrorMs" : 138.1673640167364,
+        "medianErrorMs" : 110,
+        "shareWithinTolerance" : 0.38535564853556487
+      }
+    },
+    "meanSignedEndMs" : -137.5062761506277,
+    "meanSignedStartMs" : -120.02510460251054,
+    "outcome" : "FAIL",
+    "padded" : {
+      "ends" : {
+        "boundaries" : 2390,
+        "meanErrorMs" : 87.44769874476988,
+        "medianErrorMs" : 60,
+        "shareWithinTolerance" : 0.6422594142259415
+      },
+      "paddingMs" : 80,
+      "pooled" : {
+        "boundaries" : 4780,
+        "meanErrorMs" : 144.02092050209205,
+        "medianErrorMs" : 120,
+        "shareWithinTolerance" : 0.3677824267782427
+      },
+      "starts" : {
+        "boundaries" : 2390,
+        "meanErrorMs" : 200.5941422594142,
+        "medianErrorMs" : 170,
+        "shareWithinTolerance" : 0.09330543933054393
+      }
+    },
+    "perPhrase" : [
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 88,
+            "meanErrorMs" : 108.4090909090909,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.42045454545454547
+          }
+        },
+        "key" : "002",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 88,
+            "meanErrorMs" : 101.25,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.42045454545454547
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 143,
+            "meanErrorMs" : 144.6153846153846,
+            "medianErrorMs" : 140,
+            "shareWithinTolerance" : 0.26573426573426573
+          }
+        },
+        "key" : "003",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 143,
+            "meanErrorMs" : 137.83216783216784,
+            "medianErrorMs" : 140,
+            "shareWithinTolerance" : 0.2867132867132867
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 120,
+            "meanErrorMs" : 131.91666666666666,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.39166666666666666
+          }
+        },
+        "key" : "004",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 120,
+            "meanErrorMs" : 118.08333333333333,
+            "medianErrorMs" : 95,
+            "shareWithinTolerance" : 0.4583333333333333
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 158,
+            "meanErrorMs" : 136.58227848101265,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.41139240506329117
+          }
+        },
+        "key" : "005",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 158,
+            "meanErrorMs" : 141.51898734177215,
+            "medianErrorMs" : 95,
+            "shareWithinTolerance" : 0.45569620253164556
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 129,
+            "meanErrorMs" : 107.67441860465117,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.4806201550387597
+          }
+        },
+        "key" : "006",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 129,
+            "meanErrorMs" : 97.28682170542636,
+            "medianErrorMs" : 70,
+            "shareWithinTolerance" : 0.5581395348837209
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 82,
+            "meanErrorMs" : 158.41463414634146,
+            "medianErrorMs" : 145,
+            "shareWithinTolerance" : 0.2804878048780488
+          }
+        },
+        "key" : "007",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 82,
+            "meanErrorMs" : 141.58536585365854,
+            "medianErrorMs" : 120,
+            "shareWithinTolerance" : 0.3780487804878049
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 175,
+            "meanErrorMs" : 142.4,
+            "medianErrorMs" : 130,
+            "shareWithinTolerance" : 0.26857142857142857
+          }
+        },
+        "key" : "008",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 175,
+            "meanErrorMs" : 149.2,
+            "medianErrorMs" : 120,
+            "shareWithinTolerance" : 0.32571428571428573
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 104,
+            "meanErrorMs" : 135.28846153846155,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.3269230769230769
+          }
+        },
+        "key" : "009",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 104,
+            "meanErrorMs" : 91.53846153846153,
+            "medianErrorMs" : 80,
+            "shareWithinTolerance" : 0.5192307692307693
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 56,
+            "meanErrorMs" : 125.53571428571429,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.39285714285714285
+          }
+        },
+        "key" : "010",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 56,
+            "meanErrorMs" : 107.67857142857143,
+            "medianErrorMs" : 85,
+            "shareWithinTolerance" : 0.5
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 205,
+            "meanErrorMs" : 112.14634146341463,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.4682926829268293
+          }
+        },
+        "key" : "011",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 205,
+            "meanErrorMs" : 94.09756097560975,
+            "medianErrorMs" : 80,
+            "shareWithinTolerance" : 0.5219512195121951
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 88,
+            "meanErrorMs" : 184.88636363636363,
+            "medianErrorMs" : 195,
+            "shareWithinTolerance" : 0.29545454545454547
+          }
+        },
+        "key" : "012",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 88,
+            "meanErrorMs" : 157.27272727272728,
+            "medianErrorMs" : 160,
+            "shareWithinTolerance" : 0.3977272727272727
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 78,
+            "meanErrorMs" : 172.43589743589743,
+            "medianErrorMs" : 160,
+            "shareWithinTolerance" : 0.32051282051282054
+          }
+        },
+        "key" : "013",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 78,
+            "meanErrorMs" : 140.3846153846154,
+            "medianErrorMs" : 105,
+            "shareWithinTolerance" : 0.41025641025641024
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 120,
+            "meanErrorMs" : 99.33333333333333,
+            "medianErrorMs" : 70,
+            "shareWithinTolerance" : 0.6333333333333333
+          }
+        },
+        "key" : "014",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 120,
+            "meanErrorMs" : 83.58333333333333,
+            "medianErrorMs" : 60,
+            "shareWithinTolerance" : 0.6916666666666667
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 110,
+            "meanErrorMs" : 132.8181818181818,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.45454545454545453
+          }
+        },
+        "key" : "015",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 110,
+            "meanErrorMs" : 126.36363636363636,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.4818181818181818
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 166,
+            "meanErrorMs" : 130.36144578313252,
+            "medianErrorMs" : 115,
+            "shareWithinTolerance" : 0.43373493975903615
+          }
+        },
+        "key" : "016",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 166,
+            "meanErrorMs" : 123.79518072289157,
+            "medianErrorMs" : 80,
+            "shareWithinTolerance" : 0.5180722891566265
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 64,
+            "meanErrorMs" : 173.75,
+            "medianErrorMs" : 185,
+            "shareWithinTolerance" : 0.359375
+          }
+        },
+        "key" : "017",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 64,
+            "meanErrorMs" : 130.15625,
+            "medianErrorMs" : 115,
+            "shareWithinTolerance" : 0.484375
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 125,
+            "meanErrorMs" : 153.84,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.464
+          }
+        },
+        "key" : "018",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 125,
+            "meanErrorMs" : 139.92,
+            "medianErrorMs" : 70,
+            "shareWithinTolerance" : 0.544
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 151,
+            "meanErrorMs" : 170.72847682119206,
+            "medianErrorMs" : 130,
+            "shareWithinTolerance" : 0.32450331125827814
+          }
+        },
+        "key" : "019",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 151,
+            "meanErrorMs" : 147.2185430463576,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.41721854304635764
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 63,
+            "meanErrorMs" : 184.12698412698413,
+            "medianErrorMs" : 140,
+            "shareWithinTolerance" : 0.2698412698412698
+          }
+        },
+        "key" : "020",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 63,
+            "meanErrorMs" : 160,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.38095238095238093
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 165,
+            "meanErrorMs" : 127.75757575757575,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.32727272727272727
+          }
+        },
+        "key" : "024",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 165,
+            "meanErrorMs" : 112.12121212121212,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.43636363636363634
+          }
+        }
+      }
+    ],
+    "perSpeaker" : [
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 289,
+            "meanErrorMs" : 132.62975778546712,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.4117647058823529
+          }
+        },
+        "key" : "p225",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 289,
+            "meanErrorMs" : 121.21107266435986,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.4982698961937716
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 310,
+            "meanErrorMs" : 151.19354838709677,
+            "medianErrorMs" : 130,
+            "shareWithinTolerance" : 0.3580645161290323
+          }
+        },
+        "key" : "p226",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 310,
+            "meanErrorMs" : 137.16129032258064,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.43870967741935485
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 294,
+            "meanErrorMs" : 147.72108843537416,
+            "medianErrorMs" : 120,
+            "shareWithinTolerance" : 0.3707482993197279
+          }
+        },
+        "key" : "p227",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 294,
+            "meanErrorMs" : 135.03401360544217,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.43537414965986393
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 301,
+            "meanErrorMs" : 140.7641196013289,
+            "medianErrorMs" : 130,
+            "shareWithinTolerance" : 0.3588039867109635
+          }
+        },
+        "key" : "p233",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 301,
+            "meanErrorMs" : 128.40531561461793,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.42857142857142855
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 282,
+            "meanErrorMs" : 130.74468085106383,
+            "medianErrorMs" : 115,
+            "shareWithinTolerance" : 0.40425531914893614
+          }
+        },
+        "key" : "p241",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 282,
+            "meanErrorMs" : 118.01418439716312,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.48936170212765956
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 306,
+            "meanErrorMs" : 129.9346405228758,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.3888888888888889
+          }
+        },
+        "key" : "p252",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 306,
+            "meanErrorMs" : 117.6797385620915,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.46078431372549017
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 304,
+            "meanErrorMs" : 133.38815789473685,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.42105263157894735
+          }
+        },
+        "key" : "p311",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 304,
+            "meanErrorMs" : 111.64473684210526,
+            "medianErrorMs" : 80,
+            "shareWithinTolerance" : 0.5032894736842105
+          }
+        }
+      },
+      {
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 304,
+            "meanErrorMs" : 138.28947368421052,
+            "medianErrorMs" : 120,
+            "shareWithinTolerance" : 0.3717105263157895
+          }
+        },
+        "key" : "p345",
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 304,
+            "meanErrorMs" : 121.8092105263158,
+            "medianErrorMs" : 100,
+            "shareWithinTolerance" : 0.4342105263157895
+          }
+        }
+      }
+    ],
+    "starts" : {
+      "medianOutcome" : "FAIL",
+      "outcome" : "FAIL",
+      "shareOutcome" : "FAIL",
+      "stats" : {
+        "boundaries" : 2390,
+        "meanErrorMs" : 123.9163179916318,
+        "medianErrorMs" : 90,
+        "shareWithinTolerance" : 0.4606694560669456
+      }
+    }
+  },
+  "baseline" : {
+    "acousticModel" : "english_mfa.zip",
+    "acousticModelSHA256" : "2c08bd4f82c3943dd57ac09aeac99dbce17a1e1bfe9fd932c8d95cd13d971068",
+    "command" : "mfa align --clean --overwrite --output_format json --num_jobs 4 CORPUS english_mfa.dict english_mfa.zip OUTPUT",
+    "dictionary" : "english_mfa.dict",
+    "dictionarySHA256" : "975bf9c7791535c5aec57995e0bd2b77eb7ca364d1d974c2134e07bb0f16b079",
+    "name" : "Montreal Forced Aligner",
+    "version" : "3.4.4"
+  },
+  "comparator" : {
+    "locale" : "en_US",
+    "name" : "Apple SpeechAnalyzer (SpeechTranscriber)",
+    "status" : "comparator not present (AssetInventory status: supported)"
+  },
+  "corpus" : {
+    "absentClips" : [
+      "p227_007",
+      "p233_010",
+      "p241_015",
+      "p241_020"
+    ],
+    "archiveSHA256" : "f96258be9fdc2cbff6559541aae7ea4f59df3fcaf5cf963aae5ca647357e359c",
+    "attribution" : "Audio and transcripts from CSTR VCTK Corpus 0.92 (Yamagishi, Veaux, MacDonald; University of Edinburgh, Centre for Speech Technology Research), CC BY 4.0, https://doi.org/10.7488/ds/2645",
+    "audio" : "wav48_silence_trimmed/<speaker>/<speaker>_<text>_mic1.flac, as published",
+    "clips" : 155,
+    "name" : "VCTK 0.92",
+    "speakers" : [
+      "p225",
+      "p226",
+      "p227",
+      "p233",
+      "p241",
+      "p252",
+      "p311",
+      "p345"
+    ],
+    "specifiedClips" : 159,
+    "textIDs" : [
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014",
+      "015",
+      "016",
+      "017",
+      "018",
+      "019",
+      "020",
+      "024"
+    ]
+  },
+  "gate" : {
+    "asrWarmBudgetMs" : 900,
+    "medianErrorMaxMs" : 40,
+    "minShareWithinTolerance" : 0.85,
+    "toleranceMs" : 80
+  },
+  "generatedAt" : "2026-11-23T12:06:44Z",
+  "identity" : {
+    "cleanTree" : true,
+    "config" : {
+      "algorithmVersion" : 1,
+      "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+      "contractVersion" : 1,
+      "pitchTrackerID" : "none",
+      "thresholdsVersion" : 3,
+      "voicingID" : "none"
+    },
+    "configCanonicalJSON" : "{\"config\":{\"algorithmVersion\":1,\"asrModelID\":\"openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631\",\"contractVersion\":1,\"pitchTrackerID\":\"none\",\"thresholdsVersion\":3,\"voicingID\":\"none\"},\"thresholds\":{\"agreement\":{\"anyDiffPairsMax\":0.05,\"anyDiffWorstPhraseMax\":0.3,\"anyDiffWorstSpeakerMax\":0.15,\"bandCoverageMedianMin\":0.8,\"baselineBootstrapLowerPoints\":-0.05,\"baselineCeiling\":0.85,\"baselineFalsePositiveMaxExcessPoints\":0.01,\"baselineMaxShortfallPoints\":0.03,\"baselineMinLiftCapPoints\":0.1,\"bootstrapResamples\":2000,\"contrastRatioHigh\":1.43,\"contrastRatioLow\":0.7,\"contrastRatioWithinShareMin\":0.9,\"endToEndFalsePositiveMax\":0.02,\"endToEndRecallWithinPoints\":0.1,\"evaluationCoverageMin\":0.9,\"finalDirectionAgreementMin\":0.9,\"inconclusivePairsMax\":0.1,\"l2FalsePositiveMax\":0.02,\"l2FalsePositiveWorstSpeakerMax\":0.1,\"l2RecallMin\":0.8,\"l2RecallWilsonLowerMin\":0.7,\"npviMaxDelta\":15,\"pitchRangeRatioMin\":0.6,\"pitchRangeRatioShareMin\":0.95,\"placementDiffPairsMax\":0.02,\"placementDiffWorstSpeakerMax\":0.07,\"positiveHeldOutSpeakers\":12,\"positiveMinPairs\":150,\"referenceAnomalyReviewShare\":0.2,\"smokeSetMaxSeconds\":60,\"syntheticControlDiffsMax\":0.02,\"unintelligiblePlacementDiffsMax\":0,\"weakLengthMaxDeltaPoints\":15,\"whichSyllableAccuracyMin\":0.8},\"alignment\":{\"asrPaddingMs\":80,\"gapScore\":-1,\"matchScore\":2,\"mismatchScore\":-1},\"applicability\":{\"contrastMinStressed\":1,\"contrastMinUnstressed\":2,\"pitchMinModelVoicedFrames\":20,\"placementMinSyllables\":2,\"rhythmMinSyllables\":3},\"band\":{\"lowerPercentile\":10,\"singleTakeHalfWidthSemitones\":1.5,\"upperPercentile\":90},\"capture\":{\"clipLevel\":0.999,\"clipRunSamples\":3,\"clippedShare\":0.005,\"endOfTakeS\":1.2,\"endpointArmSpeechS\":0.3,\"floorClampHighDBFS\":-35,\"floorClampLowDBFS\":-70,\"floorPercentile\":10,\"floorWindowS\":2,\"importLimitS\":15,\"noSpeechS\":0.15,\"noSpeechVoicedS\":0.3,\"offsetAboveFloorDB\":6,\"onsetAboveFloorDB\":10,\"onsetFrames\":3,\"onsetMinimumDBFS\":-50,\"onsetVoicedWithinMs\":100,\"preRollMs\":200,\"provisionalFloorDBFS\":-60,\"recordingCapS\":20,\"retractionAboveFloorDB\":10,\"ringBufferMs\":500,\"settleNonSpeechMs\":300,\"settleStationaryAfterS\":2,\"stationarySpreadDB\":6,\"tooQuietDBFS\":-40,\"tooShortS\":0.5},\"confidence\":{\"contrastHigh\":0.9,\"contrastMedium\":0.7,\"finalDirectionHighFrames\":15,\"finalDirectionMediumFrames\":10,\"levelHigh\":0.7,\"levelMedium\":0.45,\"pitchHigh\":0.7,\"pitchMedium\":0.5,\"timingGood\":0.8,\"timingRough\":0.5},\"decision\":{\"closeMinShapeMatch\":0.7,\"maxDiffRows\":3,\"maxNonFillerInsertions\":2,\"minComparableCoverage\":0.7,\"minMatchShare\":0.8},\"diffs\":{\"contrastBelowModelRatio\":0.7,\"contrastModelMinimum\":1.3,\"pitchRangeBelowModelRatio\":0.6,\"pitchRangeNarrowerSemitones\":3,\"tooMuchContrastAboveModelRatio\":2,\"weakLengthPointsAboveModel\":15},\"finalDirection\":{\"extendedWindowMs\":300,\"fallSemitonesPerSecond\":-5,\"minVoicedFrames\":10,\"riseSemitonesPerSecond\":5,\"windowMs\":200},\"measures\":{\"shapeMatchMinOverlappingFrames\":20},\"performance\":{\"asrWarmMs\":900,\"endToEndBudgetS\":2,\"nonASRStagesMs\":500},\"pitch\":{\"axisInitialSemitones\":12,\"axisMaxSemitones\":24,\"axisStepSemitones\":6,\"hopMs\":10,\"lineBreakMs\":250,\"maxF0Hz\":500,\"medianFilterFrames\":5,\"minF0Hz\":60,\"minVoicedRunMs\":30,\"voicingProbability\":0.5,\"windowMs\":40},\"prominence\":{\"durationFloorLn\":0.05,\"durationWeight\":0.4,\"energyFloorDB\":1,\"energyMinimumDBFS\":-60,\"energyWeight\":0.3,\"exposurePauseMs\":150,\"lengtheningLambda\":1.6,\"pitchFloorSemitones\":1,\"pitchMinVoicedFrames\":3,\"pitchWeight\":0.3,\"secondaryStressShare\":0.75,\"tauHigh\":{\"syllables2to4\":0.5,\"syllables5to8\":0.5,\"syllables9Plus\":0.5},\"tauMedium\":{\"syllables2to4\":0.25,\"syllables5to8\":0.25,\"syllables9Plus\":0.25}},\"voicing\":{\"aboveFloorDB\":3,\"hopMs\":10,\"maxLagMs\":16.7,\"minLagMs\":2,\"minPeak\":0.45,\"windowMs\":40},\"wordTimestamps\":{\"medianErrorMaxMs\":40,\"withinToleranceMs\":80,\"withinToleranceShareMin\":0.85}}}",
+    "configDigest" : "dfbe69ecb19fc4dee69801d68d5a34d91f594f18446afbd7462dd3adc1dba430",
+    "configDigestRecipe" : "printf '%s' \"$(plutil -extract identity.configCanonicalJSON raw -o - <report>.json)\" | shasum -a 256",
+    "corpusManifestHash" : "1ba061d2ca470e64ae96b6aeab93251255e0505226348eb962f423fc0723e716",
+    "corpusManifestRecipe" : "shasum -a 256 <clip files> | cut -d' ' -f1 | LC_ALL=C sort | shasum -a 256",
+    "evaluatedCommit" : "4398c83fc50d254f887a636a9f44be45681f4ac1",
+    "labelFile" : "fixtures/vctk/mfa-word-baseline.json",
+    "labelHash" : "e2751a293ac6a886775d0ae1bd608d6d27ef9c48a0c1f09362859899ec8dcb59",
+    "sourceTreeHash" : "8054118f65c468ceac9c381df78e0a6aa2af3923cacb2869a0b0a4b99858e5bb",
+    "sourceTreeRecipe" : "git ls-tree -r --full-tree <commit> | grep -v \"$(printf '\\t')docs/agreement/reports/\" | LC_ALL=C sort | shasum -a 256",
+    "toolchain" : {
+      "hardware" : "Apple M3 Max, Mac15,11",
+      "macOS" : "26.3 (25D125)",
+      "swift" : "swift-driver version: 1.127.14.1 Apple Swift version 6.2.3 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)",
+      "xcode" : "Xcode 26.2 build 17C52"
+    }
+  },
+  "model" : {
+    "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+    "decoding" : "greedy (temperature 0, WhisperKit fallback), English, word timestamps",
+    "files" : [
+      {
+        "path" : "model/AudioEncoder.mlmodelc/analytics/coremldata.bin",
+        "sha256" : "c4e096b2abd561f00b9b698401df3fbe1a0d0c8d2476ff19cb4e1995680e827e",
+        "size" : 243,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/analytics/coremldata.bin"
+      },
+      {
+        "path" : "model/AudioEncoder.mlmodelc/coremldata.bin",
+        "sha256" : "e316980638e2099e83cb1a93b903717dc12b3c2168d0ab69113764c3767696ba",
+        "size" : 347,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/coremldata.bin"
+      },
+      {
+        "path" : "model/AudioEncoder.mlmodelc/metadata.json",
+        "sha256" : "d6785fae31c3f86d60058c14c79902f716f106dd9e36af7d3fe78b9c34867fce",
+        "size" : 1863,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/metadata.json"
+      },
+      {
+        "path" : "model/AudioEncoder.mlmodelc/model.mil",
+        "sha256" : "dc74813e26fce790fe22a33dcef8be535b9dce566f38a8bdb677f5e07dcf9138",
+        "size" : 579125,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/model.mil"
+      },
+      {
+        "path" : "model/AudioEncoder.mlmodelc/model.mlmodel",
+        "sha256" : "1d42038f84b508da5ce9b953302387ffedc097c346d36a56b765109002b6080e",
+        "size" : 79853,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/model.mlmodel"
+      },
+      {
+        "path" : "model/AudioEncoder.mlmodelc/weights/weight.bin",
+        "sha256" : "74f15e6d2f7694af54e90227cbf22fd6c04082638f163b78a909967b16edc1c7",
+        "size" : 41189632,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/weights/weight.bin"
+      },
+      {
+        "path" : "model/MelSpectrogram.mlmodelc/analytics/coremldata.bin",
+        "sha256" : "7f77e6457285248f99cd7aa3fd4cc2efbb17733e63e7023ac53abe1f95785d07",
+        "size" : 243,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/MelSpectrogram.mlmodelc/analytics/coremldata.bin"
+      },
+      {
+        "path" : "model/MelSpectrogram.mlmodelc/coremldata.bin",
+        "sha256" : "dabdc5aa69f6ef4d97dc9499f5c30514e00e96b53b750b33a5a6471363c71662",
+        "size" : 328,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/MelSpectrogram.mlmodelc/coremldata.bin"
+      },
+      {
+        "path" : "model/MelSpectrogram.mlmodelc/metadata.json",
+        "sha256" : "66a60d0babfcae566910a6d699471efde002d92205a7d349e16989ca4d6729d3",
+        "size" : 1848,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/MelSpectrogram.mlmodelc/metadata.json"
+      },
+      {
+        "path" : "model/MelSpectrogram.mlmodelc/model.mil",
+        "sha256" : "b8063d8e57c113472ac7c2d248e44383568a018978a753c1884ac406b997a374",
+        "size" : 10176,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/MelSpectrogram.mlmodelc/model.mil"
+      },
+      {
+        "path" : "model/MelSpectrogram.mlmodelc/weights/weight.bin",
+        "sha256" : "ee77f9b67765f7abc33f16374081b2389cf1d3a89536187b241950c5a2e5d6c1",
+        "size" : 354080,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/MelSpectrogram.mlmodelc/weights/weight.bin"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/analytics/coremldata.bin",
+        "sha256" : "e870aac5de88676c1ad93cb3939f257e6de30e5235c3f9d7686398ebecafdb8d",
+        "size" : 243,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/analytics/coremldata.bin"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/coremldata.bin",
+        "sha256" : "4b23ff9d9fe376f2b86f9cf55af3218560a4e4d692041360510fbad490c0db43",
+        "size" : 633,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/coremldata.bin"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/metadata.json",
+        "sha256" : "da9be60fd96a13938445fd589a54bf56f77474efd541027bfb79537ddf67d10c",
+        "size" : 4753,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/metadata.json"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/model.mil",
+        "sha256" : "e380edc70b68dc1e06c1ae19aaa8fd5f85a2b14242b9cc871ce5648cfb3ed3ce",
+        "size" : 200444,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/model.mil"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/model.mlmodel",
+        "sha256" : "72f1214f7c8b26e467dd8233572eaa5cbe200f30a36b918d4c289f9fc8c4f401",
+        "size" : 160348,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/model.mlmodel"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/weights/weight.bin",
+        "sha256" : "4649599bd2d97f87ffc716e6da2f61a06c06ac5a9424dd23edc3d4bf66fb6221",
+        "size" : 104121136,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/weights/weight.bin"
+      },
+      {
+        "path" : "model/config.json",
+        "sha256" : "ab22779256bdb966a5dc4f033cb9ac6471e0e1e2574fda258655c8ad2a5ea700",
+        "size" : 1454,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/config.json"
+      },
+      {
+        "path" : "model/generation_config.json",
+        "sha256" : "ea4714d2f89ab6de18c6dead99c10fbeeb383768fa6b564d9d4d7889140d70b5",
+        "size" : 982,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/generation_config.json"
+      },
+      {
+        "path" : "tokenizer/config.json",
+        "sha256" : "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+        "size" : 1937,
+        "url" : "https://huggingface.co/openai/whisper-base.en/resolve/911407f4214e0e1d82085af863093ec0b66f9cd6/config.json"
+      },
+      {
+        "path" : "tokenizer/tokenizer.json",
+        "sha256" : "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+        "size" : 2405679,
+        "url" : "https://huggingface.co/openai/whisper-base.en/resolve/911407f4214e0e1d82085af863093ec0b66f9cd6/tokenizer.json"
+      },
+      {
+        "path" : "tokenizer/tokenizer_config.json",
+        "sha256" : "14f84bdf4b9ecdbd4738ddc81c17a1baedfc02bb93c6e049c951e15a1b40b70d",
+        "size" : 805,
+        "url" : "https://huggingface.co/openai/whisper-base.en/resolve/911407f4214e0e1d82085af863093ec0b66f9cd6/tokenizer_config.json"
+      }
+    ],
+    "modelSHA256" : "a59b5631ca10e3067f1af5ee23d2d03c0cc6c00c8399f030ce2d99a4e98401fd",
+    "shippingModel" : "openai_whisper-base.en",
+    "sources" : [
+      {
+        "commit" : "0f63a7800b00dd0226abd051b906c246e1907482",
+        "folder" : "openai_whisper-base.en",
+        "license" : "MIT",
+        "repo" : "https://huggingface.co/argmaxinc/whisperkit-coreml",
+        "role" : "model"
+      },
+      {
+        "commit" : "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "license" : "Apache-2.0",
+        "repo" : "https://huggingface.co/openai/whisper-base.en",
+        "role" : "tokenizer"
+      }
+    ],
+    "whisperKitCommit" : "1bbc57cb7fe6410248a685b1c5a3c6d56adc2ed4",
+    "whisperKitVersion" : "1.1.1"
+  },
+  "notes" : [
+    "Clips are the official VCTK 0.92 wav48_silence_trimmed mic1 files, untrimmed by this spec: no shared 02/15 trim exists yet.",
+    "Comparable tokens: the longest in-order match of normalised words (lower case, punctuation stripped) against the transcript's phrase tokens, on each side. The padded comparison spans are not clamped to the clip.",
+    "4 of the 159 specified clips are not in the VCTK 0.92 archive (p227_007, p233_010, p241_015, p241_020). They are reported, not replaced."
+  ],
+  "suite" : "timestamp-feasibility",
+  "timing" : {
+    "budgetOutcome" : "PASS",
+    "clipSeconds" : {
+      "count" : 155,
+      "maxMs" : 9.0283125,
+      "medianMs" : 5.928375,
+      "p90Ms" : 7.723625
+    },
+    "coldASRMs" : 168.769042,
+    "loadMs" : 704.943459,
+    "verifyMs" : 77.047708,
+    "warmASR" : {
+      "count" : 154,
+      "maxMs" : 224.210416,
+      "medianMs" : 108.422792,
+      "p90Ms" : 143.102125
+    },
+    "warmBudgetMs" : 900
+  },
+  "verdict" : {
+    "calibration" : "PASS",
+    "endsMedian" : "FAIL",
+    "endsShare" : "FAIL",
+    "overall" : "FAIL",
+    "startsMedian" : "FAIL",
+    "startsShare" : "FAIL",
+    "warmBudget" : "PASS"
+  }
+}
