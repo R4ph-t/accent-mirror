@@ -1,0 +1,20 @@
+# Proposed by spec 00; Raph decides. A factory PR whose diff touches any of these waits for Raph's Merge OK instead of
+# merging by itself. One extended regex per line, matched against repo-relative paths (same format as WriteGood's).
+# Build and project files.
+(^|/)project\.yml$
+(^|/)Makefile$
+# Signing, sandbox and privacy strings.
+\.entitlements$
+(^|/)Info\.plist$
+# Live microphone capture.
+^Packages/AccentKit/Sources/AMCapture/Live/
+# Bundled models, starter audio and their licences.
+^Resources/Models/
+^Resources/Starter/
+^THIRD_PARTY_NOTICES\.md$
+# The agreement corpus and the tunable thresholds (never lowered quietly).
+^Packages/AccentKit/Tests/Agreement/corpus/
+^Packages/AccentKit/Sources/AMCore/Thresholds\.swift$
+# CI and the factory's own config.
+^\.github/
+^\.factory/
