@@ -9,8 +9,16 @@ enum BundledFonts {
     static let geistBold = "Geist-Bold"
     static let geistMonoMedium = "GeistMono-Medium"
     static let funnelDisplaySemiBold = "FunnelDisplay-SemiBold"
+    // Named instances of the official variable italics (`Geist-Italic[wght].ttf`, `GeistMono-Italic[wght].ttf`).
+    static let geistItalic = "Geist-Italic"
+    static let geistSemiBoldItalic = "Geist-SemiBoldItalic"
+    static let geistBoldItalic = "Geist-BoldItalic"
+    static let geistMonoMediumItalic = "GeistMono-MediumItalic"
 
-    static let allPostScriptNames = [geistRegular, geistSemiBold, geistBold, geistMonoMedium, funnelDisplaySemiBold]
+    static let allPostScriptNames = [
+        geistRegular, geistSemiBold, geistBold, geistMonoMedium, funnelDisplaySemiBold,
+        geistItalic, geistSemiBoldItalic, geistBoldItalic, geistMonoMediumItalic,
+    ]
 
     /// Folder (a folder reference in project.yml) that keeps each family's files and licence together.
     static let folderName = "Fonts"
@@ -25,7 +33,7 @@ enum BundledFonts {
         Family(
             name: "Geist and Geist Mono",
             folder: "Geist",
-            notice: "Geist and Geist Mono, from the Geist font release v1.9.2 (github.com/vercel/geist-font)."
+            notice: "Geist and Geist Mono, upright and italic, from the Geist font release v1.9.2 (github.com/vercel/geist-font)."
         ),
         Family(
             name: "Funnel Display",

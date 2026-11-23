@@ -1,6 +1,6 @@
 # 04: Pitch tracker
 
-Status: Ready · Branch: – · Depends on: 01 (contract v2) · Estimate: 3–4 h agent run + 1 h Raph review
+Status: Done · Branch: factory/04-pitch-tracker · Depends on: 01 (contract v2) · Estimate: 3–4 h agent run + 1 h Raph review
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
 Europe/Paris). Row 04 is "as before", so the behaviour comes from v1's `AMPitch` section and spec row 04, with the
@@ -77,4 +77,55 @@ rule. Our own YIN/pYIN on Accelerate/vDSP. No third-party pitch code.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Built by hand through Claude Code (Opus), 2026-11-23, on `factory/04-pitch-tracker`.
+
+**What's there (`AMPitch`, imports `AMCore`, Foundation and Accelerate only):**
+
+- `PitchTracker` (protocol, `Sendable`): `id` and `track(_:sampleRate:) async throws -> PitchTrack`.
+  `PitchTrackingError.unsupportedSampleRate` for a rate that isn't finite or can't reach 500 Hz.
+- `PYINTracker` (`pyin-1`, a struct holding `Thresholds.Pitch`). It works per 10 ms cell, the same cells as
+  `VoicingSource` (frame `i` is `[i·10 ms, (i+1)·10 ms)`). A 40 ms window gives YIN's difference function: `vDSP_convD`
+  for the lag products, prefix sums for the energies, then cumulative-mean normalisation over lags for 60–500 Hz.
+  pYIN stage one follows: a Beta(2, 18) prior over thresholds 0.01…1.00, each threshold's weight going to the first
+  dip under it (or 1% of it to the absolute minimum). The voicing probability is the total, voiced at ≥ 0.5. F0 is
+  the most probable dip, refined parabolically. It checks `Task.checkCancellation()` every 50 frames and once before
+  returning, so a cancelled call throws and returns nothing.
+- `PitchTrack`: `segments: [PitchSegment]` (AMCore's types), `medianF0Hz: Double?`, `hopSeconds`, `isEmpty`,
+  `voicedFrameCount`, `peakSemitones(in:minVoicedFrames:)` (nil under 3 voiced frames; the default comes from
+  `Thresholds.prominence.pitchMinVoicedFrames`). `PitchTrack(frameF0Hz:thresholds:)` is the post-processing every
+  tracker shares, so a later tracker (CREPE) reuses it, and spec 08/09 tests can build tracks from per-frame F0
+  without audio. Its steps: drop voiced runs under 30 ms, a 5-frame median per run (the window shrinks symmetrically
+  at run ends so glides keep their end points), octave repair, median F0 over voiced frames, then semitones, bridges
+  (linear, `voiced = false`) for gaps up to 250 ms and a new segment above.
+- `PitchAxis.extent(previous:segments:) -> ClosedRange<Double>`, which plugs straight into
+  `AnalysisResult.pitchAxis`.
+- No `Thresholds` value added or changed; no version bump.
+
+**Choices worth a look:**
+
+- **pYIN's HMM (stage two) is not used.** The spec defines smoothing as the median filter plus octave repair, and
+  voicing as "probability ≥ 0.5", which is stage one's per-frame probability. An HMM would be a second, unspecified
+  decision rule.
+- **Octave repair:** a voiced frame within 3 st of one octave from the median of the voiced frames within ±10 frames
+  (±100 ms) moves by an octave. Neighbours count across unvoiced frames, because the tracker can split a trap off
+  into its own short run. These two numbers and the pYIN prior (Beta(2, 18), 100 thresholds, p_a = 0.01) are
+  `pyin-1` algorithm constants in code, not `Thresholds` rows (see Spec gaps in the PR).
+- **Window placement:** the stretch a lag compares is `[start, start + w + τ)`. The window starts so that stretch is
+  centred on the cell for mid-range voices (within ±4 ms for any lag). At the ends of the audio the window is shifted
+  inside it, so the first and last 20 ms read up to 20 ms early or late.
+- A numerical guard (window energy under about −120 dBFS per sample, or not finite) makes a frame unvoiced. It isn't
+  a tunable.
+- **Pause length** is the number of unvoiced frames × 10 ms: 25 frames (250 ms) bridge, 26 break.
+
+**Measured (this Mac, M3 Max):** 300 frames (3 s glide) in 2.1 ms with `swift test -c release`, and about 65 ms in
+the debug build `make test` uses, against the 120 ms M1 budget. The benchmark test prints the time;
+`AM_PITCH_BENCH_GATE=1` turns it into a gate for a local run. On synthetic signals, the 200 ms silence gives 22
+bridged frames, and with the 300 ms silence the line breaks between 0.49 s and 0.81 s.
+
+**Real clips (Open question 1):** `scripts/pitch-real-clips.sh` and `scripts/pitch-real-clips.praat`. Praat resamples
+each clip to 16 kHz mono and writes its `To Pitch (ac)` track (10 ms, 60–500 Hz, otherwise Praat defaults). The gated
+Swift Testing suite `RealClipComparison` (enabled only by `AM_PITCH_REAL_CLIPS_MANIFEST`, which the script sets)
+runs `pyin-1` and compares frame by frame. The pass rule is applied per clip. Exit codes: 0 PASS, 1 FAIL, 2 NOT
+EVALUATED. On this Mac it prints NOT EVALUATED: no Praat, and spec 02's VCTK cache doesn't exist yet. Clips come
+from `AM_PITCH_CLIPS="low=… mid=… high=…"` or `eval-cache/pitch-clips/{low,mid,high}.wav`. The plumbing was
+smoke-tested with a stand-in Praat on synthetic WAVs (not committed).

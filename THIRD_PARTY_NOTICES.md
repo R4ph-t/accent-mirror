@@ -15,9 +15,19 @@ Neither licence file declares a Reserved Font Name.
 ### Geist and Geist Mono
 
 - Files: `Geist/Geist-Regular.ttf`, `Geist-SemiBold.ttf`, `Geist-Bold.ttf`, `GeistMono-Medium.ttf` (400, 600, 700;
-  Mono 500), and `Geist/OFL.txt`.
+  Mono 500), the italics `Geist/Geist-Italic[wght].ttf` and `Geist/GeistMono-Italic[wght].ttf` (variable, weight
+  axis), and `Geist/OFL.txt`.
 - Source: the official release v1.9.2, `https://github.com/vercel/geist-font/releases/download/v1.9.2/geist-font-v1.9.2.zip`
-  (SHA-256 `15f066d58dcb99fb10014a49913009fdaf41e464cfb8851a44b44e593c95d3d8`), files from its `ttf/` folders.
+  (SHA-256 `15f066d58dcb99fb10014a49913009fdaf41e464cfb8851a44b44e593c95d3d8`). The upright files are from its
+  `ttf/` folders; the italics are from `Geist/variable/` and `GeistMono/variable/`, added with the fixes to specs
+  18–19. File SHA-256s:
+  - `Geist-Italic[wght].ttf`: `4eeb1676258a06e609dda278e569081919249872daa5aa10f95bff485e9bbdf4`
+  - `GeistMono-Italic[wght].ttf`: `0ffb9c506343953a6eda7f1818147e886f9f84d2e51c1110d1405493d9cb44e5`
+  - `Geist-Regular.ttf`: `2c460a7a71063e53491f343d44b382267bc0cf496e31db64865f962af3152e68`
+  - `Geist-SemiBold.ttf`: `01923aa148e5202ae70a2e11b2ab4dc41b80bcc374aedccc913d47bb2f591c06`
+  - `Geist-Bold.ttf`: `1c24df313b8ddc9550e060cfe5321c6374997f2892880af303b5ded45fed2582`
+  - `GeistMono-Medium.ttf`: `34c0828460d47e697655bc9d730027a4b8baf6e6c9aa46f5f32b653b4797cf36`
+  - `OFL.txt`: `021caa749f89fecd7c2e40a50499de29e84d2bc19251659b47d499c2fbfffc17`
 - Copyright: "Copyright 2026 The Geist Project Authors (https://github.com/vercel/geist-font)", as in the release's
   `OFL.txt`. Geist is made by Vercel in collaboration with basement.studio.
 - Licence: SIL Open Font License 1.1.

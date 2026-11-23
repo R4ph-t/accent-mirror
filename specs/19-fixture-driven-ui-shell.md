@@ -1,6 +1,6 @@
 # 19: Fixture-driven UI shell
 
-Status: Draft · Branch: – · Depends on: 18 (UI foundation) · Estimate: 6–8 h agent run + 1.5 h Raph review
+Status: Done · Branch: factory/18-19-ui-shell (PR #4), fixes on factory/18-19-fixes · Depends on: 18 (UI foundation) · Estimate: 6–8 h agent run + 1.5 h Raph review
 
 Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)"), including Addendum 2026-11-23 (r2), which wins wherever it differs. Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px for a 1200 × 800 pt window). This spec does not depend on spec 11 (scoring).
 
@@ -199,4 +199,21 @@ Addendum A5 says: "A(w) = the context-compatible dictionary pronunciation plus t
   7 pt round-capped stroke. Bridged frames are drawn at 45%, 1.5 pt. Breaks are wherever the fixture's segments
   break, and a segment under 3 points is not drawn. Hover ghosts and voice-switch easing are left to spec 20.
 - **Controls.** Play, Record, Try Again and the banner buttons are visual only: no microphone, no audio, no network.
-
+- **Fixes (2026-11-23).** After the Designer's review of PR #4:
+  - The mistake marker only shows on the syllable a displayed placement row names. `ShellPresenter` enforces it,
+    and the inc, ncd and rows fixtures now use clean takes.
+  - noClearDifference always has its `equal.circle` row. When only quiet-line reasons are present it uses the
+    shared §13.1 stem, "No clear difference in stress or rhythm.", and the quiet line sits under it.
+  - Your unstressed bars use the new `stripBarYou` token: rgba(28,26,23,0.50) light, rgba(242,239,233,0.60) dark,
+    sampled from `mockup-result-dark-final2`.
+  - A take problem with audio draws the take grouped by syllable: near-silent for too quiet ("Too quiet to
+    measure"), cut flat for clipped ("Too loud to measure"), plain grey for too short and words don't match. The
+    take menu reads LAST TRY · NOT SAVED.
+  - "No pitch to show for this take" sits on a card-coloured backing.
+  - Heard words use the real Geist italics, and the inferenceFailed stage is typed.
+  - The `AccentMirror` scheme's Test action runs `AccentMirror.xctestplan` (the AccentKit unit tests, the shell
+    contract tests and the screenshot renderer). It launches the app as a test host, so it runs in CI or the test
+    VM, never on Raph's desktop.
+  - The "Fixture <name>" schemes run the app on one fixture. A pre-build phase fails with "project.yml changed:
+    run make generate" when the generated project is stale.
+  - Committed screenshots shrank from 29.4 MiB to 6.9 MiB (`docs/screenshots/ui-shell/README.md`).

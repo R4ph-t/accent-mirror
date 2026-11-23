@@ -15,15 +15,15 @@
           "text": "pho",
           "start": 0.003,
           "end": 0.121,
-          "prominence": 0.95,
-          "stressed": true,
+          "prominence": 0.7,
+          "stressed": false,
           "label": "lower"
         },
         {
           "text": "tog",
           "start": 0.128,
           "end": 0.222,
-          "prominence": 0.55,
+          "prominence": 0.7,
           "stressed": false,
           "label": "lower"
         },
