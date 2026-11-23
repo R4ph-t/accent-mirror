@@ -261,7 +261,7 @@ Built by hand through Claude Code (Opus) on 2026-11-23, on M3 Max, macOS 26.3, X
 
 **Result: FAIL, goes to CTO.** On the 155 available clips the padded-span gate gives median 120 ms (bar ≤ 40) and
 36.8% within 80 ms (bar ≥ 85%). Raw spans are no better: median 100 ms, 42.3% within 80 ms. Calibration passes
-(low bin 145.1 ms > high bin 143.1 ms, a thin margin). Warm ASR median is about 120–130 ms (run to run; the report has the measured figure), well inside the 900 ms budget, so
+(low bin 145.1 ms > high bin 143.1 ms, a thin margin). Warm ASR median is far inside the 900 ms budget (on the order of 0.1 s; it varies run to run, and the report has the measured figure), so
 `base.en` ships and `tiny.en` was not pinned. The report is `docs/agreement/reports/timestamp-feasibility-<digest8>`.
 WhisperKit's word boundaries are systematically early against MFA (mean signed error: starts −120 ms, ends −138 ms),
 and the 80 ms padding makes starts worse while helping ends. No threshold or number was changed to pass.
