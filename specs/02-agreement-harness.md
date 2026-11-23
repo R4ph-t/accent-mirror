@@ -248,7 +248,7 @@ that commit; `scores-detail.json` `8a90ff40…a989e1` (identical in both); corpu
 official MD5 `8a6ba294…f4bfa` checked, SHA-256 `f96258be…359c` recorded. All in `fixtures/corpora/*.pin.json`.
 
 **VCTK positive set: NOT EVALUATED under the stated trim (to CTO).** The trim (Open question 2 default, spec 05's
-level rule from `Thresholds.capture`; spec 05's voicing condition is not on main, so it is not applied) rejects 201
+level rule from `Thresholds.capture`, without spec 05's voicing condition: spec 05 merged while this was being built, and AMEvaluation can't import AMCapture, so moving the trim onto spec 05's detector is a follow-up) rejects 201
 of 755 clips as longer than 6 s. The speech itself is long: phrases 003, 008, 011, 016, 019 and 024 run 6–8 s for most
 speakers, references included. That leaves 149 headline pairs over 14 phrases (minimums 150 and 18), so every
 positive-set number is NOT EVALUATED. The rule was not loosened. Also, 4 bundled-voice files are missing from the

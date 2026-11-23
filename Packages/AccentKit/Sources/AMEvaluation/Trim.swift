@@ -2,11 +2,11 @@
 // spec 05 onset level, keep 200 ms of pre-roll and 300 ms of tail, and reject (and report) any clip outside 2–6 s
 // rather than cutting speech. The same rule for every speaker.
 //
-// Spec 05's detector is not on main yet, so this applies its level rule directly from `Thresholds.capture`: 10 ms
+// This applies spec 05's level rule directly from `Thresholds.capture` (AMEvaluation depends on AMCore only): 10 ms
 // frames; floor = the `floorPercentile` of frame RMS, clamped to [floorClampLow, floorClampHigh]; a frame is above
 // the onset level at RMS ≥ max(onsetMinimumDBFS, floor + onsetAboveFloorDB); speech starts at the first run of
-// `onsetFrames` such frames and ends at the last. The voicing condition of spec 05 is not applied (no ACF voicing
-// on main); see the spec's implementation notes.
+// `onsetFrames` such frames and ends at the last. Spec 05's voicing condition is not applied; moving the trim onto
+// spec 05's detector is a follow-up (see the spec's implementation notes).
 
 import Foundation
 import AMCore
