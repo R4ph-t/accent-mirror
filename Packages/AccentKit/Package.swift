@@ -33,13 +33,16 @@ let package = Package(
         [
             .target(
                 name: module.name,
-                dependencies: module.dependencies.map { .target(name: $0) } + (externalDependencies[module.name] ?? [])
+                dependencies: module.dependencies.map { .target(name: $0) } + (externalDependencies[module.name] ?? []),
+                // AMAlignment bundles CMUdict and its word lists (spec 06), copied verbatim.
+                resources: module.name == "AMAlignment" ? [.copy("Resources")] : nil
             ),
             .testTarget(
                 name: "\(module.name)Tests",
                 dependencies: [.target(name: module.name)],
                 // AMCore's golden JSON is read from the source tree by path (spec 01), not bundled.
-                exclude: module.name == "AMCore" ? ["Golden"] : []
+                exclude: module.name == "AMCore" ? ["Golden"] : [],
+                resources: module.name == "AMAlignment" ? [.copy("Fixtures")] : nil
             ),
         ]
     } + [

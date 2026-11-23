@@ -1,0 +1,29 @@
+# Compounds whose hyphenated, spaced and joined spellings are equivalent (spec 06, plan §4.1): "train station",
+# "train-station" and "trainstation" all match. One compound per line, its parts separated by a space.
+# Source: CPO's "Accent Mirror starter phrase set (2026-11-23)": the Compound Nouns pack (sunlight, raindrops,
+# rainbow(s), snow peas, blue cheese, train station) and its list of compounds to record (greenhouse, blackbird,
+# hot dog, White House, football, ice cream, software, high school, lighthouse, credit card, bus stop).
+sun light
+rain drop
+rain drops
+rain bow
+rain bows
+snow pea
+snow peas
+blue cheese
+train station
+train stations
+green house
+black bird
+hot dog
+hot dogs
+white house
+foot ball
+ice cream
+soft ware
+high school
+light house
+credit card
+credit cards
+bus stop
+bus stops
