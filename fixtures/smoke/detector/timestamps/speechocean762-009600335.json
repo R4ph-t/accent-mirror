@@ -1,0 +1,63 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "38b0603311d8f72a0f69f93047a694c62d4ff9962e5c5348b12ba1240b89012a",
+  "clipID" : "speechocean762-009600335",
+  "formatVersion" : 1,
+  "text" : "And this is my opinion under Yutse or Fanomar.",
+  "words" : [
+    {
+      "end" : 0.76,
+      "probability" : 0.35,
+      "start" : 0.56,
+      "word" : " And"
+    },
+    {
+      "end" : 1,
+      "probability" : 0.65,
+      "start" : 0.76,
+      "word" : " this"
+    },
+    {
+      "end" : 1.36,
+      "probability" : 0.86,
+      "start" : 1,
+      "word" : " is"
+    },
+    {
+      "end" : 1.88,
+      "probability" : 0.9,
+      "start" : 1.36,
+      "word" : " my"
+    },
+    {
+      "end" : 2.22,
+      "probability" : 0.48,
+      "start" : 1.88,
+      "word" : " opinion"
+    },
+    {
+      "end" : 3.2,
+      "probability" : 0.7,
+      "start" : 2.22,
+      "word" : " under"
+    },
+    {
+      "end" : 3.7,
+      "probability" : 0.16,
+      "start" : 3.2,
+      "word" : " Yutse"
+    },
+    {
+      "end" : 3.92,
+      "probability" : 0.35,
+      "start" : 3.7,
+      "word" : " or"
+    },
+    {
+      "end" : 4.66,
+      "probability" : 0.28,
+      "start" : 3.92,
+      "word" : " Fanomar."
+    }
+  ]
+}
