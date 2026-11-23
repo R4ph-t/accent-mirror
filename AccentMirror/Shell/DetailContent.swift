@@ -8,15 +8,30 @@ struct DetailContent: View {
 
     var body: some View {
         if let detail = model.detail {
-            VStack(spacing: Metrics.inner) {
-                CardOneView(card: detail.card)
-                StripCard(strip: detail.strip)
-                PitchCard(pitch: detail.pitch)
+            // r4 C8: on a short window the pitch plot shrinks first, down to `Metrics.pitchPlotMinHeight`; if the
+            // cards still don't fit, the card column scrolls and the toolbar (outside it) stays put. Card 1 keeps
+            // its size, and its rows may wrap.
+            ViewThatFits(in: .vertical) {
+                cards(detail)
+                ScrollView(.vertical) {
+                    cards(detail)
+                }
+                .scrollIndicators(.automatic)
             }
         } else {
             Color.clear
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .surface(palette.surfaceCard, cornerRadius: Metrics.cardRadius)
+        }
+    }
+}
+
+extension DetailContent {
+    private func cards(_ detail: DetailPresentation) -> some View {
+        VStack(spacing: Metrics.inner) {
+            CardOneView(card: detail.card)
+            StripCard(strip: detail.strip)
+            PitchCard(pitch: detail.pitch)
         }
     }
 }

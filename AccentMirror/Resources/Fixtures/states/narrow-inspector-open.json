@@ -1,6 +1,6 @@
 {
   "name": "narrow-inspector-open",
-  "summary": "The narrowest window (960 pt, the spec 18 minimum width) with the Details inspector open, at 732 pt, the shortest height the shell allows in this state: label collisions and the toolbar title (fixes round 5).",
+  "summary": "The minimum window (960 × 680 pt, spec 18) with the Details inspector open: label collisions, the toolbar compaction and the short pitch plot (fixes round 5, Addendum r4 C6 to C8).",
   "phrase": "photography",
   "phase": "showingTake",
   "savedTakes": [
@@ -102,6 +102,6 @@
   "persistence": "notSaved",
   "window": {
     "width": 960,
-    "height": 732
+    "height": 680
   }
 }

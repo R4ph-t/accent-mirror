@@ -17,6 +17,8 @@ struct PitchCard: View {
             GeometryReader { proxy in
                 PitchPlot(pitch: pitch, size: proxy.size)
             }
+            // The plot (top to baseline) never gets shorter than 120 pt (r4 C8); the word labels sit below it.
+            .frame(minHeight: Metrics.pitchPlotMinHeight + PlotFrame.wordLabelHeight)
         }
         .padding(.horizontal, Metrics.outer)
         .padding(.top, Metrics.outer)
@@ -52,7 +54,7 @@ private struct WordLabels: View {
         let widths = words.map { TextMeasure.width($0.text, role: .small) }
         let centers = words.map { frame.x(($0.start + $0.end) / 2) }
         let shown = LabelLayout.visibility(words.indices.map {
-            LabelLayout.Item(center: centers[$0], width: widths[$0], priority: words[$0].isTarget ? .always : .low)
+            LabelLayout.Item(center: centers[$0], width: widths[$0], priority: LabelLayout.wordPriority(isTarget: words[$0].isTarget))
         })
         ZStack(alignment: .topLeading) {
             ForEach(Array(words.enumerated()), id: \.offset) { index, word in
@@ -82,8 +84,10 @@ private struct PlotFrame {
     let size: CGSize
     var plotX: CGFloat { Metrics.rowLabelWidth }
     var plotWidth: CGFloat { size.width - Metrics.rowLabelWidth - Metrics.inner - Metrics.endLabelWidth }
+    /// Room under the baseline for the word labels.
+    static let wordLabelHeight: CGFloat = 22
     /// The baseline sits 22 pt above the bottom: word labels go under it.
-    var baselineY: CGFloat { size.height - 22 }
+    var baselineY: CGFloat { size.height - Self.wordLabelHeight }
     var top: CGFloat { 0 }
     var midY: CGFloat { (top + baselineY) / 2 }
     var halfHeight: CGFloat { (baselineY - top) / 2 }
