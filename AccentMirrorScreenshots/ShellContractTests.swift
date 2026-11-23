@@ -1,3 +1,4 @@
+import CoreText
 import SwiftUI
 import Testing
 @testable import AccentMirror
@@ -217,6 +218,18 @@ struct ShellContractTests {
 
     @Test func noVoicedFramesKeepsItsMessage() throws {
         #expect(ShellPresenter.pitch(try library.load("noVoicedFrames")).message == "No pitch to show for this take")
+    }
+
+    // MARK: Fonts
+
+    /// The italics are the real bundled faces, not a slanted copy or a system fallback.
+    @Test func italicFacesAreBundled() {
+        BundledFonts.register(from: Bundle(for: ShellModel.self))
+        for name in [BundledFonts.geistItalic, BundledFonts.geistMonoMediumItalic] {
+            let font = CTFontCreateWithName(name as CFString, 12, nil)
+            #expect(CTFontCopyPostScriptName(font) as String == name)
+            #expect(CTFontGetSymbolicTraits(font).contains(.traitItalic), "\(name)")
+        }
     }
 
     @Test func comingSoonIsDrivenByAnEmptyPack() {

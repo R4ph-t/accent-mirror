@@ -1,4 +1,3 @@
-import CoreText
 import SwiftUI
 
 /// Type roles from spec 18 (Designer spec v2 §4.5). Views use these roles, never raw font names or sizes.
@@ -46,13 +45,19 @@ enum TypeRole {
 
     var font: Font { .custom(fontName, fixedSize: size) }
 
-    /// The bundled fonts have no italic face (spec 18 lists only upright weights), so italics are a
-    /// slanted copy of the same face. See "Spec gaps" in the PR.
-    var italicFont: Font {
-        let slant = CGAffineTransform(a: 1, b: 0, c: tan(10 * .pi / 180), d: 1, tx: 0, ty: 0)
-        var matrix = slant
-        return Font(CTFontCreateWithName(fontName as CFString, size, &matrix))
+    /// The real italic of the same weight, from the bundled Geist and Geist Mono italics. Funnel Display has no
+    /// italic and no role uses one, so the phrase title stays upright.
+    var italicFontName: String {
+        switch self {
+        case .phraseTitle: BundledFonts.funnelDisplaySemiBold
+        case .body, .small: BundledFonts.geistItalic
+        case .bodySemibold: BundledFonts.geistSemiBoldItalic
+        case .bodyBold, .smallBold: BundledFonts.geistBoldItalic
+        case .mono: BundledFonts.geistMonoMediumItalic
+        }
     }
+
+    var italicFont: Font { .custom(italicFontName, fixedSize: size) }
 }
 
 extension View {
