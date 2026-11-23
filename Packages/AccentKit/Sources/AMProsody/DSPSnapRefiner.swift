@@ -71,14 +71,14 @@ public struct DSPSnapRefiner: WordBoundaryRefiner {
         var startRules: [Rule] = [], endRules: [Rule] = []
         let refined = try BoundarySearch.refine(
             words, takeDuration: Double(samples.count) / sampleRate, windowSeconds: thresholds.snapWindowMs / 1000,
-            findStart: { window in
+            findStart: { _, window in
                 let (time, rule) = Self.pick(
                     voicing: frames.voicingOnset(in: window), intensity: frames.intensityOnset(in: window, dropDB: drop),
                     later: false)
                 startRules.append(rule)
                 return time
             },
-            findEnd: { window in
+            findEnd: { _, window in
                 let (time, rule) = Self.pick(
                     voicing: frames.voicingOffset(in: window), intensity: frames.intensityOffset(in: window, dropDB: drop),
                     later: true)

@@ -1,0 +1,117 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "e8fecb893964b41baebbfb2bfd218f8f68adb2d0f0f018fc597a017e6dd6c712",
+  "clipID" : "p311_015",
+  "formatVersion" : 1,
+  "text" : "The Greeks used to imagine that it was assigned from the gods to Fertel War or heavy rain.",
+  "words" : [
+    {
+      "end" : 1.02,
+      "probability" : 0.91,
+      "start" : 0.92,
+      "word" : " The"
+    },
+    {
+      "end" : 1.25,
+      "probability" : 0.99,
+      "start" : 1.12,
+      "word" : " Greeks"
+    },
+    {
+      "end" : 1.73,
+      "probability" : 0.99,
+      "start" : 1.25,
+      "word" : " used"
+    },
+    {
+      "end" : 1.82,
+      "probability" : 1,
+      "start" : 1.73,
+      "word" : " to"
+    },
+    {
+      "end" : 2.16,
+      "probability" : 0.99,
+      "start" : 1.94,
+      "word" : " imagine"
+    },
+    {
+      "end" : 2.45,
+      "probability" : 0.98,
+      "start" : 2.16,
+      "word" : " that"
+    },
+    {
+      "end" : 2.62,
+      "probability" : 0.99,
+      "start" : 2.52,
+      "word" : " it"
+    },
+    {
+      "end" : 2.72,
+      "probability" : 0.99,
+      "start" : 2.62,
+      "word" : " was"
+    },
+    {
+      "end" : 2.98,
+      "probability" : 0.69,
+      "start" : 2.72,
+      "word" : " assigned"
+    },
+    {
+      "end" : 3.38,
+      "probability" : 0.96,
+      "start" : 2.99,
+      "word" : " from"
+    },
+    {
+      "end" : 3.42,
+      "probability" : 0.98,
+      "start" : 3.38,
+      "word" : " the"
+    },
+    {
+      "end" : 3.69,
+      "probability" : 0.95,
+      "start" : 3.42,
+      "word" : " gods"
+    },
+    {
+      "end" : 3.96,
+      "probability" : 0.94,
+      "start" : 3.69,
+      "word" : " to"
+    },
+    {
+      "end" : 4.34,
+      "probability" : 0.46,
+      "start" : 3.96,
+      "word" : " Fertel"
+    },
+    {
+      "end" : 4.66,
+      "probability" : 0.42,
+      "start" : 4.34,
+      "word" : " War"
+    },
+    {
+      "end" : 4.9,
+      "probability" : 0.8,
+      "start" : 4.66,
+      "word" : " or"
+    },
+    {
+      "end" : 5.08,
+      "probability" : 0.79,
+      "start" : 4.92,
+      "word" : " heavy"
+    },
+    {
+      "end" : 5.29,
+      "probability" : 0.93,
+      "start" : 5.19,
+      "word" : " rain."
+    }
+  ]
+}

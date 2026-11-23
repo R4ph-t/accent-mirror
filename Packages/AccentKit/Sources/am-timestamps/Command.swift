@@ -19,7 +19,7 @@ struct AMTimestamps {
                         Run WhisperKit, compare with the baseline, write the report. Exit 1 on FAIL; on a --release
                         run, exit 2 on a dirty tree and 3 on NOT EVALUATED.
           boundaries    --repo D --clips F --corpus D --baseline F --replay D --out D
-                        [--files-pin F] [--archive-pin F] [--record D] [--release]
+                        [--files-pin F] [--archive-pin F] [--record D] [--release] [--ctc-manifest M --ctc-dir D]
                         Spec 23: refine the replayed Whisper words with each aligner, judge them against the
                         baseline, write the word-boundaries report. --record writes the refined replays under D.
                         Exit 1 on FAIL, 4 when a run differs from its recorded replay; on --release, 2 on a dirty tree.

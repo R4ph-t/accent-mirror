@@ -42,7 +42,32 @@ extension AMTimestamps {
         }
         log("loaded \(clips.count) clips and their Whisper words from \(replayURL.lastPathComponent)")
 
-        let refiners: [any WordBoundaryRefiner] = [WhisperOnly(), DSPSnapRefiner()]
+        var refiners: [any WordBoundaryRefiner] = [WhisperOnly(), DSPSnapRefiner()]
+        var ctcRun: WordBoundaryReport.CTCRun?
+        if let path = options.optional("ctc-manifest") {
+            let manifestURL = URL(filePath: path)
+            let manifest = try CTCModelManifest(contentsOf: manifestURL)
+            let folder = try options.url("ctc-dir")
+            let clock = ContinuousClock()
+            let verifyMs = milliseconds(try clock.measure { try manifest.verify(folder: folder) })
+            let start = clock.now
+            let ctc = try await CTCAligner.load(manifest: manifest, folder: folder)
+            let loadMs = milliseconds(start.duration(to: clock.now))
+            log("loaded \(manifest.aligner) (verify \(Int(verifyMs)) ms, compile and load \(Int(loadMs)) ms)")
+            let bytes = try manifest.packageFiles.reduce(0) { total, file in
+                total + ((try FileManager.default.attributesOfItem(
+                    atPath: folder.appending(path: manifest.package).appending(path: file.path).path)[.size] as? Int) ?? 0)
+            }
+            ctcRun = .init(
+                manifest: relative(manifestURL, to: repo), sourceCommit: manifest.source.commit,
+                license: manifest.source.license, licenseEvidence: manifest.source.licenseEvidence,
+                packageSHA256: manifest.packageSHA256, fp32PackageBytes: bytes, verifyMs: verifyMs, loadMs: loadMs,
+                computeUnits: "all",
+                cancellation: try await ctcCancelCheck(
+                    ctc, cpuOnly: try await CTCAligner.load(manifest: manifest, folder: folder, computeUnits: .cpuOnly),
+                    clips: clips, samples: samples, words: whisperWords))
+            refiners.append(ctc)
+        }
         var aligners: [WordBoundaryReport.Aligner] = []
         var notes: [String] = []
         let clock = ContinuousClock()
@@ -89,8 +114,9 @@ extension AMTimestamps {
             "Spec 02's unmodified-control and sham-control sets are not on this machine (spec 02 is not merged), so Δr cannot be computed. NOT EVALUATED is not a pass.",
             seed: correlationSeed)
         let snapBar = aligners.first { $0.id == DSPSnapRefiner.aligner }?.bar.outcome ?? .notEvaluated
+        let ctcBar = aligners.first { $0.id == CTCAligner.aligner }?.bar.outcome
         let decision = BoundaryDecision.decide(
-            b1Bar: snapBar, b1Correlation: correlation.outcome, b2Bar: nil,
+            b1Bar: snapBar, b1Correlation: correlation.outcome, b2Bar: ctcBar,
             b1ID: DSPSnapRefiner.aligner, b2ID: "ctc-w2v2b960-1", fallbackID: WhisperOnly.aligner)
 
         let config = identity(asrModelID: whisper.asrModelID, aligner: decision.shippedAligner)
@@ -116,7 +142,7 @@ extension AMTimestamps {
                           textIDs: Array(Set(clips.map { String($0.id.split(separator: "_")[1]) })).sorted(),
                           audio: "wav48_silence_trimmed/<speaker>/<speaker>_<text>_mic1.flac, as published",
                           attribution: vctkAttribution),
-            aligners: aligners, correlation: correlation, decision: decision, notes: notes)
+            aligners: aligners, correlation: correlation, ctc: ctcRun, decision: decision, notes: notes)
 
         let out = try options.url("out")
         try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
@@ -130,6 +156,46 @@ extension AMTimestamps {
             return 4
         }
         return report.decision.outcome == .pass ? 0 : 1
+    }
+
+    /// Cancels a call 100 ms in, five times, on about 20 s of clips (the model's limit) with their words shifted
+    /// onto the joined timeline; then checks a normal call still returns boundaries. With all compute units such a
+    /// call is over before 100 ms on an M-series Mac, so the trials use a CPU-only load of the same package.
+    static func ctcCancelCheck(_ fast: CTCAligner, cpuOnly ctc: CTCAligner, clips: [Clip], samples: [[Float]],
+                               words: [[WordTimestamp]]) async throws -> WordBoundaryReport.CTCRun.Cancellation {
+        var audio: [Float] = [], timed: [WordTimestamp] = []
+        for index in clips.indices where audio.count + samples[index].count <= ctc.manifest.conversion.maxSamples {
+            let offset = Double(audio.count) / TimestampRequest.sampleRate
+            timed += words[index].map {
+                WordTimestamp(word: $0.word, start: $0.start + offset, end: $0.end + offset, probability: $0.probability)
+            }
+            audio += samples[index]
+        }
+        let joined = audio, joinedWords = timed
+        let rate = TimestampRequest.sampleRate
+        let clock = ContinuousClock()
+        _ = try await fast.refine(joinedWords, samples: joined, sampleRate: rate)  // warm-up
+        let fastMs = milliseconds(try await clock.measure { _ = try await fast.refine(joinedWords, samples: joined, sampleRate: rate) })
+        _ = try await ctc.refine(joinedWords, samples: joined, sampleRate: rate)  // warm-up
+        let trialMs = milliseconds(try await clock.measure { _ = try await ctc.refine(joinedWords, samples: joined, sampleRate: rate) })
+        log("ctc cancel-check: uncancelled call \(Int(fastMs)) ms (all), \(Int(trialMs)) ms (cpuOnly)")
+        var returns: [Double] = [], allCancelled = true
+        for trial in 1...5 {
+            let task = Task { try await ctc.refine(joinedWords, samples: joined, sampleRate: rate) }
+            try await Task.sleep(for: .milliseconds(100))
+            let cancelledAt = clock.now
+            task.cancel()
+            let result = await task.result
+            returns.append(milliseconds(cancelledAt.duration(to: clock.now)))
+            let cancelled: Bool
+            if case .failure(let error) = result, error is CancellationError { cancelled = true } else { cancelled = false }
+            allCancelled = allCancelled && cancelled
+            log("ctc cancel-check: trial \(trial): \(cancelled ? "cancelled" : "not cancelled"), returned \(String(format: "%.1f", returns.last ?? 0)) ms after cancel")
+        }
+        let after = try await ctc.refine(words[0], samples: samples[0], sampleRate: rate)
+        return .init(inputSeconds: Double(joined.count) / rate, uncancelledCallMs: fastMs, computeUnits: "cpuOnly",
+                     uncancelledTrialCallMs: trialMs, returnMs: returns, allCancelled: allCancelled,
+                     modelStillLoaded: after.count == words[0].count)
     }
 
     /// Spec 23's identity for one aligner: spec 03's, with the pitch tracker dsp-snap-1 reads.

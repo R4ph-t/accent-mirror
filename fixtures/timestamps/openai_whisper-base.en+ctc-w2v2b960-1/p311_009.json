@@ -1,0 +1,87 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "28aea7b4c337c6a5deb7ecf3646b6a00dd64e6fadbf8fd3aa1f6f8d28cbb4436",
+  "clipID" : "p311_009",
+  "formatVersion" : 1,
+  "text" : "There is, according to legend, a boiling pot of gold at one end.",
+  "words" : [
+    {
+      "end" : 1.12,
+      "probability" : 0.89,
+      "start" : 0.96,
+      "word" : " There"
+    },
+    {
+      "end" : 1.28,
+      "probability" : 0.98,
+      "start" : 1.17,
+      "word" : " is,"
+    },
+    {
+      "end" : 1.72,
+      "probability" : 1,
+      "start" : 1.42,
+      "word" : " according"
+    },
+    {
+      "end" : 1.8,
+      "probability" : 0.97,
+      "start" : 1.76,
+      "word" : " to"
+    },
+    {
+      "end" : 2.13,
+      "probability" : 0.96,
+      "start" : 1.86,
+      "word" : " legend,"
+    },
+    {
+      "end" : 2.34,
+      "probability" : 0.96,
+      "start" : 2.32,
+      "word" : " a"
+    },
+    {
+      "end" : 2.72,
+      "probability" : 0.97,
+      "start" : 2.4,
+      "word" : " boiling"
+    },
+    {
+      "end" : 2.94,
+      "probability" : 1,
+      "start" : 2.75,
+      "word" : " pot"
+    },
+    {
+      "end" : 3.02,
+      "probability" : 0.99,
+      "start" : 2.98,
+      "word" : " of"
+    },
+    {
+      "end" : 3.2600000000000002,
+      "probability" : 0.98,
+      "start" : 3.06,
+      "word" : " gold"
+    },
+    {
+      "end" : 3.36,
+      "probability" : 0.97,
+      "start" : 3.29,
+      "word" : " at"
+    },
+    {
+      "end" : 3.58,
+      "probability" : 0.99,
+      "start" : 3.4699999999999998,
+      "word" : " one"
+    },
+    {
+      "end" : 3.7800000000000002,
+      "probability" : 1,
+      "start" : 3.63,
+      "word" : " end."
+    }
+  ]
+}

@@ -167,3 +167,75 @@ struct WordBoundaryRefinerTests {
         #expect(Set(digests).count == 3)
     }
 }
+
+extension WordBoundaryRefinerTests {
+    /// The refined boundaries recorded for spec 03's clips (`scripts/eval-word-boundaries.sh --record`), replayed the way
+    /// CI does: no audio, no model, no network.
+    @Suite("WordBoundaryRefiner replay (spec 23)")
+    struct Replay {
+        static let timestamps = URL(filePath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appending(path: "fixtures/timestamps")
+        static let whisper = Self.timestamps.appending(path: "openai_whisper-base.en")
+
+        @Test("the recorded refined boundaries replay with networking denied, and keep the refiner's invariants",
+              arguments: ["dsp-snap-1", "ctc-w2v2b960-1"])
+        func replayRecordedBoundaries(aligner: String) async throws {
+            URLProtocol.registerClass(DenyNetwork.self)
+            defer { URLProtocol.unregisterClass(DenyNetwork.self) }
+            let before = openSockets()
+            let original = try FixtureTimestamper(directory: Self.whisper)
+            let refined = try FixtureTimestamper(directory: Self.timestamps.appending(path: "openai_whisper-base.en+\(aligner)"))
+            #expect(refined.asrModelID == original.asrModelID)
+            #expect(refined.clipIDs == original.clipIDs)
+            var moved = 0
+            for clipID in refined.clipIDs {
+                let request = TimestampRequest(clipID: clipID, samples: [])
+                let words = try await refined.wordTimestamps(for: request)
+                let source = try await original.wordTimestamps(for: request)
+                let lastEnd = max(source.map(\.end).max() ?? 0, words.map(\.end).max() ?? 0)
+                expectInvariants(words, source, duration: lastEnd)
+                moved += zip(words, source).count { $0.start != $1.start || $0.end != $1.end }
+            }
+            #expect(moved > 0, "\(aligner) moved no boundary at all")
+            #expect(DenyNetwork.attempts.withLock { $0 } == 0)
+            #expect(openSockets() == before)
+        }
+
+        @Test("the refiners run with networking denied and open no socket")
+        func refinersOpenNoSocket() async throws {
+            URLProtocol.registerClass(DenyNetwork.self)
+            defer { URLProtocol.unregisterClass(DenyNetwork.self) }
+            let before = openSockets()
+            let samples = Take.make([(0.3, false), (0.8, true), (0.5, false)])
+            let words = [Take.word("hello", 0.30, 0.98)]
+            for refiner in [DSPSnapRefiner() as any WordBoundaryRefiner, WhisperOnly()] {
+                _ = try await refiner.refine(words, samples: samples, sampleRate: Take.sampleRate)
+            }
+            #expect(DenyNetwork.attempts.withLock { $0 } == 0)
+            #expect(openSockets() == before)
+        }
+    }
+}
+
+/// Fails every URL request and counts the attempts.
+final class DenyNetwork: URLProtocol {
+    static let attempts = Mutex(0)
+    override class func canInit(with request: URLRequest) -> Bool {
+        attempts.withLock { $0 += 1 }
+        return true
+    }
+    override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+    override func startLoading() { client?.urlProtocol(self, didFailWithError: URLError(.notConnectedToInternet)) }
+    override func stopLoading() {}
+}
+
+/// File descriptors of this process that are sockets.
+func openSockets() -> Set<Int32> {
+    var sockets: Set<Int32> = []
+    for fd in 0..<getdtablesize() {
+        var info = stat()
+        if fstat(fd, &info) == 0, (info.st_mode & S_IFMT) == S_IFSOCK { sockets.insert(fd) }
+    }
+    return sockets
+}

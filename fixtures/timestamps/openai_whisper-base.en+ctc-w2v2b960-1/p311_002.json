@@ -1,0 +1,75 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "ffdcef8fa980b63d09c0d6b27d00a8c70f016bd50a4fe1ecfcb5a7669ee886d8",
+  "clipID" : "p311_002",
+  "formatVersion" : 1,
+  "text" : "Ask her to bring these things with her from the store.",
+  "words" : [
+    {
+      "end" : 1.16,
+      "probability" : 0.96,
+      "start" : 1.02,
+      "word" : " Ask"
+    },
+    {
+      "end" : 1.36,
+      "probability" : 1,
+      "start" : 1.26,
+      "word" : " her"
+    },
+    {
+      "end" : 1.48,
+      "probability" : 1,
+      "start" : 1.44,
+      "word" : " to"
+    },
+    {
+      "end" : 1.72,
+      "probability" : 0.99,
+      "start" : 1.56,
+      "word" : " bring"
+    },
+    {
+      "end" : 1.96,
+      "probability" : 0.98,
+      "start" : 1.7899999999999998,
+      "word" : " these"
+    },
+    {
+      "end" : 2.35,
+      "probability" : 1,
+      "start" : 2.0100000000000002,
+      "word" : " things"
+    },
+    {
+      "end" : 2.72,
+      "probability" : 0.96,
+      "start" : 2.35,
+      "word" : " with"
+    },
+    {
+      "end" : 2.86,
+      "probability" : 1,
+      "start" : 2.7600000000000002,
+      "word" : " her"
+    },
+    {
+      "end" : 3.02,
+      "probability" : 0.99,
+      "start" : 2.9,
+      "word" : " from"
+    },
+    {
+      "end" : 3.14,
+      "probability" : 1,
+      "start" : 3.08,
+      "word" : " the"
+    },
+    {
+      "end" : 3.42,
+      "probability" : 0.97,
+      "start" : 3.18,
+      "word" : " store."
+    }
+  ]
+}

@@ -32,6 +32,70 @@ public struct WordBoundaryReport: Codable, Sendable {
         }
     }
 
+    /// b2's model facts and its cancellation check (spec 23).
+    public struct CTCRun: Codable, Sendable, Equatable {
+        public struct Cancellation: Codable, Sendable, Equatable {
+            public var inputSeconds: Double
+            /// One uncancelled call on the input, with the compute units the evaluation uses, in ms.
+            public var uncancelledCallMs: Double
+            /// The compute units of the cancelled calls (a call must still be running 100 ms in).
+            public var computeUnits: String
+            /// One uncancelled call with `computeUnits`, in ms.
+            public var uncancelledTrialCallMs: Double
+            public var trials: Int
+            public var allCancelled: Bool
+            /// Return time after the cancel, per trial, in ms.
+            public var returnMs: [Double]
+            /// A call after the cancels still returns boundaries: the model was not torn down.
+            public var modelStillLoaded: Bool
+            public var outcome: Outcome
+
+            public init(inputSeconds: Double, uncancelledCallMs: Double, computeUnits: String,
+                        uncancelledTrialCallMs: Double, returnMs: [Double], allCancelled: Bool, modelStillLoaded: Bool) {
+                self.inputSeconds = inputSeconds
+                self.uncancelledCallMs = uncancelledCallMs
+                self.computeUnits = computeUnits
+                self.uncancelledTrialCallMs = uncancelledTrialCallMs
+                self.trials = returnMs.count
+                self.allCancelled = allCancelled
+                self.returnMs = returnMs
+                self.modelStillLoaded = modelStillLoaded
+                outcome = allCancelled && modelStillLoaded && (returnMs.max() ?? .infinity) <= 300 ? .pass : .fail
+            }
+        }
+
+        public var manifest: String
+        public var sourceCommit: String
+        public var license: String
+        public var licenseEvidence: String
+        public var packageSHA256: String
+        public var fp32PackageBytes: Int
+        public var fp16: String
+        public var verifyMs: Double
+        /// Compile and load, after verification.
+        public var loadMs: Double
+        public var computeUnits: String
+        public var cancellation: Cancellation
+        public var runnerLatency: String
+
+        public init(manifest: String, sourceCommit: String, license: String, licenseEvidence: String,
+                    packageSHA256: String, fp32PackageBytes: Int, verifyMs: Double, loadMs: Double,
+                    computeUnits: String, cancellation: Cancellation) {
+            self.manifest = manifest
+            self.sourceCommit = sourceCommit
+            self.license = license
+            self.licenseEvidence = licenseEvidence
+            self.packageSHA256 = packageSHA256
+            self.fp32PackageBytes = fp32PackageBytes
+            self.fp16 = "not converted (the spec names float32)"
+            self.verifyMs = verifyMs
+            self.loadMs = loadMs
+            self.computeUnits = computeUnits
+            self.cancellation = cancellation
+            self.runnerLatency = "NOT RUN: needs a manual workflow on GitHub's macos-26 runner that Raph adds by hand (.github/ is off-limits to agents)"
+        }
+    }
+
     public struct Aligner: Codable, Sendable {
         public var id: String
         public var config: ConfigIdentity
@@ -70,6 +134,8 @@ public struct WordBoundaryReport: Codable, Sendable {
     public var thresholds: Thresholds.WordBoundaries
     public var aligners: [Aligner]
     public var correlation: CorrelationGate
+    /// b2's model facts, when b2 was built.
+    public var ctc: CTCRun?
     /// §6.7's ≤ 2% placement-diff rule: needs specs 08 and 10, checked in spec 11's agreement run.
     public var placementRule: String
     public var decision: BoundaryDecision.Result
@@ -77,7 +143,7 @@ public struct WordBoundaryReport: Codable, Sendable {
 
     public init(generatedAt: Date, identity: TimestampReport.Identity, asrModelID: String, whisperSource: String,
                 baseline: WordBaseline.Aligner?, corpus: TimestampReport.Corpus, aligners: [Aligner],
-                correlation: CorrelationGate, decision: BoundaryDecision.Result, notes: [String]) {
+                correlation: CorrelationGate, ctc: CTCRun?, decision: BoundaryDecision.Result, notes: [String]) {
         self.generatedAt = generatedAt
         self.identity = identity
         self.asrModelID = asrModelID
@@ -88,6 +154,7 @@ public struct WordBoundaryReport: Codable, Sendable {
         self.thresholds = Thresholds.current.wordBoundaries
         self.aligners = aligners
         self.correlation = correlation
+        self.ctc = ctc
         self.placementRule = "PENDING: checked in spec 11's agreement run with `aligner` in the identity (needs specs 08 and 10)"
         self.decision = decision
         self.notes = notes
@@ -134,6 +201,20 @@ public struct WordBoundaryReport: Codable, Sendable {
         }
         md.append("  - Bootstrap: \(correlation.resamples) resamples over clips, seed \(correlation.seed)")
         md.append("- ≤ 2% placement-diff rule (§6.7): \(placementRule)")
+        if let ctc {
+            md.append("")
+            md.append("## b2 model (`ctc-w2v2b960-1`)")
+            md.append("")
+            md.append("- facebook/wav2vec2-base-960h at `\(ctc.sourceCommit)`, \(ctc.license). Licence evidence: \(ctc.licenseEvidence)")
+            md.append("- Converted package (Core ML mlprogram, float32): `packageSHA256` `\(ctc.packageSHA256)`, \(String(format: "%.1f", Double(ctc.fp32PackageBytes) / 1_048_576)) MiB on disk; fp16: \(ctc.fp16)")
+            md.append("- Verify \(ms(ctc.verifyMs)); compile and load \(ms(ctc.loadMs)); compute units `\(ctc.computeUnits)`")
+            if let aligner = aligners.first(where: { $0.id == "ctc-w2v2b960-1" }) {
+                md.append("- Per clip on this Mac (\(identity.toolchain.hardware)), warm: median \(ms(aligner.latency.medianMs)), p90 \(ms(aligner.latency.p90Ms)), max \(ms(aligner.latency.maxMs)) over \(aligner.latency.count) clips")
+            }
+            let c = ctc.cancellation
+            md.append("- Cancellation: a \(String(format: "%.1f", c.inputSeconds)) s call takes \(ms(c.uncancelledCallMs)) with compute units `all`, too short to cancel 100 ms in, so the trials load the same verified package with `\(c.computeUnits)`, where the call takes \(ms(c.uncancelledTrialCallMs)). Cancel 100 ms in, \(c.trials) trials: all CancellationError: \(c.allCancelled ? "yes" : "NO"); returned \(c.returnMs.map { String(format: "%.1f", $0) }.joined(separator: ", ")) ms after the cancel (about 300 ms allowed); model still loaded: \(c.modelStillLoaded ? "yes" : "NO"). **\(c.outcome.rawValue)**")
+            md.append("- `macos-26` runner latency: \(ctc.runnerLatency)")
+        }
         md.append("")
         md.append("Under the bar, or not evaluated: this report goes to CTO. Thresholds are not changed to pass.")
         md.append("")

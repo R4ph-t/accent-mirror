@@ -7,7 +7,8 @@
 #   scripts/eval-word-boundaries.sh --dev      # any tree, report under .cache/reports/
 #   scripts/eval-word-boundaries.sh --record   # any tree: also rewrites the refined replays under fixtures/timestamps/
 #
-# Needs scripts/fetch-vctk.sh (the clips). No ASR runs and no model is loaded: the tool runs with networking denied.
+# Needs scripts/fetch-vctk.sh (the clips) and, for b2 (built because b1 failed), scripts/fetch-ctc.sh (the pinned,
+# converted wav2vec2-base-960h). No ASR runs: the tool runs with networking denied.
 set -euo pipefail
 
 root="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
@@ -21,6 +22,7 @@ case "${1:-}" in
 esac
 
 "$root/scripts/fetch-vctk.sh"
+"$root/scripts/fetch-ctc.sh"
 "$root/scripts/am-timestamps.sh" boundaries ${mode[@]+"${mode[@]}"} \
   --repo "$root" \
   --clips "$root/fixtures/vctk/starter-clips.txt" \
@@ -29,4 +31,6 @@ esac
   --archive-pin "$root/fixtures/vctk/vctk-0.92-archive.sha256" \
   --baseline "$root/fixtures/vctk/mfa-word-baseline.json" \
   --replay "$root/fixtures/timestamps/openai_whisper-base.en" \
+  --ctc-manifest "$root/fixtures/models/wav2vec2-base-960h/manifest.json" \
+  --ctc-dir "${MODELS_CACHE:-$root/.cache/models}/wav2vec2-base-960h" \
   --out "$out"

@@ -1,0 +1,69 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "31be3da4e24daf6e1b14b9c856cd3a4102310cf8ff1034e5eaf57709a87277fe",
+  "clipID" : "p226_013",
+  "formatVersion" : 1,
+  "text" : "Some have accepted it as a miracle without physical explanation.",
+  "words" : [
+    {
+      "end" : 1.06,
+      "probability" : 0.85,
+      "start" : 0.86,
+      "word" : " Some"
+    },
+    {
+      "end" : 1.3800000000000001,
+      "probability" : 1,
+      "start" : 1.06,
+      "word" : " have"
+    },
+    {
+      "end" : 1.56,
+      "probability" : 1,
+      "start" : 1.3800000000000001,
+      "word" : " accepted"
+    },
+    {
+      "end" : 2.0300000000000002,
+      "probability" : 0.99,
+      "start" : 1.56,
+      "word" : " it"
+    },
+    {
+      "end" : 2.12,
+      "probability" : 0.99,
+      "start" : 2.0300000000000002,
+      "word" : " as"
+    },
+    {
+      "end" : 2.26,
+      "probability" : 0.97,
+      "start" : 2.17,
+      "word" : " a"
+    },
+    {
+      "end" : 2.5,
+      "probability" : 0.99,
+      "start" : 2.26,
+      "word" : " miracle"
+    },
+    {
+      "end" : 3.04,
+      "probability" : 0.95,
+      "start" : 2.5,
+      "word" : " without"
+    },
+    {
+      "end" : 3.44,
+      "probability" : 0.96,
+      "start" : 3.04,
+      "word" : " physical"
+    },
+    {
+      "end" : 4.22,
+      "probability" : 0.99,
+      "start" : 3.52,
+      "word" : " explanation."
+    }
+  ]
+}

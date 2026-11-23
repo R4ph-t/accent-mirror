@@ -1,0 +1,99 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "0ff1d4839fe635b3aca8d954983c6c1d897b7573e4c8740b4a1247022b441aa6",
+  "clipID" : "p252_004",
+  "formatVersion" : 1,
+  "text" : "We also need a small plastic snake and a big toy frog for the kids.",
+  "words" : [
+    {
+      "end" : 0.94,
+      "probability" : 0.89,
+      "start" : 0.86,
+      "word" : " We"
+    },
+    {
+      "end" : 1.21,
+      "probability" : 0.99,
+      "start" : 0.96,
+      "word" : " also"
+    },
+    {
+      "end" : 1.4000000000000001,
+      "probability" : 1,
+      "start" : 1.21,
+      "word" : " need"
+    },
+    {
+      "end" : 1.6300000000000001,
+      "probability" : 0.99,
+      "start" : 1.48,
+      "word" : " a"
+    },
+    {
+      "end" : 1.86,
+      "probability" : 0.99,
+      "start" : 1.6300000000000001,
+      "word" : " small"
+    },
+    {
+      "end" : 2.16,
+      "probability" : 1,
+      "start" : 1.86,
+      "word" : " plastic"
+    },
+    {
+      "end" : 2.58,
+      "probability" : 0.98,
+      "start" : 2.16,
+      "word" : " snake"
+    },
+    {
+      "end" : 2.86,
+      "probability" : 0.94,
+      "start" : 2.58,
+      "word" : " and"
+    },
+    {
+      "end" : 2.98,
+      "probability" : 0.76,
+      "start" : 2.86,
+      "word" : " a"
+    },
+    {
+      "end" : 3.12,
+      "probability" : 0.98,
+      "start" : 3.0700000000000003,
+      "word" : " big"
+    },
+    {
+      "end" : 3.84,
+      "probability" : 0.9,
+      "start" : 3.12,
+      "word" : " toy"
+    },
+    {
+      "end" : 4.16,
+      "probability" : 0.98,
+      "start" : 3.84,
+      "word" : " frog"
+    },
+    {
+      "end" : 4.44,
+      "probability" : 0.98,
+      "start" : 4.16,
+      "word" : " for"
+    },
+    {
+      "end" : 4.52,
+      "probability" : 0.98,
+      "start" : 4.44,
+      "word" : " the"
+    },
+    {
+      "end" : 4.72,
+      "probability" : 1,
+      "start" : 4.52,
+      "word" : " kids."
+    }
+  ]
+}

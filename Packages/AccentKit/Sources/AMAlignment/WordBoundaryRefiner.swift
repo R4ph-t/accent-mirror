@@ -41,13 +41,13 @@ public enum BoundarySearch {
         public var upper: Double
     }
 
-    /// Refines `words` in order. `findStart` and `findEnd` return a boundary inside the window, or nil when they find
-    /// none; nil keeps the recogniser's time (clamped). Each word's start window lies between the previous word's
-    /// refined end and its own recognised end; its end window between its refined start and the next word's
-    /// recognised end, so the next start can always follow it. Everything stays inside `[0, takeDuration]`.
+    /// Refines `words` in order. `findStart` and `findEnd` get the word's index and its window and return a boundary
+    /// inside the window, or nil when they find none; nil keeps the recogniser's time (clamped). Each word's start
+    /// window lies between the previous word's refined end and its own recognised end; its end window between its
+    /// refined start and the next word's recognised end, so the next start can always follow it. Everything stays inside `[0, takeDuration]`.
     public static func refine(
         _ words: [WordTimestamp], takeDuration: Double, windowSeconds: Double,
-        findStart: (Window) throws -> Double?, findEnd: (Window) throws -> Double?
+        findStart: (Int, Window) throws -> Double?, findEnd: (Int, Window) throws -> Double?
     ) throws -> [WordTimestamp] {
         let duration = max(takeDuration, 0)
         var refined: [WordTimestamp] = []
@@ -58,13 +58,13 @@ public enum BoundarySearch {
             let startLower = min(max(previousEnd, word.start - windowSeconds), duration)
             let startUpper = max(startLower, min(word.start + windowSeconds, word.end, duration))
             let startWindow = Window(original: word.start, lower: startLower, upper: startUpper)
-            let start = clamp(try findStart(startWindow) ?? word.start, startWindow)
+            let start = clamp(try findStart(index, startWindow) ?? word.start, startWindow)
 
             let nextEnd = index + 1 < words.count ? words[index + 1].end : duration
             let endLower = max(start, word.end - windowSeconds)
             let endUpper = max(endLower, min(word.end + windowSeconds, nextEnd, duration))
             let endWindow = Window(original: word.end, lower: endLower, upper: endUpper)
-            let end = clamp(try findEnd(endWindow) ?? word.end, endWindow)
+            let end = clamp(try findEnd(index, endWindow) ?? word.end, endWindow)
 
             var moved = word
             moved.start = start

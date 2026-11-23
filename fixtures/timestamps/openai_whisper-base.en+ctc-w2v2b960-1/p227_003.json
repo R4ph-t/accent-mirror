@@ -1,0 +1,129 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "5d9853b300c72e1d16f04510147ab0a43f00c597a8143e44de4ec4975f3afd61",
+  "clipID" : "p227_003",
+  "formatVersion" : 1,
+  "text" : "6 booms of fresh snow peas, 5 thick slabs of blue cheese and maybe a snack for her brother Bob.",
+  "words" : [
+    {
+      "end" : 1.04,
+      "probability" : 0.62,
+      "start" : 0.84,
+      "word" : " 6"
+    },
+    {
+      "end" : 1.56,
+      "probability" : 0.25,
+      "start" : 1.19,
+      "word" : " booms"
+    },
+    {
+      "end" : 1.6600000000000001,
+      "probability" : 0.94,
+      "start" : 1.62,
+      "word" : " of"
+    },
+    {
+      "end" : 2.02,
+      "probability" : 1,
+      "start" : 1.78,
+      "word" : " fresh"
+    },
+    {
+      "end" : 2.4,
+      "probability" : 0.99,
+      "start" : 2.07,
+      "word" : " snow"
+    },
+    {
+      "end" : 2.87,
+      "probability" : 0.99,
+      "start" : 2.4699999999999998,
+      "word" : " peas,"
+    },
+    {
+      "end" : 3.96,
+      "probability" : 0.79,
+      "start" : 3.58,
+      "word" : " 5"
+    },
+    {
+      "end" : 4.34,
+      "probability" : 0.98,
+      "start" : 4.11,
+      "word" : " thick"
+    },
+    {
+      "end" : 4.68,
+      "probability" : 0.99,
+      "start" : 4.390000000000001,
+      "word" : " slabs"
+    },
+    {
+      "end" : 4.8,
+      "probability" : 0.99,
+      "start" : 4.73,
+      "word" : " of"
+    },
+    {
+      "end" : 5.1000000000000005,
+      "probability" : 0.98,
+      "start" : 4.88,
+      "word" : " blue"
+    },
+    {
+      "end" : 5.48,
+      "probability" : 0.98,
+      "start" : 5.11,
+      "word" : " cheese"
+    },
+    {
+      "end" : 5.94,
+      "probability" : 0.74,
+      "start" : 5.49,
+      "word" : " and"
+    },
+    {
+      "end" : 6.23,
+      "probability" : 0.9,
+      "start" : 6.010000000000001,
+      "word" : " maybe"
+    },
+    {
+      "end" : 6.38,
+      "probability" : 0.98,
+      "start" : 6.23,
+      "word" : " a"
+    },
+    {
+      "end" : 6.74,
+      "probability" : 0.99,
+      "start" : 6.48,
+      "word" : " snack"
+    },
+    {
+      "end" : 6.98,
+      "probability" : 0.96,
+      "start" : 6.7700000000000005,
+      "word" : " for"
+    },
+    {
+      "end" : 7.140000000000001,
+      "probability" : 0.96,
+      "start" : 7.04,
+      "word" : " her"
+    },
+    {
+      "end" : 7.430000000000001,
+      "probability" : 0.72,
+      "start" : 7.2,
+      "word" : " brother"
+    },
+    {
+      "end" : 7.76,
+      "probability" : 0.79,
+      "start" : 7.430000000000001,
+      "word" : " Bob."
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "87a9b17eef4b7615fac19a58ce34250bae5f58b26acc4fb7b1eb56c53a8ade9f",
+  "clipID" : "p241_024",
+  "formatVersion" : 1,
+  "text" : "This is a very common type of bow, one showing mainly red and yellow, with lysos or no green or blue.",
+  "words" : [
+    {
+      "end" : 1.02,
+      "probability" : 0.84,
+      "start" : 0.96,
+      "word" : " This"
+    },
+    {
+      "end" : 1.18,
+      "probability" : 0.99,
+      "start" : 1.02,
+      "word" : " is"
+    },
+    {
+      "end" : 1.28,
+      "probability" : 0.98,
+      "start" : 1.25,
+      "word" : " a"
+    },
+    {
+      "end" : 1.6,
+      "probability" : 0.98,
+      "start" : 1.34,
+      "word" : " very"
+    },
+    {
+      "end" : 1.75,
+      "probability" : 1,
+      "start" : 1.6,
+      "word" : " common"
+    },
+    {
+      "end" : 1.98,
+      "probability" : 0.99,
+      "start" : 1.76,
+      "word" : " type"
+    },
+    {
+      "end" : 2.25,
+      "probability" : 0.99,
+      "start" : 1.98,
+      "word" : " of"
+    },
+    {
+      "end" : 2.4,
+      "probability" : 0.98,
+      "start" : 2.25,
+      "word" : " bow,"
+    },
+    {
+      "end" : 3.23,
+      "probability" : 0.92,
+      "start" : 2.98,
+      "word" : " one"
+    },
+    {
+      "end" : 3.38,
+      "probability" : 0.97,
+      "start" : 3.2600000000000002,
+      "word" : " showing"
+    },
+    {
+      "end" : 3.66,
+      "probability" : 0.93,
+      "start" : 3.39,
+      "word" : " mainly"
+    },
+    {
+      "end" : 4,
+      "probability" : 0.99,
+      "start" : 3.66,
+      "word" : " red"
+    },
+    {
+      "end" : 4.21,
+      "probability" : 0.97,
+      "start" : 4,
+      "word" : " and"
+    },
+    {
+      "end" : 4.48,
+      "probability" : 0.99,
+      "start" : 4.21,
+      "word" : " yellow,"
+    },
+    {
+      "end" : 4.82,
+      "probability" : 0.78,
+      "start" : 4.76,
+      "word" : " with"
+    },
+    {
+      "end" : 5.16,
+      "probability" : 0.3,
+      "start" : 4.95,
+      "word" : " lysos"
+    },
+    {
+      "end" : 5.32,
+      "probability" : 0.81,
+      "start" : 5.16,
+      "word" : " or"
+    },
+    {
+      "end" : 5.58,
+      "probability" : 0.9,
+      "start" : 5.32,
+      "word" : " no"
+    },
+    {
+      "end" : 5.68,
+      "probability" : 0.92,
+      "start" : 5.58,
+      "word" : " green"
+    },
+    {
+      "end" : 5.86,
+      "probability" : 0.95,
+      "start" : 5.68,
+      "word" : " or"
+    },
+    {
+      "end" : 6.11,
+      "probability" : 0.99,
+      "start" : 5.86,
+      "word" : " blue."
+    }
+  ]
+}
