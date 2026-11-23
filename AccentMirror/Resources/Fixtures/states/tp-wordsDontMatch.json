@@ -1,0 +1,17 @@
+{
+  "name": "tp-wordsDontMatch",
+  "summary": "Words don't match the phrase.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-lasttry-audio",
+  "analysis": {
+    "takeProblems": [
+      "wordsDontMatch"
+    ]
+  }
+}

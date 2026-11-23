@@ -1,0 +1,16 @@
+{
+  "name": "recording",
+  "summary": "Recording, 0:02 in; bars in strip.bar up to the Lime playhead (mockup: recording).",
+  "phrase": "photography",
+  "phase": "recording",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-recording",
+  "recording": {
+    "elapsed": "0:02",
+    "playhead": 0.46
+  }
+}

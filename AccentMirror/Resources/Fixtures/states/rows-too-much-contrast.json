@@ -1,0 +1,87 @@
+{
+  "name": "rows-too-much-contrast",
+  "summary": "Too much contrast: only with room, always last.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-take04-close",
+  "analysis": {
+    "verdict": {
+      "kind": "feedback",
+      "rows": [
+        {
+          "kind": "tooMuchContrast",
+          "targets": [
+            "HAR"
+          ]
+        },
+        {
+          "kind": "reduction",
+          "targets": [
+            "ra",
+            "phy",
+            "der",
+            "than"
+          ]
+        }
+      ]
+    },
+    "measures": [
+      {
+        "measure": "stressPlacement",
+        "state": "evaluated"
+      },
+      {
+        "measure": "contrast",
+        "state": "evaluated",
+        "value": 1.04
+      },
+      {
+        "measure": "reduction",
+        "state": "evaluated",
+        "value": 0.93
+      },
+      {
+        "measure": "rhythm",
+        "state": "evaluated",
+        "value": 0.91
+      },
+      {
+        "measure": "pitchShape",
+        "state": "evaluated",
+        "value": 0.82
+      },
+      {
+        "measure": "range",
+        "state": "evaluated",
+        "value": 0.95
+      },
+      {
+        "measure": "finalDirection",
+        "state": "evaluated"
+      }
+    ],
+    "timing": "good",
+    "stress": [
+      {
+        "word": "harder",
+        "outcome": "matchesDictionary",
+        "pattern": "HARder"
+      },
+      {
+        "word": "looks",
+        "outcome": "matchesDictionary",
+        "pattern": "LOOKS"
+      },
+      {
+        "word": "photography",
+        "outcome": "outsideAccepted",
+        "pattern": "phoTOGraphy"
+      }
+    ]
+  }
+}

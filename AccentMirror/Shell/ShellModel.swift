@@ -69,11 +69,25 @@ final class ShellModel {
     var manifest: LibraryManifest
     var sidebar: SidebarState
     var toolbar: ToolbarState
+    /// The cards, banner and inspector content; nil shows the plain spec 18 surface.
+    var detail: DetailPresentation?
 
-    init(manifest: LibraryManifest, sidebar: SidebarState, toolbar: ToolbarState) {
+    init(manifest: LibraryManifest, sidebar: SidebarState, toolbar: ToolbarState, detail: DetailPresentation? = nil) {
         self.manifest = manifest
         self.sidebar = sidebar
         self.toolbar = toolbar
+        self.detail = detail
+    }
+
+    /// A shell seeded entirely from one fixture (spec 19).
+    convenience init(fixture loaded: LoadedFixture) {
+        self.init(
+            manifest: loaded.fixture.manifest ?? .stub,
+            sidebar: loaded.fixture.sidebar ?? .stub,
+            toolbar: ShellPresenter.toolbar(for: loaded),
+            detail: ShellPresenter.detail(for: loaded)
+        )
+        inspectorVisible = loaded.fixture.inspectorOpen ?? false
     }
 }
 

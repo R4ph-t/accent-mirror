@@ -26,9 +26,17 @@ struct DetailPane: View {
     var body: some View {
         VStack(spacing: 0) {
             ToolbarView(state: model.toolbar, toggleInspector: { model.inspectorVisible.toggle() })
+            if let banner = model.detail?.banner {
+                // §13.2: 8 pt below the toolbar, 40 tall; the cards move down by 48.
+                BannerView(banner: banner)
+                    .padding(.top, Metrics.inner)
+                    .padding(.bottom, Metrics.outer)
+                    .padding(.horizontal, Metrics.outer)
+            } else {
+                Spacer().frame(height: Metrics.outer)
+            }
             DetailContent(model: model)
                 .padding(.horizontal, Metrics.outer)
-                .padding(.top, Metrics.outer)
                 .padding(.bottom, Metrics.outer)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)

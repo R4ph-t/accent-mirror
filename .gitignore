@@ -64,3 +64,4 @@ fastlane/test_output
 # Accent Mirror
 *.xcodeproj/
 eval-local/
+/screenshots/

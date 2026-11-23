@@ -1,0 +1,67 @@
+{
+  "id": "record-take02",
+  "number": 2,
+  "hasAudio": true,
+  "alignment": "aligned",
+  "level": "normal",
+  "words": [
+    {
+      "kind": "present",
+      "expected": "record",
+      "heard": "record",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "re",
+          "start": 0.08,
+          "end": 0.46,
+          "prominence": 1.0,
+          "stressed": true,
+          "label": "caps"
+        },
+        {
+          "text": "cord",
+          "start": 0.5,
+          "end": 0.92,
+          "prominence": 0.4,
+          "stressed": false,
+          "label": "lower"
+        }
+      ]
+    }
+  ],
+  "pitch": [
+    {
+      "points": [
+        {
+          "t": 0.1,
+          "st": 1.4
+        },
+        {
+          "t": 0.22,
+          "st": 4.0
+        },
+        {
+          "t": 0.36,
+          "st": 4.6
+        },
+        {
+          "t": 0.48,
+          "st": 1.8
+        },
+        {
+          "t": 0.62,
+          "st": -1.0
+        },
+        {
+          "t": 0.78,
+          "st": -3.4
+        },
+        {
+          "t": 0.9,
+          "st": -5.2
+        }
+      ]
+    }
+  ]
+}

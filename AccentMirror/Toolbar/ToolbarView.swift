@@ -10,12 +10,15 @@ struct ToolbarView: View {
     var body: some View {
         HStack(spacing: 0) {
             titleBlock
+                .layoutPriority(-1)
             Spacer(minLength: 16)
             HStack(spacing: 8) {
                 GhostButton(title: "Model", isEnabled: state.modelEnabled)
                 RecordButton(state: state.record)
                 GhostButton(title: "You", isEnabled: state.youEnabled)
             }
+            // Controls keep their size; only the title truncates when the detail gets narrow.
+            .fixedSize()
             TakeMenu(label: state.takeMenu, note: state.takeMenuNote, savedTakes: state.savedTakes)
                 .padding(.leading, 17)
             InspectorToggle(action: toggleInspector)

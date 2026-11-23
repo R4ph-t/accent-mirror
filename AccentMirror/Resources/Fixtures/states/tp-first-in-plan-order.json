@@ -1,0 +1,18 @@
+{
+  "name": "tp-first-in-plan-order",
+  "summary": "Two problems at once: only the first in plan order (tooShort before clipped) shows.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-lasttry-audio",
+  "analysis": {
+    "takeProblems": [
+      "clipped",
+      "tooShort"
+    ]
+  }
+}

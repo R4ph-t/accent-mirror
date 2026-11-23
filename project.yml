@@ -25,9 +25,14 @@ targets:
       - path: AccentMirror
         excludes:
           - Resources/Fonts
+          - Resources/Fixtures
       # Bundled OFL fonts (spec 18), as a folder reference so each family's official OFL.txt stays next to
       # its font files in the app bundle (Contents/Resources/Fonts/<Family>/).
       - path: AccentMirror/Resources/Fonts
+        type: folder
+        buildPhase: resources
+      # UI fixtures (spec 19): JSON states, phrases and takes, read with `-UIFixture <name>`.
+      - path: AccentMirror/Resources/Fixtures
         type: folder
         buildPhase: resources
     dependencies:
@@ -46,9 +51,33 @@ targets:
         CODE_SIGN_STYLE: Automatic
         CODE_SIGN_IDENTITY: "-"
 
+  # Local-only screenshot runner (spec 19). Not built by the AccentMirror scheme, not run by CI or `make check`:
+  # `make screenshots` runs it. Hosted by the app so it renders the real SwiftUI views in a 1200 × 800 pt window.
+  AccentMirrorScreenshots:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: AccentMirrorScreenshots
+    dependencies:
+      - target: AccentMirror
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.raphaelterrier.accentmirror.screenshots
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "-"
+
 schemes:
   AccentMirror:
     shared: true
     build:
       targets:
         AccentMirror: all
+  AccentMirrorScreenshots:
+    shared: true
+    build:
+      targets:
+        AccentMirrorScreenshots: [test]
+    test:
+      targets:
+        - AccentMirrorScreenshots

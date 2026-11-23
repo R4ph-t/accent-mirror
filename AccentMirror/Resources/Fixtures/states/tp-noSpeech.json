@@ -1,0 +1,17 @@
+{
+  "name": "tp-noSpeech",
+  "summary": "No speech heard.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-attempt-no-audio",
+  "analysis": {
+    "takeProblems": [
+      "noSpeech"
+    ]
+  }
+}

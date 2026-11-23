@@ -1,0 +1,92 @@
+{
+  "name": "words-expectedAmbiguous",
+  "summary": "\"harder\" can be said more than one way: lowercase labels, Lime still shows, never flagged.",
+  "phrase": "photography-harder-ambiguous",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-take03-harder-unchecked",
+  "analysis": {
+    "verdict": {
+      "kind": "feedback",
+      "rows": [
+        {
+          "kind": "placement",
+          "word": "photography",
+          "syllables": [
+            "pho",
+            "tog",
+            "ra",
+            "phy"
+          ],
+          "acceptedIndex": 1,
+          "heardIndex": 0
+        },
+        {
+          "kind": "reduction",
+          "targets": [
+            "ra",
+            "phy",
+            "der",
+            "than"
+          ]
+        }
+      ]
+    },
+    "measures": [
+      {
+        "measure": "stressPlacement",
+        "state": "evaluated"
+      },
+      {
+        "measure": "contrast",
+        "state": "evaluated",
+        "value": 0.58
+      },
+      {
+        "measure": "reduction",
+        "state": "evaluated",
+        "value": 0.64
+      },
+      {
+        "measure": "rhythm",
+        "state": "evaluated",
+        "value": 0.71
+      },
+      {
+        "measure": "pitchShape",
+        "state": "evaluated",
+        "value": 0.62
+      },
+      {
+        "measure": "range",
+        "state": "evaluated",
+        "value": 0.88
+      },
+      {
+        "measure": "finalDirection",
+        "state": "evaluated"
+      }
+    ],
+    "timing": "good",
+    "stress": [
+      {
+        "word": "photography",
+        "outcome": "outsideAccepted"
+      },
+      {
+        "word": "harder",
+        "outcome": "notChecked"
+      },
+      {
+        "word": "looks",
+        "outcome": "matchesDictionary",
+        "pattern": "LOOKS"
+      }
+    ]
+  },
+  "inspectorOpen": true
+}

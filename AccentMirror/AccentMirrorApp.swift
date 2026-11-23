@@ -7,6 +7,12 @@ struct AccentMirrorApp: App {
 
     init() {
         BundledFonts.register()
+        // `-UIFixture <name>` picks a committed fixture (spec 19); without it the app shows the empty state.
+        let name = UserDefaults.standard.string(forKey: "UIFixture") ?? FixtureLibrary.defaultFixture
+        if let library = FixtureLibrary(), let loaded = try? library.load(name) {
+            _model = State(initialValue: ShellModel(fixture: loaded))
+            return
+        }
         _model = State(initialValue: ShellModel(
             manifest: .stub,
             sidebar: .stub,

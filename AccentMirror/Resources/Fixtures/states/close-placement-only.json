@@ -1,0 +1,120 @@
+{
+  "name": "close-placement-only",
+  "summary": "Close on a one-word, two-syllable phrase: placement only, plus the info line.",
+  "phrase": "record",
+  "phase": "showingTake",
+  "savedTakes": [
+    2,
+    1
+  ],
+  "take": "record-take02",
+  "analysis": {
+    "verdict": {
+      "kind": "close"
+    },
+    "measures": [
+      {
+        "measure": "stressPlacement",
+        "state": "evaluated"
+      },
+      {
+        "measure": "contrast",
+        "state": "notApplicable",
+        "reason": "oneWordTwoSyllables"
+      },
+      {
+        "measure": "reduction",
+        "state": "notApplicable",
+        "reason": "oneWordTwoSyllables"
+      },
+      {
+        "measure": "rhythm",
+        "state": "evaluated",
+        "value": 0.9
+      },
+      {
+        "measure": "pitchShape",
+        "state": "evaluated",
+        "value": 0.84
+      },
+      {
+        "measure": "range",
+        "state": "evaluated",
+        "value": 0.9
+      },
+      {
+        "measure": "finalDirection",
+        "state": "evaluated"
+      }
+    ],
+    "timing": "good"
+  },
+  "manifest": {
+    "packs": [
+      {
+        "id": "my-phrases",
+        "title": "My Phrases",
+        "phrases": [
+          {
+            "id": "photography",
+            "text": "Photography is harder than it looks."
+          },
+          {
+            "id": "record",
+            "text": "Record."
+          }
+        ]
+      },
+      {
+        "id": "stress-shifts",
+        "title": "Stress Shifts",
+        "phrases": [
+          {
+            "id": "complicated-ideas",
+            "text": "Many complicated ideas about the rainbow have been formed."
+          },
+          {
+            "id": "tried-to-explain",
+            "text": "Others have tried to explain the phenomenon physically."
+          },
+          {
+            "id": "accepted-miracle",
+            "text": "Some have accepted it as a miracle without physical explanation."
+          }
+        ]
+      },
+      {
+        "id": "noun-verb-pairs",
+        "title": "Noun and Verb Pairs",
+        "phrases": []
+      },
+      {
+        "id": "compound-nouns",
+        "title": "Compound Nouns",
+        "phrases": [
+          {
+            "id": "sunlight-raindrops",
+            "text": "When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow."
+          }
+        ]
+      },
+      {
+        "id": "weak-forms",
+        "title": "Weak Forms",
+        "phrases": [
+          {
+            "id": "call-stella",
+            "text": "Please call Stella."
+          }
+        ]
+      }
+    ]
+  },
+  "sidebar": {
+    "selectedPhraseID": "record",
+    "expandedPackIDs": [
+      "my-phrases",
+      "stress-shifts"
+    ]
+  }
+}
