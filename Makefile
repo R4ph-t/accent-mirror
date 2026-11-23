@@ -36,7 +36,7 @@ bench:
 	@echo "bench: not yet: spec 11"
 
 eval:
-	@echo "eval: not yet: spec 11"
+	@echo "eval: not yet: spec 03"
 
 agreement-record:
-	@echo "agreement-record: not yet: spec 11"
+	@echo "agreement-record: not yet: spec 03"

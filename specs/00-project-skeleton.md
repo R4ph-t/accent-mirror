@@ -1,6 +1,6 @@
 # 00: Project skeleton (by hand)
 
-Status: In review · Branch: factory/00-skeleton · Depends on: – · Risk: high
+Status: Done · Branch: factory/00-skeleton · Depends on: – · Risk: high
 
 Source: the groundwork plan (Raph approved 2026-11-23). Scope change at 09:00 Paris the same day: "Mac first, iOS
 right after", so this spec has a macOS app target only.
