@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Pinned Xcode, from the macos-26 image.
+  DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
+
+jobs:
+  build-and-test:
+    name: build & test
+    # GitHub-hosted only. Never self-hosted: public repo, fork PRs.
+    runs-on: macos-26
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Corpus guard
+        run: |
+          make check-corpus
+          scripts/test-check-local-corpus.sh
+
+      - name: No AppKit/UIKit in AccentKit
+        run: make check-ui-frameworks
+
+      - name: Build macOS app
+        run: make build
+
+      - name: Test AccentKit
+        run: make test
