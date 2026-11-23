@@ -23,6 +23,12 @@ struct AMTimestamps {
                         Spec 23: refine the replayed Whisper words with each aligner, judge them against the
                         baseline, write the word-boundaries report. --record writes the refined replays under D.
                         Exit 1 on FAIL, 4 when a run differs from its recorded replay; on --release, 2 on a dirty tree.
+          diagnostics   --repo D --clips F --corpus D --baseline F --replay D --ctc-manifest M --ctc-dir D
+                        --gate-report F --out D [--name N] [--reference D --manifest M --model-dir D] [--files-pin F]
+                        [--release]
+                        CTO diagnostic round on spec 23's downstream gate: control (markers vs MFA on TTS), ranking
+                        (whisper, dsp-snap-1, b2), b2's flip breakdown and inconclusive split. Measures only.
+                        Exit 4 when b2's diff does not reproduce the gate report; on --release, 2 on a dirty tree.
           tts-reference --clips F --corpus D --voice ID --out D [--files-pin F]
                         Synthesise each eval phrase once with SSML <mark> bookmarks around every word; write an MFA
                         input corpus and markers.json (the reference sanity check). Exit 3 when the voice is missing.
@@ -43,6 +49,7 @@ struct AMTimestamps {
             case "baseline": status = try baseline(options)
             case "eval": status = try await evaluate(options)
             case "boundaries": status = try await boundaries(options)
+            case "diagnostics": status = try await diagnostics(options)
             case "tts-reference": status = try await ttsReference(options)
             case "reference-compare": status = try referenceCompare(options)
             case "cancel-check": status = try await cancelCheck(options)
