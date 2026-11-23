@@ -223,14 +223,18 @@ spec 07's and is not applied here. Under a bar, the report goes to CTO.
 
 ## Word boundaries (`Thresholds.wordBoundaries`)
 
-Spec 23's refinement of Whisper word boundaries after ASR (CTO ruling 2026-11-23 13:00). Judged on spec 03's bars
-above (`wordTimestamps.*`), which it never changes. Any b1 constant is chosen on tuning speakers only, never on the
+Spec 23's refinement of Whisper word boundaries after ASR (CTO rulings 2026-11-23 13:00 and 14:05). Since 14:05
+spec 03's bars above (`wordTimestamps.*`, values unchanged) are a reported target for the aligner, not its gate; the
+gate is downstream (the last two rows). Any b1 constant is chosen on tuning speakers only, never on the
 held-out clips the gate uses.
 
 | Name | Key | Value | Unit | Plan | Owner spec | Notes |
 |---|---|---|---|---|---|---|
 | Snap search window | `wordBoundaries.snapWindowMs` | 150 | ± ms | CTO 2026-11-23 | 23 | Each Whisper boundary is searched this far either side, clamped to the neighbouring words and the take |
-| Intensity drop | `wordBoundaries.intensityDropDB` | 10 | dB | CTO 2026-11-23 | 23 | `dsp-snap-1` intensity offset: first frame after the last local peak whose frame RMS is this far below it (mirror rule for onsets). Spec default, untuned |
+| Intensity drop | `wordBoundaries.intensityDropDB` | 10 | dB | CTO 2026-11-23 | 23 | `dsp-snap-1` intensity offset: first frame after the last local peak whose frame RMS is this far below it (mirror rule for onsets). Spec default, untuned. b1 is a diagnostic only since 14:05 |
+| CTC confidence minimum | `wordBoundaries.ctcConfidenceMin` | 0.5 | mean posterior of a word's aligned characters | CTO 2026-11-23 14:05 | 23 | Below it, a b2 word's probability goes to 0 (inconclusive), inside `agreement.inconclusivePairsMax`. Default, untuned until spec 02's tuning split is on main; b2 does not ship until then |
+| Downstream verdict difference | `wordBoundaries.verdictDiffMax` | 0.02 | share of comparable words | CTO 2026-11-23 14:05 | 23 | Ship gate: spec 07's word verdicts under b2 vs oracle boundaries differ on at most this share, synthetic and VCTK separately |
+| Downstream inconclusive rise | `wordBoundaries.inconclusiveRiseMaxPoints` | 0.02 | points (share) | CTO 2026-11-23 14:05 | 23 | Ship gate: b2's inconclusive word rate at most this above the oracle's, synthetic and VCTK separately |
 
 ## Performance
 

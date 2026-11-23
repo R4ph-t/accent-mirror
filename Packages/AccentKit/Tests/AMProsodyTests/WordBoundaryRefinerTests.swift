@@ -185,7 +185,8 @@ struct WordBoundaryRefinerTests {
     @Test("ConfigIdentity with a different aligner gives a different configDigest")
     func alignerInDigest() throws {
         let digests = try [WhisperOnly().id, snap.id, "ctc-w2v2b960-1"].map {
-            try configDigest(ConfigIdentity(asrModelID: "a", pitchTrackerID: "pyin-1", voicingID: "acf-1", aligner: $0))
+            try configDigest(ConfigIdentity(asrModelID: "a", pitchTrackerID: "pyin-1", voicingID: "acf-1", aligner: $0,
+                                            alignerModelSHA256: "none"))
         }
         #expect(Set(digests).count == 3)
     }

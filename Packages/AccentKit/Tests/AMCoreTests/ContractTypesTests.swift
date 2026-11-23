@@ -208,7 +208,7 @@ private func range(_ start: Double, _ end: Double) -> TimeRange { try! TimeRange
 }
 
 @Suite("Identity") struct IdentityTests {
-    private let config = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "none", aligner: "whisper")
+    private let config = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "none", aligner: "whisper", alignerModelSHA256: "none")
 
     @Test("config identity records the current versions") func versions() {
         #expect(config.algorithmVersion == Versions.algorithmVersion)
@@ -223,13 +223,25 @@ private func range(_ start: Double, _ end: Double) -> TimeRange { try! TimeRange
         var tweaked = Thresholds.current
         tweaked.decision.closeMinShapeMatch = 0.71
         #expect(try configDigest(config, thresholds: tweaked) != digest)
-        let otherVoicing = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "acf-1", aligner: "whisper")
+        let otherVoicing = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "acf-1", aligner: "whisper", alignerModelSHA256: "none")
         #expect(try configDigest(otherVoicing) != digest)
     }
 
     @Test("a different aligner gives a different configDigest (spec 23)") func configDigestTracksAligner() throws {
-        let snapped = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "none", aligner: "dsp-snap-1")
+        let snapped = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "none", aligner: "dsp-snap-1",
+                                      alignerModelSHA256: "none")
         #expect(snapped.aligner == "dsp-snap-1")
         #expect(try configDigest(snapped) != (try configDigest(config)))
+    }
+
+    @Test("a different aligner model hash gives a different configDigest (CTO ruling 14:05)")
+    func configDigestTracksAlignerModel() throws {
+        func ctc(_ sha: String) -> ConfigIdentity {
+            ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "none", aligner: "ctc-w2v2b960-1",
+                           alignerModelSHA256: sha)
+        }
+        let a = ctc(String(repeating: "a", count: 64)), b = ctc(String(repeating: "b", count: 64))
+        #expect(a.alignerModelSHA256 != b.alignerModelSHA256)
+        #expect(try configDigest(a) != (try configDigest(b)))
     }
 }

@@ -261,11 +261,14 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public init() {}
     }
 
-    /// Word-boundary refinement after ASR, spec 23 (CTO ruling 2026-11-23 13:00). `intensityDropDB` is the spec's
-    /// default, not tuned.
+    /// Word-boundary refinement after ASR, spec 23 (CTO rulings 2026-11-23 13:00 and 14:05). `intensityDropDB` and
+    /// `ctcConfidenceMin` are defaults, not tuned (spec 02's tuning split is not on main).
     public struct WordBoundaries: Sendable, Hashable, Codable {
         public var snapWindowMs = 150.0
         public var intensityDropDB = 10.0
+        public var ctcConfidenceMin = 0.5
+        public var verdictDiffMax = 0.02
+        public var inconclusiveRiseMaxPoints = 0.02
         public init() {}
     }
 

@@ -10,8 +10,10 @@ extension ConfigIdentity {
     /// Spec 03's identity: AMCore's current versions, the pinned ASR model, and the explicit placeholder `none` for
     /// the pitch tracker (spec 04) and voicing (spec 05), which are not built yet. `aligner` is the word-boundary
     /// refiner the boundaries came from (spec 23); spec 03 measures raw Whisper, `whisper`.
-    public static func timestampFeasibility(asrModelID: String, aligner: String = "whisper") -> ConfigIdentity {
-        ConfigIdentity(asrModelID: asrModelID, pitchTrackerID: "none", voicingID: "none", aligner: aligner)
+    public static func timestampFeasibility(asrModelID: String, aligner: String = "whisper",
+                                            alignerModelSHA256: String = "none") -> ConfigIdentity {
+        ConfigIdentity(asrModelID: asrModelID, pitchTrackerID: "none", voicingID: "none", aligner: aligner,
+                       alignerModelSHA256: alignerModelSHA256)
     }
 }
 

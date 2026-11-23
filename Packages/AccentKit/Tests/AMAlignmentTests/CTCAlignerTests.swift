@@ -138,3 +138,27 @@ struct CTCModelManifestTests {
         #expect(throws: ModelVerificationError.self) { try inconsistent.verify(folder: folder) }
     }
 }
+
+@Suite("CTC confidence gating (CTO ruling 14:05)")
+struct CTCConfidenceTests {
+    @Test("a word's confidence is the mean posterior of its aligned characters") func confidence() throws {
+        // A at frames 1–2 with posterior ~0.99, B at frame 4 with posterior e^-0.7 ≈ 0.5.
+        var lp = emissions([0, 2, 2, 0, 3, 0])
+        lp[4 * 6 + 3] = -0.7
+        let aligned = try CTCForcedAlignment.alignWithConfidence(
+            logProbs: lp, frames: 6, classes: 6, tokens: [[2], [3]], bands: [(-1e9, 1e9), (-1e9, 1e9)],
+            blank: 0, separator: 1)
+        let a = try #require(aligned[0]), b = try #require(aligned[1])
+        #expect(abs(a.confidence - exp(-0.01)) < 1e-6)
+        #expect(abs(b.confidence - exp(-0.7)) < 1e-6)
+    }
+
+    @Test("below ctcConfidenceMin the word's span probability is 0 (inconclusive); at or above it, unchanged")
+    func gating() {
+        let word = WordTimestamp(word: "call", start: 0, end: 0.3, probability: 0.8)
+        #expect(Thresholds.current.wordBoundaries.ctcConfidenceMin == 0.5)
+        #expect(ConfidentWord(word: word, confidence: 0.49).spanProbability() == 0)
+        #expect(ConfidentWord(word: word, confidence: 0.5).spanProbability() == 0.8)
+        #expect(ConfidentWord(word: word, confidence: 0.9).spanProbability(minimum: 0.95) == 0)
+    }
+}

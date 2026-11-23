@@ -151,26 +151,36 @@ public actor CTCAligner: WordBoundaryRefiner {
     }
 
     public func refine(_ words: [WordTimestamp], samples: [Float], sampleRate: Double) async throws -> [WordTimestamp] {
+        try await align(words, samples: samples, sampleRate: sampleRate).map(\.word)
+    }
+
+    /// The refined words with each word's CTC confidence (`CTCForcedAlignment.Aligned.confidence`; 0 for a word the
+    /// aligner could not place, whose boundaries stay Whisper's).
+    public func align(_ words: [WordTimestamp], samples: [Float], sampleRate: Double) async throws -> [ConfidentWord] {
         try Task.checkCancellation()
         guard !words.isEmpty else { return [] }
         let duration = Double(samples.count) / sampleRate
         let window = thresholds.snapWindowMs / 1000
         var spans: [CTCForcedAlignment.Span?] = Array(repeating: nil, count: words.count)
+        var confidences = [Double](repeating: 0, count: words.count)
         if sampleRate == manifest.sampleRate, samples.count <= manifest.conversion.maxSamples {
             let logProbs = try await logProbabilities(samples)
             try Task.checkCancellation()
             let secondsPerFrame = Double(manifest.samplesPerFrame) / sampleRate
             let tokens = words.map { word in word.word.uppercased().compactMap { labels[$0] } }
-            spans = try CTCForcedAlignment.align(
+            let aligned = try CTCForcedAlignment.alignWithConfidence(
                 logProbs: logProbs.values, frames: logProbs.frames, classes: logProbs.classes, tokens: tokens,
                 bands: words.map { ((($0.start - window) / secondsPerFrame).rounded(.down),
                                     (($0.end + window) / secondsPerFrame).rounded(.up)) },
-                blank: blank, separator: separator
-            ).map { $0.map { CTCForcedAlignment.Span(start: $0.start * secondsPerFrame, end: $0.end * secondsPerFrame) } }
+                blank: blank, separator: separator)
+            spans = aligned.map { $0.map { CTCForcedAlignment.Span(start: $0.span.start * secondsPerFrame,
+                                                                   end: $0.span.end * secondsPerFrame) } }
+            confidences = aligned.map { $0?.confidence ?? 0 }
         }
-        return try BoundarySearch.refine(
+        let refined = try BoundarySearch.refine(
             words, takeDuration: duration, windowSeconds: window,
             findStart: { index, _ in spans[index]?.start }, findEnd: { index, _ in spans[index]?.end })
+        return zip(refined, confidences).map { ConfidentWord(word: $0, confidence: $1) }
     }
 
     /// Per-frame log-softmax of the model's logits, row-major `frames × classes`.
@@ -205,6 +215,24 @@ public actor CTCAligner: WordBoundaryRefiner {
             for c in 0..<classes { values[row + c] -= logSum }
         }
         return (values, frames, classes)
+    }
+}
+
+/// A refined word and its CTC confidence, 0–1.
+public struct ConfidentWord: Sendable, Equatable, Codable {
+    public var word: WordTimestamp
+    public var confidence: Double
+
+    public init(word: WordTimestamp, confidence: Double) {
+        self.word = word
+        self.confidence = confidence
+    }
+
+    /// The probability the word carries into spec 07's `WordSpan` (CTO ruling 2026-11-23 14:05): 0 below
+    /// `minimum`, so every syllable of the word is low confidence and the word is inconclusive; otherwise the
+    /// recogniser's probability, unchanged.
+    public func spanProbability(minimum: Double = Thresholds.current.wordBoundaries.ctcConfidenceMin) -> Double {
+        confidence < minimum ? 0 : word.probability
     }
 }
 
@@ -277,17 +305,31 @@ public enum CTCForcedAlignment {
         return samples.map { Float((Double($0) - mean) * scale) }
     }
 
+    /// A word's frame span and its confidence: the mean posterior probability, over the frames the best path spends
+    /// on the word's characters, of the character it is on there.
+    public struct Aligned: Sendable, Equatable {
+        public var span: Span
+        public var confidence: Double
+    }
+
     /// Viterbi over the CTC trellis of all words' tokens in order, blank between every token. A word's tokens may
     /// occupy only frames in its band `[lower, upper]`. Returns each word's frame span, nil for a word with no tokens,
     /// and all nil when no path fits the bands.
     public static func align(logProbs: [Float], frames: Int, classes: Int, tokens: [[Int]],
                              bands: [(Double, Double)], blank: Int, separator: Int) throws -> [Span?] {
+        try alignWithConfidence(logProbs: logProbs, frames: frames, classes: classes, tokens: tokens, bands: bands,
+                                blank: blank, separator: separator).map { $0?.span }
+    }
+
+    /// `align`, with each word's confidence.
+    public static func alignWithConfidence(logProbs: [Float], frames: Int, classes: Int, tokens: [[Int]],
+                                           bands: [(Double, Double)], blank: Int, separator: Int) throws -> [Aligned?] {
         var labels: [Int] = [], owner: [Int] = []
         for (word, letters) in tokens.enumerated() {
             labels += letters
             owner += Array(repeating: word, count: letters.count)
         }
-        let none = [Span?](repeating: nil, count: tokens.count)
+        let none = [Aligned?](repeating: nil, count: tokens.count)
         let states = 2 * labels.count + 1
         guard !labels.isEmpty, frames > 0 else { return none }
         func label(_ s: Int) -> Int? { s % 2 == 1 ? labels[s / 2] : nil }
@@ -328,15 +370,20 @@ public enum CTCForcedAlignment {
         if states >= 2, score[states - 2] > score[s] { s = states - 2 }
         guard score[s] > impossible else { return none }
 
-        var spans = none
+        var spans = [Span?](repeating: nil, count: tokens.count)
+        var posterior = [Double](repeating: 0, count: tokens.count), counts = [Int](repeating: 0, count: tokens.count)
         for t in stride(from: frames - 1, through: 0, by: -1) {
             if s % 2 == 1 {
                 let word = owner[s / 2]
                 let span = spans[word] ?? Span(start: Double(t), end: Double(t + 1))
                 spans[word] = Span(start: Double(t), end: span.end)
+                posterior[word] += Double(exp(logProbs[t * classes + labels[s / 2]]))
+                counts[word] += 1
             }
             if t > 0 { s -= Int(back[t * states + s]) }
         }
-        return spans
+        return spans.indices.map { word in
+            spans[word].map { Aligned(span: $0, confidence: posterior[word] / Double(max(counts[word], 1))) }
+        }
     }
 }
