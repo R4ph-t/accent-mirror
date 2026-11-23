@@ -120,4 +120,72 @@ table, tested in both directions.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Built by hand on Claude Code (Opus), 2026-11-23, branch `factory/06-pronunciation-alignment`. Everything is in
+`AMAlignment` and reads only bundled resources; no network at runtime or in tests.
+
+### Where things are
+
+| Path | What |
+|---|---|
+| `Sources/AMAlignment/Resources/CMUdict/` | `cmudict.dict` and `LICENSE` from `cmusphinx/cmudict` at `74790861f652b15e4ac49015a90074ad62a27690`, unmodified; `manifest.json` with each file's SHA-256 (a test re-hashes them) |
+| `Sources/AMAlignment/Resources/stress-shift-pairs.json` | Generated: the 993 CMUdict words whose multi-syllable variants differ in primary stress, with each POS's variant index (null = ambiguous) |
+| `tools/gen_stress_shift_pairs.py`, `tools/stress-shift-pos.tsv` | The generator (pure Python, `--check` diffs and exits 1) and the hand-curated POS table it joins in (78 rows) |
+| `Resources/{function-words,contractions,us-uk,compounds}.txt` | The four lists, header comments naming the source |
+| `Pronunciation.swift` | `Pronunciation` (validated ARPAbet, encodes as its string), `Syllable`, `Syllabifier` (maximum onset; spelling fallback) |
+| `PronouncingDictionary.swift` | `PronouncingDictionary` (loaded once, lazily), `StressShiftPairs` |
+| `LexicalClassTagger.swift` | The `LexicalClassTagger` seam and `NaturalLanguageTagger` (`NLTagger`, `.lexicalClass`, language set to `.english`) |
+| `PronunciationSelector.swift` | `PhraseText`, `PersistedPronunciation`, `PronunciationSource`, `ExpectedWord`, `ExpectedPhrase`, `PronunciationSelector` |
+| `Normalisation.swift` | `EquivalenceTable` (one table of `EquivalenceRow`s: contractions, compounds, US/UK, numbers), `FunctionWords`, `NumberSpelling` |
+| `WordAligner.swift` | `HeardWord`, `WordAligner.align(_:heard:) -> WordAlignmentResult` (AMCore's `WordAlignment` + `AlignmentSummary`) |
+| `StarterPhraseValidator.swift` | `PhrasePronunciationFile` (`text`, `targets`, `pronunciations`) and `StarterPhraseValidator.problems(in:dictionary:)` |
+
+### Decisions worth knowing
+
+- **One equivalence mechanism.** Every equivalence, numbers included, is a row of forms (word sequences). Tokens are
+  merged greedily, longest form first, and each token carries the set of rows it belongs to; two tokens match when the
+  sets meet. So "it's" matches "it is" and "it has", but "it is" never matches "it has". Number rows are generated
+  (0–9999 with and without "and", hyphenated or not; years as pairs for 1000–9999; ordinals 1st–31st): about 10,000
+  rows. A test walks every row of every kind in both directions, and another proves no number form belongs to two
+  numbers.
+- **Unconfirmed merges are undone.** A multi-word unit (e.g. "train station") stays one token only if the other side
+  has a token it can match; otherwise its words compare one by one, so "train" is still present when you said
+  "train stations".
+- **Fillers and repeats** are applied to the heard side only. A repeat is collapsed to the phrase's own run length
+  ("had had" survives when the phrase has it), keeping the last occurrence.
+- **Time for merged units.** When one heard word stands for several phrase words ("trainstation"), its span is split by
+  the phrase words' letter counts; when counts agree, word for word.
+- **NW tie-breaking:** diagonal, then omission, then insertion, so output is deterministic. Scores come from
+  `Thresholds.current.alignment` (+2 / −1 / −1); no thresholds were added or changed.
+- **Tagger fixture.** 52 sentences over 25 stress-shift words. NLTagger (macOS 26 / Xcode 26.2) gets 47 right. The five
+  misses are verbs tagged as nouns where the verb opens the sentence or follows a plural-noun subject ("Record it now,
+  please.", "Muscles contract when cold.", "Talks progress slowly here.", "Teenagers rebel against rules.", "Perfect
+  your accent daily."). The fixture records both the true POS and the tagger's answer, so a change in either direction
+  fails the test.
+- **Persisted value.** `ExpectedPhrase.persistable` gives every word's choice (pronunciation, ambiguity, source) for
+  specs 16–17 to save; a persisted value is used only if its folded text still matches the word.
+- **Resource lookup** accepts both bundle layouts: SwiftPM's flat bundle (where Foundation reports the top-level
+  `Resources` folder as the resource URL) and Xcode's `Contents/Resources/Resources`. Checked in the built app.
+
+### Spec gaps (built least-committal, listed for CTO / later specs)
+
+1. **"Only one primary-stress pattern"** is read as: among variants with at least two syllables, the 0-based syllable of
+   the first `1` takes one value. Monosyllables never count (their weak/strong forms are a validator matter, below).
+   Membership in `stress-shift-pairs.json` is that test, so Swift and the generator can't disagree.
+2. **A starter-phrase stress-shift word with no override** (rule 2 is imports only, rule 3 fails) is built as
+   `expectedAmbiguous` with source `dictionary` and the first variant's syllables. The validator stops this for targets.
+3. **Validator "stress variants"** is read as variants with different full stress sequences, so it also requires overrides
+   for weak/strong targets such as "can" (K AE1 N / K AH0 N), matching CPO's phrase page. "reflection" (two variants,
+   same stresses) needs none.
+4. **Phrase JSON shape** isn't defined until spec 15. `PhrasePronunciationFile` reads `text`, `targets` (0-based indices
+   after whitespace split, bare punctuation skipped, as CPO's page says) and `pronunciations` as an object keyed by
+   word index with ARPAbet strings. Spec 15 can replace it.
+5. **Out-of-vocabulary syllables** come from vowel groups with one consonant to the next syllable ("zorb·lat"). Only
+   the count matters to spec 07; there is no orthographic syllabification for dictionary words either (the UI's
+   syllable text is out of scope here).
+6. **Numerals in the phrase text** ("1990") are out of vocabulary for pronunciation (one spelling syllable); they still
+   align with spoken forms. Decimals and comma-grouped numbers are folded literally ("3.5" → "35").
+7. **Empty phrase:** match % is 0.
+8. **Compounds list** starts from CPO's starter phrase set (Compound Nouns pack and its to-record list), singular and
+   plural where both occur.
+9. **No network test.** `NLTagger`'s English lexical-class model is built in and nothing here makes a request, but there
+   is no test that denies networking (the spec doesn't ask for one; CTO decision 2's test belongs to SpeechAnalyzer).
