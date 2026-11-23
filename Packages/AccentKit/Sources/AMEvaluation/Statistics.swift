@@ -170,7 +170,7 @@ public enum ClusteredBootstrap {
     static func label(_ clustering: Clustering, resamples: Int) -> String {
         switch clustering {
         case .speakers: "speaker-clustered bootstrap, \(resamples) resamples"
-        case .speakersAndPhrases: "two-way clustered bootstrap (speakers × phrases), \(resamples) resamples"
+        case .speakersAndPhrases: "two-way clustered bootstrap (speakers × source prompts), \(resamples) resamples"
         }
     }
 
