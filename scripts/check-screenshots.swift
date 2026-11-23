@@ -4,7 +4,7 @@
 //   swift scripts/check-screenshots.swift screenshots/ui-shell
 //
 // A frame is 2× its fixture's window: 2400 × 1600 for the default 1200 × 800 pt, or 2× the fixture's `window`
-// field (`narrow-inspector-open` is 960 × 680 pt, so 1920 × 1360). Run from the repo root.
+// field (`narrow-inspector-open` is 960 × 732 pt, so 1920 × 1464). Run from the repo root.
 import AppKit
 
 let defaultSize = (width: 2400, height: 1600)

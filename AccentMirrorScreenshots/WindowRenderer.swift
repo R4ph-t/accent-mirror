@@ -81,10 +81,10 @@ enum WindowRenderer {
         return png
     }
 
-    /// Builds the window, captures it, then tears it down and waits (up to a second) until it is deallocated, so
-    /// windows don't pile up across the run (AppKit warns past 100 live windows). The teardown runs after the
-    /// capture, so the frames don't change. Also returns whether the window was freed and how many windows the app
-    /// still lists, for the run's log.
+    /// Builds the window, captures it, then tears it down. The teardown runs after the capture, so the frames don't
+    /// change. Also returns whether the window was freed by then and how many windows the app still lists, for the
+    /// run's log: in the VM none is freed, so AppKit's "excessive live window count" warning still shows once per run
+    /// (an open point of fixes round 5).
     static func render(model: ShellModel, appearance: Appearance, size: CGSize) async throws
         -> (png: Data, released: Bool, liveWindows: Int) {
         var window: NSWindow? = makeWindow(model: model, appearance: appearance, size: size)
@@ -98,11 +98,9 @@ enum WindowRenderer {
         }
         tearDown(window!)
         window = nil
-        for _ in 0..<40 where weakWindow != nil {
-            // Let the run loop turn so AppKit and SwiftUI drop their last references.
-            try? await Task.sleep(for: .milliseconds(25))
-            await Task.yield()
-        }
+        // Let the run loop turn so AppKit and SwiftUI can drop their last references.
+        try? await Task.sleep(for: .milliseconds(30))
+        await Task.yield()
         return (png, weakWindow == nil, NSApp.windows.count)
     }
 
