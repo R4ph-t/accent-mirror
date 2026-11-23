@@ -1,6 +1,6 @@
 # Timestamp feasibility (spec 03): FAIL
 
-Generated 2026-11-23T11:28:35Z. WhisperKit word timings against Montreal Forced Aligner 3.4.4 on 155 VCTK 0.92 clips. **No stress claims.**
+Generated 2026-11-23T11:30:41Z. WhisperKit word timings against Montreal Forced Aligner 3.4.4 on 155 VCTK 0.92 clips. **No stress claims.**
 
 ## Verdict
 
@@ -9,7 +9,7 @@ Generated 2026-11-23T11:28:35Z. WhisperKit word timings against Montreal Forced 
 | Median boundary error (padded spans) | ≤ 40.0 ms | 120.0 ms | FAIL |
 | Boundaries within 80.0 ms (padded spans) | ≥ 85.0% | 36.8% | FAIL |
 | Calibration: low-probability bin has more error than high | low > high | 145.1 ms vs 143.1 ms | PASS |
-| Warm ASR, median over clips | ≤ 900.0 ms | 114.7 ms | PASS |
+| Warm ASR, median over clips | ≤ 900.0 ms | 150.0 ms | PASS |
 | **Overall** | | | **FAIL** |
 
 Under the bar, or not evaluated: this report goes to CTO. Thresholds are not changed to pass.
@@ -17,8 +17,8 @@ Under the bar, or not evaluated: this report goes to CTO. Thresholds are not cha
 ## Identity (plan §6.6)
 
 - `configDigest`: `dfbe69ecb19fc4dee69801d68d5a34d91f594f18446afbd7462dd3adc1dba430`
-- `sourceTreeHash`: `893a385879a60d7848c9d9ab967ef78f15c8e2ac44014ddbf1fdc1fe973a06c0`
-- Evaluated commit: `0a2913c60f3fac6e30f1e088665b2c3c5b418ec7`; clean tree: yes
+- `sourceTreeHash`: `8d3fcc25e401ce0ec8ce3dab8ffde9536fc1e48db8c7649f04c83b623ae95aee`
+- Evaluated commit: `f26d055f9f088b10c090b5bdb79e516a96112e28`; clean tree: yes
 - `ConfigIdentity`: algorithmVersion 1, thresholdsVersion 3, contractVersion 1, asrModelID `openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631`, pitchTrackerID `none`, voicingID `none`
 - Corpus manifest hash: `1ba061d2ca470e64ae96b6aeab93251255e0505226348eb962f423fc0723e716`
 - Label (baseline) hash: `e2751a293ac6a886775d0ae1bd608d6d27ef9c48a0c1f09362859899ec8dcb59` (`fixtures/vctk/mfa-word-baseline.json`)
@@ -28,7 +28,7 @@ Recompute by hand:
 
 ```sh
 # sourceTreeHash
-git ls-tree -r --full-tree 0a2913c60f3fac6e30f1e088665b2c3c5b418ec7 | grep -v "$(printf '\t')docs/agreement/reports/" | LC_ALL=C sort | shasum -a 256
+git ls-tree -r --full-tree f26d055f9f088b10c090b5bdb79e516a96112e28 | grep -v "$(printf '\t')docs/agreement/reports/" | LC_ALL=C sort | shasum -a 256
 # configDigest: SHA-256 of identity.configCanonicalJSON in the JSON report (no trailing newline)
 printf '%s' "$(plutil -extract identity.configCanonicalJSON raw -o - timestamp-feasibility-dfbe69ec.json)" | shasum -a 256
 # corpus manifest hash, in the VCTK cache folder
@@ -142,10 +142,10 @@ Two bins split at the median word probability over comparable tokens (low: below
 
 ## Timing
 
-- Manifest verification (SHA-256 of every file): 82.5 ms
-- Model load and prewarm: 747.2 ms
-- Cold ASR (first clip after load): 251.6 ms
-- Warm ASR over 154 clips: median 114.7 ms, p90 150.3 ms, max 294.5 ms
+- Manifest verification (SHA-256 of every file): 102.9 ms
+- Model load and prewarm: 951.4 ms
+- Cold ASR (first clip after load): 309.7 ms
+- Warm ASR over 154 clips: median 150.0 ms, p90 293.0 ms, max 528.2 ms
 - Budget: warm ASR ≤ 900.0 ms (median): PASS
 - Clip length: median 5.928 s, max 9.028 s
 
