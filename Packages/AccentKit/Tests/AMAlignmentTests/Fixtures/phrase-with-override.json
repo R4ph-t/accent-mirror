@@ -1,0 +1,6 @@
+{
+  "id": "fixture-train-station",
+  "text": "She can scoop these things into three red bags, and we will go meet her Wednesday at the train station.",
+  "targets": [1, 18],
+  "pronunciations": { "1": "K AH0 N" }
+}

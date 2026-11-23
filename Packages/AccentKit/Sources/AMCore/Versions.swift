@@ -7,7 +7,7 @@ public enum Versions {
     /// Bump when an algorithm change can change any output for the same inputs.
     public static let algorithmVersion = 1
     /// Bump when any value in `Thresholds` changes.
-    public static let thresholdsVersion = 1
+    public static let thresholdsVersion = 2
     /// Bump when a contract type's shape or JSON changes.
     public static let contractVersion = 1
 
@@ -27,5 +27,9 @@ public enum Versions {
         GoldenDigest(
             algorithmVersion: 1, thresholdsVersion: 1, contractVersion: 1,
             digest: "542234344d63e3fbd511f831667be6f78a2477017d2a9ab4a7314467657d598a"),
+        // Spec 05: `capture.endpointArmSpeechS` and `capture.noSpeechVoicedS` added (plan §10 values, not tuned).
+        GoldenDigest(
+            algorithmVersion: 1, thresholdsVersion: 2, contractVersion: 1,
+            digest: "9c66917a2b02032b4788c048b02714e8425abe0e9aeb0f17d2bed8c08b1c443c"),
     ]
 }
