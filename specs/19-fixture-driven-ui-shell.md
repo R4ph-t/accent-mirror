@@ -2,7 +2,7 @@
 
 Status: Done · Branch: factory/18-19-ui-shell (PR #4), fixes on factory/18-19-fixes (PR #11) and factory/18-19-fixes-r3 · Depends on: 18 (UI foundation) · Estimate: 6–8 h agent run + 1.5 h Raph review
 
-Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)"), including Addendum 2026-11-23 (r2) and Addendum 2026-11-23 (r3, items B1–B11). r3 wins over r2 and spec v2 wherever they differ; r2 wins over spec v2. Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px for a 1200 × 800 pt window). This spec does not depend on spec 11 (scoring).
+Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)"), including Addendum 2026-11-23 (r2), Addendum 2026-11-23 (r3, items B1–B11) and Addendum 2026-11-23 (r4, items C1–C9). r4 wins over r3, r2 and spec v2 wherever they differ; r3 wins over r2 and spec v2; r2 wins over spec v2. Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px for a 1200 × 800 pt window). This spec does not depend on spec 11 (scoring).
 
 ## Goal
 
@@ -160,23 +160,36 @@ Hover ghosts, Option-to-show-earlier-takes, and the 150 ms voice-switch ease may
 - **This target is not run by CI and is not part of `make check`.** AGENTS.md stands: CI never launches the app, never uses the microphone, never runs UI tests. Implementation of this spec may add a local `make screenshots` target; it must not be called from `.github/workflows/ci.yml`.
 - Output goes to a gitignored or reviewed-artifact folder (for example `screenshots/ui-shell/`), named `<fixture>-{light,dark}@2x.png`. The four primary states are compared against the final2 mockups. The other states are the set sent back to Designer.
 
-### Narrow windows (fixes round 5)
+### Narrow and short windows (fixes rounds 5 and 5b, Addendum r4 C4 to C8)
 
-- **Labels keep 4 pt apart.** The syllable labels under each strip row, and the word labels under the pitch plot,
-  keep at least 4 pt between neighbouring labels that show.
-- **What gives way.** When a label can't fit, unstressed syllable labels and non-target word labels are hidden
-  first. Heard-word and missing-word labels go only after those. Stressed syllable labels (bold caps, the mistake
-  marker) and target word labels always show. A target word carries a stressed native syllable (a Lime mark on the
-  baseline) or is named by a diff row.
-- **Nothing is lost.** A hidden label keeps a tooltip over its syllable or word, and the row's accessibility label
-  still reads every syllable or word.
-- **One tested rule.** The decision (which labels show, given centres, widths, priorities and the 4 pt gap) is the
-  pure `LabelLayout.visibility`, with Swift Testing cases for the collision case, stressed and target labels
-  always showing, the priority order and the no-collision case.
-- **Toolbar.** The toolbar title keeps at least 160 pt (spec 18, Toolbar).
-- **Regression fixture.** `narrow-inspector-open` renders the narrowest window, 960 pt wide, with the inspector
-  open, in light and dark. Its height is 732 pt: the shortest the shell allows in that state, because card 1's rows
-  wrap at that width (see the round 5 note).
+- **Labels keep 4 pt apart (C6).** The syllable labels under each strip row, and the word labels under the pitch
+  plot, keep at least 4 pt between neighbouring labels that show.
+- **Hide order (C6).** When labels collide they hide lowest priority first: (1) unstressed syllable labels and
+  non-target word labels; (2) heard-word labels (a substitution, "+ so") and missing-word labels; (3) never:
+  stressed syllable labels, mistake labels and target word labels always show. Within a priority labels are placed
+  left to right, and one shows only if it keeps the gap to every label already showing.
+- **Target words (C6).** A word with a stressed native syllable, a word named in a card-1 diff row, or a word named
+  in the card-1 sentence (for example the missing words of targetWordsMissing). A starter manifest's `targets` add
+  to this set and never replace it.
+- **Nothing is lost.** A hidden label keeps its hover area and tooltip, and VoiceOver still reads every syllable and
+  every word.
+- **Tested rules.** `LabelLayout.visibility` (which labels show), `LabelLayout.syllablePriority` /
+  `missingWordPriority` / `wordPriority` (the hide order) and `ShellPresenter.namedTargetWords` (the target set)
+  are pure and covered by Swift Testing cases.
+- **Toolbar (C7).** See spec 18, Toolbar.
+- **Too-much-contrast strip (C4).** Your over-contrast syllables (HAR, LOOKS) stand at full height. Each unstressed
+  neighbour is at most half as tall, relative to them, as the native's neighbour is to the native's stressed
+  syllable. Syllables the row doesn't name (TOG) keep native's relative height; they are never shrunk to fake
+  contrast. This applies to `rows-too-much-contrast` and `feedback-too-much-contrast-last`, and a data test checks it.
+- **Question rise (C1).** In `rows-final-direction-higher` the native line dips low at the start of LOOKS, then
+  rises in a concave-up curve through the last ~60% of the word, ends near the TOG peak (85–90% of the plot
+  height), flattens slightly at the very end and stays inside the plot. No straight ramp, no kink before LOOKS.
+  Yours falls. A shape test checks it.
+- **Short windows (C8).** The minimum window is 960 × 680 pt with the inspector open too; no panel widens. On a
+  short window the pitch plot shrinks first, down to a 120 pt plot height (`Metrics.pitchPlotMinHeight`). If the
+  cards still don't fit, the card column scrolls vertically and the toolbar stays fixed. Card 1 is not tightened;
+  its rows may wrap to two lines.
+- **Regression fixture.** `narrow-inspector-open` is `inspector-open` in a 960 × 680 pt window, light and dark.
 
 ### Visual and copy rules already in spec 18 that this shell must keep
 
@@ -315,17 +328,43 @@ Addendum A5 says: "A(w) = the context-compatible dictionary pronunciation plus t
     given (`WindowRenderer.RenderWindow`), and the capture throws `wrongSize` unless the frame view and content view
     are exactly the requested size. Measured against `mockup-*-final2@2x.png`: the sidebar edge, card edges, card 1
     top and pitch card bottom now land within 2 px (1 pt) of the mockups (they were 10–28 px off).
-  - **Narrow windows.** The label rule above lives in `AccentMirror/Design/LabelLayout.swift`, and its tests in
+  - **Narrow windows.** The label rule lives in `AccentMirror/Design/LabelLayout.swift`, and its tests in
     `AccentMirrorScreenshots/LabelLayoutTests.swift`. Widths come from `TextMeasure` (the role's bundled face, size
-    and tracking). The toolbar uses `ToolbarLayout`: the controls are offered what is left after a 160 pt title and a
-    16 pt gap, and `ViewThatFits` picks the first form that fits. In order: full; Model and You as play icons; then
-    the take menu as its chevron (gaps 8 pt); then Record as its dot (40 wide). Tooltips and VoiceOver keep every
-    word. Inside the title block the title and subtitle each truncate to the block's width.
-  - **Fixture `window`.** States can name their window size (`SCHEMA.md`). `narrow-inspector-open` is
-    `inspector-open` at 960 × 732. At 960 × 680 the window held at 732 pt: card 1's sentences wrap at a 440 pt detail
-    width, and their height sets the window's minimum. `scripts/check-screenshots.sh` reads each fixture's size.
+    and tracking). Round 5's toolbar order (Model and You as play icons first) is superseded by r4 C7 (round 5b).
+  - **Fixture `window`.** States can name their window size (`SCHEMA.md`). `scripts/check-screenshots.sh` reads
+    each fixture's size. Round 5 rendered `narrow-inspector-open` at 960 × 732 and blamed card 1's wrapped rows for
+    the extra height. That was wrong (see round 5b): something keeps 680 pt below the 52 pt title bar.
   - **One test case per frame.** `ScreenshotTests.render` is parameterised over every fixture × appearance, so each
     case builds, captures and tears down its own window. Its frames were byte-identical (SHA-256 of all 128) to
     round 4's last run. The "excessive live window count" warning still shows once per run: the log line per case
     shows no window is freed before the next one, even after a second's wait (an open point).
   - 65 states now (64 plus `narrow-inspector-open`), 130 frames.
+- **Fixes round 5b (2026-11-23).** The Designer's review of PR #29, built against Addendum r4 (C1–C9):
+  - **C4.** `photography-take04-strong-contrast` and `-unreduced`: HAR and LOOKS 1.0, TOG back to 1.0 (native's
+    relative height; round 4 had shrunk it to 0.72), is 0.11, der 0.10 and it 0.07 (the 2× limits are 0.122, 0.111
+    and 0.075); everything else as the close-match take. In `feedback-too-much-contrast-last` the reduction row now
+    names ra, phy and than: der is HAR's neighbour, which C4 lowers, so it can't also read as unreduced.
+    `ShellContractTests.tooMuchContrastStripShowsMoreContrast` checks the ratios on both fixtures.
+  - **C1.** `phrases/photography-question`'s band from HARDER's end: an easing descent to a −3.5 st dip at
+    t 0.81 (start of LOOKS), then a concave-up rise to 8.8 st (87% of the ±12 st plot; TOG peaks at 7.6 st, 82%),
+    with the last span flatter. `questionRiseHasTheR4Shape` checks the dip, the concave-up slopes, the flattening,
+    the end height and that the descent has no kink.
+  - **C6.** The target set and the hide order are as above; `LibraryManifest.Phrase` gained optional `targets`.
+  - **C7.** `ToolbarCompaction.decide` (pure: available width, the title's natural width and the controls' widths
+    in; level, title width and whether it fits out) and `ToolbarView.controlWidths` (measured from the same faces and
+    symbols). `ToolbarCompactionTests` covers each step, the title giving way before Model and You change, the
+    gaps never shrinking, and logs the real numbers at 960 pt with the inspector open: 408 pt available; controls
+    at their most compact 238 pt (Model 54, Record dot 40, You 39, take-menu chevron 28, toggle 28, gaps 8, 8, 17
+    and 16), plus the 16 pt title gap and the 160 pt title, is 414 pt. So it doesn't fit by 6 pt, and the title gets
+    154 pt (an open point for Designer).
+  - **C8.** `DetailContent` puts the cards in a `ViewThatFits`: as they are when they fit, else in a vertical
+    `ScrollView` (the toolbar is outside it). The pitch plot's `GeometryReader` has a minimum of 120 pt plus the
+    22 pt word-label row. `ShellView` now applies its 960 × 680 minimum before `ignoresSafeArea`, and `WindowChrome`
+    leaves the 52 pt title bar out of `contentMinSize`. Even so, the renderer's 960 × 680 window still comes out
+    960 × 732. The size error now reports `contentMinSize` 0 × 0, `minSize` 0 × 0 and a `contentLayoutRect` of
+    960 × 680, so 680 pt is held below the title bar by something else. Open, see PR #29.
+  - **C5** is round 5's geometry fix, unchanged. **C9:** the window-count warning stays an open point; it doesn't
+    block design sign-off.
+  - The last full render run is `20261123-144014` (everything passed except `narrow-inspector-open`). The test VM's
+    disk then filled up (ENOSPC under `wg-results` in run `20261123-144236`), so this round has no final pair of
+    runs and the committed frames are round 5's.
