@@ -124,6 +124,10 @@ extension AMTimestamps {
         notes.append("Whisper words are spec 03's committed replay of WhisperKit base.en on these clips (`fixtures/timestamps/\(replayURL.lastPathComponent)`), so no ASR runs here; refiners read the same 16 kHz audio WhisperKit was given.")
         notes.append("The gate is spec 03's: unpadded starts and ends judged separately against `wordTimestamps.*`, pooled and for every speaker. The clips are spec 03's set (the 8 bundled voices); spec 02's 12 held-out speakers are not on main.")
         notes.append("No b1 constant was tuned: `intensityDropDB` is the spec default (10 dB) because spec 02's tuning split is not on main.")
+        for aligner in aligners {
+            let bias = aligner.accuracy.endBias
+            notes.append("End-bias diagnostic for `\(aligner.id)` (fitted and measured on these same clips; applied nowhere, not a fix, not the gate): median signed end error \(bias.medianSignedEndErrorMs.map { String(format: "%+.1f ms", $0) } ?? "–"); ends after subtracting it: median \(bias.correctedEnds.medianErrorMs.map { String(format: "%.1f ms", $0) } ?? "–"), within 80 ms \(bias.correctedEnds.shareWithinTolerance.map { String(format: "%.1f%%", $0 * 100) } ?? "–"). Any rule change would have to be chosen on spec 02's tuning speakers.")
+        }
         if !absentClips.isEmpty {
             notes.append("\(absentClips.count) specified clips are not in the VCTK 0.92 archive (\(absentClips.joined(separator: ", "))), as in spec 03.")
         }
