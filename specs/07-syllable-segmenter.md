@@ -17,7 +17,8 @@ segmentation stage (§9.2). Runs on replayed word timings in CI.
 ## Behaviour
 
 - Input: the take's 16 kHz samples, the `WordAlignment` (spec 06), each word's syllable count and phones (spec 06),
-  word timings with probabilities (`FixtureTimestamper` from spec 03 in tests), and a `VoicingSource` (spec 01/05).
+  word timings with probabilities (`FixtureTimestamper` from spec 03 in tests), and a `VoicingSource` (the protocol from spec 01; tests use a synthetic source, the pipeline wires spec 05's
+  `ACFVoicing`).
 - Only `present` words get syllables. `substituted` words keep their word edges only (anchors for spec 09) and are
   never measured.
 - Padding: each Whisper word span is widened by about 80 ms on both sides before searching, clamped so it never

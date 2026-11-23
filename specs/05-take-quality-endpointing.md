@@ -22,8 +22,7 @@ no `AVAudioEngine`, nothing under `AMCapture/Live/`.
 
 ### Voicing: `ACFVoicing`
 
-- `protocol VoicingSource: Sendable` in `AMCore` (so spec 07 can use voicing without importing `AMCapture`), with an
-  `id` (`voicingID`, e.g. `acf-1`).
+- `ACFVoicing` implements spec 01's `VoicingSource` protocol (in `AMCore`), with `id` (`voicingID`) `acf-1`.
 - `ACFVoicing`: streaming normalised autocorrelation, 40 ms window, 10 ms hop, lag range 2–16.7 ms (60–500 Hz). A
   frame is voiced if the normalised ACF peak is ≥ 0.45 **and** RMS > floor + 3 dB.
 - It does not use spec 04. pYIN may replace it later only through a new `voicingID` and a version bump.
