@@ -1,0 +1,2794 @@
+{
+  "aligners" : [
+    {
+      "accuracy" : {
+        "calibration" : {
+          "high" : {
+            "boundaries" : 2564,
+            "meanAbsErrorMs" : 128.17082683307333,
+            "probabilityMax" : 1,
+            "probabilityMin" : 0.98,
+            "words" : 1282
+          },
+          "low" : {
+            "boundaries" : 2216,
+            "meanAbsErrorMs" : 134.36371841155236,
+            "probabilityMax" : 0.97,
+            "probabilityMin" : 0.33,
+            "words" : 1108
+          },
+          "medianProbability" : 0.98,
+          "outcome" : "PASS"
+        },
+        "coverage" : {
+          "comparable" : 2390,
+          "missingFromASROnly" : 47,
+          "missingFromBaselineOnly" : 0,
+          "missingFromBoth" : 0,
+          "phraseTokens" : 2437
+        },
+        "endBias" : {
+          "correctedEnds" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 83.10460251046025,
+            "medianErrorMs" : 70,
+            "shareWithinTolerance" : 0.6251046025104603
+          },
+          "medianSignedEndErrorMs" : -110
+        },
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 138.1673640167364,
+            "medianErrorMs" : 110,
+            "shareWithinTolerance" : 0.38535564853556487
+          }
+        },
+        "meanSignedEndMs" : -137.5062761506277,
+        "meanSignedStartMs" : -120.02510460251054,
+        "outcome" : "FAIL",
+        "padded" : {
+          "ends" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 87.44769874476988,
+            "medianErrorMs" : 60,
+            "shareWithinTolerance" : 0.6422594142259415
+          },
+          "paddingMs" : 80,
+          "pooled" : {
+            "boundaries" : 4780,
+            "meanErrorMs" : 144.02092050209205,
+            "medianErrorMs" : 120,
+            "shareWithinTolerance" : 0.3677824267782427
+          },
+          "starts" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 200.5941422594142,
+            "medianErrorMs" : 170,
+            "shareWithinTolerance" : 0.09330543933054393
+          }
+        },
+        "perPhrase" : [
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 108.4090909090909,
+                "medianErrorMs" : 100,
+                "shareWithinTolerance" : 0.42045454545454547
+              }
+            },
+            "key" : "002",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 101.25,
+                "medianErrorMs" : 100,
+                "shareWithinTolerance" : 0.42045454545454547
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 143,
+                "meanErrorMs" : 144.6153846153846,
+                "medianErrorMs" : 140,
+                "shareWithinTolerance" : 0.26573426573426573
+              }
+            },
+            "key" : "003",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 143,
+                "meanErrorMs" : 137.83216783216784,
+                "medianErrorMs" : 140,
+                "shareWithinTolerance" : 0.2867132867132867
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 131.91666666666666,
+                "medianErrorMs" : 110,
+                "shareWithinTolerance" : 0.39166666666666666
+              }
+            },
+            "key" : "004",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 118.08333333333333,
+                "medianErrorMs" : 95,
+                "shareWithinTolerance" : 0.4583333333333333
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 158,
+                "meanErrorMs" : 136.58227848101265,
+                "medianErrorMs" : 110,
+                "shareWithinTolerance" : 0.41139240506329117
+              }
+            },
+            "key" : "005",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 158,
+                "meanErrorMs" : 141.51898734177215,
+                "medianErrorMs" : 95,
+                "shareWithinTolerance" : 0.45569620253164556
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 129,
+                "meanErrorMs" : 107.67441860465117,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.4806201550387597
+              }
+            },
+            "key" : "006",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 129,
+                "meanErrorMs" : 97.28682170542636,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5581395348837209
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 82,
+                "meanErrorMs" : 158.41463414634146,
+                "medianErrorMs" : 145,
+                "shareWithinTolerance" : 0.2804878048780488
+              }
+            },
+            "key" : "007",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 82,
+                "meanErrorMs" : 141.58536585365854,
+                "medianErrorMs" : 120,
+                "shareWithinTolerance" : 0.3780487804878049
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 175,
+                "meanErrorMs" : 142.4,
+                "medianErrorMs" : 130,
+                "shareWithinTolerance" : 0.26857142857142857
+              }
+            },
+            "key" : "008",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 175,
+                "meanErrorMs" : 149.2,
+                "medianErrorMs" : 120,
+                "shareWithinTolerance" : 0.32571428571428573
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 104,
+                "meanErrorMs" : 135.28846153846155,
+                "medianErrorMs" : 110,
+                "shareWithinTolerance" : 0.3269230769230769
+              }
+            },
+            "key" : "009",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 104,
+                "meanErrorMs" : 91.53846153846153,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5192307692307693
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 56,
+                "meanErrorMs" : 125.53571428571429,
+                "medianErrorMs" : 100,
+                "shareWithinTolerance" : 0.39285714285714285
+              }
+            },
+            "key" : "010",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 56,
+                "meanErrorMs" : 107.67857142857143,
+                "medianErrorMs" : 85,
+                "shareWithinTolerance" : 0.5
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 205,
+                "meanErrorMs" : 112.14634146341463,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.4682926829268293
+              }
+            },
+            "key" : "011",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 205,
+                "meanErrorMs" : 94.09756097560975,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5219512195121951
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 184.88636363636363,
+                "medianErrorMs" : 195,
+                "shareWithinTolerance" : 0.29545454545454547
+              }
+            },
+            "key" : "012",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 157.27272727272728,
+                "medianErrorMs" : 160,
+                "shareWithinTolerance" : 0.3977272727272727
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 78,
+                "meanErrorMs" : 172.43589743589743,
+                "medianErrorMs" : 160,
+                "shareWithinTolerance" : 0.32051282051282054
+              }
+            },
+            "key" : "013",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 78,
+                "meanErrorMs" : 140.3846153846154,
+                "medianErrorMs" : 105,
+                "shareWithinTolerance" : 0.41025641025641024
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 99.33333333333333,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.6333333333333333
+              }
+            },
+            "key" : "014",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 83.58333333333333,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.6916666666666667
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 110,
+                "meanErrorMs" : 132.8181818181818,
+                "medianErrorMs" : 100,
+                "shareWithinTolerance" : 0.45454545454545453
+              }
+            },
+            "key" : "015",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 110,
+                "meanErrorMs" : 126.36363636363636,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.4818181818181818
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 166,
+                "meanErrorMs" : 130.36144578313252,
+                "medianErrorMs" : 115,
+                "shareWithinTolerance" : 0.43373493975903615
+              }
+            },
+            "key" : "016",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 166,
+                "meanErrorMs" : 123.79518072289157,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5180722891566265
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 64,
+                "meanErrorMs" : 173.75,
+                "medianErrorMs" : 185,
+                "shareWithinTolerance" : 0.359375
+              }
+            },
+            "key" : "017",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 64,
+                "meanErrorMs" : 130.15625,
+                "medianErrorMs" : 115,
+                "shareWithinTolerance" : 0.484375
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 125,
+                "meanErrorMs" : 153.84,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.464
+              }
+            },
+            "key" : "018",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 125,
+                "meanErrorMs" : 139.92,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.544
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 151,
+                "meanErrorMs" : 170.72847682119206,
+                "medianErrorMs" : 130,
+                "shareWithinTolerance" : 0.32450331125827814
+              }
+            },
+            "key" : "019",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 151,
+                "meanErrorMs" : 147.2185430463576,
+                "medianErrorMs" : 110,
+                "shareWithinTolerance" : 0.41721854304635764
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 63,
+                "meanErrorMs" : 184.12698412698413,
+                "medianErrorMs" : 140,
+                "shareWithinTolerance" : 0.2698412698412698
+              }
+            },
+            "key" : "020",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 63,
+                "meanErrorMs" : 160,
+                "medianErrorMs" : 110,
+                "shareWithinTolerance" : 0.38095238095238093
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 165,
+                "meanErrorMs" : 127.75757575757575,
+                "medianErrorMs" : 110,
+                "shareWithinTolerance" : 0.32727272727272727
+              }
+            },
+            "key" : "024",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 165,
+                "meanErrorMs" : 112.12121212121212,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.43636363636363634
+              }
+            }
+          }
+        ],
+        "perSpeaker" : [
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 289,
+                "meanErrorMs" : 132.62975778546712,
+                "medianErrorMs" : 110,
+                "shareWithinTolerance" : 0.4117647058823529
+              }
+            },
+            "key" : "p225",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 289,
+                "meanErrorMs" : 121.21107266435986,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.4982698961937716
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 310,
+                "meanErrorMs" : 151.19354838709677,
+                "medianErrorMs" : 130,
+                "shareWithinTolerance" : 0.3580645161290323
+              }
+            },
+            "key" : "p226",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 310,
+                "meanErrorMs" : 137.16129032258064,
+                "medianErrorMs" : 100,
+                "shareWithinTolerance" : 0.43870967741935485
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 294,
+                "meanErrorMs" : 147.72108843537416,
+                "medianErrorMs" : 120,
+                "shareWithinTolerance" : 0.3707482993197279
+              }
+            },
+            "key" : "p227",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 294,
+                "meanErrorMs" : 135.03401360544217,
+                "medianErrorMs" : 100,
+                "shareWithinTolerance" : 0.43537414965986393
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 301,
+                "meanErrorMs" : 140.7641196013289,
+                "medianErrorMs" : 130,
+                "shareWithinTolerance" : 0.3588039867109635
+              }
+            },
+            "key" : "p233",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 301,
+                "meanErrorMs" : 128.40531561461793,
+                "medianErrorMs" : 100,
+                "shareWithinTolerance" : 0.42857142857142855
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 282,
+                "meanErrorMs" : 130.74468085106383,
+                "medianErrorMs" : 115,
+                "shareWithinTolerance" : 0.40425531914893614
+              }
+            },
+            "key" : "p241",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 282,
+                "meanErrorMs" : 118.01418439716312,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.48936170212765956
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 306,
+                "meanErrorMs" : 129.9346405228758,
+                "medianErrorMs" : 110,
+                "shareWithinTolerance" : 0.3888888888888889
+              }
+            },
+            "key" : "p252",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 306,
+                "meanErrorMs" : 117.6797385620915,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.46078431372549017
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 133.38815789473685,
+                "medianErrorMs" : 110,
+                "shareWithinTolerance" : 0.42105263157894735
+              }
+            },
+            "key" : "p311",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 111.64473684210526,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5032894736842105
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 138.28947368421052,
+                "medianErrorMs" : 120,
+                "shareWithinTolerance" : 0.3717105263157895
+              }
+            },
+            "key" : "p345",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 121.8092105263158,
+                "medianErrorMs" : 100,
+                "shareWithinTolerance" : 0.4342105263157895
+              }
+            }
+          }
+        ],
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 123.9163179916318,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.4606694560669456
+          }
+        }
+      },
+      "bar" : {
+        "ends" : "FAIL",
+        "failingSpeakers" : [
+          "p225",
+          "p226",
+          "p227",
+          "p233",
+          "p241",
+          "p252",
+          "p311",
+          "p345"
+        ],
+        "outcome" : "FAIL",
+        "perSpeaker" : "FAIL",
+        "starts" : "FAIL"
+      },
+      "config" : {
+        "algorithmVersion" : 1,
+        "aligner" : "whisper",
+        "alignerModelSHA256" : "none",
+        "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+        "contractVersion" : 2,
+        "pitchTrackerID" : "none",
+        "thresholdsVersion" : 5,
+        "voicingID" : "none"
+      },
+      "configDigest" : "cfd62cd8badc5191fd60fa2a903ff229ff1b5d7b75a2710aba19bde5f095af00",
+      "id" : "whisper",
+      "latency" : {
+        "count" : 154,
+        "maxMs" : 0.017917,
+        "medianMs" : 0.0022915,
+        "p90Ms" : 0.003459
+      },
+      "movedShare" : 0
+    },
+    {
+      "accuracy" : {
+        "calibration" : {
+          "high" : {
+            "boundaries" : 2564,
+            "meanAbsErrorMs" : 96.87597503900156,
+            "probabilityMax" : 1,
+            "probabilityMin" : 0.98,
+            "words" : 1282
+          },
+          "low" : {
+            "boundaries" : 2216,
+            "meanAbsErrorMs" : 106.34927797833934,
+            "probabilityMax" : 0.97,
+            "probabilityMin" : 0.33,
+            "words" : 1108
+          },
+          "medianProbability" : 0.98,
+          "outcome" : "PASS"
+        },
+        "coverage" : {
+          "comparable" : 2390,
+          "missingFromASROnly" : 47,
+          "missingFromBaselineOnly" : 0,
+          "missingFromBoth" : 0,
+          "phraseTokens" : 2437
+        },
+        "endBias" : {
+          "correctedEnds" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 85.57322175732217,
+            "medianErrorMs" : 60,
+            "shareWithinTolerance" : 0.6305439330543933
+          },
+          "medianSignedEndErrorMs" : -70
+        },
+        "ends" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 108.28451882845188,
+            "medianErrorMs" : 80,
+            "shareWithinTolerance" : 0.5255230125523013
+          }
+        },
+        "meanSignedEndMs" : -94.10041841004204,
+        "meanSignedStartMs" : -67.55648535564853,
+        "outcome" : "FAIL",
+        "padded" : {
+          "ends" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 85.73221757322176,
+            "medianErrorMs" : 70,
+            "shareWithinTolerance" : 0.6255230125523012
+          },
+          "paddingMs" : 80,
+          "pooled" : {
+            "boundaries" : 4780,
+            "meanErrorMs" : 118.43933054393305,
+            "medianErrorMs" : 90,
+            "shareWithinTolerance" : 0.46276150627615065
+          },
+          "starts" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 151.14644351464435,
+            "medianErrorMs" : 130,
+            "shareWithinTolerance" : 0.3
+          }
+        },
+        "perPhrase" : [
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 82.72727272727273,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5568181818181818
+              }
+            },
+            "key" : "002",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 69.88636363636364,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5795454545454546
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 143,
+                "meanErrorMs" : 109.02097902097903,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.48951048951048953
+              }
+            },
+            "key" : "003",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 143,
+                "meanErrorMs" : 97.06293706293707,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5594405594405595
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 101,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5583333333333333
+              }
+            },
+            "key" : "004",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 90.5,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.6
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 158,
+                "meanErrorMs" : 102.0253164556962,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5443037974683544
+              }
+            },
+            "key" : "005",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 158,
+                "meanErrorMs" : 104.43037974683544,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.6329113924050633
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 129,
+                "meanErrorMs" : 81.86046511627907,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.6046511627906976
+              }
+            },
+            "key" : "006",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 129,
+                "meanErrorMs" : 75.03875968992249,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.6511627906976745
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 82,
+                "meanErrorMs" : 115,
+                "medianErrorMs" : 95,
+                "shareWithinTolerance" : 0.4878048780487805
+              }
+            },
+            "key" : "007",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 82,
+                "meanErrorMs" : 98.78048780487805,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5487804878048781
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 175,
+                "meanErrorMs" : 100.11428571428571,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.48
+              }
+            },
+            "key" : "008",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 175,
+                "meanErrorMs" : 108,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5428571428571428
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 104,
+                "meanErrorMs" : 100.28846153846153,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5673076923076923
+              }
+            },
+            "key" : "009",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 104,
+                "meanErrorMs" : 72.11538461538461,
+                "medianErrorMs" : 55,
+                "shareWithinTolerance" : 0.7115384615384616
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 56,
+                "meanErrorMs" : 95.71428571428571,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.625
+              }
+            },
+            "key" : "010",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 56,
+                "meanErrorMs" : 81.60714285714286,
+                "medianErrorMs" : 65,
+                "shareWithinTolerance" : 0.6428571428571429
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 205,
+                "meanErrorMs" : 87.36585365853658,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.6097560975609756
+              }
+            },
+            "key" : "011",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 205,
+                "meanErrorMs" : 69.21951219512195,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.6780487804878049
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 143.4090909090909,
+                "medianErrorMs" : 120,
+                "shareWithinTolerance" : 0.4090909090909091
+              }
+            },
+            "key" : "012",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 123.63636363636364,
+                "medianErrorMs" : 100,
+                "shareWithinTolerance" : 0.4318181818181818
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 78,
+                "meanErrorMs" : 143.5897435897436,
+                "medianErrorMs" : 105,
+                "shareWithinTolerance" : 0.3717948717948718
+              }
+            },
+            "key" : "013",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 78,
+                "meanErrorMs" : 105.76923076923077,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5128205128205128
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 98.33333333333333,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.6333333333333333
+              }
+            },
+            "key" : "014",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 75.75,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.7083333333333334
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 110,
+                "meanErrorMs" : 118.0909090909091,
+                "medianErrorMs" : 95,
+                "shareWithinTolerance" : 0.45454545454545453
+              }
+            },
+            "key" : "015",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 110,
+                "meanErrorMs" : 103.45454545454545,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5363636363636364
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 166,
+                "meanErrorMs" : 102.95180722891567,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5060240963855421
+              }
+            },
+            "key" : "016",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 166,
+                "meanErrorMs" : 97.16867469879519,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.536144578313253
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 64,
+                "meanErrorMs" : 149.0625,
+                "medianErrorMs" : 120,
+                "shareWithinTolerance" : 0.359375
+              }
+            },
+            "key" : "017",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 64,
+                "meanErrorMs" : 106.40625,
+                "medianErrorMs" : 100,
+                "shareWithinTolerance" : 0.4375
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 125,
+                "meanErrorMs" : 123.36,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.528
+              }
+            },
+            "key" : "018",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 125,
+                "meanErrorMs" : 111.44,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.576
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 151,
+                "meanErrorMs" : 146.6887417218543,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.4900662251655629
+              }
+            },
+            "key" : "019",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 151,
+                "meanErrorMs" : 114.63576158940397,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5761589403973509
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 63,
+                "meanErrorMs" : 132.22222222222223,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.49206349206349204
+              }
+            },
+            "key" : "020",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 63,
+                "meanErrorMs" : 110.63492063492063,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.6031746031746031
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 165,
+                "meanErrorMs" : 92.96969696969697,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5696969696969697
+              }
+            },
+            "key" : "024",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 165,
+                "meanErrorMs" : 85.93939393939394,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.6
+              }
+            }
+          }
+        ],
+        "perSpeaker" : [
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 289,
+                "meanErrorMs" : 100.06920415224913,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5743944636678201
+              }
+            },
+            "key" : "p225",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 289,
+                "meanErrorMs" : 94.6712802768166,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.6262975778546713
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 310,
+                "meanErrorMs" : 124.09677419354838,
+                "medianErrorMs" : 90,
+                "shareWithinTolerance" : 0.46774193548387094
+              }
+            },
+            "key" : "p226",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 310,
+                "meanErrorMs" : 112.58064516129032,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5193548387096775
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 294,
+                "meanErrorMs" : 119.14965986394557,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5034013605442177
+              }
+            },
+            "key" : "p227",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 294,
+                "meanErrorMs" : 104.76190476190476,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5782312925170068
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 301,
+                "meanErrorMs" : 103.88704318936877,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5382059800664452
+              }
+            },
+            "key" : "p233",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 301,
+                "meanErrorMs" : 91.49501661129568,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.5913621262458472
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 282,
+                "meanErrorMs" : 100.39007092198581,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5354609929078015
+              }
+            },
+            "key" : "p241",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 282,
+                "meanErrorMs" : 86.31205673758865,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.6205673758865248
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 306,
+                "meanErrorMs" : 103.56209150326798,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5163398692810458
+              }
+            },
+            "key" : "p252",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 306,
+                "meanErrorMs" : 91.37254901960785,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5718954248366013
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 104.96710526315789,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.5592105263157895
+              }
+            },
+            "key" : "p311",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 82.92763157894737,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.6546052631578947
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 109.21052631578948,
+                "medianErrorMs" : 80,
+                "shareWithinTolerance" : 0.5131578947368421
+              }
+            },
+            "key" : "p345",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 89.3092105263158,
+                "medianErrorMs" : 75,
+                "shareWithinTolerance" : 0.5657894736842105
+              }
+            }
+          }
+        ],
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 94.2510460251046,
+            "medianErrorMs" : 70,
+            "shareWithinTolerance" : 0.5903765690376569
+          }
+        }
+      },
+      "bar" : {
+        "ends" : "FAIL",
+        "failingSpeakers" : [
+          "p225",
+          "p226",
+          "p227",
+          "p233",
+          "p241",
+          "p252",
+          "p311",
+          "p345"
+        ],
+        "outcome" : "FAIL",
+        "perSpeaker" : "FAIL",
+        "starts" : "FAIL"
+      },
+      "config" : {
+        "algorithmVersion" : 1,
+        "aligner" : "dsp-snap-1",
+        "alignerModelSHA256" : "none",
+        "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+        "contractVersion" : 2,
+        "pitchTrackerID" : "pyin-1",
+        "thresholdsVersion" : 5,
+        "voicingID" : "none"
+      },
+      "configDigest" : "fbce8e403fb2a9397828bd5e4e54c7546428528e58e59ffa21013f3926d9e323",
+      "id" : "dsp-snap-1",
+      "latency" : {
+        "count" : 154,
+        "maxMs" : 27.504709,
+        "medianMs" : 5.1162915,
+        "p90Ms" : 7.515041
+      },
+      "movedShare" : 0.6157312576812781,
+      "replay" : {
+        "folder" : "fixtures/timestamps/openai_whisper-base.en+dsp-snap-1",
+        "matchesRecording" : true,
+        "recordingsSHA256" : "62ba37d343222e638e58def777b8780a2674777415743e9b9b6803ff3e9f9d3a"
+      },
+      "rules" : {
+        "ends" : {
+          "intensity" : 590,
+          "tie" : 34,
+          "unchanged" : 1039,
+          "voicing" : 778
+        },
+        "starts" : {
+          "intensity" : 281,
+          "unchanged" : 1837,
+          "voicing" : 323
+        }
+      }
+    },
+    {
+      "accuracy" : {
+        "calibration" : {
+          "high" : {
+            "boundaries" : 2564,
+            "meanAbsErrorMs" : 60.393915756630264,
+            "probabilityMax" : 1,
+            "probabilityMin" : 0.98,
+            "words" : 1282
+          },
+          "low" : {
+            "boundaries" : 2216,
+            "meanAbsErrorMs" : 65.7942238267148,
+            "probabilityMax" : 0.97,
+            "probabilityMin" : 0.33,
+            "words" : 1108
+          },
+          "medianProbability" : 0.98,
+          "outcome" : "PASS"
+        },
+        "coverage" : {
+          "comparable" : 2390,
+          "missingFromASROnly" : 47,
+          "missingFromBaselineOnly" : 0,
+          "missingFromBoth" : 0,
+          "phraseTokens" : 2437
+        },
+        "endBias" : {
+          "correctedEnds" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 48.76150627615063,
+            "medianErrorMs" : 40,
+            "shareWithinTolerance" : 0.8573221757322176
+          },
+          "medianSignedEndErrorMs" : -40
+        },
+        "ends" : {
+          "medianOutcome" : "PASS",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 60.21757322175732,
+            "medianErrorMs" : 40,
+            "shareWithinTolerance" : 0.7644351464435146
+          }
+        },
+        "meanSignedEndMs" : -53.313807531380554,
+        "meanSignedStartMs" : -1.1506276150627102,
+        "outcome" : "FAIL",
+        "padded" : {
+          "ends" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 61.18828451882845,
+            "medianErrorMs" : 60,
+            "shareWithinTolerance" : 0.7552301255230126
+          },
+          "paddingMs" : 80,
+          "pooled" : {
+            "boundaries" : 4780,
+            "meanErrorMs" : 72.93096234309624,
+            "medianErrorMs" : 60,
+            "shareWithinTolerance" : 0.7148535564853556
+          },
+          "starts" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 84.67364016736401,
+            "medianErrorMs" : 60,
+            "shareWithinTolerance" : 0.6744769874476988
+          }
+        },
+        "perPhrase" : [
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "PASS",
+              "shareOutcome" : "PASS",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 49.88636363636363,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.8636363636363636
+              }
+            },
+            "key" : "002",
+            "starts" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "PASS",
+              "shareOutcome" : "PASS",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 46.13636363636363,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.8636363636363636
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 143,
+                "meanErrorMs" : 60.48951048951049,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.7552447552447552
+              }
+            },
+            "key" : "003",
+            "starts" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 143,
+                "meanErrorMs" : 61.53846153846154,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.8111888111888111
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 56.25,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7583333333333333
+              }
+            },
+            "key" : "004",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 59.333333333333336,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.8083333333333333
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 158,
+                "meanErrorMs" : 58.54430379746835,
+                "medianErrorMs" : 35,
+                "shareWithinTolerance" : 0.8227848101265823
+              }
+            },
+            "key" : "005",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 158,
+                "meanErrorMs" : 76.13924050632912,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.8291139240506329
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 129,
+                "meanErrorMs" : 47.054263565891475,
+                "medianErrorMs" : 30,
+                "shareWithinTolerance" : 0.8372093023255814
+              }
+            },
+            "key" : "006",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 129,
+                "meanErrorMs" : 54.96124031007752,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.7674418604651163
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 82,
+                "meanErrorMs" : 63.292682926829265,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7073170731707317
+              }
+            },
+            "key" : "007",
+            "starts" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 82,
+                "meanErrorMs" : 66.58536585365853,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7560975609756098
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "PASS",
+              "shareOutcome" : "PASS",
+              "stats" : {
+                "boundaries" : 175,
+                "meanErrorMs" : 52.4,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.8514285714285714
+              }
+            },
+            "key" : "008",
+            "starts" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 175,
+                "meanErrorMs" : 77.25714285714285,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.8342857142857143
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 104,
+                "meanErrorMs" : 65.09615384615384,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.6923076923076923
+              }
+            },
+            "key" : "009",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 104,
+                "meanErrorMs" : 56.82692307692308,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.8461538461538461
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 56,
+                "meanErrorMs" : 50.17857142857143,
+                "medianErrorMs" : 30,
+                "shareWithinTolerance" : 0.7678571428571429
+              }
+            },
+            "key" : "010",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "PASS",
+              "stats" : {
+                "boundaries" : 56,
+                "meanErrorMs" : 53.214285714285715,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.9107142857142857
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "PASS",
+              "shareOutcome" : "PASS",
+              "stats" : {
+                "boundaries" : 205,
+                "meanErrorMs" : 43.80487804878049,
+                "medianErrorMs" : 30,
+                "shareWithinTolerance" : 0.8878048780487805
+              }
+            },
+            "key" : "011",
+            "starts" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "PASS",
+              "shareOutcome" : "PASS",
+              "stats" : {
+                "boundaries" : 205,
+                "meanErrorMs" : 43.073170731707314,
+                "medianErrorMs" : 30,
+                "shareWithinTolerance" : 0.9463414634146341
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 81.70454545454545,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.6022727272727273
+              }
+            },
+            "key" : "012",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 88,
+                "meanErrorMs" : 86.02272727272727,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.6590909090909091
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 78,
+                "meanErrorMs" : 76.92307692307692,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.6410256410256411
+              }
+            },
+            "key" : "013",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 78,
+                "meanErrorMs" : 71.41025641025641,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.6666666666666666
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 48.583333333333336,
+                "medianErrorMs" : 25,
+                "shareWithinTolerance" : 0.8166666666666667
+              }
+            },
+            "key" : "014",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 120,
+                "meanErrorMs" : 57.083333333333336,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.8083333333333333
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 110,
+                "meanErrorMs" : 61.09090909090909,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7454545454545455
+              }
+            },
+            "key" : "015",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 110,
+                "meanErrorMs" : 70.9090909090909,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.7181818181818181
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 166,
+                "meanErrorMs" : 62.46987951807229,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7409638554216867
+              }
+            },
+            "key" : "016",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 166,
+                "meanErrorMs" : 72.16867469879519,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.7168674698795181
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 64,
+                "meanErrorMs" : 77.96875,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.640625
+              }
+            },
+            "key" : "017",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 64,
+                "meanErrorMs" : 70.9375,
+                "medianErrorMs" : 70,
+                "shareWithinTolerance" : 0.703125
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 125,
+                "meanErrorMs" : 75.28,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.672
+              }
+            },
+            "key" : "018",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 125,
+                "meanErrorMs" : 86.72,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.704
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 151,
+                "meanErrorMs" : 83.70860927152317,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.6490066225165563
+              }
+            },
+            "key" : "019",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 151,
+                "meanErrorMs" : 76.55629139072848,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.7880794701986755
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 63,
+                "meanErrorMs" : 79.84126984126983,
+                "medianErrorMs" : 30,
+                "shareWithinTolerance" : 0.6666666666666666
+              }
+            },
+            "key" : "020",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 63,
+                "meanErrorMs" : 91.42857142857143,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.7777777777777778
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 165,
+                "meanErrorMs" : 46.72727272727273,
+                "medianErrorMs" : 30,
+                "shareWithinTolerance" : 0.8424242424242424
+              }
+            },
+            "key" : "024",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "PASS",
+              "stats" : {
+                "boundaries" : 165,
+                "meanErrorMs" : 51.27272727272727,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.8787878787878788
+              }
+            }
+          }
+        ],
+        "perSpeaker" : [
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 289,
+                "meanErrorMs" : 58.858131487889274,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7785467128027682
+              }
+            },
+            "key" : "p225",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 289,
+                "meanErrorMs" : 64.08304498269896,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.8339100346020761
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 310,
+                "meanErrorMs" : 69.38709677419355,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7129032258064516
+              }
+            },
+            "key" : "p226",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 310,
+                "meanErrorMs" : 76.90322580645162,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.7225806451612903
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 294,
+                "meanErrorMs" : 68.33333333333333,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.717687074829932
+              }
+            },
+            "key" : "p227",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 294,
+                "meanErrorMs" : 74.6938775510204,
+                "medianErrorMs" : 60,
+                "shareWithinTolerance" : 0.7244897959183674
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 301,
+                "meanErrorMs" : 60.199335548172755,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7807308970099668
+              }
+            },
+            "key" : "p233",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 301,
+                "meanErrorMs" : 63.85382059800664,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.8272425249169435
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 282,
+                "meanErrorMs" : 54.645390070921984,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7730496453900709
+              }
+            },
+            "key" : "p241",
+            "starts" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "PASS",
+              "shareOutcome" : "PASS",
+              "stats" : {
+                "boundaries" : 282,
+                "meanErrorMs" : 58.156028368794324,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.8546099290780141
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 306,
+                "meanErrorMs" : 55.45751633986928,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7941176470588235
+              }
+            },
+            "key" : "p252",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 306,
+                "meanErrorMs" : 62.87581699346405,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.8137254901960784
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 56.05263157894737,
+                "medianErrorMs" : 30,
+                "shareWithinTolerance" : 0.7861842105263158
+              }
+            },
+            "key" : "p311",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 59.73684210526316,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.8421052631578947
+              }
+            }
+          },
+          {
+            "ends" : {
+              "medianOutcome" : "PASS",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 58.453947368421055,
+                "medianErrorMs" : 40,
+                "shareWithinTolerance" : 0.7730263157894737
+              }
+            },
+            "key" : "p345",
+            "starts" : {
+              "medianOutcome" : "FAIL",
+              "outcome" : "FAIL",
+              "shareOutcome" : "FAIL",
+              "stats" : {
+                "boundaries" : 304,
+                "meanErrorMs" : 63.7828947368421,
+                "medianErrorMs" : 50,
+                "shareWithinTolerance" : 0.7828947368421053
+              }
+            }
+          }
+        ],
+        "starts" : {
+          "medianOutcome" : "FAIL",
+          "outcome" : "FAIL",
+          "shareOutcome" : "FAIL",
+          "stats" : {
+            "boundaries" : 2390,
+            "meanErrorMs" : 65.57740585774059,
+            "medianErrorMs" : 50,
+            "shareWithinTolerance" : 0.799581589958159
+          }
+        }
+      },
+      "bar" : {
+        "ends" : "FAIL",
+        "failingSpeakers" : [
+          "p225",
+          "p226",
+          "p227",
+          "p233",
+          "p241",
+          "p252",
+          "p311",
+          "p345"
+        ],
+        "outcome" : "FAIL",
+        "perSpeaker" : "FAIL",
+        "starts" : "FAIL"
+      },
+      "config" : {
+        "algorithmVersion" : 1,
+        "aligner" : "ctc-w2v2b960-1",
+        "alignerModelSHA256" : "9ae95d751153f85e2282590668e2ab1ffd4db3b1a10292ccdd3660b50f7ee4d8",
+        "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+        "contractVersion" : 2,
+        "pitchTrackerID" : "none",
+        "thresholdsVersion" : 5,
+        "voicingID" : "none"
+      },
+      "configDigest" : "1ba658bf703db9db51e2c8bb0b9e9c59ad31f2a8e2ab2dcc405632a1ddb65314",
+      "id" : "ctc-w2v2b960-1",
+      "latency" : {
+        "count" : 154,
+        "maxMs" : 45.89025,
+        "medianMs" : 27.8906875,
+        "p90Ms" : 35.506083
+      },
+      "movedShare" : 0.9778779188857026,
+      "replay" : {
+        "folder" : "fixtures/timestamps/openai_whisper-base.en+ctc-w2v2b960-1",
+        "matchesRecording" : true,
+        "recordingsSHA256" : "39edd9e55c2c0eedb52839a8af4d28ef9c5ec470bd607cdfda1c317d098fad57"
+      }
+    }
+  ],
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "baseline" : {
+    "acousticModel" : "english_mfa.zip",
+    "acousticModelSHA256" : "2c08bd4f82c3943dd57ac09aeac99dbce17a1e1bfe9fd932c8d95cd13d971068",
+    "command" : "mfa align --clean --overwrite --output_format json --num_jobs 4 CORPUS english_mfa.dict english_mfa.zip OUTPUT",
+    "dictionary" : "english_mfa.dict",
+    "dictionarySHA256" : "975bf9c7791535c5aec57995e0bd2b77eb7ca364d1d974c2134e07bb0f16b079",
+    "name" : "Montreal Forced Aligner",
+    "version" : "3.4.4"
+  },
+  "corpus" : {
+    "absentClips" : [
+      "p227_007",
+      "p233_010",
+      "p241_015",
+      "p241_020"
+    ],
+    "archiveSHA256" : "f96258be9fdc2cbff6559541aae7ea4f59df3fcaf5cf963aae5ca647357e359c",
+    "attribution" : "Audio and transcripts from CSTR VCTK Corpus 0.92 (Yamagishi, Veaux, MacDonald; University of Edinburgh, Centre for Speech Technology Research), CC BY 4.0, https://doi.org/10.7488/ds/2645",
+    "audio" : "wav48_silence_trimmed/<speaker>/<speaker>_<text>_mic1.flac, as published",
+    "clips" : 155,
+    "name" : "VCTK 0.92",
+    "speakers" : [
+      "p225",
+      "p226",
+      "p227",
+      "p233",
+      "p241",
+      "p252",
+      "p311",
+      "p345"
+    ],
+    "specifiedClips" : 159,
+    "textIDs" : [
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014",
+      "015",
+      "016",
+      "017",
+      "018",
+      "019",
+      "020",
+      "024"
+    ]
+  },
+  "correlation" : {
+    "clips" : 0,
+    "outcome" : "NOT EVALUATED",
+    "reason" : "Spec 02's unmodified-control and sham-control sets are not on this machine (spec 02 is not merged), so Δr cannot be computed. NOT EVALUATED is not a pass.",
+    "resamples" : 2000,
+    "seed" : 23,
+    "syllables" : 0
+  },
+  "ctc" : {
+    "cancellation" : {
+      "allCancelled" : true,
+      "computeUnits" : "cpuOnly",
+      "inputSeconds" : 17.0338125,
+      "modelStillLoaded" : true,
+      "outcome" : "PASS",
+      "returnMs" : [
+        0.103667,
+        0.023125,
+        0.035375,
+        0.030875,
+        0.039208
+      ],
+      "trials" : 5,
+      "uncancelledCallMs" : 94.404459,
+      "uncancelledTrialCallMs" : 481.964
+    },
+    "computeUnits" : "all",
+    "fp16" : "not converted (the spec names float32)",
+    "fp32PackageBytes" : 377745248,
+    "license" : "Apache-2.0",
+    "licenseEvidence" : "README.md front matter `license: apache-2.0` at https://huggingface.co/facebook/wav2vec2-base-960h/raw/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/README.md; Hub API cardData.license apache-2.0 at that revision",
+    "loadMs" : 2569.965666,
+    "manifest" : "fixtures/models/wav2vec2-base-960h/manifest.json",
+    "packageSHA256" : "9ae95d751153f85e2282590668e2ab1ffd4db3b1a10292ccdd3660b50f7ee4d8",
+    "runnerLatency" : "NOT RUN: needs a manual workflow on GitHub's macos-26 runner that Raph adds by hand (.github/ is off-limits to agents)",
+    "sourceCommit" : "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+    "verifyMs" : 214.719334
+  },
+  "ctcConfidence" : {
+    "belowMinimum" : 75,
+    "inconclusiveBudget" : 0.1,
+    "median" : 0.9898480892181396,
+    "minimum" : 0.5,
+    "shareBelowMinimum" : 0.030725112658746414,
+    "words" : 2441
+  },
+  "decision" : {
+    "alignerOfRecord" : "ctc-w2v2b960-1",
+    "explanation" : "ctc-w2v2b960-1 fails the downstream gate (Synthetic (TTS), VCTK): back to CTO, no retuning. `whisper` stays shipped.",
+    "gate" : "FAIL",
+    "prerequisites" : [
+      {
+        "met" : true,
+        "name" : "Licence on the model card at the pinned commit",
+        "status" : "Apache-2.0, verified at `22aad52d`"
+      },
+      {
+        "met" : true,
+        "name" : "SHA-256 pin",
+        "status" : "packageSHA256 `9ae95d751153f85e…`, checked before every load"
+      },
+      {
+        "met" : true,
+        "name" : "Size on disk",
+        "status" : "360.2 MiB (float32)"
+      },
+      {
+        "met" : false,
+        "name" : "Latency on the macos-26 runner",
+        "status" : "NOT RUN: waits for the manual workflow Raph adds"
+      },
+      {
+        "met" : true,
+        "name" : "Cancel test (cancel at 100 ms, return within about 300 ms)",
+        "status" : "PASS"
+      },
+      {
+        "met" : false,
+        "name" : "Downstream gate (synthetic and VCTK)",
+        "status" : "FAIL"
+      },
+      {
+        "met" : false,
+        "name" : "`ctcConfidenceMin` tuned on spec 02's tuning speakers",
+        "status" : "NOT TUNED: default 0.5 until spec 02's split is on main"
+      }
+    ],
+    "ship" : "FAIL",
+    "shippedAligner" : "whisper"
+  },
+  "downstream" : [
+    {
+      "candidateInconclusiveRate" : 0.16286644951140064,
+      "diffOutcome" : "FAIL",
+      "diffShare" : 0.2247557003257329,
+      "differing" : 69,
+      "differingParts" : {
+        "inconclusive" : 34,
+        "longestSyllable" : 29,
+        "loudestSyllable" : 34
+      },
+      "inconclusiveByConfidence" : 11,
+      "inconclusiveRiseMaxPoints" : 0.02,
+      "oracle" : "TTS markers",
+      "oracleInconclusiveRate" : 0.05211726384364821,
+      "outcome" : "FAIL",
+      "riseInconclusivePoints" : 0.110749,
+      "riseOutcome" : "FAIL",
+      "set" : "Synthetic (TTS)",
+      "verdictDiffMax" : 0.02,
+      "words" : 307
+    },
+    {
+      "candidateInconclusiveRate" : 0.18933669185558355,
+      "diffOutcome" : "FAIL",
+      "diffShare" : 0.22544080604534006,
+      "differing" : 537,
+      "differingParts" : {
+        "inconclusive" : 348,
+        "longestSyllable" : 199,
+        "loudestSyllable" : 190
+      },
+      "inconclusiveByConfidence" : 51,
+      "inconclusiveRiseMaxPoints" : 0.02,
+      "oracle" : "MFA word baseline",
+      "oracleInconclusiveRate" : 0.08690176322418136,
+      "outcome" : "FAIL",
+      "riseInconclusivePoints" : 0.102435,
+      "riseOutcome" : "FAIL",
+      "set" : "VCTK",
+      "verdictDiffMax" : 0.02,
+      "words" : 2382
+    }
+  ],
+  "gate" : {
+    "asrWarmBudgetMs" : 900,
+    "medianErrorMaxMs" : 40,
+    "minShareWithinTolerance" : 0.85,
+    "toleranceMs" : 80
+  },
+  "generatedAt" : "2026-11-23T13:26:00Z",
+  "identity" : {
+    "cleanTree" : true,
+    "config" : {
+      "algorithmVersion" : 1,
+      "aligner" : "whisper",
+      "alignerModelSHA256" : "none",
+      "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+      "contractVersion" : 2,
+      "pitchTrackerID" : "none",
+      "thresholdsVersion" : 5,
+      "voicingID" : "none"
+    },
+    "configCanonicalJSON" : "{\"config\":{\"algorithmVersion\":1,\"aligner\":\"whisper\",\"alignerModelSHA256\":\"none\",\"asrModelID\":\"openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631\",\"contractVersion\":2,\"pitchTrackerID\":\"none\",\"thresholdsVersion\":5,\"voicingID\":\"none\"},\"thresholds\":{\"agreement\":{\"anyDiffPairsMax\":0.05,\"anyDiffWorstPhraseMax\":0.3,\"anyDiffWorstSpeakerMax\":0.15,\"bandCoverageMedianMin\":0.8,\"baselineBootstrapLowerPoints\":-0.05,\"baselineCeiling\":0.85,\"baselineFalsePositiveMaxExcessPoints\":0.01,\"baselineMaxShortfallPoints\":0.03,\"baselineMinLiftCapPoints\":0.1,\"bootstrapResamples\":2000,\"contrastRatioHigh\":1.43,\"contrastRatioLow\":0.7,\"contrastRatioWithinShareMin\":0.9,\"endToEndFalsePositiveMax\":0.02,\"endToEndRecallWithinPoints\":0.1,\"evaluationCoverageMin\":0.9,\"finalDirectionAgreementMin\":0.9,\"inconclusivePairsMax\":0.1,\"l2FalsePositiveMax\":0.02,\"l2FalsePositiveWorstSpeakerMax\":0.1,\"l2RecallMin\":0.8,\"l2RecallWilsonLowerMin\":0.7,\"npviMaxDelta\":15,\"pitchRangeRatioMin\":0.6,\"pitchRangeRatioShareMin\":0.95,\"placementDiffPairsMax\":0.02,\"placementDiffWorstSpeakerMax\":0.07,\"positiveHeldOutSpeakers\":12,\"positiveMinPairs\":150,\"referenceAnomalyReviewShare\":0.2,\"smokeSetMaxSeconds\":60,\"syntheticControlDiffsMax\":0.02,\"unintelligiblePlacementDiffsMax\":0,\"weakLengthMaxDeltaPoints\":15,\"whichSyllableAccuracyMin\":0.8},\"alignment\":{\"asrPaddingMs\":80,\"gapScore\":-1,\"matchScore\":2,\"mismatchScore\":-1},\"applicability\":{\"contrastMinStressed\":1,\"contrastMinUnstressed\":2,\"pitchMinModelVoicedFrames\":20,\"placementMinSyllables\":2,\"rhythmMinSyllables\":3},\"band\":{\"lowerPercentile\":10,\"singleTakeHalfWidthSemitones\":1.5,\"upperPercentile\":90},\"capture\":{\"clipLevel\":0.999,\"clipRunSamples\":3,\"clippedShare\":0.005,\"endOfTakeS\":1.2,\"endpointArmSpeechS\":0.3,\"floorClampHighDBFS\":-35,\"floorClampLowDBFS\":-70,\"floorPercentile\":10,\"floorWindowS\":2,\"importLimitS\":15,\"noSpeechS\":0.15,\"noSpeechVoicedS\":0.3,\"offsetAboveFloorDB\":6,\"onsetAboveFloorDB\":10,\"onsetFrames\":3,\"onsetMinimumDBFS\":-50,\"onsetVoicedWithinMs\":100,\"preRollMs\":200,\"provisionalFloorDBFS\":-60,\"recordingCapS\":20,\"retractionAboveFloorDB\":10,\"ringBufferMs\":500,\"settleNonSpeechMs\":300,\"settleStationaryAfterS\":2,\"stationarySpreadDB\":6,\"tooQuietDBFS\":-40,\"tooShortS\":0.5},\"confidence\":{\"contrastHigh\":0.9,\"contrastMedium\":0.7,\"finalDirectionHighFrames\":15,\"finalDirectionMediumFrames\":10,\"levelHigh\":0.7,\"levelMedium\":0.45,\"pitchHigh\":0.7,\"pitchMedium\":0.5,\"spanSanityFailed\":0.3,\"spanSanityMaxMs\":1500,\"spanSanityMinMs\":60,\"splitExact\":0.9,\"splitFallback\":0.35,\"splitPerMismatch\":0.3,\"splitValleyMinDB\":3,\"timingGood\":0.8,\"timingRough\":0.5},\"decision\":{\"closeMinShapeMatch\":0.7,\"maxDiffRows\":3,\"maxNonFillerInsertions\":2,\"minComparableCoverage\":0.7,\"minMatchShare\":0.8},\"diffs\":{\"contrastBelowModelRatio\":0.7,\"contrastModelMinimum\":1.3,\"pitchRangeBelowModelRatio\":0.6,\"pitchRangeNarrowerSemitones\":3,\"tooMuchContrastAboveModelRatio\":2,\"weakLengthPointsAboveModel\":15},\"finalDirection\":{\"extendedWindowMs\":300,\"fallSemitonesPerSecond\":-5,\"minVoicedFrames\":10,\"riseSemitonesPerSecond\":5,\"windowMs\":200},\"measures\":{\"shapeMatchMinOverlappingFrames\":20},\"performance\":{\"asrWarmMs\":900,\"endToEndBudgetS\":2,\"nonASRStagesMs\":500},\"pitch\":{\"axisInitialSemitones\":12,\"axisMaxSemitones\":24,\"axisStepSemitones\":6,\"hopMs\":10,\"lineBreakMs\":250,\"maxF0Hz\":500,\"medianFilterFrames\":5,\"minF0Hz\":60,\"minVoicedRunMs\":30,\"voicingProbability\":0.5,\"windowMs\":40},\"prominence\":{\"durationFloorLn\":0.05,\"durationWeight\":0.4,\"energyFloorDB\":1,\"energyMinimumDBFS\":-60,\"energyWeight\":0.3,\"exposurePauseMs\":150,\"lengtheningLambda\":1.6,\"pitchFloorSemitones\":1,\"pitchMinVoicedFrames\":3,\"pitchWeight\":0.3,\"secondaryStressShare\":0.75,\"tauHigh\":{\"syllables2to4\":0.5,\"syllables5to8\":0.5,\"syllables9Plus\":0.5},\"tauMedium\":{\"syllables2to4\":0.25,\"syllables5to8\":0.25,\"syllables9Plus\":0.25}},\"syllableBoundaries\":{\"medianErrorMaxMs\":30,\"withinToleranceMs\":50,\"withinToleranceShareMin\":0.8},\"voicing\":{\"aboveFloorDB\":3,\"hopMs\":10,\"maxLagMs\":16.7,\"minLagMs\":2,\"minPeak\":0.45,\"windowMs\":40},\"wordBoundaries\":{\"ctcConfidenceMin\":0.5,\"inconclusiveRiseMaxPoints\":0.02,\"intensityDropDB\":10,\"snapWindowMs\":150,\"verdictDiffMax\":0.02},\"wordTimestamps\":{\"medianErrorMaxMs\":40,\"withinToleranceMs\":80,\"withinToleranceShareMin\":0.85}}}",
+    "configDigest" : "cfd62cd8badc5191fd60fa2a903ff229ff1b5d7b75a2710aba19bde5f095af00",
+    "configDigestRecipe" : "printf '%s' \"$(plutil -extract identity.configCanonicalJSON raw -o - <report>.json)\" | shasum -a 256",
+    "corpusManifestHash" : "1ba061d2ca470e64ae96b6aeab93251255e0505226348eb962f423fc0723e716",
+    "corpusManifestRecipe" : "shasum -a 256 <clip files> | cut -d' ' -f1 | LC_ALL=C sort | shasum -a 256",
+    "evaluatedCommit" : "528933440e34eff84d2cd96a6c315a159e56be99",
+    "labelFile" : "fixtures/vctk/mfa-word-baseline.json",
+    "labelHash" : "e2751a293ac6a886775d0ae1bd608d6d27ef9c48a0c1f09362859899ec8dcb59",
+    "sourceTreeHash" : "a964aecad94bbfaec3ee7083aa52d1bbbd4ae291a886aba953088e096868d03d",
+    "sourceTreeRecipe" : "git ls-tree -r --full-tree <commit> | grep -v \"$(printf '\\t')docs/agreement/reports/\" | LC_ALL=C sort | shasum -a 256",
+    "toolchain" : {
+      "hardware" : "Apple M3 Max, Mac15,11",
+      "macOS" : "26.3 (25D125)",
+      "swift" : "swift-driver version: 1.127.14.1 Apple Swift version 6.2.3 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)",
+      "xcode" : "Xcode 26.2 build 17C52"
+    }
+  },
+  "notes" : [
+    "Whisper words are spec 03's committed replay of WhisperKit base.en on these clips (`fixtures/timestamps/openai_whisper-base.en`), so no ASR runs here; refiners read the same 16 kHz audio WhisperKit was given.",
+    "Since the CTO ruling of 2026-11-23 14:05 the ship gate is downstream (spec 07's verdicts, oracle vs b2); spec 03's 40 ms / 85% bar on unpadded starts and ends is a reported target. The clips are spec 03's set (the 8 bundled voices); the number of record is the re-run on spec 02's 12 held-out speakers once spec 02 is on main.",
+    "Nothing was tuned: `ctcConfidenceMin` is the 0.5 default and b1's `intensityDropDB` the 10 dB default, because spec 02's tuning split is not on main.",
+    "End-bias diagnostic for `whisper` (fitted and measured on these same clips; applied nowhere, not a fix, not the gate): median signed end error -110.0 ms; ends after subtracting it: median 70.0 ms, within 80 ms 62.5%. Any rule change would have to be chosen on spec 02's tuning speakers.",
+    "End-bias diagnostic for `dsp-snap-1` (fitted and measured on these same clips; applied nowhere, not a fix, not the gate): median signed end error -70.0 ms; ends after subtracting it: median 60.0 ms, within 80 ms 63.1%. Any rule change would have to be chosen on spec 02's tuning speakers.",
+    "End-bias diagnostic for `ctc-w2v2b960-1` (fitted and measured on these same clips; applied nowhere, not a fix, not the gate): median signed end error -40.0 ms; ends after subtracting it: median 40.0 ms, within 80 ms 85.7%. Any rule change would have to be chosen on spec 02's tuning speakers.",
+    "4 specified clips are not in the VCTK 0.92 archive (p227_007, p233_010, p241_015, p241_020), as in spec 03."
+  ],
+  "placementRule" : "PENDING: checked in spec 11's agreement run with `aligner` in the identity (needs specs 08 and 10)",
+  "referenceErrors" : {
+    "b2OnTTS" : {
+      "ends" : {
+        "meanSignedErrorMs" : -82.09073239685476,
+        "medianAbsErrorMs" : 56.269999999999996,
+        "n" : 308,
+        "shareWithinTolerance" : 0.7305194805194806
+      },
+      "label" : "b2 on TTS vs TTS markers (ground truth; b2 seeded by live Whisper base.en)",
+      "starts" : {
+        "meanSignedErrorMs" : -8.1307241511323,
+        "medianAbsErrorMs" : 27.7095,
+        "n" : 308,
+        "shareWithinTolerance" : 0.8733766233766234
+      }
+    },
+    "b2VsMFAOnVCTK" : {
+      "ends" : {
+        "meanSignedErrorMs" : -53.313807531380746,
+        "medianAbsErrorMs" : 40,
+        "n" : 2390,
+        "shareWithinTolerance" : 0.7644351464435146
+      },
+      "label" : "b2 vs MFA on VCTK",
+      "starts" : {
+        "meanSignedErrorMs" : -1.150627615062705,
+        "medianAbsErrorMs" : 50,
+        "n" : 2390,
+        "shareWithinTolerance" : 0.799581589958159
+      }
+    },
+    "markerResolutionMs" : 11.609977324263038,
+    "mfaOnTTS" : {
+      "ends" : {
+        "meanSignedErrorMs" : -36.79054905710954,
+        "medianAbsErrorMs" : 25.125,
+        "n" : 313,
+        "shareWithinTolerance" : 0.9424920127795527
+      },
+      "label" : "MFA on TTS vs TTS markers (the reference's own error)",
+      "starts" : {
+        "meanSignedErrorMs" : -24.34461324465889,
+        "medianAbsErrorMs" : 23.537,
+        "n" : 313,
+        "shareWithinTolerance" : 0.9840255591054313
+      }
+    },
+    "notes" : [
+
+    ],
+    "quadratureEndsMs" : 31.12449798791942,
+    "quadratureStartsMs" : 44.11359916170976,
+    "voice" : "com.apple.voice.compact.en-US.Samantha"
+  },
+  "thresholds" : {
+    "ctcConfidenceMin" : 0.5,
+    "inconclusiveRiseMaxPoints" : 0.02,
+    "intensityDropDB" : 10,
+    "snapWindowMs" : 150,
+    "verdictDiffMax" : 0.02
+  },
+  "whisperSource" : "spec 03 replay `fixtures/timestamps/openai_whisper-base.en`"
+}
