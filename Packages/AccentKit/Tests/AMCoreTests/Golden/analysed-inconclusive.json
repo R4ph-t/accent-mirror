@@ -1,0 +1,384 @@
+{
+  "identity" : {
+    "config" : {
+      "algorithmVersion" : 1,
+      "asrModelID" : "whisperkit-base.en",
+      "contractVersion" : 1,
+      "pitchTrackerID" : "pyin-1",
+      "thresholdsVersion" : 1,
+      "voicingID" : "acf-1"
+    },
+    "reference" : {
+      "nativeSetHash" : "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "phraseID" : "record",
+      "pronunciationOverridesHash" : "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "recordingID" : "p225-record",
+      "recordingSHA256" : "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "targetsHash" : "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "transcriptRevision" : 1
+    },
+    "takeAudioSHA256" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "outcome" : {
+    "analysed" : {
+      "result" : {
+        "alignment" : {
+          "pairs" : [
+            {
+              "present" : {
+                "phrase" : 0,
+                "you" : {
+                  "end" : 0.8,
+                  "start" : 0.2
+                }
+              }
+            }
+          ]
+        },
+        "applicability" : {
+          "contrast" : {
+            "notApplicable" : {
+              "reason" : "tooFewExpectedUnstressed"
+            }
+          },
+          "finalDirection" : {
+            "applicable" : {
+              "requirement" : "optional"
+            }
+          },
+          "pitchRange" : {
+            "applicable" : {
+              "requirement" : "optional"
+            }
+          },
+          "rhythm" : {
+            "notApplicable" : {
+              "reason" : "tooFewSyllablesInPhrase"
+            }
+          },
+          "shapeMatch" : {
+            "applicable" : {
+              "requirement" : "optional"
+            }
+          },
+          "stressPlacement" : {
+            "applicable" : {
+              "requirement" : "required"
+            }
+          },
+          "tooMuchContrast" : {
+            "notApplicable" : {
+              "reason" : "tooFewExpectedUnstressed"
+            }
+          },
+          "weakLength" : {
+            "notApplicable" : {
+              "reason" : "tooFewExpectedUnstressed"
+            }
+          }
+        },
+        "identity" : {
+          "config" : {
+            "algorithmVersion" : 1,
+            "asrModelID" : "whisperkit-base.en",
+            "contractVersion" : 1,
+            "pitchTrackerID" : "pyin-1",
+            "thresholdsVersion" : 1,
+            "voicingID" : "acf-1"
+          },
+          "reference" : {
+            "nativeSetHash" : "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "phraseID" : "record",
+            "pronunciationOverridesHash" : "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "recordingID" : "p225-record",
+            "recordingSHA256" : "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "targetsHash" : "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "transcriptRevision" : 1
+          },
+          "takeAudioSHA256" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "measures" : {
+          "contrast" : {
+            "notApplicable" : {
+              "reason" : "tooFewExpectedUnstressed"
+            }
+          },
+          "finalDirection" : {
+            "unavailable" : {
+              "reason" : "lowConfidence"
+            }
+          },
+          "pitchRange" : {
+            "evaluated" : {
+              "confidence" : "high",
+              "value" : 9.5
+            }
+          },
+          "rhythm" : {
+            "notApplicable" : {
+              "reason" : "tooFewSyllablesInPhrase"
+            }
+          },
+          "shapeMatch" : {
+            "evaluated" : {
+              "confidence" : "high",
+              "value" : 0.5
+            }
+          },
+          "stressPlacement" : {
+            "evaluated" : {
+              "confidence" : "high",
+              "value" : 1.14
+            }
+          },
+          "tooMuchContrast" : {
+            "notApplicable" : {
+              "reason" : "tooFewExpectedUnstressed"
+            }
+          },
+          "weakLength" : {
+            "notApplicable" : {
+              "reason" : "tooFewExpectedUnstressed"
+            }
+          }
+        },
+        "model" : {
+          "medianF0Hz" : 196,
+          "pitch" : [
+            {
+              "frames" : [
+                {
+                  "semitones" : 2,
+                  "voiced" : true
+                },
+                {
+                  "semitones" : 1.5,
+                  "voiced" : true
+                },
+                {
+                  "semitones" : 0.75,
+                  "voiced" : false
+                },
+                {
+                  "semitones" : -0.5,
+                  "voiced" : true
+                }
+              ],
+              "start" : 0.1
+            }
+          ],
+          "syllables" : [
+            {
+              "indexInWord" : 0,
+              "prominence" : 1,
+              "range" : {
+                "end" : 0.34,
+                "start" : 0.1
+              },
+              "share" : 0.46,
+              "stress" : "primary",
+              "stressSource" : "dictionary",
+              "text" : "REC",
+              "wordIndex" : 0
+            },
+            {
+              "indexInWord" : 1,
+              "prominence" : 0,
+              "range" : {
+                "end" : 0.62,
+                "start" : 0.34
+              },
+              "share" : 0.54,
+              "stress" : "unstressed",
+              "stressSource" : "dictionary",
+              "text" : "ord",
+              "wordIndex" : 0
+            }
+          ],
+          "words" : [
+            {
+              "range" : {
+                "end" : 0.62,
+                "start" : 0.1
+              },
+              "syllables" : [
+                0,
+                1
+              ],
+              "text" : "record"
+            }
+          ]
+        },
+        "modelAxis" : {
+          "end" : 0.62,
+          "start" : 0.1
+        },
+        "nativeBand" : [
+          {
+            "lower" : 0.5,
+            "time" : 0.1,
+            "upper" : 3.5
+          },
+          {
+            "lower" : 0,
+            "time" : 0.2,
+            "upper" : 3
+          },
+          {
+            "lower" : -0.75,
+            "time" : 0.3,
+            "upper" : 2.25
+          }
+        ],
+        "phraseID" : "record",
+        "pitchAxis" : [
+          -12,
+          12
+        ],
+        "recordedAt" : 1795420800,
+        "stress" : [
+          {
+            "confidence" : "high",
+            "expectedPattern" : [
+              "primary",
+              "unstressed"
+            ],
+            "margin" : 1.14,
+            "observedPrimary" : 1,
+            "referenceAnomaly" : false,
+            "word" : 0
+          }
+        ],
+        "takeID" : "take-0001",
+        "timeMap" : {
+          "segments" : [
+            {
+              "mapped" : {
+                "anchors" : [
+                  {
+                    "model" : 0.1,
+                    "you" : 0.2
+                  },
+                  {
+                    "model" : 0.34,
+                    "you" : 0.42
+                  },
+                  {
+                    "model" : 0.62,
+                    "you" : 0.8
+                  }
+                ],
+                "comparable" : true,
+                "model" : {
+                  "end" : 0.62,
+                  "start" : 0.1
+                },
+                "you" : {
+                  "end" : 0.8,
+                  "start" : 0.2
+                }
+              }
+            }
+          ]
+        },
+        "timing" : "rough",
+        "verdict" : {
+          "inconclusive" : {
+            "reasons" : [
+              {
+                "targetWordsMissing" : {
+                  "words" : [
+                    0
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "you" : {
+          "medianF0Hz" : 120,
+          "pitch" : [
+            {
+              "frames" : [
+                {
+                  "semitones" : -1,
+                  "voiced" : true
+                },
+                {
+                  "semitones" : 0.5,
+                  "voiced" : true
+                },
+                {
+                  "semitones" : 3,
+                  "voiced" : true
+                }
+              ],
+              "start" : 0.2
+            }
+          ],
+          "syllables" : [
+            {
+              "indexInWord" : 0,
+              "prominence" : 0.25,
+              "range" : {
+                "end" : 0.42,
+                "start" : 0.2
+              },
+              "share" : 0.37,
+              "stress" : "unstressed",
+              "stressSource" : "measured",
+              "text" : "re",
+              "wordIndex" : 0
+            },
+            {
+              "indexInWord" : 1,
+              "prominence" : 1,
+              "range" : {
+                "end" : 0.8,
+                "start" : 0.42
+              },
+              "share" : 0.63,
+              "stress" : "primary",
+              "stressSource" : "measured",
+              "text" : "CORD",
+              "wordIndex" : 0
+            }
+          ],
+          "words" : [
+            {
+              "range" : {
+                "end" : 0.8,
+                "start" : 0.2
+              },
+              "syllables" : [
+                0,
+                1
+              ],
+              "text" : "record"
+            }
+          ]
+        },
+        "youPitchOnModel" : [
+          {
+            "frames" : [
+              {
+                "semitones" : -1,
+                "voiced" : true
+              },
+              {
+                "semitones" : 0.5,
+                "voiced" : true
+              },
+              {
+                "semitones" : 3,
+                "voiced" : true
+              }
+            ],
+            "start" : 0.1
+          }
+        ]
+      }
+    }
+  },
+  "requestID" : "5D7C0E1A-0000-4000-8000-000000000001"
+}

@@ -27,7 +27,9 @@ let package = Package(
             ),
             .testTarget(
                 name: "\(module.name)Tests",
-                dependencies: [.target(name: module.name)]
+                dependencies: [.target(name: module.name)],
+                // AMCore's golden JSON is read from the source tree by path (spec 01), not bundled.
+                exclude: module.name == "AMCore" ? ["Golden"] : []
             ),
         ]
     },

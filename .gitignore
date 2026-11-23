@@ -65,3 +65,6 @@ fastlane/test_output
 *.xcodeproj/
 eval-local/
 /screenshots/
+
+# Test VM results (make test-vm / test-ui-vm)
+/.factory/vm-results/
