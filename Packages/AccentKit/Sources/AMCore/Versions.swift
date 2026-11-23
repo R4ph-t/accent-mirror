@@ -1,0 +1,31 @@
+// Versions (plan §9.1): monotonic integers, not semver. A golden-output digest sits next to them, and
+// `GoldenDigestTests` fails if the golden JSON changes without a version bump.
+
+import Foundation
+
+public enum Versions {
+    /// Bump when an algorithm change can change any output for the same inputs.
+    public static let algorithmVersion = 1
+    /// Bump when any value in `Thresholds` changes.
+    public static let thresholdsVersion = 1
+    /// Bump when a contract type's shape or JSON changes.
+    public static let contractVersion = 1
+
+    /// The golden-output digest recorded for one version triple.
+    public struct GoldenDigest: Sendable, Hashable {
+        public let algorithmVersion: Int
+        public let thresholdsVersion: Int
+        public let contractVersion: Int
+        /// SHA-256 over every file in `Tests/AMCoreTests/Golden/`, sorted by path, each as its path, a newline, its
+        /// canonical JSON and a newline.
+        public let digest: String
+    }
+
+    /// Append-only. To change a golden file: bump a version above, then append a record for the new triple with
+    /// the new digest. Never edit an existing record.
+    public static let goldenDigests: [GoldenDigest] = [
+        GoldenDigest(
+            algorithmVersion: 1, thresholdsVersion: 1, contractVersion: 1,
+            digest: "0000000000000000000000000000000000000000000000000000000000000000"),
+    ]
+}
