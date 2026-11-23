@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 /// The 52 pt toolbar drawn on surface.base (spec 18 §Toolbar). From the right: the inspector toggle, the take
@@ -6,45 +7,59 @@ struct ToolbarView: View {
     @Environment(\.palette) private var palette
     var state: ToolbarState
     var toggleInspector: () -> Void
+    /// The toolbar's width inside its side padding, measured; it picks the compaction level (r4 C7).
+    @State private var available: CGFloat = Metrics.defaultWindow.width - Metrics.sidebarWidth - 2 * Metrics.outer
 
     var body: some View {
-        ToolbarLayout {
+        let decision = ToolbarCompaction.decide(
+            available: Double(available),
+            titleIdeal: Double(TextMeasure.width(state.title, role: .phraseTitle)),
+            controls: Self.controlWidths(for: state)
+        )
+        HStack(spacing: 0) {
             titleBlock
-            // The controls keep their full form while they fit next to a 160 pt title; on a narrow detail pane
-            // they compact in steps (fixes round 5): Model and You drop their words, then the take menu
-            // becomes its chevron, then Record keeps only its dot. Tooltips and VoiceOver keep every word.
-            ViewThatFits(in: .horizontal) {
-                controls(.full)
-                controls(.iconPlayback)
-                controls(.compactMenu)
-                controls(.minimal)
-            }
+                .layoutPriority(-1)
+            Spacer(minLength: ToolbarCompaction.titleGap)
+            controls(decision.level)
         }
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { available = $0 }
         .padding(.leading, Metrics.outer)
         .frame(height: Metrics.toolbarHeight)
         .padding(.trailing, Metrics.outer)
     }
 
-    enum Density: Int, Comparable {
-        case full, iconPlayback, compactMenu, minimal
-        static func < (a: Density, b: Density) -> Bool { a.rawValue < b.rawValue }
-    }
-
-    private func controls(_ density: Density) -> some View {
+    /// The controls at one compaction level. The gaps never change (r4 C7: report rather than cramp them).
+    private func controls(_ level: ToolbarCompaction.Level) -> some View {
         HStack(spacing: 0) {
-            HStack(spacing: 8) {
-                GhostButton(title: "Model", isEnabled: state.modelEnabled, showsTitle: density < .iconPlayback)
-                RecordButton(state: state.record, showsTitle: density < .minimal)
-                GhostButton(title: "You", isEnabled: state.youEnabled, showsTitle: density < .iconPlayback)
+            HStack(spacing: ToolbarCompaction.ControlWidths.playbackSpacing) {
+                GhostButton(title: "Model", isEnabled: state.modelEnabled, showsTriangle: level < .wordsOnly)
+                RecordButton(state: state.record, showsTitle: level < .recordDot)
+                GhostButton(title: "You", isEnabled: state.youEnabled, showsTriangle: level < .wordsOnly)
             }
             TakeMenu(label: state.takeMenu, note: state.takeMenuNote, savedTakes: state.savedTakes,
-                     compact: density >= .compactMenu)
-                .padding(.leading, density >= .compactMenu ? 8 : 17)
+                     compact: level >= .menuChevron)
+                .padding(.leading, ToolbarCompaction.ControlWidths.takeMenuGap)
             InspectorToggle(action: toggleInspector)
-                .padding(.leading, density >= .compactMenu ? 8 : 16)
+                .padding(.leading, ToolbarCompaction.ControlWidths.toggleGap)
         }
         // Controls keep their size; only the title block truncates.
         .fixedSize()
+    }
+
+    /// Each control's drawn width in its full and compact forms, from the same faces, sizes and paddings the
+    /// buttons use.
+    static func controlWidths(for state: ToolbarState) -> ToolbarCompaction.ControlWidths {
+        func ghost(_ title: String, triangle: Bool) -> Double {
+            let text = Double(TextMeasure.width(title, role: .body))
+            return triangle
+                ? GhostButton.sidePadding + Double(GhostButton.playGlyphWidth) + GhostButton.glyphSpacing + text + GhostButton.sidePadding
+                : 2 * GhostButton.wordsOnlySidePadding + text
+        }
+        return ToolbarCompaction.ControlWidths(
+            model: ghost("Model", triangle: true), modelWordsOnly: ghost("Model", triangle: false),
+            you: ghost("You", triangle: true), youWordsOnly: ghost("You", triangle: false),
+            takeMenu: Double(TakeMenu.fullWidth(label: state.takeMenu, note: state.takeMenuNote))
+        )
     }
 
     private var titleBlock: some View {
@@ -86,21 +101,32 @@ struct GhostButton: View {
     @Environment(\.palette) private var palette
     var title: String
     var isEnabled: Bool
-    /// False on a narrow toolbar: the play triangle only, the title in the tooltip and for VoiceOver.
-    var showsTitle = true
+    /// False on the narrowest toolbar (r4 C7 step 3): the word only, with 8 pt side padding. Model and You never
+    /// become icon-only.
+    var showsTriangle = true
+
+    static let sidePadding: Double = 12
+    static let wordsOnlySidePadding: Double = 8
+    static let glyphSpacing: Double = 9
+    /// The 11 pt `play.fill` symbol's width.
+    @MainActor static var playGlyphWidth: CGFloat {
+        let configuration = NSImage.SymbolConfiguration(pointSize: 11, weight: .regular)
+        return NSImage(systemSymbolName: "play.fill", accessibilityDescription: nil)?
+            .withSymbolConfiguration(configuration)?.size.width ?? 11
+    }
 
     var body: some View {
         FocusRingButton(cornerRadius: Metrics.controlRadius, action: {}) { _ in
-            HStack(spacing: 9) {
-                Image(systemName: "play.fill")
-                    .font(.system(size: 11))
-                if showsTitle {
-                    Text(title)
-                        .typeRole(.body)
+            HStack(spacing: Self.glyphSpacing) {
+                if showsTriangle {
+                    Image(systemName: "play.fill")
+                        .font(.system(size: 11))
                 }
+                Text(title)
+                    .typeRole(.body)
             }
             .foregroundStyle(isEnabled ? palette.textPrimary : palette.textTertiary)
-            .padding(.horizontal, 12)
+            .padding(.horizontal, showsTriangle ? Self.sidePadding : Self.wordsOnlySidePadding)
             .frame(height: Metrics.controlHeight)
             .background {
                 if isEnabled {
@@ -109,7 +135,6 @@ struct GhostButton: View {
             }
         }
         .disabled(!isEnabled)
-        .help(showsTitle ? "" : "Play \(title)")
         .accessibilityLabel("Play \(title)")
     }
 }
@@ -119,8 +144,8 @@ struct GhostButton: View {
 struct RecordButton: View {
     @Environment(\.palette) private var palette
     var state: ToolbarState.RecordButton
-    /// False on the narrowest toolbar: the dot (or Stop's square) only, 40 wide; the word stays in the tooltip and
-    /// for VoiceOver.
+    /// False on a narrow toolbar (r4 C7 step 2): the dot (or Stop's square while recording) in the Lime button,
+    /// 40 wide; "Record (Space)" in the tooltip and for VoiceOver.
     var showsTitle = true
 
     var body: some View {
@@ -157,8 +182,8 @@ struct RecordButton: View {
             }
         }
         .disabled(!isEnabled)
-        .help(showsTitle ? "" : (isStop ? "Stop" : "Record"))
-        .accessibilityLabel(isStop ? "Stop recording" : "Record")
+        .help(showsTitle ? "" : Copy.recordButtonShortLabel(stop: isStop))
+        .accessibilityLabel(showsTitle ? (isStop ? "Stop recording" : "Record") : Copy.recordButtonShortLabel(stop: isStop))
     }
 }
 
@@ -168,13 +193,26 @@ struct TakeMenu: View {
     var label: ToolbarState.TakeMenuLabel
     var note: String?
     var savedTakes: [Int]
-    /// True on a narrow toolbar: the chevron only, the title in the tooltip and for VoiceOver.
+    /// True on a narrow toolbar (r4 C7 step 1): the chevron only, "Takes" or "Take 03" in the tooltip and for
+    /// VoiceOver.
     var compact = false
 
-    private var title: String {
+    /// The full form's width: the title (and note) in Geist Mono, 8 pt, the 10 pt chevron; at least 70.
+    @MainActor static func fullWidth(label: ToolbarState.TakeMenuLabel, note: String?) -> CGFloat {
+        let title = TextMeasure.width(Self.title(label), role: .mono)
+        let noteWidth = note.map { 8 + TextMeasure.width($0, role: .mono) } ?? 0
+        let configuration = NSImage.SymbolConfiguration(pointSize: 10, weight: .semibold)
+        let chevron = NSImage(systemSymbolName: "chevron.down", accessibilityDescription: nil)?
+            .withSymbolConfiguration(configuration)?.size.width ?? 10
+        return max(70, title + noteWidth + 8 + chevron)
+    }
+
+    private var title: String { Self.title(label) }
+
+    static func title(_ label: ToolbarState.TakeMenuLabel) -> String {
         switch label {
         case .takes: "TAKES"
-        case .take(let number): Self.takeTitle(number)
+        case .take(let number): takeTitle(number)
         case .lastTryNotSaved: "LAST TRY · NOT SAVED"
         }
     }
@@ -228,8 +266,8 @@ struct TakeMenu: View {
         .buttonStyle(.plain)
         .menuIndicator(.hidden)
         .fixedSize()
-        .help(compact ? (note.map { "\(title) \($0)" } ?? title) : "")
-        .accessibilityLabel(note.map { "\(title), \($0)" } ?? title)
+        .help(compact ? Copy.takeMenuShortLabel(label) : "")
+        .accessibilityLabel(compact ? Copy.takeMenuShortLabel(label) : (note.map { "\(title), \($0)" } ?? title))
     }
 }
 
@@ -246,29 +284,5 @@ private struct InspectorToggle: View {
         }
         .help("Show or hide Details")
         .accessibilityLabel("Details")
-    }
-}
-
-/// The toolbar row: the title block on the left, the controls on the right. The title block always keeps at least
-/// `Metrics.toolbarTitleMinWidth` (160 pt): the controls are offered only what is left after it and a 16 pt gap, so
-/// they pick their compact form instead of squeezing the title. Inside the block, the title and subtitle each
-/// truncate to the block's width (fixes round 5).
-struct ToolbarLayout: Layout {
-    static let gap: CGFloat = 16
-
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        CGSize(width: proposal.width ?? 0, height: proposal.height ?? Metrics.toolbarHeight)
-    }
-
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        guard subviews.count == 2 else { return }
-        let title = subviews[0], controls = subviews[1]
-        let room = max(0, bounds.width - Metrics.toolbarTitleMinWidth - Self.gap)
-        let controlsProposal = ProposedViewSize(width: room, height: bounds.height)
-        let controlsSize = controls.sizeThatFits(controlsProposal)
-        controls.place(at: CGPoint(x: bounds.maxX, y: bounds.midY), anchor: .trailing, proposal: controlsProposal)
-        let titleWidth = max(Metrics.toolbarTitleMinWidth, bounds.width - controlsSize.width - Self.gap)
-        title.place(at: CGPoint(x: bounds.minX, y: bounds.midY), anchor: .leading,
-                    proposal: ProposedViewSize(width: titleWidth, height: bounds.height))
     }
 }

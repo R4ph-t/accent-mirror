@@ -309,6 +309,22 @@ enum Copy {
 
     static let missingTooltip = "Not in your take."
 
+    // MARK: Toolbar in narrow windows (r4 C7)
+
+    /// Tooltip and VoiceOver for Record when it is only its dot (or Stop's square).
+    static func recordButtonShortLabel(stop: Bool) -> String {
+        stop ? "Stop (Space)" : "Record (Space)"
+    }
+
+    /// Tooltip and VoiceOver for the take menu when it is only its chevron: "Takes", "Take 03".
+    static func takeMenuShortLabel(_ label: ToolbarState.TakeMenuLabel) -> String {
+        switch label {
+        case .takes: "Takes"
+        case .take(let number): "Take " + (number < 10 ? "0\(number)" : "\(number)")
+        case .lastTryNotSaved: "Last try, not saved"
+        }
+    }
+
     /// VoiceOver for the mistake marker on a strip label (the triangle and underline are not read).
     static func mistakeLabelAccessibility(_ syllable: String) -> String {
         "\(syllable), stressed differently from the model"
