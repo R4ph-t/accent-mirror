@@ -1,0 +1,82 @@
+# Hand-curated POS mapping for CMUdict words whose variants differ in primary stress (spec 06, Open question 1).
+# Drafted from the usual English pattern: noun and adjective stress the first syllable, verb the second.
+# Values are the 1-based syllable that carries primary stress for that part of speech; "-" means the pattern
+# doesn't hold (or both are common), so the word stays expectedAmbiguous for that part of speech.
+# Only words that tools/gen_stress_shift_pairs.py lists may appear here; the generator fails otherwise.
+# CPO can review every row; changing a row means re-running the generator (python3 tools/gen_stress_shift_pairs.py).
+# word	noun	verb	adjective	note
+abstract	1	2	1
+accent	1	2	-
+addict	1	2	-
+address	-	2	-	noun is ADdress (US) or adDRESS (UK)
+annex	1	2	-
+attribute	1	2	-
+combat	1	-	-	verb is comBAT or COMbat
+combine	1	2	-
+commune	1	2	-
+compact	1	2	-	adjective is either
+compound	1	2	1
+compress	1	2	-
+concert	1	2	-
+conduct	1	2	-
+conflict	1	2	-
+console	1	2	-
+construct	1	2	-
+content	1	2	-	adjective is conTENT, against the pattern
+contest	1	2	-
+contract	1	2	-
+contrast	1	2	-
+converse	1	2	-	adjective is either
+convert	1	2	-
+convict	1	2	-
+decrease	1	2	-
+defect	1	2	-
+desert	-	-	-	DEsert / deSERT (verb, "just deserts") / dessert confusion: always ambiguous
+detail	-	2	-	noun is DEtail or deTAIL
+dictate	1	-	-	verb is DICtate (US) or dicTATE (UK)
+digest	1	2	-
+discharge	1	2	-
+discount	1	-	-	verb is either
+escort	1	2	-
+essay	1	2	-
+exploit	1	2	-
+extract	1	2	-
+ferment	1	2	-
+impact	1	-	-	verb is either
+implant	1	2	-
+import	1	2	-
+impress	1	2	-
+imprint	1	2	-
+incense	1	2	-
+incline	1	2	-
+increase	1	2	-
+insert	1	2	-
+insult	1	2	-
+invalid	1	-	-	adjective is inVALid, against the pattern
+minute	1	-	-	adjective is myNUTE, against the pattern
+object	1	2	-
+perfect	1	2	1
+permit	1	2	-
+pervert	1	2	-
+present	1	2	1
+produce	1	2	-
+progress	1	2	-
+project	1	2	-
+protest	1	2	-
+rebel	1	2	1
+recall	-	2	-	noun is either
+recess	-	2	-	noun is either
+record	1	2	1
+refund	1	2	-
+refuse	1	2	-
+reject	1	2	-
+segment	1	2	-
+subject	1	2	1
+survey	1	2	-
+suspect	1	2	1
+torment	1	2	-
+transfer	1	2	-
+transport	1	2	-
+update	1	2	-
+upgrade	1	2	-
+upset	1	2	-	adjective is upSET, against the pattern
