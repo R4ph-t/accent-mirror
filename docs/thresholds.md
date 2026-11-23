@@ -50,8 +50,10 @@ thresholds table and "first v2" the first v2 (09:10), both carried over "as befo
 | Pre-roll kept | `capture.preRollMs` | 200 | ms | §10 | 05 | Saved audio starts at max(0, t_onset − 0.2 s) |
 | Pre-roll ring buffer | `capture.ringBufferMs` | 500 | ms | §10 | 05 | |
 | End of take | `capture.endOfTakeS` | 1.2 | s | v1 | 05 | Trailing silence after speech |
+| Endpoint arming | `capture.endpointArmSpeechS` | 0.3 | s | first v2 §10 | 05 | The end of take is armed only once this much speech has accumulated |
 | Recording cap | `capture.recordingCapS` | 20 | s | v1 | 05 | Hard cap |
 | No speech | `capture.noSpeechS` | 0.15 | s | v1 | 05 | Total speech below this |
+| No speech: voicing | `capture.noSpeechVoicedS` | 0.3 | s | first v2 §10 | 05 | `noSpeech` also needs voiced frames below this; at or above it with no detected speech, the take is `tooQuiet` |
 | Too short | `capture.tooShortS` | 0.5 | s | v1 | 05 | Speech below this |
 | Too quiet | `capture.tooQuietDBFS` | -40 | dBFS | v1 | 05 | Median RMS of speech frames below this |
 | Clipped | `capture.clippedShare` | 0.005 | share of speech frames | v1 | 05 | At or above this share of frames with a clip run |

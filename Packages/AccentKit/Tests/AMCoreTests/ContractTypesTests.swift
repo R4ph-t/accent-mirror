@@ -210,8 +210,10 @@ private func range(_ start: Double, _ end: Double) -> TimeRange { try! TimeRange
 @Suite("Identity") struct IdentityTests {
     private let config = ConfigIdentity(asrModelID: "none", pitchTrackerID: "none", voicingID: "none")
 
-    @Test("config identity starts at version 1 of everything") func versions() {
-        #expect(config.algorithmVersion == 1 && config.thresholdsVersion == 1 && config.contractVersion == 1)
+    @Test("config identity records the current versions") func versions() {
+        #expect(config.algorithmVersion == Versions.algorithmVersion)
+        #expect(config.thresholdsVersion == Versions.thresholdsVersion)
+        #expect(config.contractVersion == Versions.contractVersion)
     }
 
     @Test("configDigest is stable and changes with any threshold") func configDigestTracksThresholds() throws {

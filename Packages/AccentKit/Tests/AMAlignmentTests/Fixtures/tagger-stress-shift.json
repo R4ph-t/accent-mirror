@@ -1,0 +1,369 @@
+{
+  "about": "NLTagger regression fixture (spec 06). 'pos' is the word's real part of speech; 'tagger' is what NLTagger (.lexicalClass, language .english) returned when this was recorded on macOS 26 / Xcode 26.2; 'expectedPrimarySyllable' is the 1-based primary syllable the selector picks from that tag through stress-shift-pairs.json, or null when the word stays expectedAmbiguous. Rows where 'tagger' differs from 'pos' are known tagger misses, kept so a change in either direction shows up.",
+  "sentences": [
+    {
+      "sentence": "They set a new record.",
+      "word": "record",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "I record music every day.",
+      "word": "record",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "She will record the song.",
+      "word": "record",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "Record it now, please.",
+      "word": "record",
+      "pos": "verb",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "The record was broken.",
+      "word": "record",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "The present was lovely.",
+      "word": "present",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "Please present your ticket.",
+      "word": "present",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "We present the case today.",
+      "word": "present",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "It was a nice present.",
+      "word": "present",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "The present situation is bad.",
+      "word": "present",
+      "pos": "adjective",
+      "tagger": "adjective",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "The object is red.",
+      "word": "object",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "I object to that.",
+      "word": "object",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "They object to the plan.",
+      "word": "object",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "A big project started.",
+      "word": "project",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "We project the image.",
+      "word": "project",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "The project ended early.",
+      "word": "project",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "They project growth next year.",
+      "word": "project",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "You need a permit.",
+      "word": "permit",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "They permit it here.",
+      "word": "permit",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "The permit expired yesterday.",
+      "word": "permit",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "A large increase came.",
+      "word": "increase",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "Increase the price now.",
+      "word": "increase",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "We increase the dose.",
+      "word": "increase",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "The increase was small.",
+      "word": "increase",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "His conduct was good.",
+      "word": "conduct",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "They conduct the orchestra.",
+      "word": "conduct",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "Sign the contract today.",
+      "word": "contract",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "Muscles contract when cold.",
+      "word": "contract",
+      "pos": "verb",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "Fresh produce is cheap.",
+      "word": "produce",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "They produce a film.",
+      "word": "produce",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "We made good progress.",
+      "word": "progress",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "Talks progress slowly here.",
+      "word": "progress",
+      "pos": "verb",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "A peaceful protest began.",
+      "word": "protest",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "They protest the law.",
+      "word": "protest",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "The rebel was caught.",
+      "word": "rebel",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "Teenagers rebel against rules.",
+      "word": "rebel",
+      "pos": "verb",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "The subject was dull.",
+      "word": "subject",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "They subject him to tests.",
+      "word": "subject",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "The main suspect fled.",
+      "word": "suspect",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "I suspect him strongly.",
+      "word": "suspect",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "A perfect day began.",
+      "word": "perfect",
+      "pos": "adjective",
+      "tagger": "adjective",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "Perfect your accent daily.",
+      "word": "perfect",
+      "pos": "verb",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "An import tax applies.",
+      "word": "import",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "We import the file.",
+      "word": "import",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "A sharp contrast appears.",
+      "word": "contrast",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "We contrast the two.",
+      "word": "contrast",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "We convert the file.",
+      "word": "convert",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": 2
+    },
+    {
+      "sentence": "He is a convert.",
+      "word": "convert",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    },
+    {
+      "sentence": "The hot desert sun.",
+      "word": "desert",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": null
+    },
+    {
+      "sentence": "Soldiers desert the army.",
+      "word": "desert",
+      "pos": "verb",
+      "tagger": "verb",
+      "expectedPrimarySyllable": null
+    },
+    {
+      "sentence": "They seem content today.",
+      "word": "content",
+      "pos": "adjective",
+      "tagger": "adjective",
+      "expectedPrimarySyllable": null
+    },
+    {
+      "sentence": "The content is new.",
+      "word": "content",
+      "pos": "noun",
+      "tagger": "noun",
+      "expectedPrimarySyllable": 1
+    }
+  ]
+}
