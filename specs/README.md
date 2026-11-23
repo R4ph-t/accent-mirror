@@ -36,7 +36,7 @@ the timestamp check to proceed after the skeleton.
 | 22 | [Synthetic native references (evaluation only)](22-synthetic-native-references.md) | Ready | 02, 10 | 4–6 h | 1.5 h |
 | 12 | [Analysis pipeline and coordinator](12-analysis-coordinator.md) | Ready | 03, 05, 10 | 6–8 h | 1.5 h |
 | 15 | [Reference library: bundled starter phrases and native recordings](15-reference-library.md) | Ready | 06, 10, 12 | 4–6 h | 1.5 h |
-| 11 | [Stress validation and threshold tuning](11-stress-validation-tuning.md) | Ready | 02, 10, 12, 22 | 6–8 h | 2 h |
+| 11 | [Stress validation and threshold tuning](11-stress-validation-tuning.md) | Ready | 02, 10, 12, 22 (spec 23's b2 gate re-run) | 9–12 h | 2.5 h |
 | 16 | [Take store](16-take-store.md) | Ready | 01, 12, 15 | 4–5 h | 1 h |
 | 14 | [Live microphone capture (macOS)](14-live-capture.md) | Ready | 05 (the hand test needs spec 13) | 3–4 h | 1 h |
 | 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19 | 6–8 h | 1.5 h |
