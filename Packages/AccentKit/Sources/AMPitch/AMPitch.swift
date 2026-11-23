@@ -1,5 +1,5 @@
 // AMPitch: F0 tracking (own YIN/pYIN on Accelerate behind PitchTracker).
-// Placeholder from spec 00; real types arrive in later specs.
+// The module marker; the tracker, track and axis types live in their own files (spec 04).
 
 import Foundation
 import AMCore
