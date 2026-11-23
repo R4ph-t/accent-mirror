@@ -83,9 +83,49 @@ import AMEvaluation
         let fast = VCTKSubPhraseCut.make(sub, transcript: prompt, alignment: Self.alignment(prompt, offset: 0.2))
         let slow = VCTKSubPhraseCut.make(sub, transcript: prompt, alignment: Self.alignment(prompt, offset: 1.7))
         let words = sub.text.split(separator: " ").map(String.init)
-        // Words 14–26 of the prompt: 0.3 s each after the offset.
-        #expect(fast == .cut(start: 0.2 + 0.3 * 14, end: 0.2 + 0.3 * 27, words: words))
-        #expect(slow == .cut(start: 1.7 + 0.3 * 14, end: 1.7 + 0.3 * 27, words: words))
+        // Words 14–26 of the prompt: 0.3 s each after the offset. The words touch their neighbours (no gap), so the
+        // cut doesn't extend.
+        for (cut, offset) in [(fast, 0.2), (slow, 1.7)] {
+            guard case .cut(let start, let end, let wordStart, let wordEnd, let cutWords) = cut else {
+                Issue.record("not cut: \(cut)")
+                continue
+            }
+            #expect(abs(wordStart - (offset + 0.3 * 14)) < 1e-9 && abs(wordEnd - (offset + 0.3 * 27)) < 1e-9)
+            #expect(abs(start - wordStart) < 0.0005 && abs(end - wordEnd) < 0.0005)
+            #expect(cutWords == words)
+        }
+    }
+
+    @Test("A cut extends into the gap before and after, stopping at the gap's midpoint")
+    func extensionStopsAtGapMidpoint() {
+        // 120 ms of silence before the first word and 400 ms after the last: the pre-roll stops at 60 ms, the tail
+        // at 200 ms, so the cut never reaches the neighbouring word.
+        let cut = VCTKSubPhraseCut.extend(wordStart: 2.0, wordEnd: 4.0, previousEnd: 1.88, nextStart: 4.4)
+        #expect(cut.start == 1.94 && cut.end == 4.2)
+        // Neighbours that touch the words: no extension at all.
+        let touching = VCTKSubPhraseCut.extend(wordStart: 2.0, wordEnd: 4.0, previousEnd: 2.0, nextStart: 4.0)
+        #expect(touching.start == 2.0 && touching.end == 4.0)
+    }
+
+    @Test("A cut gets the trim's full 200 ms pre-roll and 300 ms tail when the gap is wide, or at the clip edge")
+    func fullExtension() throws {
+        #expect(VCTKSubPhraseCut.preRoll == 0.2 && VCTKSubPhraseCut.tail == 0.3)
+        let wide = VCTKSubPhraseCut.extend(wordStart: 2.0, wordEnd: 4.0, previousEnd: 1.0, nextStart: 5.0)
+        #expect(wide.start == 1.8 && wide.end == 4.3)
+        // No neighbouring word: the clip edge bounds it (0 at the start; the end is clamped to the audio on reading).
+        let edges = VCTKSubPhraseCut.extend(wordStart: 0.1, wordEnd: 4.0, previousEnd: nil, nextStart: nil)
+        #expect(edges.start == 0 && edges.end == 4.3)
+        // Through make: 023-a starts the prompt and 023-c ends it, with silence around the words.
+        let table = try Self.table()
+        let prompt = try #require(try Self.manifest().phraseText?["023"])
+        let alignment = Self.alignment(prompt, offset: 0.5)
+        let first = try #require(table.subPhrases.first { $0.id == "023-a" })
+        let last = try #require(table.subPhrases.first { $0.id == "023-c" })
+        guard case .cut(let start, _, let wordStart, _, _) = VCTKSubPhraseCut.make(first, transcript: prompt, alignment: alignment),
+              case .cut(_, let end, _, let wordEnd, _) = VCTKSubPhraseCut.make(last, transcript: prompt, alignment: alignment)
+        else { Issue.record("not cut"); return }
+        #expect(wordStart == 0.5 && start == 0.3)
+        #expect(abs(end - (wordEnd + 0.3)) < 0.0005)
     }
 
     @Test("The committed cut list: from this table, every listed clip once per sub-phrase, cut at exactly its words")
@@ -104,9 +144,12 @@ import AMEvaluation
         for entry in cuts.entries {
             let sub = try #require(subs[entry.subPhrase])
             switch entry.outcome {
-            case .cut(let start, let end, let words):
-                #expect(words.joined(separator: " ") == sub.text, "\(entry.speaker)_\(entry.subPhrase)")
-                #expect(0 <= start && start < end, "\(entry.speaker)_\(entry.subPhrase)")
+            case .cut(let start, let end, let wordStart, let wordEnd, let words):
+                let clip = "\(entry.speaker)_\(entry.subPhrase)"
+                #expect(words.joined(separator: " ") == sub.text, "\(clip)")
+                #expect(0 <= start && start <= wordStart && wordStart < wordEnd && wordEnd <= end, "\(clip)")
+                // Extended into the silence by at most the trim's pre-roll and tail.
+                #expect(wordStart - start <= 0.2005 && end - wordEnd <= 0.3005, "\(clip)")
             case .mfaMismatch, .noAlignment, .transcriptMismatch:
                 break  // Rejected and counted by vctk-trim; never cut.
             }
@@ -117,7 +160,7 @@ import AMEvaluation
                 let spans = cuts.entries.filter { $0.speaker == speaker && VCTK.sourcePrompt(of: $0.subPhrase) == prompt }
                     .sorted { $0.subPhrase < $1.subPhrase }
                     .compactMap { entry -> (Double, Double)? in
-                        if case .cut(let s, let e, _) = entry.outcome { return (s, e) } else { return nil }
+                        if case .cut(let s, let e, _, _, _) = entry.outcome { return (s, e) } else { return nil }
                     }
                 for (a, b) in zip(spans, spans.dropFirst()) { #expect(a.1 <= b.0, "\(speaker) \(prompt)") }
             }

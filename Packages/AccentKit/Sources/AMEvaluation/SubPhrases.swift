@@ -139,9 +139,10 @@ public struct VCTKTimedWord: Sendable, Hashable, Codable {
 
 /// Where one speaker's clip of a sub-phrase is cut, or why it isn't.
 public enum VCTKSubPhraseCut: Sendable, Hashable, Codable {
-    /// From the MFA start of the sub-phrase's first word to the MFA end of its last (seconds into the official
-    /// `_mic1.flac`). `words` are the MFA words in the range, for audit.
-    case cut(start: Double, end: Double, words: [String])
+    /// The cut, in seconds into the official `_mic1.flac`: the MFA span of the sub-phrase's words (`wordStart` to
+    /// `wordEnd`) extended outward into the neighbouring silence (`extend`). `words` are the MFA words in the range,
+    /// for audit. With no word after it, `end` may pass the clip's end; the audio is clamped at the clip edge.
+    case cut(start: Double, end: Double, wordStart: Double, wordEnd: Double, words: [String])
     /// The transcript doesn't contain the sub-phrase text: the clip is not listed.
     case transcriptMismatch
     /// The MFA alignment doesn't contain the sub-phrase's words exactly once: rejected and counted, never guessed.
@@ -161,7 +162,30 @@ public enum VCTKSubPhraseCut: Sendable, Hashable, Codable {
             ? (0...(words.count - target.count)).filter { Array(words[$0..<($0 + target.count)]) == target } : []
         guard starts.count == 1, let first = starts.first else { return .mfaMismatch(words: words) }
         let last = first + target.count - 1
-        return .cut(start: alignment[first].start, end: alignment[last].end, words: Array(words[first...last]))
+        let (start, end) = extend(
+            wordStart: alignment[first].start, wordEnd: alignment[last].end,
+            previousEnd: first > 0 ? alignment[first - 1].end : nil,
+            nextStart: last + 1 < alignment.count ? alignment[last + 1].start : nil)
+        return .cut(
+            start: start, end: end, wordStart: alignment[first].start, wordEnd: alignment[last].end,
+            words: Array(words[first...last]))
+    }
+
+    /// Room for spec 02's trim rule at a cut: its pre-roll before the first word and its tail after the last.
+    public static let preRoll = TrimRule().capture.preRollMs / 1000
+    public static let tail = TrimRule().tailMs / 1000
+
+    /// Extends a word span outward so the trim's pre-roll and tail can apply unchanged: up to `preRoll` before the
+    /// first word and `tail` after the last, each stopping at the midpoint of the gap to the neighbouring word's MFA
+    /// span, so a cut never takes the neighbour's speech. With no neighbour the bound is the clip edge (0 at the
+    /// start; the end is clamped to the audio when it's read). Rounded to the millisecond so the cut list is stable.
+    public static func extend(
+        wordStart: Double, wordEnd: Double, previousEnd: Double?, nextStart: Double?
+    ) -> (start: Double, end: Double) {
+        func ms(_ x: Double) -> Double { (x * 1000).rounded() / 1000 }
+        let startBound = previousEnd.map { min(wordStart, ($0 + wordStart) / 2) } ?? 0
+        let endBound = nextStart.map { max(wordEnd, (wordEnd + $0) / 2) } ?? .infinity
+        return (ms(max(wordStart - preRoll, startBound)), ms(min(wordEnd + tail, endBound)))
     }
 }
 

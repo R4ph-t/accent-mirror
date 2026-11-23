@@ -7,8 +7,10 @@
 #    pinned VCTK 0.92 archive (scripts/fetch-vctk-eval.sh first) into the git-ignored eval-cache/vctk-sub/.
 # 2. Aligns them with the same MFA 3.4.4 / english_mfa v3.1.0 setup as spec 03, through scripts/mfa-align.sh
 #    (scripts/setup-mfa.sh first).
-# 3. Cuts each clip from the MFA start of a sub-phrase's first word to the MFA end of its last; a clip whose MFA words
-#    don't contain the sub-phrase exactly once is rejected and counted, never cut by guesswork.
+# 3. Cuts each clip at the MFA span of a sub-phrase's words, extended outward into the neighbouring silence by up to
+#    the trim's 200 ms pre-roll and 300 ms tail, each stopping at the midpoint of the gap to the neighbouring word (the
+#    clip edge if there's none); a clip whose MFA words don't contain the sub-phrase exactly once is rejected and
+#    counted, never cut by guesswork.
 #
 #   scripts/vctk-sub-phrase-cuts.sh
 set -euo pipefail

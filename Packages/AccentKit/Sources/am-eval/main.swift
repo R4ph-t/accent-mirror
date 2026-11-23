@@ -239,7 +239,8 @@ func vctkTrim(_ args: Arguments) throws {
             try trimAndWrite(samples, rate: rate, speaker: entry.speaker, phrase: phrase)
         }
     }
-    // Sub-phrases: cut at the MFA word boundaries in the committed cut list, then the same trim (spec 24).
+    // Sub-phrases: cut at the committed times (MFA word span extended into the neighbouring silence, clamped to the
+    // clip), then the same trim (spec 24).
     let subPhrases = Dictionary(uniqueKeysWithValues: table.subPhrases.map { ($0.id, $0) })
     for entry in cuts.entries {
         guard let sub = subPhrases[entry.subPhrase] else {
@@ -247,7 +248,7 @@ func vctkTrim(_ args: Arguments) throws {
         }
         let base = ["speaker": entry.speaker, "phrase": sub.id]
         switch entry.outcome {
-        case .cut(let start, let end, _):
+        case .cut(let start, let end, _, _, _):
             let source = raw.appendingPathComponent("\(entry.speaker)/\(entry.speaker)_\(sub.prompt)_mic1.flac")
             let (samples, rate) = try AudioFiles.readMono(source)
             let range = min(samples.count, Int((start * rate).rounded()))..<min(samples.count, Int((end * rate).rounded()))

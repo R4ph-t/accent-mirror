@@ -13,8 +13,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.85,
-          "start" : 0.85,
+          "end" : 5,
+          "start" : 0.65,
+          "wordEnd" : 4.85,
+          "wordStart" : 0.85,
           "words" : [
             "the",
             "difference",
@@ -38,8 +40,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.1,
-          "start" : 0.96,
+          "end" : 5.285,
+          "start" : 0.76,
+          "wordEnd" : 5.1,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -63,8 +67,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.11,
-          "start" : 0.93,
+          "end" : 5.345,
+          "start" : 0.73,
+          "wordEnd" : 5.11,
+          "wordStart" : 0.93,
           "words" : [
             "the",
             "difference",
@@ -88,8 +94,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.88,
-          "start" : 0.96,
+          "end" : 5.09,
+          "start" : 0.76,
+          "wordEnd" : 4.88,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -113,8 +121,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.69,
-          "start" : 0.96,
+          "end" : 4.875,
+          "start" : 0.76,
+          "wordEnd" : 4.69,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -138,8 +148,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.27,
-          "start" : 0.95,
+          "end" : 5.4,
+          "start" : 0.75,
+          "wordEnd" : 5.27,
+          "wordStart" : 0.95,
           "words" : [
             "the",
             "difference",
@@ -163,8 +175,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.14,
-          "start" : 0.94,
+          "end" : 4.295,
+          "start" : 0.74,
+          "wordEnd" : 4.14,
+          "wordStart" : 0.94,
           "words" : [
             "the",
             "difference",
@@ -188,8 +202,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.46,
-          "start" : 0.96,
+          "end" : 4.635,
+          "start" : 0.76,
+          "wordEnd" : 4.46,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -213,8 +229,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.49,
-          "start" : 0.96,
+          "end" : 5.77,
+          "start" : 0.76,
+          "wordEnd" : 5.49,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -238,8 +256,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.17,
-          "start" : 0.96,
+          "end" : 5.445,
+          "start" : 0.76,
+          "wordEnd" : 5.17,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -263,8 +283,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.5,
-          "start" : 0.95,
+          "end" : 5.8,
+          "start" : 0.75,
+          "wordEnd" : 5.5,
+          "wordStart" : 0.95,
           "words" : [
             "the",
             "difference",
@@ -288,8 +310,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.63,
-          "start" : 0.43,
+          "end" : 4.785,
+          "start" : 0.23,
+          "wordEnd" : 4.63,
+          "wordStart" : 0.43,
           "words" : [
             "the",
             "difference",
@@ -313,8 +337,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.82,
-          "start" : 0.93,
+          "end" : 4.94,
+          "start" : 0.73,
+          "wordEnd" : 4.82,
+          "wordStart" : 0.93,
           "words" : [
             "the",
             "difference",
@@ -338,8 +364,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.78,
-          "start" : 0.82,
+          "end" : 5.01,
+          "start" : 0.62,
+          "wordEnd" : 4.78,
+          "wordStart" : 0.82,
           "words" : [
             "the",
             "difference",
@@ -363,8 +391,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.6,
-          "start" : 0.77,
+          "end" : 4.74,
+          "start" : 0.57,
+          "wordEnd" : 4.6,
+          "wordStart" : 0.77,
           "words" : [
             "the",
             "difference",
@@ -388,8 +418,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.72,
+          "end" : 4.895,
           "start" : 0,
+          "wordEnd" : 4.72,
+          "wordStart" : 0,
           "words" : [
             "the",
             "difference",
@@ -413,8 +445,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.67,
-          "start" : 0.96,
+          "end" : 4.805,
+          "start" : 0.76,
+          "wordEnd" : 4.67,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -438,8 +472,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.61,
-          "start" : 0.65,
+          "end" : 4.845,
+          "start" : 0.45,
+          "wordEnd" : 4.61,
+          "wordStart" : 0.65,
           "words" : [
             "the",
             "difference",
@@ -463,8 +499,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.87,
-          "start" : 0.79,
+          "end" : 5.905,
+          "start" : 0.59,
+          "wordEnd" : 5.87,
+          "wordStart" : 0.79,
           "words" : [
             "the",
             "difference",
@@ -489,7 +527,9 @@
       "outcome" : {
         "cut" : {
           "end" : 4.58,
-          "start" : 0.95,
+          "start" : 0.75,
+          "wordEnd" : 4.58,
+          "wordStart" : 0.95,
           "words" : [
             "the",
             "difference",
@@ -513,8 +553,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.08,
-          "start" : 0.86,
+          "end" : 4.225,
+          "start" : 0.66,
+          "wordEnd" : 4.08,
+          "wordStart" : 0.86,
           "words" : [
             "the",
             "difference",
@@ -539,7 +581,9 @@
       "outcome" : {
         "cut" : {
           "end" : 4.34,
-          "start" : 0.94,
+          "start" : 0.74,
+          "wordEnd" : 4.34,
+          "wordStart" : 0.94,
           "words" : [
             "the",
             "difference",
@@ -563,8 +607,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.46,
-          "start" : 0.94,
+          "end" : 4.625,
+          "start" : 0.74,
+          "wordEnd" : 4.46,
+          "wordStart" : 0.94,
           "words" : [
             "the",
             "difference",
@@ -588,8 +634,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.38,
-          "start" : 0.91,
+          "end" : 4.515,
+          "start" : 0.71,
+          "wordEnd" : 4.38,
+          "wordStart" : 0.91,
           "words" : [
             "the",
             "difference",
@@ -613,8 +661,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.78,
-          "start" : 0.96,
+          "end" : 4.97,
+          "start" : 0.76,
+          "wordEnd" : 4.78,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -638,8 +688,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.96,
-          "start" : 0.81,
+          "end" : 5.11,
+          "start" : 0.61,
+          "wordEnd" : 4.96,
+          "wordStart" : 0.81,
           "words" : [
             "the",
             "difference",
@@ -663,8 +715,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.38,
-          "start" : 0.83,
+          "end" : 4.46,
+          "start" : 0.63,
+          "wordEnd" : 4.38,
+          "wordStart" : 0.83,
           "words" : [
             "the",
             "difference",
@@ -688,8 +742,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.7,
-          "start" : 0.89,
+          "end" : 4.875,
+          "start" : 0.69,
+          "wordEnd" : 4.7,
+          "wordStart" : 0.89,
           "words" : [
             "the",
             "difference",
@@ -713,8 +769,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.13,
-          "start" : 0.96,
+          "end" : 5.305,
+          "start" : 0.76,
+          "wordEnd" : 5.13,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -738,8 +796,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.88,
-          "start" : 0.97,
+          "end" : 5.14,
+          "start" : 0.77,
+          "wordEnd" : 4.88,
+          "wordStart" : 0.97,
           "words" : [
             "the",
             "difference",
@@ -763,8 +823,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.42,
-          "start" : 0.94,
+          "end" : 4.435,
+          "start" : 0.74,
+          "wordEnd" : 4.42,
+          "wordStart" : 0.94,
           "words" : [
             "the",
             "difference",
@@ -788,8 +850,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.63,
-          "start" : 0.96,
+          "end" : 4.825,
+          "start" : 0.76,
+          "wordEnd" : 4.63,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -813,8 +877,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.57,
-          "start" : 0.91,
+          "end" : 5.695,
+          "start" : 0.71,
+          "wordEnd" : 5.57,
+          "wordStart" : 0.91,
           "words" : [
             "the",
             "difference",
@@ -838,8 +904,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.41,
-          "start" : 0.96,
+          "end" : 4.59,
+          "start" : 0.76,
+          "wordEnd" : 4.41,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -863,8 +931,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.07,
-          "start" : 0.67,
+          "end" : 4.1,
+          "start" : 0.47,
+          "wordEnd" : 4.07,
+          "wordStart" : 0.67,
           "words" : [
             "the",
             "difference",
@@ -888,8 +958,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.15,
-          "start" : 0.92,
+          "end" : 4.295,
+          "start" : 0.72,
+          "wordEnd" : 4.15,
+          "wordStart" : 0.92,
           "words" : [
             "the",
             "difference",
@@ -913,8 +985,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.94,
-          "start" : 0.96,
+          "end" : 5.02,
+          "start" : 0.76,
+          "wordEnd" : 4.94,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -938,8 +1012,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.25,
-          "start" : 0.64,
+          "end" : 4.355,
+          "start" : 0.44,
+          "wordEnd" : 4.25,
+          "wordStart" : 0.64,
           "words" : [
             "the",
             "difference",
@@ -963,8 +1039,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.54,
-          "start" : 0.95,
+          "end" : 5.73,
+          "start" : 0.75,
+          "wordEnd" : 5.54,
+          "wordStart" : 0.95,
           "words" : [
             "the",
             "difference",
@@ -988,8 +1066,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.48,
-          "start" : 0.95,
+          "end" : 4.495,
+          "start" : 0.75,
+          "wordEnd" : 4.48,
+          "wordStart" : 0.95,
           "words" : [
             "the",
             "difference",
@@ -1013,8 +1093,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.39,
-          "start" : 0.8,
+          "end" : 4.54,
+          "start" : 0.6,
+          "wordEnd" : 4.39,
+          "wordStart" : 0.8,
           "words" : [
             "the",
             "difference",
@@ -1038,8 +1120,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.22,
-          "start" : 0.91,
+          "end" : 4.325,
+          "start" : 0.71,
+          "wordEnd" : 4.22,
+          "wordStart" : 0.91,
           "words" : [
             "the",
             "difference",
@@ -1063,8 +1147,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.22,
-          "start" : 0.93,
+          "end" : 5.365,
+          "start" : 0.73,
+          "wordEnd" : 5.22,
+          "wordStart" : 0.93,
           "words" : [
             "the",
             "difference",
@@ -1088,8 +1174,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.45,
-          "start" : 0.94,
+          "end" : 4.58,
+          "start" : 0.74,
+          "wordEnd" : 4.45,
+          "wordStart" : 0.94,
           "words" : [
             "the",
             "difference",
@@ -1113,8 +1201,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.08,
-          "start" : 0.96,
+          "end" : 5.235,
+          "start" : 0.76,
+          "wordEnd" : 5.08,
+          "wordStart" : 0.96,
           "words" : [
             "the",
             "difference",
@@ -1138,8 +1228,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.98,
-          "start" : 5.15,
+          "end" : 9.28,
+          "start" : 5,
+          "wordEnd" : 8.98,
+          "wordStart" : 5.15,
           "words" : [
             "and",
             "the",
@@ -1165,8 +1257,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.38,
-          "start" : 5.47,
+          "end" : 9.68,
+          "start" : 5.285,
+          "wordEnd" : 9.38,
+          "wordStart" : 5.47,
           "words" : [
             "and",
             "the",
@@ -1192,8 +1286,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.15,
-          "start" : 5.58,
+          "end" : 10.45,
+          "start" : 5.38,
+          "wordEnd" : 10.15,
+          "wordStart" : 5.58,
           "words" : [
             "and",
             "the",
@@ -1219,8 +1315,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.81,
-          "start" : 5.3,
+          "end" : 9.11,
+          "start" : 5.1,
+          "wordEnd" : 8.81,
+          "wordStart" : 5.3,
           "words" : [
             "and",
             "the",
@@ -1246,8 +1344,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.9,
-          "start" : 5.06,
+          "end" : 9.2,
+          "start" : 4.875,
+          "wordEnd" : 8.9,
+          "wordStart" : 5.06,
           "words" : [
             "and",
             "the",
@@ -1273,8 +1373,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.04,
-          "start" : 5.53,
+          "end" : 10.34,
+          "start" : 5.4,
+          "wordEnd" : 10.04,
+          "wordStart" : 5.53,
           "words" : [
             "and",
             "the",
@@ -1300,8 +1402,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.71,
-          "start" : 4.45,
+          "end" : 8.01,
+          "start" : 4.295,
+          "wordEnd" : 7.71,
+          "wordStart" : 4.45,
           "words" : [
             "and",
             "the",
@@ -1327,8 +1431,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.46,
-          "start" : 4.81,
+          "end" : 8.76,
+          "start" : 4.635,
+          "wordEnd" : 8.46,
+          "wordStart" : 4.81,
           "words" : [
             "and",
             "the",
@@ -1354,8 +1460,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.37,
-          "start" : 6.05,
+          "end" : 10.67,
+          "start" : 5.85,
+          "wordEnd" : 10.37,
+          "wordStart" : 6.05,
           "words" : [
             "and",
             "the",
@@ -1381,8 +1489,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.82,
-          "start" : 5.72,
+          "end" : 10.12,
+          "start" : 5.52,
+          "wordEnd" : 9.82,
+          "wordStart" : 5.72,
           "words" : [
             "and",
             "the",
@@ -1408,8 +1518,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.093604,
-          "start" : 6.1,
+          "end" : 11.394,
+          "start" : 5.9,
+          "wordEnd" : 11.093604,
+          "wordStart" : 6.1,
           "words" : [
             "and",
             "the",
@@ -1435,8 +1547,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.44,
-          "start" : 4.94,
+          "end" : 8.74,
+          "start" : 4.785,
+          "wordEnd" : 8.44,
+          "wordStart" : 4.94,
           "words" : [
             "and",
             "the",
@@ -1462,8 +1576,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.155479,
-          "start" : 5.06,
+          "end" : 9.455,
+          "start" : 4.94,
+          "wordEnd" : 9.155479,
+          "wordStart" : 5.06,
           "words" : [
             "and",
             "the",
@@ -1489,8 +1605,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.28,
-          "start" : 5.24,
+          "end" : 9.58,
+          "start" : 5.04,
+          "wordEnd" : 9.28,
+          "wordStart" : 5.24,
           "words" : [
             "and",
             "the",
@@ -1516,8 +1634,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.662771,
-          "start" : 4.88,
+          "end" : 8.963,
+          "start" : 4.74,
+          "wordEnd" : 8.662771,
+          "wordStart" : 4.88,
           "words" : [
             "and",
             "the",
@@ -1543,8 +1663,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.476292,
-          "start" : 5.07,
+          "end" : 9.776,
+          "start" : 4.895,
+          "wordEnd" : 9.476292,
+          "wordStart" : 5.07,
           "words" : [
             "and",
             "the",
@@ -1570,8 +1692,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.688354,
-          "start" : 4.94,
+          "end" : 8.988,
+          "start" : 4.805,
+          "wordEnd" : 8.688354,
+          "wordStart" : 4.94,
           "words" : [
             "and",
             "the",
@@ -1597,8 +1721,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.26,
-          "start" : 5.08,
+          "end" : 9.56,
+          "start" : 4.88,
+          "wordEnd" : 9.26,
+          "wordStart" : 5.08,
           "words" : [
             "and",
             "the",
@@ -1624,8 +1750,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.15,
-          "start" : 5.94,
+          "end" : 10.45,
+          "start" : 5.905,
+          "wordEnd" : 10.15,
+          "wordStart" : 5.94,
           "words" : [
             "and",
             "the",
@@ -1651,8 +1779,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.38,
+          "end" : 8.68,
           "start" : 4.58,
+          "wordEnd" : 8.38,
+          "wordStart" : 4.58,
           "words" : [
             "and",
             "the",
@@ -1678,8 +1808,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.56,
-          "start" : 4.37,
+          "end" : 7.86,
+          "start" : 4.225,
+          "wordEnd" : 7.56,
+          "wordStart" : 4.37,
           "words" : [
             "and",
             "the",
@@ -1705,8 +1837,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.86,
+          "end" : 8.16,
           "start" : 4.34,
+          "wordEnd" : 7.86,
+          "wordStart" : 4.34,
           "words" : [
             "and",
             "the",
@@ -1732,8 +1866,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.64,
-          "start" : 4.79,
+          "end" : 8.94,
+          "start" : 4.625,
+          "wordEnd" : 8.64,
+          "wordStart" : 4.79,
           "words" : [
             "and",
             "the",
@@ -1759,8 +1895,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.03,
-          "start" : 4.65,
+          "end" : 9.33,
+          "start" : 4.515,
+          "wordEnd" : 9.03,
+          "wordStart" : 4.65,
           "words" : [
             "and",
             "the",
@@ -1786,8 +1924,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.1,
-          "start" : 5.16,
+          "end" : 9.4,
+          "start" : 4.97,
+          "wordEnd" : 9.1,
+          "wordStart" : 5.16,
           "words" : [
             "and",
             "the",
@@ -1813,8 +1953,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.52,
-          "start" : 5.26,
+          "end" : 9.82,
+          "start" : 5.11,
+          "wordEnd" : 9.52,
+          "wordStart" : 5.26,
           "words" : [
             "and",
             "the",
@@ -1840,8 +1982,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.26,
-          "start" : 4.54,
+          "end" : 8.56,
+          "start" : 4.46,
+          "wordEnd" : 8.26,
+          "wordStart" : 4.54,
           "words" : [
             "and",
             "the",
@@ -1867,8 +2011,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.27,
-          "start" : 5.05,
+          "end" : 9.57,
+          "start" : 4.875,
+          "wordEnd" : 9.27,
+          "wordStart" : 5.05,
           "words" : [
             "and",
             "the",
@@ -1894,8 +2040,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.45,
-          "start" : 5.48,
+          "end" : 10.75,
+          "start" : 5.305,
+          "wordEnd" : 10.45,
+          "wordStart" : 5.48,
           "words" : [
             "and",
             "the",
@@ -1921,8 +2069,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.02,
-          "start" : 5.4,
+          "end" : 9.32,
+          "start" : 5.2,
+          "wordEnd" : 9.02,
+          "wordStart" : 5.4,
           "words" : [
             "and",
             "the",
@@ -1948,8 +2098,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.4,
-          "start" : 4.45,
+          "end" : 8.7,
+          "start" : 4.435,
+          "wordEnd" : 8.4,
+          "wordStart" : 4.45,
           "words" : [
             "and",
             "the",
@@ -1975,8 +2127,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.4,
-          "start" : 5.02,
+          "end" : 9.7,
+          "start" : 4.825,
+          "wordEnd" : 9.4,
+          "wordStart" : 5.02,
           "words" : [
             "and",
             "the",
@@ -2002,8 +2156,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.64,
-          "start" : 5.82,
+          "end" : 11.94,
+          "start" : 5.695,
+          "wordEnd" : 11.64,
+          "wordStart" : 5.82,
           "words" : [
             "and",
             "the",
@@ -2029,8 +2185,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.51,
-          "start" : 4.77,
+          "end" : 8.81,
+          "start" : 4.59,
+          "wordEnd" : 8.51,
+          "wordStart" : 4.77,
           "words" : [
             "and",
             "the",
@@ -2056,8 +2214,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.96,
-          "start" : 4.13,
+          "end" : 8.26,
+          "start" : 4.1,
+          "wordEnd" : 7.96,
+          "wordStart" : 4.13,
           "words" : [
             "and",
             "the",
@@ -2083,8 +2243,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.89,
-          "start" : 4.44,
+          "end" : 8.19,
+          "start" : 4.295,
+          "wordEnd" : 7.89,
+          "wordStart" : 4.44,
           "words" : [
             "and",
             "the",
@@ -2110,8 +2272,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.94,
-          "start" : 5.1,
+          "end" : 9.24,
+          "start" : 5.02,
+          "wordEnd" : 8.94,
+          "wordStart" : 5.1,
           "words" : [
             "and",
             "the",
@@ -2137,8 +2301,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.79,
-          "start" : 4.46,
+          "end" : 9.09,
+          "start" : 4.355,
+          "wordEnd" : 8.79,
+          "wordStart" : 4.46,
           "words" : [
             "and",
             "the",
@@ -2164,8 +2330,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.23,
-          "start" : 5.92,
+          "end" : 10.53,
+          "start" : 5.73,
+          "wordEnd" : 10.23,
+          "wordStart" : 5.92,
           "words" : [
             "and",
             "the",
@@ -2191,8 +2359,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.15,
-          "start" : 4.51,
+          "end" : 8.45,
+          "start" : 4.495,
+          "wordEnd" : 8.15,
+          "wordStart" : 4.51,
           "words" : [
             "and",
             "the",
@@ -2218,8 +2388,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.28,
-          "start" : 4.69,
+          "end" : 8.58,
+          "start" : 4.54,
+          "wordEnd" : 8.28,
+          "wordStart" : 4.69,
           "words" : [
             "and",
             "the",
@@ -2245,8 +2417,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.71,
-          "start" : 4.43,
+          "end" : 8.01,
+          "start" : 4.325,
+          "wordEnd" : 7.71,
+          "wordStart" : 4.43,
           "words" : [
             "and",
             "the",
@@ -2272,8 +2446,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.15,
-          "start" : 5.51,
+          "end" : 10.45,
+          "start" : 5.365,
+          "wordEnd" : 10.15,
+          "wordStart" : 5.51,
           "words" : [
             "and",
             "the",
@@ -2299,8 +2475,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.41,
-          "start" : 4.71,
+          "end" : 8.71,
+          "start" : 4.58,
+          "wordEnd" : 8.41,
+          "wordStart" : 4.71,
           "words" : [
             "and",
             "the",
@@ -2326,8 +2504,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.69,
-          "start" : 5.39,
+          "end" : 9.99,
+          "start" : 5.235,
+          "wordEnd" : 9.69,
+          "wordStart" : 5.39,
           "words" : [
             "and",
             "the",
@@ -2353,8 +2533,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.75,
-          "start" : 0.79,
+          "end" : 3.89,
+          "start" : 0.59,
+          "wordEnd" : 3.75,
+          "wordStart" : 0.79,
           "words" : [
             "if",
             "the",
@@ -2379,8 +2561,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.55,
-          "start" : 0.95,
+          "end" : 4.735,
+          "start" : 0.75,
+          "wordEnd" : 4.55,
+          "wordStart" : 0.95,
           "words" : [
             "if",
             "the",
@@ -2405,8 +2589,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.44,
-          "start" : 0.93,
+          "end" : 4.625,
+          "start" : 0.73,
+          "wordEnd" : 4.44,
+          "wordStart" : 0.93,
           "words" : [
             "if",
             "the",
@@ -2431,8 +2617,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.69,
-          "start" : 0.81,
+          "end" : 3.875,
+          "start" : 0.61,
+          "wordEnd" : 3.69,
+          "wordStart" : 0.81,
           "words" : [
             "if",
             "the",
@@ -2457,8 +2645,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.98,
-          "start" : 0.96,
+          "end" : 4.185,
+          "start" : 0.76,
+          "wordEnd" : 3.98,
+          "wordStart" : 0.96,
           "words" : [
             "if",
             "the",
@@ -2483,8 +2673,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.03,
-          "start" : 0.94,
+          "end" : 5.195,
+          "start" : 0.74,
+          "wordEnd" : 5.03,
+          "wordStart" : 0.94,
           "words" : [
             "if",
             "the",
@@ -2510,7 +2702,9 @@
       "outcome" : {
         "cut" : {
           "end" : 3.83,
-          "start" : 0.91,
+          "start" : 0.71,
+          "wordEnd" : 3.83,
+          "wordStart" : 0.91,
           "words" : [
             "if",
             "the",
@@ -2535,8 +2729,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.91,
-          "start" : 0.97,
+          "end" : 4.115,
+          "start" : 0.77,
+          "wordEnd" : 3.91,
+          "wordStart" : 0.97,
           "words" : [
             "if",
             "the",
@@ -2561,8 +2757,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.71,
-          "start" : 0.97,
+          "end" : 4.91,
+          "start" : 0.77,
+          "wordEnd" : 4.71,
+          "wordStart" : 0.97,
           "words" : [
             "if",
             "the",
@@ -2587,8 +2785,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.71,
-          "start" : 0.79,
+          "end" : 3.95,
+          "start" : 0.59,
+          "wordEnd" : 3.71,
+          "wordStart" : 0.79,
           "words" : [
             "if",
             "the",
@@ -2613,8 +2813,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.67,
-          "start" : 0.82,
+          "end" : 4.85,
+          "start" : 0.62,
+          "wordEnd" : 4.67,
+          "wordStart" : 0.82,
           "words" : [
             "if",
             "the",
@@ -2639,8 +2841,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.84,
-          "start" : 0.95,
+          "end" : 3.895,
+          "start" : 0.75,
+          "wordEnd" : 3.84,
+          "wordStart" : 0.95,
           "words" : [
             "if",
             "the",
@@ -2665,8 +2869,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.32,
-          "start" : 0.97,
+          "end" : 4.455,
+          "start" : 0.77,
+          "wordEnd" : 4.32,
+          "wordStart" : 0.97,
           "words" : [
             "if",
             "the",
@@ -2691,8 +2897,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.93,
-          "start" : 0.95,
+          "end" : 5.08,
+          "start" : 0.75,
+          "wordEnd" : 4.93,
+          "wordStart" : 0.95,
           "words" : [
             "if",
             "the",
@@ -2717,8 +2925,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.55,
-          "start" : 0.96,
+          "end" : 4.63,
+          "start" : 0.76,
+          "wordEnd" : 4.55,
+          "wordStart" : 0.96,
           "words" : [
             "if",
             "the",
@@ -2744,7 +2954,9 @@
       "outcome" : {
         "cut" : {
           "end" : 3.72,
-          "start" : 0.8,
+          "start" : 0.6,
+          "wordEnd" : 3.72,
+          "wordStart" : 0.8,
           "words" : [
             "if",
             "the",
@@ -2769,8 +2981,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.16,
-          "start" : 0.97,
+          "end" : 4.275,
+          "start" : 0.77,
+          "wordEnd" : 4.16,
+          "wordStart" : 0.97,
           "words" : [
             "if",
             "the",
@@ -2795,8 +3009,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.2,
-          "start" : 0.95,
+          "end" : 4.28,
+          "start" : 0.75,
+          "wordEnd" : 4.2,
+          "wordStart" : 0.95,
           "words" : [
             "if",
             "the",
@@ -2821,8 +3037,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.08,
-          "start" : 0.97,
+          "end" : 4.22,
+          "start" : 0.77,
+          "wordEnd" : 4.08,
+          "wordStart" : 0.97,
           "words" : [
             "if",
             "the",
@@ -2847,8 +3065,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.63,
-          "start" : 0.96,
+          "end" : 4.81,
+          "start" : 0.76,
+          "wordEnd" : 4.63,
+          "wordStart" : 0.96,
           "words" : [
             "if",
             "the",
@@ -2873,8 +3093,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.64,
-          "start" : 0.89,
+          "end" : 5.94,
+          "start" : 0.69,
+          "wordEnd" : 5.64,
+          "wordStart" : 0.89,
           "words" : [
             "if",
             "the",
@@ -2899,8 +3121,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.44,
-          "start" : 1.41,
+          "end" : 4.63,
+          "start" : 1.21,
+          "wordEnd" : 4.44,
+          "wordStart" : 1.41,
           "words" : [
             "if",
             "the",
@@ -2925,8 +3149,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.5,
-          "start" : 0.81,
+          "end" : 3.59,
+          "start" : 0.61,
+          "wordEnd" : 3.5,
+          "wordStart" : 0.81,
           "words" : [
             "if",
             "the",
@@ -2952,7 +3178,9 @@
       "outcome" : {
         "cut" : {
           "end" : 3.83,
-          "start" : 0.94,
+          "start" : 0.74,
+          "wordEnd" : 3.83,
+          "wordStart" : 0.94,
           "words" : [
             "if",
             "the",
@@ -2977,8 +3205,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.83,
-          "start" : 0.8,
+          "end" : 3.995,
+          "start" : 0.6,
+          "wordEnd" : 3.83,
+          "wordStart" : 0.8,
           "words" : [
             "if",
             "the",
@@ -3003,8 +3233,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.59,
-          "start" : 0.81,
+          "end" : 3.645,
+          "start" : 0.61,
+          "wordEnd" : 3.59,
+          "wordStart" : 0.81,
           "words" : [
             "if",
             "the",
@@ -3029,8 +3261,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.2,
-          "start" : 0.97,
+          "end" : 4.425,
+          "start" : 0.77,
+          "wordEnd" : 4.2,
+          "wordStart" : 0.97,
           "words" : [
             "if",
             "the",
@@ -3056,7 +3290,9 @@
       "outcome" : {
         "cut" : {
           "end" : 4.16,
-          "start" : 0.96,
+          "start" : 0.76,
+          "wordEnd" : 4.16,
+          "wordStart" : 0.96,
           "words" : [
             "if",
             "the",
@@ -3081,8 +3317,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.8,
-          "start" : 0.66,
+          "end" : 3.945,
+          "start" : 0.46,
+          "wordEnd" : 3.8,
+          "wordStart" : 0.66,
           "words" : [
             "if",
             "the",
@@ -3107,8 +3345,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.99,
-          "start" : 0.59,
+          "end" : 4.105,
+          "start" : 0.39,
+          "wordEnd" : 3.99,
+          "wordStart" : 0.59,
           "words" : [
             "if",
             "the",
@@ -3133,8 +3373,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.01,
-          "start" : 0.93,
+          "end" : 5.11,
+          "start" : 0.73,
+          "wordEnd" : 5.01,
+          "wordStart" : 0.93,
           "words" : [
             "if",
             "the",
@@ -3160,7 +3402,9 @@
       "outcome" : {
         "cut" : {
           "end" : 3.95,
-          "start" : 0.97,
+          "start" : 0.77,
+          "wordEnd" : 3.95,
+          "wordStart" : 0.97,
           "words" : [
             "if",
             "the",
@@ -3185,8 +3429,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.14,
-          "start" : 0.91,
+          "end" : 4.28,
+          "start" : 0.71,
+          "wordEnd" : 4.14,
+          "wordStart" : 0.91,
           "words" : [
             "if",
             "the",
@@ -3211,8 +3457,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.1,
-          "start" : 0.82,
+          "end" : 4.255,
+          "start" : 0.62,
+          "wordEnd" : 4.1,
+          "wordStart" : 0.82,
           "words" : [
             "if",
             "the",
@@ -3237,8 +3485,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.14,
-          "start" : 0.95,
+          "end" : 4.325,
+          "start" : 0.75,
+          "wordEnd" : 4.14,
+          "wordStart" : 0.95,
           "words" : [
             "if",
             "the",
@@ -3263,8 +3513,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.35,
-          "start" : 0.95,
+          "end" : 5.49,
+          "start" : 0.75,
+          "wordEnd" : 5.35,
+          "wordStart" : 0.95,
           "words" : [
             "if",
             "the",
@@ -3290,7 +3542,9 @@
       "outcome" : {
         "cut" : {
           "end" : 4.22,
-          "start" : 0.8,
+          "start" : 0.6,
+          "wordEnd" : 4.22,
+          "wordStart" : 0.8,
           "words" : [
             "if",
             "the",
@@ -3315,8 +3569,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.58,
-          "start" : 0.43,
+          "end" : 3.72,
+          "start" : 0.23,
+          "wordEnd" : 3.58,
+          "wordStart" : 0.43,
           "words" : [
             "if",
             "the",
@@ -3341,8 +3597,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.3,
-          "start" : 0.61,
+          "end" : 3.345,
+          "start" : 0.41,
+          "wordEnd" : 3.3,
+          "wordStart" : 0.61,
           "words" : [
             "if",
             "the",
@@ -3368,7 +3626,9 @@
       "outcome" : {
         "cut" : {
           "end" : 4.07,
-          "start" : 0.76,
+          "start" : 0.56,
+          "wordEnd" : 4.07,
+          "wordStart" : 0.76,
           "words" : [
             "if",
             "the",
@@ -3393,8 +3653,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.65,
-          "start" : 0.92,
+          "end" : 4.795,
+          "start" : 0.72,
+          "wordEnd" : 4.65,
+          "wordStart" : 0.92,
           "words" : [
             "if",
             "the",
@@ -3420,7 +3682,9 @@
       "outcome" : {
         "cut" : {
           "end" : 3.99,
-          "start" : 0.95,
+          "start" : 0.75,
+          "wordEnd" : 3.99,
+          "wordStart" : 0.95,
           "words" : [
             "if",
             "the",
@@ -3445,8 +3709,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.27,
-          "start" : 0.95,
+          "end" : 4.405,
+          "start" : 0.75,
+          "wordEnd" : 4.27,
+          "wordStart" : 0.95,
           "words" : [
             "if",
             "the",
@@ -3471,8 +3737,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 3.82,
-          "start" : 0.96,
+          "end" : 3.94,
+          "start" : 0.76,
+          "wordEnd" : 3.82,
+          "wordStart" : 0.96,
           "words" : [
             "if",
             "the",
@@ -3497,8 +3765,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 5.18,
-          "start" : 0.94,
+          "end" : 5.285,
+          "start" : 0.74,
+          "wordEnd" : 5.18,
+          "wordStart" : 0.94,
           "words" : [
             "if",
             "the",
@@ -3524,7 +3794,9 @@
       "outcome" : {
         "cut" : {
           "end" : 4,
-          "start" : 0.95,
+          "start" : 0.75,
+          "wordEnd" : 4,
+          "wordStart" : 0.95,
           "words" : [
             "if",
             "the",
@@ -3549,8 +3821,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 4.07,
-          "start" : 0.96,
+          "end" : 4.2,
+          "start" : 0.76,
+          "wordEnd" : 4.07,
+          "wordStart" : 0.96,
           "words" : [
             "if",
             "the",
@@ -3575,8 +3849,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.12,
-          "start" : 4.03,
+          "end" : 7.31,
+          "start" : 3.89,
+          "wordEnd" : 7.12,
+          "wordStart" : 4.03,
           "words" : [
             "the",
             "result",
@@ -3600,8 +3876,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.55,
-          "start" : 4.92,
+          "end" : 8.755,
+          "start" : 4.735,
+          "wordEnd" : 8.55,
+          "wordStart" : 4.92,
           "words" : [
             "the",
             "result",
@@ -3625,8 +3903,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.69,
-          "start" : 4.81,
+          "end" : 8.99,
+          "start" : 4.625,
+          "wordEnd" : 8.69,
+          "wordStart" : 4.81,
           "words" : [
             "the",
             "result",
@@ -3650,8 +3930,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.14,
-          "start" : 4.06,
+          "end" : 7.265,
+          "start" : 3.875,
+          "wordEnd" : 7.14,
+          "wordStart" : 4.06,
           "words" : [
             "the",
             "result",
@@ -3675,8 +3957,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.39,
-          "start" : 4.39,
+          "end" : 7.56,
+          "start" : 4.19,
+          "wordEnd" : 7.39,
+          "wordStart" : 4.39,
           "words" : [
             "the",
             "result",
@@ -3700,8 +3984,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.28,
-          "start" : 5.36,
+          "end" : 9.435,
+          "start" : 5.195,
+          "wordEnd" : 9.28,
+          "wordStart" : 5.36,
           "words" : [
             "the",
             "result",
@@ -3725,8 +4011,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 6.96,
+          "end" : 7.115,
           "start" : 3.83,
+          "wordEnd" : 6.96,
+          "wordStart" : 3.83,
           "words" : [
             "the",
             "result",
@@ -3750,8 +4038,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.35,
-          "start" : 4.32,
+          "end" : 7.555,
+          "start" : 4.12,
+          "wordEnd" : 7.35,
+          "wordStart" : 4.32,
           "words" : [
             "the",
             "result",
@@ -3775,8 +4065,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.64,
-          "start" : 5.11,
+          "end" : 9.83,
+          "start" : 4.91,
+          "wordEnd" : 9.64,
+          "wordStart" : 5.11,
           "words" : [
             "the",
             "result",
@@ -3800,8 +4092,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.63,
-          "start" : 4.19,
+          "end" : 8.76,
+          "start" : 3.99,
+          "wordEnd" : 8.63,
+          "wordStart" : 4.19,
           "words" : [
             "the",
             "result",
@@ -3825,8 +4119,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.7,
-          "start" : 5.03,
+          "end" : 9.83,
+          "start" : 4.85,
+          "wordEnd" : 9.7,
+          "wordStart" : 5.03,
           "words" : [
             "the",
             "result",
@@ -3850,8 +4146,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.87,
-          "start" : 3.95,
+          "end" : 8.085,
+          "start" : 3.895,
+          "wordEnd" : 7.87,
+          "wordStart" : 3.95,
           "words" : [
             "the",
             "result",
@@ -3875,8 +4173,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.14,
-          "start" : 4.59,
+          "end" : 8.155,
+          "start" : 4.455,
+          "wordEnd" : 8.14,
+          "wordStart" : 4.59,
           "words" : [
             "the",
             "result",
@@ -3900,8 +4200,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.7,
-          "start" : 5.23,
+          "end" : 9.89,
+          "start" : 5.08,
+          "wordEnd" : 9.7,
+          "wordStart" : 5.23,
           "words" : [
             "the",
             "result",
@@ -3925,8 +4227,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.51,
-          "start" : 4.71,
+          "end" : 8.665,
+          "start" : 4.63,
+          "wordEnd" : 8.51,
+          "wordStart" : 4.71,
           "words" : [
             "the",
             "result",
@@ -3950,8 +4254,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.02,
+          "end" : 7.175,
           "start" : 3.72,
+          "wordEnd" : 7.02,
+          "wordStart" : 3.72,
           "words" : [
             "the",
             "result",
@@ -3975,8 +4281,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.19,
-          "start" : 4.39,
+          "end" : 8.24,
+          "start" : 4.275,
+          "wordEnd" : 8.19,
+          "wordStart" : 4.39,
           "words" : [
             "the",
             "result",
@@ -4000,8 +4308,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.54,
-          "start" : 4.36,
+          "end" : 7.715,
+          "start" : 4.28,
+          "wordEnd" : 7.54,
+          "wordStart" : 4.36,
           "words" : [
             "the",
             "result",
@@ -4025,8 +4335,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.5,
-          "start" : 4.36,
+          "end" : 7.72,
+          "start" : 4.22,
+          "wordEnd" : 7.5,
+          "wordStart" : 4.36,
           "words" : [
             "the",
             "result",
@@ -4050,8 +4362,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.35,
-          "start" : 4.99,
+          "end" : 9.565,
+          "start" : 4.81,
+          "wordEnd" : 9.35,
+          "wordStart" : 4.99,
           "words" : [
             "the",
             "result",
@@ -4075,8 +4389,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 12.23,
-          "start" : 6.41,
+          "end" : 12.27,
+          "start" : 6.21,
+          "wordEnd" : 12.23,
+          "wordStart" : 6.41,
           "words" : [
             "the",
             "result",
@@ -4101,7 +4417,9 @@
       "outcome" : {
         "cut" : {
           "end" : 8.82,
-          "start" : 4.82,
+          "start" : 4.63,
+          "wordEnd" : 8.82,
+          "wordStart" : 4.82,
           "words" : [
             "the",
             "result",
@@ -4125,8 +4443,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 6.6,
-          "start" : 3.68,
+          "end" : 6.765,
+          "start" : 3.59,
+          "wordEnd" : 6.6,
+          "wordStart" : 3.68,
           "words" : [
             "the",
             "result",
@@ -4152,6 +4472,8 @@
         "cut" : {
           "end" : 7.12,
           "start" : 3.83,
+          "wordEnd" : 7.12,
+          "wordStart" : 3.83,
           "words" : [
             "the",
             "result",
@@ -4175,8 +4497,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.55,
-          "start" : 4.16,
+          "end" : 7.75,
+          "start" : 3.995,
+          "wordEnd" : 7.55,
+          "wordStart" : 4.16,
           "words" : [
             "the",
             "result",
@@ -4200,8 +4524,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 6.75,
-          "start" : 3.7,
+          "end" : 6.85,
+          "start" : 3.645,
+          "wordEnd" : 6.75,
+          "wordStart" : 3.7,
           "words" : [
             "the",
             "result",
@@ -4225,8 +4551,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.81,
-          "start" : 4.65,
+          "end" : 7.97,
+          "start" : 4.45,
+          "wordEnd" : 7.81,
+          "wordStart" : 4.65,
           "words" : [
             "the",
             "result",
@@ -4250,8 +4578,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.05,
+          "end" : 8.35,
           "start" : 4.16,
+          "wordEnd" : 8.05,
+          "wordStart" : 4.16,
           "words" : [
             "the",
             "result",
@@ -4275,8 +4605,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.33,
-          "start" : 4.09,
+          "end" : 7.405,
+          "start" : 3.945,
+          "wordEnd" : 7.33,
+          "wordStart" : 4.09,
           "words" : [
             "the",
             "result",
@@ -4300,8 +4632,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.8,
-          "start" : 4.22,
+          "end" : 7.93,
+          "start" : 4.105,
+          "wordEnd" : 7.8,
+          "wordStart" : 4.22,
           "words" : [
             "the",
             "result",
@@ -4325,8 +4659,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.7,
-          "start" : 5.21,
+          "end" : 9.795,
+          "start" : 5.11,
+          "wordEnd" : 9.7,
+          "wordStart" : 5.21,
           "words" : [
             "the",
             "result",
@@ -4350,8 +4686,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.19,
+          "end" : 7.49,
           "start" : 3.95,
+          "wordEnd" : 7.19,
+          "wordStart" : 3.95,
           "words" : [
             "the",
             "result",
@@ -4375,8 +4713,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.25,
-          "start" : 4.42,
+          "end" : 7.43,
+          "start" : 4.28,
+          "wordEnd" : 7.25,
+          "wordStart" : 4.42,
           "words" : [
             "the",
             "result",
@@ -4400,8 +4740,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.89,
-          "start" : 4.41,
+          "end" : 8.105,
+          "start" : 4.255,
+          "wordEnd" : 7.89,
+          "wordStart" : 4.41,
           "words" : [
             "the",
             "result",
@@ -4425,8 +4767,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.91,
-          "start" : 4.51,
+          "end" : 8.1,
+          "start" : 4.325,
+          "wordEnd" : 7.91,
+          "wordStart" : 4.51,
           "words" : [
             "the",
             "result",
@@ -4450,8 +4794,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.94,
-          "start" : 5.63,
+          "end" : 10.13,
+          "start" : 5.49,
+          "wordEnd" : 9.94,
+          "wordStart" : 5.63,
           "words" : [
             "the",
             "result",
@@ -4475,8 +4821,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.56,
+          "end" : 7.705,
           "start" : 4.22,
+          "wordEnd" : 7.56,
+          "wordStart" : 4.22,
           "words" : [
             "the",
             "result",
@@ -4500,8 +4848,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.03,
-          "start" : 3.86,
+          "end" : 7.145,
+          "start" : 3.72,
+          "wordEnd" : 7.03,
+          "wordStart" : 3.86,
           "words" : [
             "the",
             "result",
@@ -4525,8 +4875,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 6.5,
-          "start" : 3.39,
+          "end" : 6.675,
+          "start" : 3.345,
+          "wordEnd" : 6.5,
+          "wordStart" : 3.39,
           "words" : [
             "the",
             "result",
@@ -4550,8 +4902,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.57,
+          "end" : 7.6,
           "start" : 4.07,
+          "wordEnd" : 7.57,
+          "wordStart" : 4.07,
           "words" : [
             "the",
             "result",
@@ -4575,8 +4929,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.15,
-          "start" : 4.94,
+          "end" : 9.305,
+          "start" : 4.795,
+          "wordEnd" : 9.15,
+          "wordStart" : 4.94,
           "words" : [
             "the",
             "result",
@@ -4600,8 +4956,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.05,
+          "end" : 7.21,
           "start" : 3.99,
+          "wordEnd" : 7.05,
+          "wordStart" : 3.99,
           "words" : [
             "the",
             "result",
@@ -4625,8 +4983,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 8.34,
-          "start" : 4.54,
+          "end" : 8.48,
+          "start" : 4.405,
+          "wordEnd" : 8.34,
+          "wordStart" : 4.54,
           "words" : [
             "the",
             "result",
@@ -4650,8 +5010,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.07,
-          "start" : 4.06,
+          "end" : 7.17,
+          "start" : 3.94,
+          "wordEnd" : 7.07,
+          "wordStart" : 4.06,
           "words" : [
             "the",
             "result",
@@ -4676,7 +5038,9 @@
       "outcome" : {
         "cut" : {
           "end" : 9.82,
-          "start" : 5.39,
+          "start" : 5.285,
+          "wordEnd" : 9.82,
+          "wordStart" : 5.39,
           "words" : [
             "the",
             "result",
@@ -4702,6 +5066,8 @@
         "cut" : {
           "end" : 7.7,
           "start" : 4,
+          "wordEnd" : 7.7,
+          "wordStart" : 4,
           "words" : [
             "the",
             "result",
@@ -4725,8 +5091,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 7.77,
-          "start" : 4.33,
+          "end" : 7.93,
+          "start" : 4.2,
+          "wordEnd" : 7.77,
+          "wordStart" : 4.33,
           "words" : [
             "the",
             "result",
@@ -4750,8 +5118,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.13,
-          "start" : 7.5,
+          "end" : 10.43,
+          "start" : 7.31,
+          "wordEnd" : 10.13,
+          "wordStart" : 7.5,
           "words" : [
             "since",
             "red",
@@ -4771,8 +5141,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.81,
-          "start" : 8.96,
+          "end" : 12.11,
+          "start" : 8.76,
+          "wordEnd" : 11.81,
+          "wordStart" : 8.96,
           "words" : [
             "since",
             "red",
@@ -4792,8 +5164,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 12.4,
-          "start" : 9.37,
+          "end" : 12.7,
+          "start" : 9.17,
+          "wordEnd" : 12.4,
+          "wordStart" : 9.37,
           "words" : [
             "since",
             "red",
@@ -4813,8 +5187,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.76,
-          "start" : 7.39,
+          "end" : 10.06,
+          "start" : 7.265,
+          "wordEnd" : 9.76,
+          "wordStart" : 7.39,
           "words" : [
             "since",
             "red",
@@ -4834,8 +5210,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.23,
-          "start" : 7.73,
+          "end" : 10.53,
+          "start" : 7.56,
+          "wordEnd" : 10.23,
+          "wordStart" : 7.73,
           "words" : [
             "since",
             "red",
@@ -4855,8 +5233,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 12.56,
-          "start" : 9.59,
+          "end" : 12.86,
+          "start" : 9.435,
+          "wordEnd" : 12.56,
+          "wordStart" : 9.59,
           "words" : [
             "since",
             "red",
@@ -4876,8 +5256,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.15,
-          "start" : 7.27,
+          "end" : 9.45,
+          "start" : 7.115,
+          "wordEnd" : 9.15,
+          "wordStart" : 7.27,
           "words" : [
             "since",
             "red",
@@ -4897,8 +5279,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.97,
-          "start" : 7.76,
+          "end" : 10.27,
+          "start" : 7.56,
+          "wordEnd" : 9.97,
+          "wordStart" : 7.76,
           "words" : [
             "since",
             "red",
@@ -4918,8 +5302,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 12.84,
-          "start" : 10.02,
+          "end" : 13.14,
+          "start" : 9.83,
+          "wordEnd" : 12.84,
+          "wordStart" : 10.02,
           "words" : [
             "since",
             "red",
@@ -4939,8 +5325,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.28,
-          "start" : 8.89,
+          "end" : 11.58,
+          "start" : 8.76,
+          "wordEnd" : 11.28,
+          "wordStart" : 8.89,
           "words" : [
             "since",
             "red",
@@ -4960,8 +5348,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 13.25,
-          "start" : 9.96,
+          "end" : 13.55,
+          "start" : 9.83,
+          "wordEnd" : 13.25,
+          "wordStart" : 9.96,
           "words" : [
             "since",
             "red",
@@ -4981,8 +5371,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.78,
-          "start" : 8.3,
+          "end" : 11.08,
+          "start" : 8.1,
+          "wordEnd" : 10.78,
+          "wordStart" : 8.3,
           "words" : [
             "since",
             "red",
@@ -5002,8 +5394,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.09,
-          "start" : 8.17,
+          "end" : 11.39,
+          "start" : 8.155,
+          "wordEnd" : 11.09,
+          "wordStart" : 8.17,
           "words" : [
             "since",
             "red",
@@ -5023,8 +5417,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 12.807063,
-          "start" : 10.08,
+          "end" : 13.107,
+          "start" : 9.89,
+          "wordEnd" : 12.807063,
+          "wordStart" : 10.08,
           "words" : [
             "since",
             "red",
@@ -5044,8 +5440,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.37,
-          "start" : 8.82,
+          "end" : 11.67,
+          "start" : 8.665,
+          "wordEnd" : 11.37,
+          "wordStart" : 8.82,
           "words" : [
             "since",
             "red",
@@ -5065,8 +5463,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.73,
-          "start" : 7.33,
+          "end" : 10.03,
+          "start" : 7.175,
+          "wordEnd" : 9.73,
+          "wordStart" : 7.33,
           "words" : [
             "since",
             "red",
@@ -5086,8 +5486,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.09,
-          "start" : 8.29,
+          "end" : 11.39,
+          "start" : 8.24,
+          "wordEnd" : 11.09,
+          "wordStart" : 8.29,
           "words" : [
             "since",
             "red",
@@ -5107,8 +5509,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.12,
-          "start" : 7.89,
+          "end" : 10.42,
+          "start" : 7.715,
+          "wordEnd" : 10.12,
+          "wordStart" : 7.89,
           "words" : [
             "since",
             "red",
@@ -5128,8 +5532,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.18,
-          "start" : 7.94,
+          "end" : 10.48,
+          "start" : 7.74,
+          "wordEnd" : 10.18,
+          "wordStart" : 7.94,
           "words" : [
             "since",
             "red",
@@ -5149,8 +5555,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 12.78,
-          "start" : 9.78,
+          "end" : 13.08,
+          "start" : 9.58,
+          "wordEnd" : 12.78,
+          "wordStart" : 9.78,
           "words" : [
             "since",
             "red",
@@ -5170,8 +5578,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 16.01,
-          "start" : 12.31,
+          "end" : 16.31,
+          "start" : 12.27,
+          "wordEnd" : 16.01,
+          "wordStart" : 12.31,
           "words" : [
             "since",
             "red",
@@ -5191,8 +5601,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.42,
+          "end" : 11.72,
           "start" : 8.82,
+          "wordEnd" : 11.42,
+          "wordStart" : 8.82,
           "words" : [
             "since",
             "red",
@@ -5212,8 +5624,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.37,
-          "start" : 6.93,
+          "end" : 9.67,
+          "start" : 6.765,
+          "wordEnd" : 9.37,
+          "wordStart" : 6.93,
           "words" : [
             "since",
             "red",
@@ -5233,8 +5647,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.79,
+          "end" : 10.09,
           "start" : 7.12,
+          "wordEnd" : 9.79,
+          "wordStart" : 7.12,
           "words" : [
             "since",
             "red",
@@ -5254,8 +5670,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.65,
-          "start" : 7.95,
+          "end" : 10.95,
+          "start" : 7.75,
+          "wordEnd" : 10.65,
+          "wordStart" : 7.95,
           "words" : [
             "since",
             "red",
@@ -5275,8 +5693,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.25,
-          "start" : 6.95,
+          "end" : 9.55,
+          "start" : 6.85,
+          "wordEnd" : 9.25,
+          "wordStart" : 6.95,
           "words" : [
             "since",
             "red",
@@ -5296,8 +5716,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.55,
-          "start" : 8.13,
+          "end" : 10.85,
+          "start" : 7.97,
+          "wordEnd" : 10.55,
+          "wordStart" : 8.13,
           "words" : [
             "since",
             "red",
@@ -5317,8 +5739,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.52,
-          "start" : 8.67,
+          "end" : 11.82,
+          "start" : 8.47,
+          "wordEnd" : 11.52,
+          "wordStart" : 8.67,
           "words" : [
             "since",
             "red",
@@ -5338,8 +5762,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.08,
-          "start" : 7.48,
+          "end" : 10.38,
+          "start" : 7.405,
+          "wordEnd" : 10.08,
+          "wordStart" : 7.48,
           "words" : [
             "since",
             "red",
@@ -5359,8 +5785,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.62,
-          "start" : 8.06,
+          "end" : 10.92,
+          "start" : 7.93,
+          "wordEnd" : 10.62,
+          "wordStart" : 8.06,
           "words" : [
             "since",
             "red",
@@ -5380,8 +5808,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 12.69,
-          "start" : 9.89,
+          "end" : 12.99,
+          "start" : 9.795,
+          "wordEnd" : 12.69,
+          "wordStart" : 9.89,
           "words" : [
             "since",
             "red",
@@ -5401,8 +5831,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.37,
-          "start" : 7.87,
+          "end" : 10.67,
+          "start" : 7.67,
+          "wordEnd" : 10.37,
+          "wordStart" : 7.87,
           "words" : [
             "since",
             "red",
@@ -5422,8 +5854,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.88,
-          "start" : 7.61,
+          "end" : 10.18,
+          "start" : 7.43,
+          "wordEnd" : 9.88,
+          "wordStart" : 7.61,
           "words" : [
             "since",
             "red",
@@ -5443,8 +5877,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.9,
-          "start" : 8.32,
+          "end" : 11.2,
+          "start" : 8.12,
+          "wordEnd" : 10.9,
+          "wordStart" : 8.32,
           "words" : [
             "since",
             "red",
@@ -5464,8 +5900,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.82,
-          "start" : 8.29,
+          "end" : 11.12,
+          "start" : 8.1,
+          "wordEnd" : 10.82,
+          "wordStart" : 8.29,
           "words" : [
             "since",
             "red",
@@ -5485,8 +5923,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 13.51,
-          "start" : 10.32,
+          "end" : 13.81,
+          "start" : 10.13,
+          "wordEnd" : 13.51,
+          "wordStart" : 10.32,
           "words" : [
             "since",
             "red",
@@ -5506,8 +5946,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.13,
-          "start" : 7.85,
+          "end" : 10.43,
+          "start" : 7.705,
+          "wordEnd" : 10.13,
+          "wordStart" : 7.85,
           "words" : [
             "since",
             "red",
@@ -5527,8 +5969,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.53,
-          "start" : 7.26,
+          "end" : 9.83,
+          "start" : 7.145,
+          "wordEnd" : 9.53,
+          "wordStart" : 7.26,
           "words" : [
             "since",
             "red",
@@ -5548,8 +5992,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.25,
-          "start" : 6.85,
+          "end" : 9.55,
+          "start" : 6.675,
+          "wordEnd" : 9.25,
+          "wordStart" : 6.85,
           "words" : [
             "since",
             "red",
@@ -5569,8 +6015,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.6,
-          "start" : 7.63,
+          "end" : 10.9,
+          "start" : 7.6,
+          "wordEnd" : 10.6,
+          "wordStart" : 7.63,
           "words" : [
             "since",
             "red",
@@ -5590,8 +6038,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 12.25,
-          "start" : 9.46,
+          "end" : 12.55,
+          "start" : 9.305,
+          "wordEnd" : 12.25,
+          "wordStart" : 9.46,
           "words" : [
             "since",
             "red",
@@ -5611,8 +6061,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.62,
-          "start" : 7.37,
+          "end" : 9.92,
+          "start" : 7.21,
+          "wordEnd" : 9.62,
+          "wordStart" : 7.37,
           "words" : [
             "since",
             "red",
@@ -5632,8 +6084,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.36,
-          "start" : 8.62,
+          "end" : 11.66,
+          "start" : 8.48,
+          "wordEnd" : 11.36,
+          "wordStart" : 8.62,
           "words" : [
             "since",
             "red",
@@ -5653,8 +6107,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 9.58,
-          "start" : 7.27,
+          "end" : 9.88,
+          "start" : 7.17,
+          "wordEnd" : 9.58,
+          "wordStart" : 7.27,
           "words" : [
             "since",
             "red",
@@ -5674,8 +6130,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 12.65,
+          "end" : 12.95,
           "start" : 9.82,
+          "wordEnd" : 12.65,
+          "wordStart" : 9.82,
           "words" : [
             "since",
             "red",
@@ -5695,8 +6153,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 10.11,
+          "end" : 10.41,
           "start" : 7.7,
+          "wordEnd" : 10.11,
+          "wordStart" : 7.7,
           "words" : [
             "since",
             "red",
@@ -5716,8 +6176,10 @@
     {
       "outcome" : {
         "cut" : {
-          "end" : 11.13,
-          "start" : 8.09,
+          "end" : 11.43,
+          "start" : 7.93,
+          "wordEnd" : 11.13,
+          "wordStart" : 8.09,
           "words" : [
             "since",
             "red",
