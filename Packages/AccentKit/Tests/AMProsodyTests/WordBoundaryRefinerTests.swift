@@ -83,6 +83,29 @@ struct WordBoundaryRefinerTests {
         #expect(abs(refined[0].start - 0.40) <= 0.020, "start \(refined[0].start)")
     }
 
+    @Test("dsp-snap-1 moves a Whisper start 120 ms early to within 20 ms of the true onset")
+    func snapsEarlyStart() async throws {
+        // Word voiced 0.40–1.20 s; Whisper starts it at 0.28 s, as Whisper's starts usually run early.
+        let samples = Take.make([(0.4, false), (0.8, true), (0.4, false)])
+        let truth = 0.40
+        let refined = try await snap.refine([Take.word("early", truth - 0.12, 1.20)], samples: samples,
+                                            sampleRate: Take.sampleRate)
+        #expect(abs(refined[0].start - truth) <= 0.020, "start \(refined[0].start), truth \(truth)")
+    }
+
+    @Test("a start never passes the previous word's refined end, even with that word's voicing in its window")
+    func startStaysAfterPreviousEnd() async throws {
+        // Word one voiced 0.30–0.45 s, silence, word two voiced 0.55–1.20 s. Whisper puts word two's start at 0.42 s,
+        // so its ±150 ms window (0.27–0.57 s) holds word one's onset at 0.30 s, the earliest onset there.
+        let samples = Take.make([(0.3, false), (0.15, true), (0.1, false), (0.65, true), (0.3, false)])
+        let words = [Take.word("one", 0.30, 0.40), Take.word("two", 0.42, 1.20)]
+        let refined = try await snap.refine(words, samples: samples, sampleRate: Take.sampleRate)
+        #expect(refined[1].start >= refined[0].end)
+        #expect(refined[1].start > 0.40, "the start went back into word one: \(refined[1].start)")
+        #expect(abs(refined[1].start - 0.55) <= 0.020, "start \(refined[1].start), true onset 0.55")
+        expectInvariants(refined, words, duration: Double(samples.count) / Take.sampleRate)
+    }
+
     @Test("a boundary never passes the neighbouring word's refined boundary")
     func neighbourClamp() async throws {
         // Two words voiced 0.30–1.10 and 1.20–1.60; Whisper puts both early and back to back at 0.98.
