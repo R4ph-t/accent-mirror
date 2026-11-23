@@ -97,11 +97,14 @@ public struct WorstCluster: Sendable, Hashable, Codable {
 public struct ScoredUnit: Sendable, Hashable {
     public let speaker: String
     public let phrase: String
+    /// The phrase cluster the two-way bootstrap resamples: the phrase itself, or a sub-phrase's source prompt.
+    public let phraseCluster: String
     public let hit: Bool
 
-    public init(speaker: String, phrase: String = "", hit: Bool) {
+    public init(speaker: String, phrase: String = "", phraseCluster: String? = nil, hit: Bool) {
         self.speaker = speaker
         self.phrase = phrase
+        self.phraseCluster = phraseCluster ?? phrase
         self.hit = hit
     }
 }
@@ -155,7 +158,8 @@ public struct MetricResult: Sendable, Hashable, Codable {
         let value = Double(hits) / Double(n)
         var intervals = [Statistics.wilson(successes: hits, n: n)]
         if let bootstrap {
-            let bootUnits = units.map { BootstrapUnit(speaker: $0.speaker, phrase: $0.phrase, value: $0.hit ? 1 : 0) }
+            let bootUnits = units.map { BootstrapUnit(
+                    speaker: $0.speaker, phrase: $0.phrase, phraseCluster: $0.phraseCluster, value: $0.hit ? 1 : 0) }
             intervals.append(
                 ClusteredBootstrap.meanInterval(
                     units: bootUnits, clustering: bootstrap.clustering, resamples: bootstrap.resamples,
