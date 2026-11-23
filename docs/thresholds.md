@@ -210,14 +210,16 @@ thresholds table and "first v2" the first v2 (09:10), both carried over "as befo
 
 ## Word timestamps (`Thresholds.wordTimestamps`)
 
-Spec 03's feasibility bars: the shipped ASR's word starts and ends against the word baseline (MFA, spec 03 Open
-question 5), on Whisper spans padded by `alignment.asrPaddingMs`. Under a bar, the report goes to CTO.
+Spec 03's feasibility bars (CTO ruling 2026-11-23 13:00): absolute error per boundary on unpadded WhisperKit word
+starts and ends against the MFA word baseline (MFA 3.4.4, english_mfa v3.1.0). Starts and ends are judged
+separately, each against every row below; a side that misses fails the gate. Padding (`alignment.asrPaddingMs`) is
+spec 07's and is not applied here. Under a bar, the report goes to CTO.
 
 | Name | Key | Value | Unit | Plan | Owner spec | Notes |
 |---|---|---|---|---|---|---|
-| Word-boundary median error | `wordTimestamps.medianErrorMaxMs` | 40 | ms | first v2 | 03 | Median absolute error over comparable starts and ends |
+| Word-boundary median error | `wordTimestamps.medianErrorMaxMs` | 40 | ms | first v2 | 03 | Per side: median absolute error of unpadded starts, and of unpadded ends |
 | Word-boundary tolerance | `wordTimestamps.withinToleranceMs` | 80 | ms | first v2 | 03 | The "within 80 ms" of the next row |
-| Word boundaries within tolerance | `wordTimestamps.withinToleranceShareMin` | 0.85 | share of comparable boundaries | first v2 | 03 | At least 85% within 80 ms |
+| Word boundaries within tolerance | `wordTimestamps.withinToleranceShareMin` | 0.85 | share of one side's comparable boundaries | first v2 | 03 | Per side: at least 85% of unpadded starts, and of unpadded ends, within 80 ms |
 
 ## Performance
 

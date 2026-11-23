@@ -231,7 +231,7 @@ struct AMTimestamps {
                 }
                 let (words, coverage) = Evaluation.comparableWords(inputs)
                 comparator.coverage = coverage
-                comparator.raw = BoundaryStats(errorsMs: words.flatMap { $0.errorsMs(paddingMs: 0) },
+                comparator.raw = BoundaryStats(errorsMs: words.flatMap { $0.errorsMs() },
                                                toleranceMs: TimestampGate.plan.toleranceMs)
             }
         }
@@ -244,7 +244,7 @@ struct AMTimestamps {
             notes.append("base.en is over the warm ASR budget: the plan's fallback is tiny.en, which must be pinned and gated in its own run.")
         }
         notes.append("Clips are the official VCTK 0.92 wav48_silence_trimmed mic1 files, untrimmed by this spec: no shared 02/15 trim exists yet.")
-        notes.append("Comparable tokens: the longest in-order match of normalised words (lower case, punctuation stripped) against the transcript's phrase tokens, on each side. Padded spans are not clamped to the clip.")
+        notes.append("Comparable tokens: the longest in-order match of normalised words (lower case, punctuation stripped) against the transcript's phrase tokens, on each side. The padded comparison spans are not clamped to the clip.")
         if !absentClips.isEmpty {
             notes.append("\(absentClips.count) of the \(specifiedClips) specified clips are not in the VCTK 0.92 archive (\(absentClips.joined(separator: ", "))). They are reported, not replaced.")
         }

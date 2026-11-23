@@ -41,52 +41,75 @@ struct TokenTests {
 
 @Suite("Word-boundary evaluation")
 struct EvaluationTests {
-    @Test("Spans 80 ms too narrow on each side pass once padded, and the raw figures are reported too")
-    func paddedGatePasses() {
-        let shifts = Array(repeating: (start: 0.08, end: -0.08, p: 0.9), count: 4)
-        let result = Evaluation.evaluate([clip("p225_002", "a b c d", shifts: shifts)])
-        #expect(result.padded.boundaries == 8)
-        #expect(abs(result.padded.medianErrorMs! - 0) < 1e-6)
-        #expect(result.padded.shareWithinTolerance == 1)
-        #expect(abs(result.raw.medianErrorMs! - 80) < 1e-6)
-        #expect(result.medianOutcome == .pass)
-        #expect(result.shareOutcome == .pass)
+    @Test("The gate is on unpadded starts and ends; exact spans pass both sides")
+    func exactSpansPass() {
+        let result = Evaluation.evaluate([clip("p225_002", "a b c d", shifts: [(0, 0, 0.99), (0, 0, 0.95), (0.03, -0.02, 0.4), (0.02, 0.03, 0.3)])])
+        #expect(result.starts.stats.boundaries == 4)
+        #expect(result.ends.stats.boundaries == 4)
+        #expect(result.starts.outcome == .pass)
+        #expect(result.ends.outcome == .pass)
+        #expect(result.outcome == .pass)
+        // The padded comparison of the same spans is far off, and it does not count.
+        #expect(result.padded.paddingMs == 80)
+        #expect(result.padded.starts.medianErrorMs! > 40)
     }
 
-    @Test("Exact raw spans are 80 ms off once padded, so the 40 ms median bar fails")
-    func exactSpansFailPaddedMedian() {
-        let result = Evaluation.evaluate([clip("p225_002", "a b c d", shifts: Array(repeating: (0, 0, 0.9), count: 4))])
-        #expect(abs(result.padded.medianErrorMs! - 80) < 1e-6)
-        #expect(result.padded.shareWithinTolerance == 1)
-        #expect(result.raw.medianErrorMs == 0)
-        #expect(result.medianOutcome == .fail)
+    @Test("Starts and ends are judged separately: late-only ends fail the gate while starts pass")
+    func sidesAreSeparate() {
+        let shifts = Array(repeating: (start: 0.0, end: -0.12, p: 0.9), count: 4)
+        let result = Evaluation.evaluate([clip("p225_002", "a b c d", shifts: shifts)])
+        #expect(result.starts.outcome == .pass)
+        #expect(abs(result.ends.stats.medianErrorMs! - 120) < 1e-9)
+        #expect(result.ends.stats.shareWithinTolerance == 0)
+        #expect(result.ends.medianOutcome == .fail)
+        #expect(result.ends.shareOutcome == .fail)
         #expect(result.outcome == .fail)
     }
 
-    @Test("The share bar counts boundaries within 80 ms against 85%")
+    @Test("An error of exactly 80 ms counts as within 80 ms")
+    func exactToleranceIsWithin() {
+        let result = Evaluation.evaluate([clip("p225_002", "a b", shifts: [(0.08, 0.08, 0.9), (0.08, 0.08, 0.9)])])
+        #expect(result.starts.stats.shareWithinTolerance == 1)
+        #expect(result.ends.stats.shareWithinTolerance == 1)
+        #expect(result.starts.medianOutcome == .fail)
+    }
+
+    @Test("The share bar needs 85% of a side within 80 ms")
     func shareBar() {
-        // Padded errors: 4 boundaries at 0 ms, 2 boundaries at 100 ms → 4 / 6 within.
-        let shifts = [(0.08, -0.08, 0.9), (0.08, -0.08, 0.9), (0.18, 0.02, 0.9)]
+        // Starts: 2 of 3 within (0, 0, 100 ms).
+        let shifts = [(0.0, 0.0, 0.9), (0.0, 0.0, 0.9), (0.1, 0.0, 0.9)]
         let result = Evaluation.evaluate([clip("p225_002", "a b c", shifts: shifts.map { ($0.0, $0.1, $0.2) })])
-        #expect(result.padded.shareWithinTolerance == 4.0 / 6.0)
-        #expect(result.shareOutcome == .fail)
+        #expect(result.starts.stats.shareWithinTolerance == 2.0 / 3.0)
+        #expect(result.starts.medianOutcome == .pass)
+        #expect(result.starts.shareOutcome == .fail)
+        #expect(result.ends.outcome == .pass)
+    }
+
+    @Test("The end-bias diagnostic subtracts the median signed end error, and changes nothing in the gate")
+    func endBiasDiagnostic() {
+        let shifts = [(0.0, -0.14, 0.9), (0.0, -0.12, 0.9), (0.0, -0.10, 0.9)]
+        let result = Evaluation.evaluate([clip("p225_002", "a b c", shifts: shifts.map { ($0.0, $0.1, $0.2) })])
+        #expect(result.endBias.medianSignedEndErrorMs == -120)
+        #expect(result.endBias.correctedEnds.medianErrorMs == 20)
+        #expect(result.endBias.correctedEnds.shareWithinTolerance == 1)
+        #expect(result.ends.outcome == .fail)
     }
 
     @Test("Coverage counts tokens missing from either side and skips them")
     func coverage() {
-        var input = clip("p225_002", "a b c d", shifts: Array(repeating: (0.08, -0.08, 0.9), count: 3))
+        var input = clip("p225_002", "a b c d", shifts: Array(repeating: (0, 0, 0.9), count: 3))
         input.baselineWords.remove(at: 0)
         let result = Evaluation.evaluate([input])
         #expect(result.coverage.phraseTokens == 4)
         #expect(result.coverage.comparable == 2)
         #expect(result.coverage.missingFromBaselineOnly == 1)
         #expect(result.coverage.missingFromASROnly == 1)
-        #expect(result.padded.boundaries == 4)
+        #expect(result.starts.stats.boundaries == 2)
     }
 
     @Test("Calibration passes when low-probability words have more error than high-probability words")
     func calibrationPasses() {
-        let shifts = [(0.08, -0.08, 0.99), (0.08, -0.08, 0.95), (0.2, -0.2, 0.4), (0.3, -0.3, 0.3)]
+        let shifts = [(0.0, 0.0, 0.99), (0.0, 0.0, 0.95), (0.1, -0.1, 0.4), (0.2, -0.2, 0.3)]
         let result = Evaluation.evaluate([clip("p225_002", "a b c d", shifts: shifts.map { ($0.0, $0.1, $0.2) })])
         #expect(result.calibration.low.words == 2)
         #expect(result.calibration.high.words == 2)
@@ -95,7 +118,7 @@ struct EvaluationTests {
 
     @Test("Calibration fails when high-probability words have more error")
     func calibrationFails() {
-        let shifts = [(0.3, -0.3, 0.99), (0.2, -0.2, 0.95), (0.08, -0.08, 0.4), (0.08, -0.08, 0.3)]
+        let shifts = [(0.2, -0.2, 0.99), (0.1, -0.1, 0.95), (0.0, 0.0, 0.4), (0.0, 0.0, 0.3)]
         let result = Evaluation.evaluate([clip("p225_002", "a b c d", shifts: shifts.map { ($0.0, $0.1, $0.2) })])
         #expect(result.calibration.outcome == .fail)
         #expect(result.outcome == .fail)
@@ -103,7 +126,7 @@ struct EvaluationTests {
 
     @Test("Calibration with an empty bin is NOT EVALUATED, and that is not a pass")
     func calibrationEmptyBin() {
-        let result = Evaluation.evaluate([clip("p225_002", "a b c d", shifts: Array(repeating: (0.08, -0.08, 0.9), count: 4))])
+        let result = Evaluation.evaluate([clip("p225_002", "a b c d", shifts: Array(repeating: (0, 0, 0.9), count: 4))])
         #expect(result.calibration.low.words == 0)
         #expect(result.calibration.outcome == .notEvaluated)
         #expect(result.outcome == .notEvaluated)
@@ -112,23 +135,24 @@ struct EvaluationTests {
     @Test("Nothing comparable means NOT EVALUATED, never PASS")
     func nothingComparable() {
         let result = Evaluation.evaluate([clip("p225_002", "a b", shifts: [])])
-        #expect(result.padded.boundaries == 0)
-        #expect(result.medianOutcome == .notEvaluated)
+        #expect(result.starts.stats.boundaries == 0)
+        #expect(result.starts.outcome == .notEvaluated)
         #expect(result.outcome == .notEvaluated)
         #expect(Outcome.combine([.pass, .notEvaluated]) == .notEvaluated)
         #expect(Outcome.combine([.notEvaluated, .fail]) == .fail)
         #expect(Outcome.combine([]) == .notEvaluated)
     }
 
-    @Test("Per-voice and per-phrase breakdowns group by speaker and text ID")
+    @Test("Per-speaker and per-phrase breakdowns split starts and ends by speaker and text ID")
     func breakdowns() {
-        let shifts = Array(repeating: (start: 0.08, end: -0.08, p: 0.9), count: 2)
+        let shifts = Array(repeating: (start: 0.0, end: -0.12, p: 0.9), count: 2)
         let result = Evaluation.evaluate([
             clip("p225_002", "a b", shifts: shifts), clip("p226_002", "a b", shifts: shifts),
             clip("p226_003", "a b", shifts: shifts),
         ])
-        #expect(result.perVoice.map(\.key) == ["p225", "p226"])
-        #expect(result.perVoice.map(\.padded.boundaries) == [4, 8])
+        #expect(result.perSpeaker.map(\.key) == ["p225", "p226"])
+        #expect(result.perSpeaker.map(\.starts.stats.boundaries) == [2, 4])
+        #expect(result.perSpeaker.allSatisfy { $0.starts.outcome == .pass && $0.ends.outcome == .fail })
         #expect(result.perPhrase.map(\.key) == ["002", "003"])
     }
 

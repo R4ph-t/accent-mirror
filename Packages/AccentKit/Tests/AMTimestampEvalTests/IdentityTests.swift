@@ -59,7 +59,7 @@ struct IdentityTests {
         #expect(gate.medianErrorMaxMs == 40)
         #expect(gate.toleranceMs == 80)
         #expect(gate.minShareWithinTolerance == 0.85)
-        #expect(gate.spanPaddingMs == Thresholds.current.alignment.asrPaddingMs)
+        #expect(TimestampGate.comparisonPaddingMs == Thresholds.current.alignment.asrPaddingMs)
         #expect(gate.asrWarmBudgetMs == Thresholds.current.performance.asrWarmMs)
     }
 
@@ -129,10 +129,24 @@ struct ReportTests {
         #expect(markdown.contains("p227_007"))
     }
 
+    @Test("The report labels the padded table and the end-bias line as not the gate, and never says ground truth")
+    func labels() throws {
+        let accuracy = Evaluation.evaluate([
+            clip("p225_002", "a b c d", shifts: [(0, -0.1, 0.99), (0, -0.12, 0.95), (0.02, -0.14, 0.4), (0.02, -0.1, 0.3)]),
+        ])
+        let markdown = try Self.report(accuracy: accuracy, asrMs: [300, 120]).markdown()
+        #expect(markdown.contains("Padded (not the gate; padding belongs to spec 07)"))
+        #expect(markdown.contains("diagnostic baseline only, not a fix, not the gate"))
+        #expect(markdown.contains("| Starts: median error |"))
+        #expect(markdown.contains("| Ends: within 80.0 ms |"))
+        #expect(markdown.contains("### Per speaker"))
+        #expect(!markdown.lowercased().contains("ground truth"))
+    }
+
     @Test("Cold and warm ASR times are split, and a warm median over 900 ms fails the budget")
     func budget() throws {
         let passing = Evaluation.evaluate([
-            clip("p225_002", "a b c d", shifts: [(0.08, -0.08, 0.99), (0.08, -0.08, 0.95), (0.1, -0.1, 0.4), (0.1, -0.1, 0.3)]),
+            clip("p225_002", "a b c d", shifts: [(0, 0, 0.99), (0, 0, 0.95), (0.02, -0.02, 0.4), (0.02, -0.02, 0.3)]),
         ])
         #expect(passing.outcome == .pass)
         let fast = try Self.report(accuracy: passing, asrMs: [1500, 300, 320])

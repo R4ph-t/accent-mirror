@@ -149,7 +149,7 @@ public struct TimestampReport: Codable, Sendable {
         public var status: String
         public var locale: String
         public var coverage: Coverage?
-        /// Raw spans (no padding), for information only: the comparator has no gate.
+        /// Unpadded spans, for information only: the comparator has no gate.
         public var raw: BoundaryStats?
 
         public init(name: String, status: String, locale: String, coverage: Coverage?, raw: BoundaryStats?) {
@@ -161,9 +161,12 @@ public struct TimestampReport: Codable, Sendable {
         }
     }
 
+    /// The gate lines (CTO ruling 2026-11-23 13:00): unpadded starts and unpadded ends, each against both bars.
     public struct Verdict: Codable, Sendable {
-        public var medianError: Outcome
-        public var shareWithinTolerance: Outcome
+        public var startsMedian: Outcome
+        public var startsShare: Outcome
+        public var endsMedian: Outcome
+        public var endsShare: Outcome
         public var calibration: Outcome
         public var warmBudget: Outcome
         public var overall: Outcome
@@ -197,11 +200,14 @@ public struct TimestampReport: Codable, Sendable {
         self.accuracy = accuracy
         self.timing = timing
         self.comparator = comparator
-        let accuracyParts = accuracy.map { [$0.medianOutcome, $0.shareOutcome, $0.calibration.outcome] }
-            ?? [.notEvaluated, .notEvaluated, .notEvaluated]
+        let parts = accuracy.map {
+            [$0.starts.medianOutcome, $0.starts.shareOutcome, $0.ends.medianOutcome, $0.ends.shareOutcome,
+             $0.calibration.outcome]
+        } ?? Array(repeating: .notEvaluated, count: 5)
         verdict = Verdict(
-            medianError: accuracyParts[0], shareWithinTolerance: accuracyParts[1], calibration: accuracyParts[2],
-            warmBudget: timing.budgetOutcome, overall: Outcome.combine(accuracyParts + [timing.budgetOutcome]))
+            startsMedian: parts[0], startsShare: parts[1], endsMedian: parts[2], endsShare: parts[3],
+            calibration: parts[4], warmBudget: timing.budgetOutcome,
+            overall: Outcome.combine(parts + [timing.budgetOutcome]))
         self.notes = notes
     }
 
@@ -222,17 +228,21 @@ extension TimestampReport {
         var md: [String] = []
         md.append("# Timestamp feasibility (spec 03): \(verdict.overall.rawValue)")
         md.append("")
-        md.append("Generated \(generatedAt). WhisperKit word timings against \(baseline.map { "\($0.name) \($0.version)" } ?? "no baseline") on \(corpus.clips) \(corpus.name) clips. **No stress claims.**")
+        md.append("Generated \(generatedAt). WhisperKit word timings against the MFA word baseline (\(baseline.map { "\($0.name) \($0.version), \($0.acousticModel)" } ?? "none available")) on \(corpus.clips) \(corpus.name) clips. **No stress claims.**")
         md.append("")
         md.append("## Verdict")
         md.append("")
-        md.append("| Line | Bar | Result | Outcome |")
-        md.append("|---|---|---|---|")
-        md.append("| Median boundary error (padded spans) | ≤ \(ms(gate.medianErrorMaxMs)) | \(ms(accuracy?.padded.medianErrorMs)) | \(verdict.medianError.rawValue) |")
-        md.append("| Boundaries within \(ms(gate.toleranceMs)) (padded spans) | ≥ \(pct(gate.minShareWithinTolerance)) | \(pct(accuracy?.padded.shareWithinTolerance)) | \(verdict.shareWithinTolerance.rawValue) |")
-        md.append("| Calibration: low-probability bin has more error than high | low > high | \(ms(accuracy?.calibration.low.meanAbsErrorMs)) vs \(ms(accuracy?.calibration.high.meanAbsErrorMs)) | \(verdict.calibration.rawValue) |")
-        md.append("| Warm ASR, median over clips | ≤ \(ms(gate.asrWarmBudgetMs)) | \(ms(timing.warmASR.medianMs)) | \(verdict.warmBudget.rawValue) |")
-        md.append("| **Overall** | | | **\(verdict.overall.rawValue)** |")
+        md.append("The gate (CTO ruling 2026-11-23 13:00): absolute error per boundary on **unpadded** WhisperKit word starts and ends against the MFA word baseline, each side judged on its own. A side that misses fails the gate.")
+        md.append("")
+        md.append("| Line | Bar | Result | n | Outcome |")
+        md.append("|---|---|---|---|---|")
+        md.append("| Starts: median error | ≤ \(ms(gate.medianErrorMaxMs)) | \(ms(accuracy?.starts.stats.medianErrorMs)) | \(accuracy?.starts.stats.boundaries ?? 0) | \(verdict.startsMedian.rawValue) |")
+        md.append("| Starts: within \(ms(gate.toleranceMs)) | ≥ \(pct(gate.minShareWithinTolerance)) | \(pct(accuracy?.starts.stats.shareWithinTolerance)) | \(accuracy?.starts.stats.boundaries ?? 0) | \(verdict.startsShare.rawValue) |")
+        md.append("| Ends: median error | ≤ \(ms(gate.medianErrorMaxMs)) | \(ms(accuracy?.ends.stats.medianErrorMs)) | \(accuracy?.ends.stats.boundaries ?? 0) | \(verdict.endsMedian.rawValue) |")
+        md.append("| Ends: within \(ms(gate.toleranceMs)) | ≥ \(pct(gate.minShareWithinTolerance)) | \(pct(accuracy?.ends.stats.shareWithinTolerance)) | \(accuracy?.ends.stats.boundaries ?? 0) | \(verdict.endsShare.rawValue) |")
+        md.append("| Calibration (unpadded): low-probability bin has more error than high | low > high | \(ms(accuracy?.calibration.low.meanAbsErrorMs)) vs \(ms(accuracy?.calibration.high.meanAbsErrorMs)) | \(accuracy?.calibration.low.boundaries ?? 0) + \(accuracy?.calibration.high.boundaries ?? 0) | \(verdict.calibration.rawValue) |")
+        md.append("| Warm ASR, median over clips | ≤ \(ms(gate.asrWarmBudgetMs)) | \(ms(timing.warmASR.medianMs)) | \(timing.warmASR.count) | \(verdict.warmBudget.rawValue) |")
+        md.append("| **Overall** | | | | **\(verdict.overall.rawValue)** |")
         md.append("")
         if verdict.overall != .pass {
             md.append("Under the bar, or not evaluated: this report goes to CTO. Thresholds are not changed to pass.")
@@ -296,32 +306,40 @@ extension TimestampReport {
             md.append("## Accuracy")
             md.append("")
             let c = accuracy.coverage
-            md.append("Coverage: \(c.comparable) of \(c.phraseTokens) phrase tokens comparable (\(pct(c.comparableShare))); skipped: \(c.missingFromASROnly) missing from WhisperKit only, \(c.missingFromBaselineOnly) missing from the baseline only, \(c.missingFromBoth) missing from both. n = \(accuracy.padded.boundaries) comparable boundaries (starts and ends).")
+            md.append("Coverage: \(c.comparable) of \(c.phraseTokens) phrase tokens comparable (\(pct(c.comparableShare))); skipped: \(c.missingFromASROnly) missing from WhisperKit only, \(c.missingFromBaselineOnly) missing from the baseline only, \(c.missingFromBoth) missing from both. Each comparable token gives one start and one end.")
             md.append("")
-            md.append("| Spans | n | Median error | Within \(ms(gate.toleranceMs)) | Mean error |")
+            md.append("Mean signed unpadded error (ASR minus baseline; negative is early): starts \(signedMs(accuracy.meanSignedStartMs)), ends \(signedMs(accuracy.meanSignedEndMs)).")
+            md.append("")
+            md.append("### Per speaker (unpadded, the gate's figures by voice)")
+            md.append("")
+            md.append(contentsOf: sideTable(accuracy.perSpeaker, title: "Speaker"))
+            md.append("")
+            md.append("### Padded (not the gate; padding belongs to spec 07)")
+            md.append("")
+            md.append("Kept for comparison with the first report only. Whisper spans expanded by \(ms(accuracy.padded.paddingMs)) on both sides.")
+            md.append("")
+            md.append("| Padded boundaries | n | Median error | Within \(ms(gate.toleranceMs)) | Mean error |")
             md.append("|---|---|---|---|---|")
-            md.append("| Padded ±\(ms(gate.spanPaddingMs)) (gate) | \(accuracy.padded.boundaries) | \(ms(accuracy.padded.medianErrorMs)) | \(pct(accuracy.padded.shareWithinTolerance)) | \(ms(accuracy.padded.meanErrorMs)) |")
-            md.append("| Raw (information) | \(accuracy.raw.boundaries) | \(ms(accuracy.raw.medianErrorMs)) | \(pct(accuracy.raw.shareWithinTolerance)) | \(ms(accuracy.raw.meanErrorMs)) |")
+            for (label, stats) in [("Starts", accuracy.padded.starts), ("Ends", accuracy.padded.ends), ("Starts and ends pooled", accuracy.padded.pooled)] {
+                md.append("| \(label) | \(stats.boundaries) | \(ms(stats.medianErrorMs)) | \(pct(stats.shareWithinTolerance)) | \(ms(stats.meanErrorMs)) |")
+            }
             md.append("")
-            md.append("Raw bias (information, ASR minus baseline; negative is early): starts \(signedMs(accuracy.rawMeanSignedStartMs)), ends \(signedMs(accuracy.rawMeanSignedEndMs)) on average.")
+            md.append("### End-bias diagnostic (diagnostic baseline only, not a fix, not the gate)")
             md.append("")
-            md.append("### Calibration")
+            let corrected = accuracy.endBias.correctedEnds
+            md.append("Constant end-bias correction, fitted on these same clips (median signed end error): \(signedMs(accuracy.endBias.medianSignedEndErrorMs)). Unpadded ends after subtracting it: n \(corrected.boundaries), median \(ms(corrected.medianErrorMs)), within \(ms(gate.toleranceMs)) \(pct(corrected.shareWithinTolerance)), mean \(ms(corrected.meanErrorMs)). It is applied nowhere in the code path, and it is fitted and measured on the same clips, so it overstates what a correction would achieve.")
+            md.append("")
+            md.append("### Calibration (unpadded)")
             md.append("")
             md.append("Two bins split at the median word probability over comparable tokens (low: below it; high: at or above it).")
             md.append("")
-            md.append("| Spans | Split | Low bin: words, p range, mean error | High bin: words, p range, mean error | Outcome |")
-            md.append("|---|---|---|---|---|")
-            for (label, cal) in [("Padded (gate)", accuracy.calibration), ("Raw (information)", accuracy.rawCalibration)] {
-                md.append("| \(label) | \(num(cal.medianProbability)) | \(bin(cal.low)) | \(bin(cal.high)) | \(cal.outcome.rawValue) |")
-            }
+            md.append("| Split | Low bin: words, p range, mean error | High bin: words, p range, mean error | Outcome |")
+            md.append("|---|---|---|---|")
+            md.append("| \(num(accuracy.calibration.medianProbability)) | \(bin(accuracy.calibration.low)) | \(bin(accuracy.calibration.high)) | \(accuracy.calibration.outcome.rawValue) |")
             md.append("")
-            md.append("### Per voice (information, no gate)")
+            md.append("### Per phrase (unpadded, information)")
             md.append("")
-            md.append(contentsOf: breakdownTable(accuracy.perVoice, title: "Voice"))
-            md.append("")
-            md.append("### Per phrase (information, no gate)")
-            md.append("")
-            md.append(contentsOf: breakdownTable(accuracy.perPhrase, title: "Text"))
+            md.append(contentsOf: sideTable(accuracy.perPhrase, title: "Text"))
             md.append("")
         }
         md.append("## Timing")
@@ -350,11 +368,11 @@ extension TimestampReport {
         return md.joined(separator: "\n")
     }
 
-    private func breakdownTable(_ rows: [Breakdown], title: String) -> [String] {
-        ["| \(title) | n | Median (padded) | Within \(ms(gate.toleranceMs)) (padded) | Median (raw) | Within \(ms(gate.toleranceMs)) (raw) |",
-         "|---|---|---|---|---|---|"]
+    private func sideTable(_ rows: [SideBreakdown], title: String) -> [String] {
+        ["| \(title) | n | Starts: median | Starts: within \(ms(gate.toleranceMs)) | Starts | Ends: median | Ends: within \(ms(gate.toleranceMs)) | Ends |",
+         "|---|---|---|---|---|---|---|---|"]
             + rows.map {
-                "| \($0.key) | \($0.padded.boundaries) | \(ms($0.padded.medianErrorMs)) | \(pct($0.padded.shareWithinTolerance)) | \(ms($0.raw.medianErrorMs)) | \(pct($0.raw.shareWithinTolerance)) |"
+                "| \($0.key) | \($0.starts.stats.boundaries) | \(ms($0.starts.stats.medianErrorMs)) | \(pct($0.starts.stats.shareWithinTolerance)) | \($0.starts.outcome.rawValue) | \(ms($0.ends.stats.medianErrorMs)) | \(pct($0.ends.stats.shareWithinTolerance)) | \($0.ends.outcome.rawValue) |"
             }
     }
 

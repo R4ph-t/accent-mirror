@@ -1,7 +1,7 @@
 import AMAlignment
 import Foundation
 
-/// The word-boundary truth source (spec 03, Open question 5 default): Montreal Forced Aligner word alignments of the
+/// The MFA word baseline (spec 03, Open question 5 default): Montreal Forced Aligner word alignments of the
 /// evaluation clips, with the aligner and its models pinned. Written by `am-timestamps baseline`; its SHA-256 is the
 /// report's label hash.
 public struct WordBaseline: Codable, Sendable, Equatable {

@@ -3,17 +3,18 @@ import AMCore
 import Foundation
 
 /// The numbers the spec 03 gate reads, all from `Thresholds` (mirrored in `docs/thresholds.md`): the word-boundary
-/// bars, the ASR span padding (CTO decision 4) and the warm-ASR budget. Never lowered quietly: a result under a bar
-/// goes back to CTO.
+/// bars and the warm-ASR budget. Never lowered quietly: a result under a bar goes back to CTO.
+///
+/// CTO ruling 2026-11-23 13:00: the bar is the absolute error per boundary on unpadded Whisper word starts and ends,
+/// judged separately for starts and for ends; both sides must meet it. Padding is an analysis-window choice that
+/// belongs to spec 07, so it is not part of the gate.
 public struct TimestampGate: Codable, Sendable, Equatable {
-    /// Median absolute boundary error must be at most this.
+    /// Median absolute boundary error must be at most this, on each side.
     public var medianErrorMaxMs: Double
     /// "Within" tolerance for the share bar.
     public var toleranceMs: Double
-    /// At least this share of boundaries must be within `toleranceMs`.
+    /// At least this share of each side's boundaries must be within `toleranceMs`.
     public var minShareWithinTolerance: Double
-    /// Expansion of each Whisper word span on both sides. The gate uses padded spans (Open question 3 default).
-    public var spanPaddingMs: Double
     /// Warm ASR budget; over it, `tiny.en` is the fallback.
     public var asrWarmBudgetMs: Double
 
@@ -21,11 +22,13 @@ public struct TimestampGate: Codable, Sendable, Equatable {
         medianErrorMaxMs = thresholds.wordTimestamps.medianErrorMaxMs
         toleranceMs = thresholds.wordTimestamps.withinToleranceMs
         minShareWithinTolerance = thresholds.wordTimestamps.withinToleranceShareMin
-        spanPaddingMs = thresholds.alignment.asrPaddingMs
         asrWarmBudgetMs = thresholds.performance.asrWarmMs
     }
 
     public static let plan = TimestampGate(.current)
+
+    /// Spec 07's planned Whisper span padding (CTO decision 4). Used only for the comparison table, never the gate.
+    public static let comparisonPaddingMs = Thresholds.current.alignment.asrPaddingMs
 }
 
 public enum Outcome: String, Codable, Sendable {
@@ -91,6 +94,22 @@ public struct BoundaryStats: Codable, Sendable, Equatable {
     }
 }
 
+/// One side of the gate (starts or ends): its figures and its two bar lines.
+public struct SideResult: Codable, Sendable, Equatable {
+    public var stats: BoundaryStats
+    public var medianOutcome: Outcome
+    public var shareOutcome: Outcome
+    public var outcome: Outcome
+
+    public init(errorsMs: [Double], gate: TimestampGate) {
+        stats = BoundaryStats(errorsMs: errorsMs, toleranceMs: gate.toleranceMs)
+        medianOutcome = stats.medianErrorMs.map { $0 <= gate.medianErrorMaxMs ? .pass : .fail } ?? .notEvaluated
+        shareOutcome = stats.shareWithinTolerance.map { $0 >= gate.minShareWithinTolerance ? .pass : .fail }
+            ?? .notEvaluated
+        outcome = Outcome.combine([medianOutcome, shareOutcome])
+    }
+}
+
 /// Phrase-token coverage: a token is comparable when both sides produce a span for it.
 public struct Coverage: Codable, Sendable, Equatable {
     public var phraseTokens = 0
@@ -111,8 +130,8 @@ public struct CalibrationBin: Codable, Sendable, Equatable {
 }
 
 /// Spec 03, Open question 4 default: two bins split at the median word probability over comparable tokens
-/// (low: below the median; high: at or above it). PASS when the low bin's mean absolute error is greater than the
-/// high bin's; NOT EVALUATED when a bin is empty.
+/// (low: below the median; high: at or above it), on unpadded errors. PASS when the low bin's mean absolute error is
+/// greater than the high bin's; NOT EVALUATED when a bin is empty.
 public struct Calibration: Codable, Sendable, Equatable {
     public var medianProbability: Double?
     public var low: CalibrationBin
@@ -120,10 +139,26 @@ public struct Calibration: Codable, Sendable, Equatable {
     public var outcome: Outcome
 }
 
-public struct Breakdown: Codable, Sendable, Equatable {
+/// Unpadded starts and ends for one speaker or one phrase.
+public struct SideBreakdown: Codable, Sendable, Equatable {
     public var key: String
-    public var padded: BoundaryStats
-    public var raw: BoundaryStats
+    public var starts: SideResult
+    public var ends: SideResult
+}
+
+/// The old padded figures, kept for comparison only: padding belongs to spec 07 and is not the gate.
+public struct PaddedComparison: Codable, Sendable, Equatable {
+    public var paddingMs: Double
+    public var pooled: BoundaryStats
+    public var starts: BoundaryStats
+    public var ends: BoundaryStats
+}
+
+/// A diagnostic on the same clips, never applied anywhere in the code path: the constant end bias (median signed end
+/// error, ASR minus baseline) and the unpadded end figures after subtracting it. Not a fix, not the gate.
+public struct EndBiasDiagnostic: Codable, Sendable, Equatable {
+    public var medianSignedEndErrorMs: Double?
+    public var correctedEnds: BoundaryStats
 }
 
 /// A comparable token with both spans.
@@ -135,33 +170,50 @@ public struct ComparableWord: Sendable, Equatable {
     public var asr: WordTimestamp
     public var baseline: BaselineWord
 
-    /// |start error| and |end error| in ms, after expanding the ASR span by `paddingMs` on both sides.
-    /// Rounded to the microsecond, far below both tools' resolution (Whisper 20 ms, MFA 10 ms), so an error of exactly
-    /// 80 ms is not pushed to 80.00000000000001 by floating point and counted outside the tolerance.
-    public func errorsMs(paddingMs: Double) -> [Double] {
-        let pad = paddingMs / 1000
-        return [abs(asr.start - pad - baseline.start), abs(asr.end + pad - baseline.end)]
-            .map { ($0 * 1_000_000).rounded() / 1000 }
+    /// |start error| in ms, after moving the ASR start `paddingMs` earlier (0 for the gate).
+    public func startErrorMs(paddingMs: Double = 0) -> Double {
+        microsecond(abs(asr.start - paddingMs / 1000 - baseline.start) * 1000)
     }
+
+    /// |end error| in ms, after moving the ASR end `paddingMs` later (0 for the gate).
+    public func endErrorMs(paddingMs: Double = 0) -> Double {
+        microsecond(abs(asr.end + paddingMs / 1000 - baseline.end) * 1000)
+    }
+
+    /// Signed end error in ms, ASR minus baseline: negative is early.
+    public var signedEndErrorMs: Double { microsecond((asr.end - baseline.end) * 1000) }
+
+    /// |start error| and |end error| in ms.
+    public func errorsMs(paddingMs: Double = 0) -> [Double] {
+        [startErrorMs(paddingMs: paddingMs), endErrorMs(paddingMs: paddingMs)]
+    }
+}
+
+/// Rounded to the microsecond, far below both tools' resolution (Whisper 20 ms, MFA 10 ms), so an error of exactly
+/// 80 ms is not pushed to 80.00000000000001 by floating point and counted outside the tolerance.
+func microsecond(_ ms: Double) -> Double {
+    (ms * 1000).rounded() / 1000
 }
 
 /// The word-boundary accuracy of one ASR against the baseline, and its gate lines.
 public struct AccuracyResult: Codable, Sendable, Equatable {
     public var coverage: Coverage
-    /// The gate figures: ASR spans padded by `spanPaddingMs` on both sides (Open question 3 default).
-    public var padded: BoundaryStats
-    /// The same boundaries on raw ASR times, for information.
-    public var raw: BoundaryStats
-    /// Mean signed raw error (ASR minus baseline) of starts and of ends, in ms, for information: negative is early.
-    public var rawMeanSignedStartMs: Double?
-    public var rawMeanSignedEndMs: Double?
+    /// The gate: unpadded word starts.
+    public var starts: SideResult
+    /// The gate: unpadded word ends.
+    public var ends: SideResult
+    /// Unpadded starts and ends per speaker, each judged against the same bars, for information.
+    public var perSpeaker: [SideBreakdown]
+    /// Unpadded starts and ends per phrase, for information.
+    public var perPhrase: [SideBreakdown]
+    /// Calibration on unpadded errors (the plan's "low-confidence bin has more error than the high bin").
     public var calibration: Calibration
-    public var rawCalibration: Calibration
-    public var perVoice: [Breakdown]
-    public var perPhrase: [Breakdown]
-    public var medianOutcome: Outcome
-    public var shareOutcome: Outcome
-    /// Median, share and calibration combined.
+    /// Mean signed unpadded error (ASR minus baseline) of starts and of ends, in ms: negative is early.
+    public var meanSignedStartMs: Double?
+    public var meanSignedEndMs: Double?
+    public var padded: PaddedComparison
+    public var endBias: EndBiasDiagnostic
+    /// Starts, ends and calibration combined.
     public var outcome: Outcome
 }
 
@@ -191,49 +243,55 @@ public enum Evaluation {
         return (words, coverage)
     }
 
-    public static func evaluate(_ clips: [ClipInput], gate: TimestampGate = .plan) -> AccuracyResult {
+    public static func evaluate(_ clips: [ClipInput], gate: TimestampGate = .plan,
+                                comparisonPaddingMs: Double = TimestampGate.comparisonPaddingMs) -> AccuracyResult {
         let (words, coverage) = comparableWords(clips)
-        let padded = BoundaryStats(errorsMs: words.flatMap { $0.errorsMs(paddingMs: gate.spanPaddingMs) },
-                                   toleranceMs: gate.toleranceMs)
-        let raw = BoundaryStats(errorsMs: words.flatMap { $0.errorsMs(paddingMs: 0) }, toleranceMs: gate.toleranceMs)
+        let tolerance = gate.toleranceMs
 
-        func breakdown(_ key: (ComparableWord) -> String) -> [Breakdown] {
+        func sides(_ group: [ComparableWord]) -> (SideResult, SideResult) {
+            (SideResult(errorsMs: group.map { $0.startErrorMs() }, gate: gate),
+             SideResult(errorsMs: group.map { $0.endErrorMs() }, gate: gate))
+        }
+        func breakdown(_ key: (ComparableWord) -> String) -> [SideBreakdown] {
             Dictionary(grouping: words, by: key).sorted { $0.key < $1.key }.map { key, group in
-                Breakdown(
-                    key: key,
-                    padded: BoundaryStats(errorsMs: group.flatMap { $0.errorsMs(paddingMs: gate.spanPaddingMs) },
-                                          toleranceMs: gate.toleranceMs),
-                    raw: BoundaryStats(errorsMs: group.flatMap { $0.errorsMs(paddingMs: 0) },
-                                       toleranceMs: gate.toleranceMs))
+                let (starts, ends) = sides(group)
+                return SideBreakdown(key: key, starts: starts, ends: ends)
             }
         }
-
-        let medianOutcome: Outcome = padded.medianErrorMs.map { $0 <= gate.medianErrorMaxMs ? .pass : .fail }
-            ?? .notEvaluated
-        let shareOutcome: Outcome = padded.shareWithinTolerance.map {
-            $0 >= gate.minShareWithinTolerance ? .pass : .fail
-        } ?? .notEvaluated
-        let calibration = calibrate(words, paddingMs: gate.spanPaddingMs)
         func meanMs(_ values: [Double]) -> Double? {
             values.isEmpty ? nil : values.reduce(0, +) / Double(values.count) * 1000
         }
+
+        let (starts, ends) = sides(words)
+        let calibration = calibrate(words)
+        let bias = Statistics.median(words.map(\.signedEndErrorMs))
+        let corrected = bias.map { bias in words.map { microsecond(abs($0.signedEndErrorMs - bias)) } } ?? []
         return AccuracyResult(
-            coverage: coverage, padded: padded, raw: raw,
-            rawMeanSignedStartMs: meanMs(words.map { $0.asr.start - $0.baseline.start }),
-            rawMeanSignedEndMs: meanMs(words.map { $0.asr.end - $0.baseline.end }),
-            calibration: calibration, rawCalibration: calibrate(words, paddingMs: 0),
-            perVoice: breakdown(\.speaker), perPhrase: breakdown(\.textID),
-            medianOutcome: medianOutcome, shareOutcome: shareOutcome,
-            outcome: Outcome.combine([medianOutcome, shareOutcome, calibration.outcome]))
+            coverage: coverage, starts: starts, ends: ends,
+            perSpeaker: breakdown(\.speaker), perPhrase: breakdown(\.textID),
+            calibration: calibration,
+            meanSignedStartMs: meanMs(words.map { $0.asr.start - $0.baseline.start }),
+            meanSignedEndMs: meanMs(words.map { $0.asr.end - $0.baseline.end }),
+            padded: PaddedComparison(
+                paddingMs: comparisonPaddingMs,
+                pooled: BoundaryStats(errorsMs: words.flatMap { $0.errorsMs(paddingMs: comparisonPaddingMs) },
+                                      toleranceMs: tolerance),
+                starts: BoundaryStats(errorsMs: words.map { $0.startErrorMs(paddingMs: comparisonPaddingMs) },
+                                      toleranceMs: tolerance),
+                ends: BoundaryStats(errorsMs: words.map { $0.endErrorMs(paddingMs: comparisonPaddingMs) },
+                                    toleranceMs: tolerance)),
+            endBias: EndBiasDiagnostic(medianSignedEndErrorMs: bias,
+                                       correctedEnds: BoundaryStats(errorsMs: corrected, toleranceMs: tolerance)),
+            outcome: Outcome.combine([starts.outcome, ends.outcome, calibration.outcome]))
     }
 
-    static func calibrate(_ words: [ComparableWord], paddingMs: Double) -> Calibration {
+    static func calibrate(_ words: [ComparableWord]) -> Calibration {
         guard let split = Statistics.median(words.map(\.asr.probability)) else {
             let empty = CalibrationBin(words: 0, boundaries: 0)
             return Calibration(medianProbability: nil, low: empty, high: empty, outcome: .notEvaluated)
         }
         func bin(_ group: [ComparableWord]) -> CalibrationBin {
-            let errors = group.flatMap { $0.errorsMs(paddingMs: paddingMs) }
+            let errors = group.flatMap { $0.errorsMs() }
             return CalibrationBin(
                 words: group.count, boundaries: errors.count,
                 probabilityMin: group.map(\.asr.probability).min(), probabilityMax: group.map(\.asr.probability).max(),
