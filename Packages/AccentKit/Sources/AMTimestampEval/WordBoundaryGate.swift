@@ -120,37 +120,54 @@ public struct SeededGenerator: RandomNumberGenerator, Sendable {
     }
 }
 
-/// The spec 23 decision: b1 ships if it passes the bar on both sides and the correlation gate; otherwise b2 ships if
-/// it was built and passes the bar; otherwise nothing ships (`whisper` stays) and the report is FAIL.
-public enum BoundaryDecision {
+/// The spec 23 decision under the CTO ruling of 2026-11-23 14:05: b2 (`ctc-w2v2b960-1`) is the aligner and b1 is a
+/// diagnostic. The ship gate is downstream (`DownstreamGate`, synthetic and VCTK, both must pass); the 40 ms / 85%
+/// bar is a reported target. b2 ships only when the gate passes and every prerequisite is met, and the flip is its
+/// own later PR: this decision never changes the shipped aligner.
+public enum ShipDecision {
+    public struct Prerequisite: Codable, Sendable, Equatable {
+        public var name: String
+        public var status: String
+        public var met: Bool
+
+        public init(_ name: String, _ status: String, met: Bool) {
+            self.name = name
+            self.status = status
+            self.met = met
+        }
+    }
+
     public struct Result: Codable, Sendable, Equatable {
+        public var alignerOfRecord: String
         public var shippedAligner: String
-        public var outcome: Outcome
-        public var b1: Outcome
-        /// nil when b2 was not built.
-        public var b2: Outcome?
+        /// The downstream gate over both sets.
+        public var gate: Outcome
+        /// READY (gate passes, every prerequisite met; the flip is a separate PR), PENDING or FAIL.
+        public var ship: String
+        public var prerequisites: [Prerequisite]
         public var explanation: String
     }
 
-    public static func decide(b1Bar: Outcome, b1Correlation: Outcome, b2Bar: Outcome?,
-                              b1ID: String, b2ID: String, fallbackID: String) -> Result {
-        let b1 = Outcome.combine([b1Bar, b1Correlation])
-        if b1 == .pass {
-            return Result(shippedAligner: b1ID, outcome: .pass, b1: b1, b2: b2Bar,
-                          explanation: "\(b1ID) passes the unpadded bar on both sides and the correlation gate.")
+    public static func decide(gates: [DownstreamGate], prerequisites: [Prerequisite], candidate: String,
+                              shipped: String) -> Result {
+        let gate = Outcome.combine(gates.map(\.outcome))
+        let missing = prerequisites.filter { !$0.met }.map(\.name)
+        let ship: String, explanation: String
+        switch gate {
+        case .fail:
+            ship = "FAIL"
+            explanation = "\(candidate) fails the downstream gate (\(gates.filter { $0.outcome == .fail }.map(\.set).joined(separator: ", "))): back to CTO, no retuning. `\(shipped)` stays shipped."
+        case .notEvaluated:
+            ship = "PENDING"
+            explanation = "The downstream gate is NOT EVALUATED (\(gates.filter { $0.outcome == .notEvaluated }.map { "\($0.set): \($0.reason ?? "not run")" }.joined(separator: "; "))), which is not a pass. `\(shipped)` stays shipped."
+        case .pass where missing.isEmpty:
+            ship = "READY"
+            explanation = "\(candidate) passes the downstream gate and every ship prerequisite. The ship flip is its own PR with Raph's OK; `\(shipped)` stays shipped here."
+        case .pass:
+            ship = "PENDING"
+            explanation = "\(candidate) passes the downstream gate on both sets; ship PENDING on: \(missing.joined(separator: "; ")). `\(shipped)` stays shipped."
         }
-        let why = b1Bar != .pass
-            ? "\(b1ID) misses the unpadded bar (\(b1Bar.rawValue))"
-            : "\(b1ID) passes the bar but the correlation gate is \(b1Correlation.rawValue), which is not a pass"
-        guard let b2Bar else {
-            return Result(shippedAligner: fallbackID, outcome: .fail, b1: b1, b2: nil,
-                          explanation: "\(why); \(b2ID) was not built. Nothing ships: \(fallbackID) stays.")
-        }
-        if b2Bar == .pass {
-            return Result(shippedAligner: b2ID, outcome: .pass, b1: b1, b2: b2Bar,
-                          explanation: "\(why); \(b2ID) passes the unpadded bar on both sides.")
-        }
-        return Result(shippedAligner: fallbackID, outcome: .fail, b1: b1, b2: b2Bar,
-                      explanation: "\(why); \(b2ID) misses it too (\(b2Bar.rawValue)). Nothing ships: \(fallbackID) stays.")
+        return Result(alignerOfRecord: candidate, shippedAligner: shipped, gate: gate, ship: ship,
+                      prerequisites: prerequisites, explanation: explanation)
     }
 }

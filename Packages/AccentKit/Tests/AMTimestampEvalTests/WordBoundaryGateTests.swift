@@ -40,17 +40,77 @@ struct WordBoundaryGateTests {
         #expect(CorrelationGate.evaluate([], seed: 7).outcome == .notEvaluated)
     }
 
-    @Test("decision: the simplest aligner that passes ships; NOT EVALUATED is not a pass") func decision() {
-        func decide(_ b1Bar: Outcome, _ b1Corr: Outcome, _ b2: Outcome?) -> BoundaryDecision.Result {
-            BoundaryDecision.decide(b1Bar: b1Bar, b1Correlation: b1Corr, b2Bar: b2, b1ID: "dsp-snap-1",
-                                    b2ID: "ctc-w2v2b960-1", fallbackID: "whisper")
+    func gate(_ outcome: Outcome, _ set: String) -> DownstreamGate {
+        switch outcome {
+        case .pass: .compare([(WordVerdict(syllables: []), WordVerdict(syllables: []))], set: set, oracle: "o")
+        case .fail:
+            .compare([(WordVerdict(inconclusive: false, syllableCount: 2, longestSyllable: 0, loudestSyllable: 0),
+                       WordVerdict(inconclusive: false, syllableCount: 1, longestSyllable: 0, loudestSyllable: 0))],
+                     set: set, oracle: "o")
+        case .notEvaluated: .notEvaluated(set: set, oracle: "o", reason: "waiting")
         }
-        #expect(decide(.pass, .pass, .pass).shippedAligner == "dsp-snap-1")
-        #expect(decide(.pass, .notEvaluated, .pass).shippedAligner == "ctc-w2v2b960-1")
-        #expect(decide(.pass, .notEvaluated, nil).shippedAligner == "whisper")
-        #expect(decide(.fail, .pass, .pass).shippedAligner == "ctc-w2v2b960-1")
-        let none = decide(.fail, .notEvaluated, .fail)
-        #expect(none.shippedAligner == "whisper" && none.outcome == .fail)
+    }
+
+    @Test("decision (CTO 14:05): b2 is the aligner, whisper stays shipped, ship READY only with the gate and every prerequisite")
+    func decision() {
+        let met = [ShipDecision.Prerequisite("licence", "ok", met: true)]
+        let missing = met + [.init("macos-26 latency", "NOT RUN", met: false)]
+        func decide(_ a: Outcome, _ b: Outcome, _ prerequisites: [ShipDecision.Prerequisite]) -> ShipDecision.Result {
+            ShipDecision.decide(gates: [gate(a, "Synthetic"), gate(b, "VCTK")], prerequisites: prerequisites,
+                                candidate: "ctc-w2v2b960-1", shipped: "whisper")
+        }
+        for result in [decide(.pass, .pass, met), decide(.pass, .pass, missing), decide(.fail, .pass, met),
+                       decide(.pass, .notEvaluated, met)] {
+            #expect(result.shippedAligner == "whisper" && result.alignerOfRecord == "ctc-w2v2b960-1")
+        }
+        #expect(decide(.pass, .pass, met).ship == "READY")
+        #expect(decide(.pass, .pass, missing).ship == "PENDING")
+        #expect(decide(.pass, .fail, met).ship == "FAIL" && decide(.pass, .fail, met).gate == .fail)
+        #expect(decide(.pass, .notEvaluated, met).ship == "PENDING" && decide(.pass, .notEvaluated, met).gate == .notEvaluated)
+    }
+
+    @Test("downstream gate: ≤ 2% of words differ and the inconclusive rate rises ≤ 2 points") func downstream() {
+        let base = WordVerdict(inconclusive: false, syllableCount: 2, longestSyllable: 1, loudestSyllable: 0)
+        var longer = base; longer.longestSyllable = 0
+        var loud = base; loud.loudestSyllable = 1
+        var low = base; low.inconclusive = true
+        // 100 words: 2 differ (one by the longest syllable, one by inconclusive): exactly 2%, a 1-point rise. PASS.
+        var pairs = Array(repeating: (oracle: base, candidate: base), count: 98)
+        pairs += [(base, longer), (base, low)]
+        let pass = DownstreamGate.compare(pairs, set: "VCTK", oracle: "MFA")
+        #expect(pass.words == 100 && pass.differing == 2 && pass.diffShare == 0.02)
+        #expect(pass.differingParts == ["longestSyllable": 1, "inconclusive": 1])
+        #expect(pass.riseInconclusivePoints == 0.01 && pass.outcome == .pass)
+        // A third differing word: 3% FAIL on verdicts.
+        let more = DownstreamGate.compare(pairs.dropLast(3) + [(base, longer), (base, loud), (base, low)] + [(base, base)],
+                                          set: "VCTK", oracle: "MFA")
+        #expect(more.differing == 3 && more.diffOutcome == .fail && more.outcome == .fail)
+        // Inconclusive rising 3 points with the verdict share at 3% fails both lines; a fall never fails the rise.
+        let rise = DownstreamGate.compare(Array(repeating: (base, base), count: 97) + Array(repeating: (base, low), count: 3),
+                                          set: "S", oracle: "TTS")
+        #expect(rise.riseOutcome == .fail && rise.riseInconclusivePoints == 0.03)
+        let fall = DownstreamGate.compare(Array(repeating: (base, base), count: 99) + [(low, base)], set: "S", oracle: "TTS")
+        #expect(fall.riseOutcome == .pass && fall.diffOutcome == .pass)
+        #expect(DownstreamGate.compare([], set: "S", oracle: "TTS").outcome == .notEvaluated)
+    }
+
+    @Test("a word verdict takes the first longest and first loudest syllable; any low syllable makes it inconclusive")
+    func wordVerdict() {
+        let v = WordVerdict(syllables: [(0.1, -20, false), (0.3, -10, false), (0.3, -10, true)])
+        #expect(v == WordVerdict(inconclusive: true, syllableCount: 3, longestSyllable: 1, loudestSyllable: 1))
+        #expect(WordVerdict(syllables: []) == WordVerdict(inconclusive: false, syllableCount: 0, longestSyllable: nil, loudestSyllable: nil))
+    }
+
+    @Test("quadrature estimate: sqrt(max(0, obs² − ref²)), never negative") func quadrature() {
+        #expect(ReferenceErrors.quadrature(obs: 50, ref: 30) == 40)
+        #expect(ReferenceErrors.quadrature(obs: 20, ref: 30) == 0)
+        #expect(ReferenceErrors.quadrature(obs: nil, ref: 30) == nil)
+        let side = ReferenceCheck.Side(signedErrorsMs: [-50, 50, 10], toleranceMs: 80)
+        let errors = ReferenceErrors(
+            mfaOnTTS: .init(label: "MFA", starts: .init(signedErrorsMs: [30], toleranceMs: 80), ends: .init(signedErrorsMs: [-30], toleranceMs: 80)),
+            b2OnTTS: nil, b2VsMFAOnVCTK: .init(label: "b2", starts: side, ends: side), voice: nil, markerResolutionMs: nil, notes: [])
+        #expect(errors.quadratureStartsMs == 40 && errors.quadratureEndsMs == 40)
+        #expect(errors.markdown(toleranceMs: 80).joined().contains("estimate"))
     }
 
     @Test("the bar fails when any speaker misses a side, even if the pooled sides pass") func perSpeakerBar() throws {

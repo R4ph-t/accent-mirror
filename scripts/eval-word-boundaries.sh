@@ -9,7 +9,9 @@
 #
 # Needs scripts/fetch-vctk.sh (the clips) and, for b2 (built because b1 failed), scripts/fetch-ctc.sh (the pinned,
 # converted wav2vec2-base-960h). No ASR runs: the tool runs with networking denied. scripts/reference-check.sh runs
-# first and puts MFA's own error in the report as a labelled line (not a gate); it skips cleanly without MFA or voice.
+# first (MFA on synthesised, SSML-marked phrases; skips cleanly without MFA or voice). The report's ship gate is
+# downstream (spec 07's verdicts under oracle vs b2 boundaries, synthetic and VCTK); 40 ms / 85% is a reported target.
+# Exits 1 on a downstream FAIL and, on a release run, 3 on NOT EVALUATED.
 set -euo pipefail
 
 root="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
@@ -25,6 +27,12 @@ esac
 "$root/scripts/fetch-vctk.sh"
 "$root/scripts/fetch-ctc.sh"
 "$root/scripts/reference-check.sh"
+# The synthetic set needs Whisper's words on the TTS audio (b2's seed, as in the pipeline); checked offline only.
+whisper=()
+if "$root/scripts/fetch-models.sh" --verify openai_whisper-base.en; then
+  whisper=(--manifest "$root/Resources/Models/openai_whisper-base.en/manifest.json"
+           --model-dir "${MODELS_CACHE:-$root/.cache/models}/openai_whisper-base.en")
+fi
 "$root/scripts/am-timestamps.sh" boundaries ${mode[@]+"${mode[@]}"} \
   --repo "$root" \
   --clips "$root/fixtures/vctk/starter-clips.txt" \
@@ -35,5 +43,5 @@ esac
   --replay "$root/fixtures/timestamps/openai_whisper-base.en" \
   --ctc-manifest "$root/fixtures/models/wav2vec2-base-960h/manifest.json" \
   --ctc-dir "${MODELS_CACHE:-$root/.cache/models}/wav2vec2-base-960h" \
-  --reference "$root/.cache/reference/reference-check.json" \
+  --reference "$root/.cache/reference" ${whisper[@]+"${whisper[@]}"} \
   --out "$out"

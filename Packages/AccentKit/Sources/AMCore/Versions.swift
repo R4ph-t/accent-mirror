@@ -7,7 +7,7 @@ public enum Versions {
     /// Bump when an algorithm change can change any output for the same inputs.
     public static let algorithmVersion = 1
     /// Bump when any value in `Thresholds` changes.
-    public static let thresholdsVersion = 4
+    public static let thresholdsVersion = 5
     /// Bump when a contract type's shape or JSON changes.
     public static let contractVersion = 2
 
@@ -36,10 +36,15 @@ public enum Versions {
         GoldenDigest(
             algorithmVersion: 1, thresholdsVersion: 3, contractVersion: 1,
             digest: "0af7296e5a9c9d18ba8062b7176dcecd71a12f8dbd4fd08f5633b4bb8fda730a"),
-        // Spec 23: `ConfigIdentity.aligner` added (contract change) and `wordBoundaries.snapWindowMs`,
-        // `.intensityDropDB` added (spec defaults, not tuned).
+        // Spec 07: span sanity and syllable-split confidence (`confidence.spanSanity*`, `.split*`) and the
+        // `syllableBoundaries` bars added (first v2 values, not tuned).
         GoldenDigest(
-            algorithmVersion: 1, thresholdsVersion: 4, contractVersion: 2,
-            digest: "78fbec39ab3bd0ea0b455006c4beedf01de433cab2218d23c1378f66bf207d5f"),
+            algorithmVersion: 1, thresholdsVersion: 4, contractVersion: 1,
+            digest: "fce6552351e9076ad0daea2d2c1b02a6ec0dd547ad4611de73f52e3ec38fa351"),
+        // Spec 23: `ConfigIdentity.aligner` and `.alignerModelSHA256` added (contract change) and
+        // `wordBoundaries.*` added (spec defaults; `intensityDropDB` and `ctcConfidenceMin` not tuned).
+        GoldenDigest(
+            algorithmVersion: 1, thresholdsVersion: 5, contractVersion: 2,
+            digest: "4adb382ba0515a92f6e0d6265f2595178adf232d435850d8b882bf4c36be4ea4"),
     ]
 }

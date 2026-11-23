@@ -51,7 +51,12 @@ let package = Package(
         .testTarget(name: "AMTimestampEvalTests", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),
         // Spec 23 adds the refiners (dsp-snap-1 lives in AMProsody) to the same local tool.
         .executableTarget(name: "am-timestamps",
-                          dependencies: ["AMCore", "AMAlignment", "AMPitch", "AMProsody", "AMTimestampEval"]),
+                          dependencies: ["AMCore", "AMAlignment", "AMCapture", "AMPitch", "AMProsody", "AMTimestampEval"]),
+        // Local evaluation tooling (spec 07): the syllable-boundary report. Never linked into the app, never run by CI.
+        .target(name: "AMSyllableEval",
+                dependencies: ["AMCore", "AMAlignment", "AMCapture", "AMProsody", "AMTimestampEval"]),
+        .testTarget(name: "AMSyllableEvalTests", dependencies: ["AMCore", "AMAlignment", "AMProsody", "AMSyllableEval"]),
+        .executableTarget(name: "am-syllables", dependencies: ["AMCore", "AMSyllableEval"]),
     ],
     swiftLanguageModes: [.v6]
 )

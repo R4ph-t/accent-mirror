@@ -94,3 +94,78 @@ public struct ReferenceCheck: Codable, Sendable, Equatable {
 private func fmt(_ value: Double?, _ format: String) -> String {
     value.map { String(format: format, $0) } ?? "–"
 }
+
+/// The reference error the CTO ruling of 2026-11-23 14:05 asks for, per side, reported and never netted out of a
+/// gate: MFA on TTS against the markers (the reference's own error), b2 on TTS against the markers (ground truth),
+/// and b2 against MFA on VCTK. Plus a quadrature **estimate** of b2's own VCTK error from the medians.
+public struct ReferenceErrors: Codable, Sendable, Equatable {
+    public struct Comparison: Codable, Sendable, Equatable {
+        public var label: String
+        public var starts: ReferenceCheck.Side
+        public var ends: ReferenceCheck.Side
+
+        public init(label: String, starts: ReferenceCheck.Side, ends: ReferenceCheck.Side) {
+            self.label = label
+            self.starts = starts
+            self.ends = ends
+        }
+    }
+
+    public var mfaOnTTS: Comparison?
+    public var b2OnTTS: Comparison?
+    public var b2VsMFAOnVCTK: Comparison?
+    /// sqrt(max(0, obs² − ref²)) on median absolute errors: obs is b2 vs MFA on VCTK, ref is MFA on TTS.
+    public var quadratureStartsMs: Double?
+    public var quadratureEndsMs: Double?
+    public var voice: String?
+    public var markerResolutionMs: Double?
+    /// Why a comparison is missing, when one is.
+    public var notes: [String]
+
+    public init(mfaOnTTS: Comparison?, b2OnTTS: Comparison?, b2VsMFAOnVCTK: Comparison?, voice: String?,
+                markerResolutionMs: Double?, notes: [String]) {
+        self.mfaOnTTS = mfaOnTTS
+        self.b2OnTTS = b2OnTTS
+        self.b2VsMFAOnVCTK = b2VsMFAOnVCTK
+        self.voice = voice
+        self.markerResolutionMs = markerResolutionMs
+        self.notes = notes
+        quadratureStartsMs = Self.quadrature(obs: b2VsMFAOnVCTK?.starts.medianAbsErrorMs, ref: mfaOnTTS?.starts.medianAbsErrorMs)
+        quadratureEndsMs = Self.quadrature(obs: b2VsMFAOnVCTK?.ends.medianAbsErrorMs, ref: mfaOnTTS?.ends.medianAbsErrorMs)
+    }
+
+    public static func quadrature(obs: Double?, ref: Double?) -> Double? {
+        guard let obs, let ref else { return nil }
+        return (max(0, obs * obs - ref * ref)).squareRoot()
+    }
+
+    /// MFA minus the marker (or b2 minus the marker), as `ReferenceCheck` measures it.
+    public static func comparison(_ check: ReferenceCheck, label: String) -> Comparison {
+        Comparison(label: label, starts: check.starts, ends: check.ends)
+    }
+
+    /// b2 minus MFA on VCTK's comparable words.
+    public static func versusBaseline(_ words: [ComparableWord], label: String,
+                                      toleranceMs: Double = TimestampGate.plan.toleranceMs) -> Comparison {
+        Comparison(label: label,
+                   starts: .init(signedErrorsMs: words.map { ($0.asr.start - $0.baseline.start) * 1000 }, toleranceMs: toleranceMs),
+                   ends: .init(signedErrorsMs: words.map { ($0.asr.end - $0.baseline.end) * 1000 }, toleranceMs: toleranceMs))
+    }
+
+    public func markdown(toleranceMs: Double) -> [String] {
+        func cells(_ s: ReferenceCheck.Side) -> String {
+            "\(fmt(s.medianAbsErrorMs, "%.1f ms")) | \(fmt(s.shareWithinTolerance.map { $0 * 100 }, "%.1f%%")) | \(fmt(s.meanSignedErrorMs, "%+.1f ms")) | \(s.n)"
+        }
+        var md = ["| Comparison (**reported, not a gate**) | Side | Median | Within \(fmt(toleranceMs, "%.0f ms")) | Mean signed | n |",
+                  "|---|---|---|---|---|---|"]
+        for comparison in [mfaOnTTS, b2OnTTS, b2VsMFAOnVCTK].compactMap({ $0 }) {
+            md.append("| \(comparison.label) | starts | \(cells(comparison.starts)) |")
+            md.append("| \(comparison.label) | ends | \(cells(comparison.ends)) |")
+        }
+        md.append("")
+        md.append("- Quadrature **estimate** of b2's own VCTK error, sqrt(max(0, obs² − ref²)) on the medians (obs: b2 vs MFA on VCTK; ref: MFA on TTS): starts \(fmt(quadratureStartsMs, "%.1f ms")), ends \(fmt(quadratureEndsMs, "%.1f ms")). An estimate; no gate reads it, and nothing is netted out of any figure.")
+        if let voice { md.append("- TTS: `\(voice)`, SSML `<mark>` bookmarks around every word, marker resolution \(fmt(markerResolutionMs, "%.1f ms")). A word's end marker fires where the next word starts, so a pause after it counts as the word's.") }
+        for note in notes { md.append("- \(note)") }
+        return md
+    }
+}

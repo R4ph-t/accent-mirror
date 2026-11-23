@@ -193,19 +193,41 @@ wherever they differ. The rest of this spec stands.
 
 ## Implementation notes
 
-**Result: FAIL, nothing ships. `whisper` stays, and this goes to CTO.** b1 misses the unpadded bar on both sides, so
-b2 was built. b2 misses it too. The report is `docs/agreement/reports/word-boundaries-<configDigest8>.{json,md}`
-(155 clips, 2,390 comparable boundaries per side):
+**Under the CTO ruling of 2026-11-23 14:05:** b2 (`ctc-w2v2b960-1`) is the aligner of record, and b1 is a diagnostic.
+The ship gate is downstream, and b2 **fails it on both sets**: spec 07's word verdicts under b2's boundaries differ
+from those under oracle boundaries on 22.5% of words, against a 2% bar. The inconclusive rate also rises by 10–11
+points, against a 2-point bar. This goes to CTO with no retuning. `whisper` stays shipped, `algorithmVersion` stays
+1, and every ship line is PENDING or FAIL. The report is `docs/agreement/reports/word-boundaries-<configDigest8>.{json,md}`.
 
-| | `whisper` | `dsp-snap-1` (b1) | `ctc-w2v2b960-1` (b2) |
-|---|---|---|---|
-| Starts: median / within 80 ms | 90 ms / 46.1% | 70 ms / 59.0% | 50 ms / 80.0% |
-| Ends: median / within 80 ms | 110 ms / 38.5% | 80 ms / 52.6% | 40 ms / 76.4% |
-| Speakers passing both sides | 0 of 8 | 0 of 8 | 0 of 8 |
-| Mean signed start / end | −120 / −138 ms | −68 / −94 ms | −1 / −53 ms |
+| Downstream gate | Words | Verdicts differ | Inconclusive: oracle → b2 | Outcome |
+|---|---|---|---|---|
+| Synthetic (TTS markers as oracle) | 307 | 22.5% | 5.2% → 16.3% | FAIL |
+| VCTK (MFA as oracle) | 2,382 | 22.5% | 8.7% → 18.9% | FAIL |
 
-b1's correlation gate is NOT EVALUATED: spec 02's control sets aren't on main. That isn't a pass, and b1 already
-fails the bar. The placement-diff rule (§6.7) is recorded as pending spec 11.
+Reference error, per side (median / within 80 ms / mean signed). This is reported only and never netted out of a
+gate:
+
+| | Starts | Ends |
+|---|---|---|
+| MFA on TTS vs markers | 23.5 ms / 98.4% / −24.3 ms | 25.1 ms / 94.2% / −36.8 ms |
+| b2 on TTS vs markers | 27.7 ms / 87.3% / −8.1 ms | 56.3 ms / 73.1% / −82.1 ms |
+| b2 vs MFA on VCTK | 50 ms / 80.0% / −1.2 ms | 40 ms / 76.4% / −53.3 ms |
+| Quadrature **estimate** of b2's VCTK error | 44.1 ms | 31.1 ms |
+
+- **Harness.** Spec 07's `SyllableSegmenter` runs twice per take on the same audio, voicing (`ACFVoicing`),
+  pronunciations (spec 06, starter origin) and comparable words. Only the word spans differ, plus the probability:
+  the oracle run carries Whisper's word probability, and b2's run carries the same probability after the CTC
+  confidence gate. A word's verdict is inconclusive (any low syllable), syllable count, longest syllable index and
+  loudest syllable index.
+- **CTC confidence.** A word's confidence is the mean posterior, over the frames the Viterbi path spends on the
+  word's characters, of the character it's on there. A word b2 can't align gets 0. Below `ctcConfidenceMin` (0.5,
+  untuned), the word's `WordSpan` probability is 0, which makes it inconclusive inside the 10% budget. On VCTK, 3.1%
+  of words fall below it.
+- **Identity.** `ConfigIdentity.alignerModelSHA256` is b2's `packageSHA256`, and `none` otherwise. Contract 2.
+  Thresholds 5, because spec 07 took 4. That adds `ctcConfidenceMin`, `verdictDiffMax` and
+  `inconclusiveRiseMaxPoints`, and appends a digest after spec 07's.
+
+The first build's notes follow. b1 and b2 still miss the 40 ms / 85% bar, which is now a reported target.
 
 - **Seam (AMAlignment).** `WordBoundaryRefiner`, `WhisperOnly` (`whisper`) and `BoundarySearch`. `BoundarySearch`
   is the one place the clamps live: words are refined left to right, a start window runs from the previous refined

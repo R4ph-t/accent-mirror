@@ -96,6 +96,25 @@ public struct WordBoundaryReport: Codable, Sendable {
         }
     }
 
+    /// b2's per-word CTC confidence over a set.
+    public struct ConfidenceSummary: Codable, Sendable, Equatable {
+        public var words: Int
+        public var median: Double?
+        public var minimum: Double
+        public var belowMinimum: Int
+        public var shareBelowMinimum: Double?
+        public var inconclusiveBudget: Double
+
+        public init(confidences: [Double], minimum: Double = Thresholds.current.wordBoundaries.ctcConfidenceMin) {
+            words = confidences.count
+            median = Statistics.median(confidences)
+            self.minimum = minimum
+            belowMinimum = confidences.count { $0 < minimum }
+            shareBelowMinimum = confidences.isEmpty ? nil : Double(belowMinimum) / Double(confidences.count)
+            inconclusiveBudget = Thresholds.current.agreement.inconclusivePairsMax
+        }
+    }
+
     public struct Aligner: Codable, Sendable {
         public var id: String
         public var config: ConfigIdentity
@@ -134,19 +153,23 @@ public struct WordBoundaryReport: Codable, Sendable {
     public var thresholds: Thresholds.WordBoundaries
     public var aligners: [Aligner]
     public var correlation: CorrelationGate
-    /// MFA's own error against synthesised word markers; nil when the check was skipped (`referenceStatus` says why).
-    public var reference: ReferenceCheck?
-    public var referenceStatus: String
+    /// The reference error, three comparisons per side and a quadrature estimate (reported, never a gate).
+    public var referenceErrors: ReferenceErrors
+    /// b2's per-word CTC confidence on VCTK, against `ctcConfidenceMin`.
+    public var ctcConfidence: ConfidenceSummary?
+    /// The ship gate: spec 07's verdicts under oracle vs b2 boundaries, synthetic and VCTK.
+    public var downstream: [DownstreamGate]
     /// b2's model facts, when b2 was built.
     public var ctc: CTCRun?
     /// §6.7's ≤ 2% placement-diff rule: needs specs 08 and 10, checked in spec 11's agreement run.
     public var placementRule: String
-    public var decision: BoundaryDecision.Result
+    public var decision: ShipDecision.Result
     public var notes: [String]
 
     public init(generatedAt: Date, identity: TimestampReport.Identity, asrModelID: String, whisperSource: String,
                 baseline: WordBaseline.Aligner?, corpus: TimestampReport.Corpus, aligners: [Aligner],
-                correlation: CorrelationGate, reference: ReferenceCheck?, referenceStatus: String, ctc: CTCRun?, decision: BoundaryDecision.Result, notes: [String]) {
+                correlation: CorrelationGate, referenceErrors: ReferenceErrors, ctcConfidence: ConfidenceSummary?,
+                downstream: [DownstreamGate], ctc: CTCRun?, decision: ShipDecision.Result, notes: [String]) {
         self.generatedAt = generatedAt
         self.identity = identity
         self.asrModelID = asrModelID
@@ -157,8 +180,9 @@ public struct WordBoundaryReport: Codable, Sendable {
         self.thresholds = Thresholds.current.wordBoundaries
         self.aligners = aligners
         self.correlation = correlation
-        self.reference = reference
-        self.referenceStatus = referenceStatus
+        self.referenceErrors = referenceErrors
+        self.ctcConfidence = ctcConfidence
+        self.downstream = downstream
         self.ctc = ctc
         self.placementRule = "PENDING: checked in spec 11's agreement run with `aligner` in the identity (needs specs 08 and 10)"
         self.decision = decision
@@ -176,16 +200,44 @@ public struct WordBoundaryReport: Codable, Sendable {
 
     public func markdown() -> String {
         var md: [String] = []
-        md.append("# Word-boundary refinement (spec 23): \(decision.outcome.rawValue)")
+        md.append("# Word-boundary refinement (spec 23): downstream gate \(decision.gate.rawValue), ship \(decision.ship)")
         md.append("")
         md.append("Generated \(ISO8601DateFormatter().string(from: generatedAt)). Refined WhisperKit word boundaries against the MFA word baseline\(baseline.map { " (\($0.name) \($0.version), \($0.acousticModel))" } ?? "") on \(corpus.clips) VCTK 0.92 clips. **No stress claims.**")
         md.append("")
-        md.append("## Decision")
+        md.append("## Decision (CTO ruling 2026-11-23 14:05)")
         md.append("")
-        md.append("\(decision.explanation) Shipped aligner: `\(decision.shippedAligner)`.")
+        md.append("Aligner of record: `\(decision.alignerOfRecord)` (b2). `dsp-snap-1` (b1) is a diagnostic only. Shipped aligner: `\(decision.shippedAligner)`, unchanged in this PR. \(decision.explanation)")
+        md.append("")
+        md.append("### Ship gate: downstream verdicts (spec 07's segmenter, oracle vs b2 boundaries)")
+        md.append("")
+        md.append("| Set | Oracle | Comparable words | Verdicts differ (≤ \(pct(thresholds.verdictDiffMax))) | Inconclusive: oracle → b2 (rise ≤ \(String(format: "%.0f", thresholds.inconclusiveRiseMaxPoints * 100)) points) | Gated by CTC confidence | Outcome |")
+        md.append("|---|---|---|---|---|---|---|")
+        for g in downstream {
+            let parts = g.differingParts.sorted { $0.key < $1.key }.map { "\($0.key) \($0.value)" }.joined(separator: ", ")
+            md.append("| \(g.set) | \(g.oracle) | \(g.words) | \(g.differing) (\(pct(g.diffShare)))\(parts.isEmpty ? "" : "; \(parts)") \(g.diffOutcome.rawValue) | \(pct(g.oracleInconclusiveRate)) → \(pct(g.candidateInconclusiveRate)) (\(g.riseInconclusivePoints.map { String(format: "%+.1f", $0 * 100) } ?? "–") points) \(g.riseOutcome.rawValue) | \(g.inconclusiveByConfidence) | **\(g.outcome.rawValue)**\(g.reason.map { " (\($0))" } ?? "") |")
+        }
+        md.append("")
+        md.append("A word's verdict is spec 07's output for it: inconclusive (any syllable at low confidence), the syllable count, the index of the longest syllable and of the syllable with the highest mean intensity. It differs if any part differs. Both sets must pass.")
+        if let c = ctcConfidence {
+            md.append("")
+            md.append("CTC confidence (mean posterior of a word's aligned characters on the Viterbi path; 0 for a word b2 could not align) on VCTK: \(c.words) words, median \(num(c.median)), \(c.belowMinimum) below `ctcConfidenceMin` \(num(c.minimum)) (\(pct(c.shareBelowMinimum))), untuned until spec 02's tuning split is on main. Those words are inconclusive and count inside `agreement.inconclusivePairsMax` (\(pct(c.inconclusiveBudget))), not as a new allowance.")
+        }
+        md.append("")
+        md.append("### Ship prerequisites")
+        md.append("")
+        md.append("| Prerequisite | Status |")
+        md.append("|---|---|")
+        for p in decision.prerequisites { md.append("| \(p.name) | \(p.status)\(p.met ? "" : " (PENDING)") |") }
+        md.append("")
+        md.append("### Reference error")
+        md.append("")
+        md += referenceErrors.markdown(toleranceMs: gate.toleranceMs)
+        md.append("")
+        md.append("### Word boundaries against MFA on VCTK (40 ms / 85% is a **reported target**, not a gate)")
         md.append("")
         md.append("| Line | \(aligners.map { "`\($0.id)`" }.joined(separator: " | ")) |")
         md.append("|---|\(aligners.map { _ in "---" }.joined(separator: "|"))|")
+        row("Role") { $0.id == "dsp-snap-1" ? "diagnostic (b1)" : $0.id == "whisper" ? "shipped baseline" : "aligner (b2)" }
         func row(_ title: String, _ value: (Aligner) -> String) {
             md.append("| \(title) | \(aligners.map(value).joined(separator: " | ")) |")
         }
@@ -198,15 +250,16 @@ public struct WordBoundaryReport: Codable, Sendable {
         row("Mean signed start / end (negative: early)") { "\(signedMs($0.accuracy.meanSignedStartMs)) / \(signedMs($0.accuracy.meanSignedEndMs))" }
         row("Boundaries moved") { pct($0.movedShare) }
         row("Refinement per clip: median / p90 / max") { "\(ms($0.latency.medianMs)) / \(ms($0.latency.p90Ms)) / \(ms($0.latency.maxMs))" }
-        row("**Unpadded bar**") { "**\($0.bar.outcome.rawValue)**" }
+        row("Target 40 ms / 85%, both sides and every speaker (reported, not a gate)") { $0.bar.outcome == .pass ? "met" : "not met" }
         md.append("")
-        md.append("- Correlation gate (b1 only, spec 02's control pairs): **\(correlation.outcome.rawValue)**\(correlation.reason.map { ". \($0)" } ?? "")")
+        md.append("Within each cell, PASS/FAIL is against the target, not a gate.")
+        md.append("")
+        md.append("- Correlation diagnostic (b1 only, spec 02's control pairs; diagnostic since 14:05): \(correlation.outcome.rawValue)\(correlation.reason.map { ". \($0)" } ?? "")")
         if let delta = correlation.deltaR {
             md.append("  - r_whisper \(num(correlation.rWhisper)), r_snap \(num(correlation.rSnapped)), Δr \(num(delta)), 95% CI [\(num(correlation.ciLower)), \(num(correlation.ciUpper))]; \(correlation.syllables) syllables in \(correlation.clips) clips")
         }
         md.append("  - Bootstrap: \(correlation.resamples) resamples over clips, seed \(correlation.seed)")
         md.append("- ≤ 2% placement-diff rule (§6.7): \(placementRule)")
-        md.append("- \(reference?.line ?? "Reference sanity check (MFA's own error, not a gate): \(referenceStatus)")")
         if let ctc {
             md.append("")
             md.append("## b2 model (`ctc-w2v2b960-1`)")
@@ -222,7 +275,7 @@ public struct WordBoundaryReport: Codable, Sendable {
             md.append("- `macos-26` runner latency: \(ctc.runnerLatency)")
         }
         md.append("")
-        md.append("Under the bar, or not evaluated: this report goes to CTO. Thresholds are not changed to pass.")
+        md.append("A downstream FAIL goes to CTO with no retuning; NOT EVALUATED is not a pass. No threshold is changed to pass.")
         md.append("")
         md.append("## Identity (plan §6.6)")
         md.append("")

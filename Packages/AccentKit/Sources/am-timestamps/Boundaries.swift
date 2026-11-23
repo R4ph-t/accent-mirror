@@ -44,6 +44,8 @@ extension AMTimestamps {
 
         var refiners: [any WordBoundaryRefiner] = [WhisperOnly(), DSPSnapRefiner()]
         var ctcRun: WordBoundaryReport.CTCRun?
+        var ctcAligner: CTCAligner?
+        var ctcManifest: CTCModelManifest?
         if let path = options.optional("ctc-manifest") {
             let manifestURL = URL(filePath: path)
             let manifest = try CTCModelManifest(contentsOf: manifestURL)
@@ -67,7 +69,11 @@ extension AMTimestamps {
                     ctc, cpuOnly: try await CTCAligner.load(manifest: manifest, folder: folder, computeUnits: .cpuOnly),
                     clips: clips, samples: samples, words: whisperWords))
             refiners.append(ctc)
+            ctcAligner = ctc
+            ctcManifest = manifest
         }
+        var ctcConfident: [[ConfidentWord]] = []
+        var ctcComparable: [ComparableWord] = []
         var aligners: [WordBoundaryReport.Aligner] = []
         var notes: [String] = []
         let clock = ContinuousClock()
@@ -84,6 +90,11 @@ extension AMTimestamps {
                     for rule in snapped.startRules { startRules[rule.rawValue, default: 0] += 1 }
                     for rule in snapped.endRules { endRules[rule.rawValue, default: 0] += 1 }
                     words = snapped.words
+                } else if let ctc = refiner as? CTCAligner {
+                    let aligned = try await ctc.align(whisperWords[index], samples: samples[index],
+                                                      sampleRate: TimestampRequest.sampleRate)
+                    ctcConfident.append(aligned)
+                    words = aligned.map(\.word)
                 } else {
                     words = try await refiner.refine(whisperWords[index], samples: samples[index],
                                                      sampleRate: TimestampRequest.sampleRate)
@@ -100,7 +111,14 @@ extension AMTimestamps {
             let pairs = zip(whisperWords.joined(), refined.joined())
             let moved = pairs.reduce(0) { $0 + ($1.0.start != $1.1.start ? 1 : 0) + ($1.0.end != $1.1.end ? 1 : 0) }
             let boundaryCount = 2 * whisperWords.joined().count
-            let config = identity(asrModelID: whisper.asrModelID, aligner: refiner.id)
+            if refiner is CTCAligner {
+                ctcComparable = Evaluation.comparableWords(clips.indices.map {
+                    ClipInput(clipID: clips[$0].id, transcript: transcripts[$0], asrWords: refined[$0],
+                              baselineWords: spans[clips[$0].id] ?? [])
+                }).words
+            }
+            let config = identity(asrModelID: whisper.asrModelID, aligner: refiner.id,
+                                  modelSHA256: refiner is CTCAligner ? ctcManifest?.packageSHA256 : nil)
             aligners.append(WordBoundaryReport.Aligner(
                 id: refiner.id, config: config, configDigest: try configDigest(config), accuracy: accuracy,
                 latency: .init(Array(times.dropFirst())),
@@ -113,27 +131,101 @@ extension AMTimestamps {
         let correlation = CorrelationGate.notEvaluated(
             "Spec 02's unmodified-control and sham-control sets are not on this machine (spec 02 is not merged), so Δr cannot be computed. NOT EVALUATED is not a pass.",
             seed: correlationSeed)
-        var reference: ReferenceCheck?
-        var referenceStatus = "NOT RUN: no --reference given (scripts/reference-check.sh skipped or was not run)"
-        if let path = options.optional("reference") {
-            if FileManager.default.fileExists(atPath: path) {
-                reference = try JSONDecoder().decode(ReferenceCheck.self, from: Data(contentsOf: URL(filePath: path)))
-                referenceStatus = "run"
-            } else {
-                referenceStatus = "NOT RUN: \(try String(contentsOf: URL(filePath: path + ".skipped"), encoding: .utf8).trimmingCharacters(in: .whitespacesAndNewlines))"
+        // The ship gate on VCTK: MFA is the oracle.
+        let harness = try DownstreamHarness()
+        var downstream: [DownstreamGate] = []
+        if ctcAligner != nil {
+            var pairs: [(oracle: WordVerdict, candidate: WordVerdict)] = [], gated = 0
+            for index in clips.indices {
+                let result = try harness.compare(
+                    transcript: transcripts[index], samples: samples[index], sampleRate: TimestampRequest.sampleRate,
+                    oracle: spans[clips[index].id] ?? [], candidate: ctcConfident[index], clipID: clips[index].id)
+                pairs += result.pairs
+                gated += result.gatedByConfidence
             }
+            downstream.append(.compare(pairs, set: "VCTK", oracle: "MFA word baseline", inconclusiveByConfidence: gated))
+        } else {
+            downstream.append(.notEvaluated(set: "VCTK", oracle: "MFA word baseline", reason: "b2 not loaded"))
         }
-        let snapBar = aligners.first { $0.id == DSPSnapRefiner.aligner }?.bar.outcome ?? .notEvaluated
-        let ctcBar = aligners.first { $0.id == CTCAligner.aligner }?.bar.outcome
-        let decision = BoundaryDecision.decide(
-            b1Bar: snapBar, b1Correlation: correlation.outcome, b2Bar: ctcBar,
-            b1ID: DSPSnapRefiner.aligner, b2ID: "ctc-w2v2b960-1", fallbackID: WhisperOnly.aligner)
 
-        let config = identity(asrModelID: whisper.asrModelID, aligner: decision.shippedAligner)
+        // The synthetic set: the TTS phrases from scripts/reference-check.sh, transcribed live by Whisper, then b2.
+        var referenceNotes: [String] = []
+        var mfaOnTTS: ReferenceErrors.Comparison?, b2OnTTS: ReferenceErrors.Comparison?
+        var voice: String?, resolution: Double?
+        if let path = options.optional("reference") {
+            let folder = URL(filePath: path)
+            let skipped = folder.appending(path: "reference-check.json.skipped")
+            if FileManager.default.fileExists(atPath: folder.appending(path: "reference-check.json").path) {
+                let check = try JSONDecoder().decode(ReferenceCheck.self,
+                                                     from: Data(contentsOf: folder.appending(path: "reference-check.json")))
+                mfaOnTTS = ReferenceErrors.comparison(check, label: "MFA on TTS vs TTS markers (the reference's own error)")
+                voice = check.voice
+                resolution = check.markerResolutionMs
+                let markers = try JSONDecoder().decode(MarkerFile.self, from: Data(contentsOf: folder.appending(path: "markers.json")))
+                if let ctc = ctcAligner, options.optional("manifest") != nil {
+                    let (asr, _, _, _) = try await loadTimestamper(options)
+                    var clipsForCheck: [ReferenceCheck.Clip] = []
+                    var pairs: [(oracle: WordVerdict, candidate: WordVerdict)] = [], gated = 0
+                    for phrase in markers.phrases {
+                        let audio = try WhisperKitTimestamper.samples(
+                            fromFileAt: folder.appending(path: "corpus/tts/\(phrase.clipID).wav"))
+                        let heard = try await asr.wordTimestamps(for: TimestampRequest(clipID: phrase.clipID, samples: audio))
+                        let aligned = try await ctc.align(heard, samples: audio, sampleRate: TimestampRequest.sampleRate)
+                        clipsForCheck.append(.init(
+                            clipID: phrase.clipID, transcript: phrase.transcript, markers: phrase.words,
+                            aligned: aligned.map { BaselineWord(word: $0.word.word, start: $0.word.start, end: $0.word.end) }))
+                        let result = try harness.compare(
+                            transcript: phrase.transcript, samples: audio, sampleRate: TimestampRequest.sampleRate,
+                            oracle: phrase.words, candidate: aligned, clipID: phrase.clipID)
+                        pairs += result.pairs
+                        gated += result.gatedByConfidence
+                    }
+                    let b2Check = ReferenceCheck.compare(clipsForCheck, voice: markers.voice, aligner: CTCAligner.aligner,
+                                                         markerResolutionMs: check.markerResolutionMs)
+                    b2OnTTS = ReferenceErrors.comparison(b2Check, label: "b2 on TTS vs TTS markers (ground truth; b2 seeded by live Whisper base.en)")
+                    downstream.insert(.compare(pairs, set: "Synthetic (TTS)", oracle: "TTS markers",
+                                               inconclusiveByConfidence: gated), at: 0)
+                } else {
+                    referenceNotes.append("b2 on TTS not run: needs b2 and the Whisper model (--manifest, --model-dir).")
+                    downstream.insert(.notEvaluated(set: "Synthetic (TTS)", oracle: "TTS markers",
+                                                    reason: "b2 or the Whisper model not loaded"), at: 0)
+                }
+            } else {
+                let why = (try? String(contentsOf: skipped, encoding: .utf8))?.trimmingCharacters(in: .whitespacesAndNewlines)
+                    ?? "scripts/reference-check.sh was not run"
+                referenceNotes.append("TTS comparisons NOT RUN: \(why)")
+                downstream.insert(.notEvaluated(set: "Synthetic (TTS)", oracle: "TTS markers", reason: why), at: 0)
+            }
+        } else {
+            referenceNotes.append("TTS comparisons NOT RUN: no --reference folder.")
+            downstream.insert(.notEvaluated(set: "Synthetic (TTS)", oracle: "TTS markers", reason: "no --reference folder"), at: 0)
+        }
+        let referenceErrors = ReferenceErrors(
+            mfaOnTTS: mfaOnTTS, b2OnTTS: b2OnTTS,
+            b2VsMFAOnVCTK: ctcAligner == nil ? nil : ReferenceErrors.versusBaseline(ctcComparable, label: "b2 vs MFA on VCTK"),
+            voice: voice, markerResolutionMs: resolution, notes: referenceNotes)
+        let confidence = ctcConfident.isEmpty ? nil
+            : WordBoundaryReport.ConfidenceSummary(confidences: ctcConfident.joined().map(\.confidence))
+
+        let cancelPassed = ctcRun?.cancellation.outcome == .pass
+        let gateOutcome = Outcome.combine(downstream.map(\.outcome))
+        let prerequisites: [ShipDecision.Prerequisite] = [
+            .init("Licence on the model card at the pinned commit", ctcRun.map { "\($0.license), verified at `\($0.sourceCommit.prefix(8))`" } ?? "b2 not loaded", met: ctcRun != nil),
+            .init("SHA-256 pin", ctcRun.map { "packageSHA256 `\($0.packageSHA256.prefix(16))…`, checked before every load" } ?? "b2 not loaded", met: ctcRun != nil),
+            .init("Size on disk", ctcRun.map { String(format: "%.1f MiB (float32)", Double($0.fp32PackageBytes) / 1_048_576) } ?? "b2 not loaded", met: ctcRun != nil),
+            .init("Latency on the macos-26 runner", "NOT RUN: waits for the manual workflow Raph adds", met: false),
+            .init("Cancel test (cancel at 100 ms, return within about 300 ms)", ctcRun.map { $0.cancellation.outcome.rawValue } ?? "not run", met: cancelPassed),
+            .init("Downstream gate (synthetic and VCTK)", gateOutcome.rawValue, met: gateOutcome == .pass),
+            .init("`ctcConfidenceMin` tuned on spec 02's tuning speakers", "NOT TUNED: default 0.5 until spec 02's split is on main", met: false),
+        ]
+        let decision = ShipDecision.decide(gates: downstream, prerequisites: prerequisites,
+                                           candidate: CTCAligner.aligner, shipped: WhisperOnly.aligner)
+
+        let config = identity(asrModelID: whisper.asrModelID, aligner: decision.shippedAligner, modelSHA256: nil)
         let digest = try ConfigDigestRecord(config: config)
         notes.append("Whisper words are spec 03's committed replay of WhisperKit base.en on these clips (`fixtures/timestamps/\(replayURL.lastPathComponent)`), so no ASR runs here; refiners read the same 16 kHz audio WhisperKit was given.")
-        notes.append("The gate is spec 03's: unpadded starts and ends judged separately against `wordTimestamps.*`, pooled and for every speaker. The clips are spec 03's set (the 8 bundled voices); spec 02's 12 held-out speakers are not on main.")
-        notes.append("No b1 constant was tuned: `intensityDropDB` is the spec default (10 dB) because spec 02's tuning split is not on main.")
+        notes.append("Since the CTO ruling of 2026-11-23 14:05 the ship gate is downstream (spec 07's verdicts, oracle vs b2); spec 03's 40 ms / 85% bar on unpadded starts and ends is a reported target. The clips are spec 03's set (the 8 bundled voices); the number of record is the re-run on spec 02's 12 held-out speakers once spec 02 is on main.")
+        notes.append("Nothing was tuned: `ctcConfidenceMin` is the 0.5 default and b1's `intensityDropDB` the 10 dB default, because spec 02's tuning split is not on main.")
         for aligner in aligners {
             let bias = aligner.accuracy.endBias
             notes.append("End-bias diagnostic for `\(aligner.id)` (fitted and measured on these same clips; applied nowhere, not a fix, not the gate): median signed end error \(bias.medianSignedEndErrorMs.map { String(format: "%+.1f ms", $0) } ?? "–"); ends after subtracting it: median \(bias.correctedEnds.medianErrorMs.map { String(format: "%.1f ms", $0) } ?? "–"), within 80 ms \(bias.correctedEnds.shareWithinTolerance.map { String(format: "%.1f%%", $0 * 100) } ?? "–"). Any rule change would have to be chosen on spec 02's tuning speakers.")
@@ -156,21 +248,28 @@ extension AMTimestamps {
                           textIDs: Array(Set(clips.map { String($0.id.split(separator: "_")[1]) })).sorted(),
                           audio: "wav48_silence_trimmed/<speaker>/<speaker>_<text>_mic1.flac, as published",
                           attribution: vctkAttribution),
-            aligners: aligners, correlation: correlation, reference: reference,
-            referenceStatus: referenceStatus, ctc: ctcRun, decision: decision, notes: notes)
+            aligners: aligners, correlation: correlation, referenceErrors: referenceErrors, ctcConfidence: confidence,
+            downstream: downstream, ctc: ctcRun, decision: decision, notes: notes)
 
         let out = try options.url("out")
         try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
         let json = out.appending(path: "\(report.baseName).json"), md = out.appending(path: "\(report.baseName).md")
         try report.json().write(to: json, options: .atomic)
         try Data((report.markdown() + "\n").utf8).write(to: md, options: .atomic)
-        print("boundaries: \(report.decision.outcome.rawValue) (ships \(decision.shippedAligner)) → \(json.path), \(md.path)")
+        print("boundaries: downstream gate \(decision.gate.rawValue), ship \(decision.ship) (shipped stays \(decision.shippedAligner)) → \(json.path), \(md.path)")
+        for g in downstream {
+            print("boundaries: \(g.set): \(g.outcome.rawValue), \(g.differing)/\(g.words) verdicts differ, inconclusive \(g.oracleInconclusiveRate ?? .nan) → \(g.candidateInconclusiveRate ?? .nan)")
+        }
         print("boundaries: configDigest \(digest.sha256), sourceTreeHash \(sourceTreeHash), commit \(commit), clean \(clean)")
         if aligners.contains(where: { $0.replay?.matchesRecording == false }) {
             log("a run's boundaries differ from the recorded replay: re-record with --record")
             return 4
         }
-        return report.decision.outcome == .pass ? 0 : 1
+        switch decision.gate {
+        case .pass: return 0
+        case .fail: return 1
+        case .notEvaluated: return release ? 3 : 0
+        }
     }
 
     /// Cancels a call 100 ms in, five times, on about 20 s of clips (the model's limit) with their words shifted
@@ -214,9 +313,9 @@ extension AMTimestamps {
     }
 
     /// Spec 23's identity for one aligner: spec 03's, with the pitch tracker dsp-snap-1 reads.
-    static func identity(asrModelID: String, aligner: String) -> ConfigIdentity {
+    static func identity(asrModelID: String, aligner: String, modelSHA256: String?) -> ConfigIdentity {
         ConfigIdentity(asrModelID: asrModelID, pitchTrackerID: aligner == DSPSnapRefiner.aligner ? PYINTracker.trackerID : "none",
-                       voicingID: "none", aligner: aligner)
+                       voicingID: "none", aligner: aligner, alignerModelSHA256: modelSHA256 ?? "none")
     }
 
     /// Writes (with `--record`) or checks the refined words next to spec 03's replay, in the same replay format:
