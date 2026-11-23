@@ -1,0 +1,1207 @@
+{
+  "alignment" : {
+    "pairs" : [
+      {
+        "present" : {
+          "phrase" : 0,
+          "you" : {
+            "end" : 0.6599999999999999,
+            "start" : 0.1
+          }
+        }
+      }
+    ]
+  },
+  "applicability" : {
+    "contrast" : {
+      "notApplicable" : {
+        "reason" : "tooFewExpectedUnstressed"
+      }
+    },
+    "finalDirection" : {
+      "applicable" : {
+        "requirement" : "optional"
+      }
+    },
+    "pitchRange" : {
+      "applicable" : {
+        "requirement" : "optional"
+      }
+    },
+    "rhythm" : {
+      "notApplicable" : {
+        "reason" : "tooFewSyllablesInPhrase"
+      }
+    },
+    "shapeMatch" : {
+      "applicable" : {
+        "requirement" : "optional"
+      }
+    },
+    "stressPlacement" : {
+      "applicable" : {
+        "requirement" : "required"
+      }
+    },
+    "tooMuchContrast" : {
+      "notApplicable" : {
+        "reason" : "tooFewExpectedUnstressed"
+      }
+    },
+    "weakLength" : {
+      "notApplicable" : {
+        "reason" : "tooFewExpectedUnstressed"
+      }
+    }
+  },
+  "identity" : {
+    "config" : {
+      "algorithmVersion" : 1,
+      "asrModelID" : "replayed-word-timings",
+      "contractVersion" : 1,
+      "pitchTrackerID" : "pyin-1",
+      "thresholdsVersion" : 6,
+      "voicingID" : "acf-1"
+    },
+    "reference" : {
+      "nativeSetHash" : "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "phraseID" : "record",
+      "pronunciationOverridesHash" : "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "recordingID" : "p225-record",
+      "recordingSHA256" : "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "targetsHash" : "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "transcriptRevision" : 1
+    },
+    "takeAudioSHA256" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "measures" : {
+    "contrast" : {
+      "notApplicable" : {
+        "reason" : "tooFewExpectedUnstressed"
+      }
+    },
+    "finalDirection" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : -15.517241379310343
+      }
+    },
+    "pitchRange" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : 6.480620689655172
+      }
+    },
+    "rhythm" : {
+      "notApplicable" : {
+        "reason" : "tooFewSyllablesInPhrase"
+      }
+    },
+    "shapeMatch" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : 0.9998023365791386
+      }
+    },
+    "stressPlacement" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : 2
+      }
+    },
+    "tooMuchContrast" : {
+      "notApplicable" : {
+        "reason" : "tooFewExpectedUnstressed"
+      }
+    },
+    "weakLength" : {
+      "notApplicable" : {
+        "reason" : "tooFewExpectedUnstressed"
+      }
+    }
+  },
+  "model" : {
+    "medianF0Hz" : 150,
+    "pitch" : [
+      {
+        "frames" : [
+          {
+            "semitones" : 4,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.869565217391304,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.739130434782609,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.608695652173913,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.4782608695652173,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.3478260869565215,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.217391304347826,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.0869565217391304,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.9565217391304346,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.8260869565217392,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.6956521739130435,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.5652173913043477,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.4347826086956523,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.3043478260869565,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.1739130434782608,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.0434782608695654,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.9130434782608696,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.7826086956521738,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.652173913043478,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.5217391304347827,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.391304347826087,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.2608695652173911,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.1304347826086958,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.8518518518518519,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.7037037037037037,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.5555555555555556,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.40740740740740744,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.2592592592592593,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.11111111111111116,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.03703703703703698,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.18518518518518512,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.33333333333333326,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.4814814814814814,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.6296296296296295,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.7777777777777777,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.9259259259259258,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.074074074074074,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.2222222222222223,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.3703703703703702,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.5185185185185186,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.6666666666666665,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.8148148148148149,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.9629629629629628,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.111111111111111,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.259259259259259,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.4074074074074074,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.5555555555555554,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.7037037037037037,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.8518518518518516,
+            "voiced" : true
+          },
+          {
+            "semitones" : -3,
+            "voiced" : true
+          }
+        ],
+        "start" : 0.1
+      }
+    ],
+    "syllables" : [
+      {
+        "indexInWord" : 0,
+        "prominence" : 1,
+        "range" : {
+          "end" : 0.33999999999999997,
+          "start" : 0.1
+        },
+        "share" : 0.46153846153846145,
+        "stress" : "primary",
+        "stressSource" : "dictionary",
+        "text" : "record#0",
+        "wordIndex" : 0
+      },
+      {
+        "indexInWord" : 1,
+        "prominence" : 0,
+        "range" : {
+          "end" : 0.62,
+          "start" : 0.33999999999999997
+        },
+        "share" : 0.5384615384615385,
+        "stress" : "unstressed",
+        "stressSource" : "dictionary",
+        "text" : "record#1",
+        "wordIndex" : 0
+      }
+    ],
+    "words" : [
+      {
+        "range" : {
+          "end" : 0.62,
+          "start" : 0.1
+        },
+        "syllables" : [
+          0,
+          1
+        ],
+        "text" : "record"
+      }
+    ]
+  },
+  "modelAxis" : {
+    "end" : 0.62,
+    "start" : 0.1
+  },
+  "nativeBand" : [
+    {
+      "lower" : 2.5,
+      "time" : 0.1,
+      "upper" : 5.5
+    },
+    {
+      "lower" : 2.369565217391304,
+      "time" : 0.11,
+      "upper" : 5.369565217391305
+    },
+    {
+      "lower" : 2.239130434782609,
+      "time" : 0.12,
+      "upper" : 5.239130434782609
+    },
+    {
+      "lower" : 2.108695652173913,
+      "time" : 0.13,
+      "upper" : 5.108695652173913
+    },
+    {
+      "lower" : 1.9782608695652173,
+      "time" : 0.14,
+      "upper" : 4.978260869565217
+    },
+    {
+      "lower" : 1.8478260869565215,
+      "time" : 0.15,
+      "upper" : 4.8478260869565215
+    },
+    {
+      "lower" : 1.7173913043478262,
+      "time" : 0.16,
+      "upper" : 4.717391304347826
+    },
+    {
+      "lower" : 1.5869565217391304,
+      "time" : 0.17,
+      "upper" : 4.586956521739131
+    },
+    {
+      "lower" : 1.4565217391304346,
+      "time" : 0.18,
+      "upper" : 4.456521739130435
+    },
+    {
+      "lower" : 1.3260869565217392,
+      "time" : 0.19,
+      "upper" : 4.326086956521739
+    },
+    {
+      "lower" : 1.1956521739130435,
+      "time" : 0.2,
+      "upper" : 4.195652173913043
+    },
+    {
+      "lower" : 1.0652173913043477,
+      "time" : 0.21,
+      "upper" : 4.065217391304348
+    },
+    {
+      "lower" : 0.9347826086956523,
+      "time" : 0.22,
+      "upper" : 3.9347826086956523
+    },
+    {
+      "lower" : 0.8043478260869565,
+      "time" : 0.23,
+      "upper" : 3.8043478260869565
+    },
+    {
+      "lower" : 0.6739130434782608,
+      "time" : 0.24,
+      "upper" : 3.6739130434782608
+    },
+    {
+      "lower" : 0.5434782608695654,
+      "time" : 0.25,
+      "upper" : 3.5434782608695654
+    },
+    {
+      "lower" : 0.4130434782608696,
+      "time" : 0.26,
+      "upper" : 3.4130434782608696
+    },
+    {
+      "lower" : 0.28260869565217384,
+      "time" : 0.27,
+      "upper" : 3.282608695652174
+    },
+    {
+      "lower" : 0.15217391304347805,
+      "time" : 0.28,
+      "upper" : 3.152173913043478
+    },
+    {
+      "lower" : 0.021739130434782705,
+      "time" : 0.29,
+      "upper" : 3.0217391304347827
+    },
+    {
+      "lower" : -0.10869565217391308,
+      "time" : 0.3,
+      "upper" : 2.891304347826087
+    },
+    {
+      "lower" : -0.23913043478260887,
+      "time" : 0.31,
+      "upper" : 2.760869565217391
+    },
+    {
+      "lower" : -0.3695652173913042,
+      "time" : 0.32,
+      "upper" : 2.630434782608696
+    },
+    {
+      "lower" : -0.5,
+      "time" : 0.33,
+      "upper" : 2.5
+    },
+    {
+      "lower" : -0.5,
+      "time" : 0.34,
+      "upper" : 2.5
+    },
+    {
+      "lower" : -0.6481481481481481,
+      "time" : 0.35000000000000003,
+      "upper" : 2.351851851851852
+    },
+    {
+      "lower" : -0.7962962962962963,
+      "time" : 0.36,
+      "upper" : 2.2037037037037037
+    },
+    {
+      "lower" : -0.9444444444444444,
+      "time" : 0.37,
+      "upper" : 2.0555555555555554
+    },
+    {
+      "lower" : -1.0925925925925926,
+      "time" : 0.38,
+      "upper" : 1.9074074074074074
+    },
+    {
+      "lower" : -1.2407407407407407,
+      "time" : 0.39,
+      "upper" : 1.7592592592592593
+    },
+    {
+      "lower" : -1.3888888888888888,
+      "time" : 0.4,
+      "upper" : 1.6111111111111112
+    },
+    {
+      "lower" : -1.537037037037037,
+      "time" : 0.41000000000000003,
+      "upper" : 1.462962962962963
+    },
+    {
+      "lower" : -1.6851851851851851,
+      "time" : 0.42,
+      "upper" : 1.3148148148148149
+    },
+    {
+      "lower" : -1.8333333333333333,
+      "time" : 0.43,
+      "upper" : 1.1666666666666667
+    },
+    {
+      "lower" : -1.9814814814814814,
+      "time" : 0.44,
+      "upper" : 1.0185185185185186
+    },
+    {
+      "lower" : -2.1296296296296298,
+      "time" : 0.45,
+      "upper" : 0.8703703703703705
+    },
+    {
+      "lower" : -2.2777777777777777,
+      "time" : 0.46,
+      "upper" : 0.7222222222222223
+    },
+    {
+      "lower" : -2.4259259259259256,
+      "time" : 0.47000000000000003,
+      "upper" : 0.5740740740740742
+    },
+    {
+      "lower" : -2.574074074074074,
+      "time" : 0.48,
+      "upper" : 0.42592592592592604
+    },
+    {
+      "lower" : -2.7222222222222223,
+      "time" : 0.49,
+      "upper" : 0.2777777777777777
+    },
+    {
+      "lower" : -2.8703703703703702,
+      "time" : 0.5,
+      "upper" : 0.12962962962962976
+    },
+    {
+      "lower" : -3.0185185185185186,
+      "time" : 0.51,
+      "upper" : -0.0185185185185186
+    },
+    {
+      "lower" : -3.1666666666666665,
+      "time" : 0.52,
+      "upper" : -0.16666666666666652
+    },
+    {
+      "lower" : -3.314814814814815,
+      "time" : 0.53,
+      "upper" : -0.3148148148148149
+    },
+    {
+      "lower" : -3.462962962962963,
+      "time" : 0.54,
+      "upper" : -0.4629629629629628
+    },
+    {
+      "lower" : -3.611111111111111,
+      "time" : 0.55,
+      "upper" : -0.6111111111111112
+    },
+    {
+      "lower" : -3.759259259259259,
+      "time" : 0.56,
+      "upper" : -0.7592592592592591
+    },
+    {
+      "lower" : -3.9074074074074074,
+      "time" : 0.5700000000000001,
+      "upper" : -0.9074074074074074
+    },
+    {
+      "lower" : -4.055555555555555,
+      "time" : 0.58,
+      "upper" : -1.0555555555555554
+    },
+    {
+      "lower" : -4.203703703703704,
+      "time" : 0.59,
+      "upper" : -1.2037037037037037
+    },
+    {
+      "lower" : -4.351851851851851,
+      "time" : 0.6,
+      "upper" : -1.3518518518518516
+    },
+    {
+      "lower" : -4.5,
+      "time" : 0.61,
+      "upper" : -1.5
+    }
+  ],
+  "phraseID" : "record",
+  "pitchAxis" : [
+    -12,
+    12
+  ],
+  "recordedAt" : 1795420800,
+  "stress" : [
+    {
+      "confidence" : "high",
+      "expectedPattern" : [
+        "primary",
+        "unstressed"
+      ],
+      "margin" : 2,
+      "matchedAccepted" : {
+        "primary" : 0,
+        "source" : {
+          "contextPronunciation" : {
+
+          }
+        }
+      },
+      "observedPrimary" : 0,
+      "referenceAnomaly" : false,
+      "word" : 0
+    }
+  ],
+  "takeID" : "take-0001",
+  "timeMap" : {
+    "segments" : [
+      {
+        "mapped" : {
+          "anchors" : [
+            {
+              "model" : 0.1,
+              "you" : 0.1
+            },
+            {
+              "model" : 0.33999999999999997,
+              "you" : 0.36
+            },
+            {
+              "model" : 0.62,
+              "you" : 0.6599999999999999
+            }
+          ],
+          "comparable" : true,
+          "model" : {
+            "end" : 0.62,
+            "start" : 0.1
+          },
+          "you" : {
+            "end" : 0.6599999999999999,
+            "start" : 0.1
+          }
+        }
+      }
+    ]
+  },
+  "timing" : "good",
+  "verdict" : {
+    "close" : {
+
+    }
+  },
+  "you" : {
+    "medianF0Hz" : 150,
+    "pitch" : [
+      {
+        "frames" : [
+          {
+            "semitones" : 4.5,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.36,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.22,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.08,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.94,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.8,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.66,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.52,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.38,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.24,
+            "voiced" : true
+          },
+          {
+            "semitones" : 3.1,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.96,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.8200000000000003,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.6799999999999997,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.54,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.4,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.26,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2.12,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.98,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.8399999999999999,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.7000000000000002,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.56,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.42,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.2799999999999998,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.1400000000000001,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.8448275862068966,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.6896551724137931,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.5344827586206897,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.3793103448275862,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.22413793103448276,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.06896551724137934,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.0862068965517242,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.24137931034482762,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.39655172413793105,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.5517241379310345,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.7068965517241379,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.8620689655172413,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.0172413793103448,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.1724137931034484,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.3275862068965516,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.4827586206896552,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.6379310344827585,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.793103448275862,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.9482758620689653,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.103448275862069,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.2586206896551726,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.413793103448276,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.5689655172413794,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.7241379310344827,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.8793103448275863,
+            "voiced" : true
+          },
+          {
+            "semitones" : -3.0344827586206895,
+            "voiced" : true
+          },
+          {
+            "semitones" : -3.1896551724137927,
+            "voiced" : true
+          },
+          {
+            "semitones" : -3.344827586206897,
+            "voiced" : true
+          },
+          {
+            "semitones" : -3.5,
+            "voiced" : true
+          }
+        ],
+        "start" : 0.1
+      }
+    ],
+    "syllables" : [
+      {
+        "indexInWord" : 0,
+        "prominence" : 1,
+        "range" : {
+          "end" : 0.36,
+          "start" : 0.1
+        },
+        "share" : 0.46428571428571436,
+        "stress" : "primary",
+        "stressSource" : "measured",
+        "text" : "record#0",
+        "wordIndex" : 0
+      },
+      {
+        "indexInWord" : 1,
+        "prominence" : 0,
+        "range" : {
+          "end" : 0.6599999999999999,
+          "start" : 0.36
+        },
+        "share" : 0.5357142857142857,
+        "stress" : "unstressed",
+        "stressSource" : "measured",
+        "text" : "record#1",
+        "wordIndex" : 0
+      }
+    ],
+    "words" : [
+      {
+        "range" : {
+          "end" : 0.6599999999999999,
+          "start" : 0.1
+        },
+        "syllables" : [
+          0,
+          1
+        ],
+        "text" : "record"
+      }
+    ]
+  },
+  "youPitchOnModel" : [
+    {
+      "frames" : [
+        {
+          "semitones" : 4.5,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.36,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.22,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.08,
+          "voiced" : true
+        },
+        {
+          "semitones" : 3.94,
+          "voiced" : true
+        },
+        {
+          "semitones" : 3.8,
+          "voiced" : true
+        },
+        {
+          "semitones" : 3.52,
+          "voiced" : true
+        },
+        {
+          "semitones" : 3.38,
+          "voiced" : true
+        },
+        {
+          "semitones" : 3.24,
+          "voiced" : true
+        },
+        {
+          "semitones" : 3.1,
+          "voiced" : true
+        },
+        {
+          "semitones" : 2.96,
+          "voiced" : true
+        },
+        {
+          "semitones" : 2.8200000000000003,
+          "voiced" : true
+        },
+        {
+          "semitones" : 2.6799999999999997,
+          "voiced" : true
+        },
+        {
+          "semitones" : 2.54,
+          "voiced" : true
+        },
+        {
+          "semitones" : 2.4,
+          "voiced" : true
+        },
+        {
+          "semitones" : 2.26,
+          "voiced" : true
+        },
+        {
+          "semitones" : 2.12,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.98,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.7000000000000002,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.56,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.42,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.2799999999999998,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.1400000000000001,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1,
+          "voiced" : true
+        },
+        {
+          "semitones" : 0.8448275862068966,
+          "voiced" : true
+        },
+        {
+          "semitones" : 0.6896551724137931,
+          "voiced" : true
+        },
+        {
+          "semitones" : 0.5344827586206897,
+          "voiced" : true
+        },
+        {
+          "semitones" : 0.3793103448275862,
+          "voiced" : true
+        },
+        {
+          "semitones" : 0.22413793103448276,
+          "voiced" : true
+        },
+        {
+          "semitones" : 0.06896551724137934,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.24137931034482762,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.39655172413793105,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.5517241379310345,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.7068965517241379,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.8620689655172413,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.0172413793103448,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.1724137931034484,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.3275862068965516,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.4827586206896552,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.6379310344827585,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.793103448275862,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.9482758620689653,
+          "voiced" : true
+        },
+        {
+          "semitones" : -2.103448275862069,
+          "voiced" : true
+        },
+        {
+          "semitones" : -2.2586206896551726,
+          "voiced" : true
+        },
+        {
+          "semitones" : -2.5689655172413794,
+          "voiced" : true
+        },
+        {
+          "semitones" : -2.7241379310344827,
+          "voiced" : true
+        },
+        {
+          "semitones" : -2.8793103448275863,
+          "voiced" : true
+        },
+        {
+          "semitones" : -3.0344827586206895,
+          "voiced" : true
+        },
+        {
+          "semitones" : -3.1896551724137927,
+          "voiced" : true
+        },
+        {
+          "semitones" : -3.344827586206897,
+          "voiced" : true
+        },
+        {
+          "semitones" : -3.5,
+          "voiced" : true
+        },
+        {
+          "semitones" : -3.5,
+          "voiced" : true
+        }
+      ],
+      "start" : 0.1
+    }
+  ]
+}

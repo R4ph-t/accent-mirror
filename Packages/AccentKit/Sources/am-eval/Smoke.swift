@@ -128,13 +128,22 @@ func smokeDetector(_ args: Arguments, root: URL) async throws -> Int32 {
     }
     let inputs = try JSONDecoder().decode(PlacementFixtureFile.self, from: Data(contentsOf: inputsURL))
     let timings = try FixtureTimestamper(directory: dir.appendingPathComponent("timestamps"))
-    var goldens: [PlacementGolden] = []
+    var analyses: [String: PlacementAnalysis] = [:]
     for item in inputs.items {
-        let analysis = try await analysePlacement(
+        analyses[item.item] = try await analysePlacement(
             item, audio: root.appendingPathComponent("\(Paths.smoke)/\(item.audio)"), timings: timings,
             thresholds: .current)
-        goldens.append(try PlacementGolden(item: item, analysis: analysis))
     }
+    // Spec 10: each VCTK item's verdict against another smoke speaker of its phrase (never a rate gate).
+    let candidates = SmokeVerdict.candidates(inputs.items)
+    let goldens = try inputs.items.map { item in
+        let verdict = try candidates[item.item].map { models in
+            try SmokeVerdict.score(
+                item: item, analysis: analyses[item.item]!, candidates: models.map { ($0, analyses[$0.item]!) })
+        }
+        return try PlacementGolden(item: item, analysis: analyses[item.item]!, verdict: verdict)
+    }
+    for golden in goldens { if let v = golden.verdict { print("smoke-detector: verdict \(golden.item) vs \(v.model ?? "–"): \(v.decision.map { "\($0)" } ?? v.unscored ?? "–")") } }
     let file = PlacementGoldenFile(asrModelID: timings.asrModelID, items: goldens)
     let words = goldens.flatMap(\.words)
     print("smoke-detector: \(goldens.count) items, \(words.count) decided words, \(words.count(where: \.present)) present; flagged before suppression \(words.count(where: \.flaggedBeforeSuppression)), after \(words.count(where: \.flaggedAfterSuppression)) (never a rate gate)")

@@ -42,14 +42,28 @@ import Testing
         #expect(inputs.items.count == 53)
 
         let detector = try StressPlacementDetector.bundled()
-        for (item, golden) in zip(inputs.items, goldens.items) {
-            #expect(item.item == golden.item)
+        var analyses: [String: PlacementAnalysis] = [:]
+        for item in inputs.items {
             let samples = try Self.readMono(Self.smoke.appendingPathComponent(item.audio))
             let heard = try #require(timings.recording(for: item.item)).words
             let take = try item.take(samples: samples, sampleRate: 16_000, heard: heard, asrModelID: timings.asrModelID)
-            let result = try PlacementGolden(item: item, analysis: try await detector.analyse(take))
+            analyses[item.item] = try await detector.analyse(take)
+        }
+        let candidates = SmokeVerdict.candidates(inputs.items)
+        #expect(candidates.count == 6, "every VCTK item has model candidates; speechocean762 items have none")
+        for (item, golden) in zip(inputs.items, goldens.items) {
+            #expect(item.item == golden.item)
+            let analysis = try #require(analyses[item.item])
+            let result = try PlacementGolden(item: item, analysis: analysis)
             #expect(result.l1Digest == golden.l1Digest, "\(item.item): L1 digest")
             #expect(result.words == golden.words, "\(item.item): placements")
+            // Spec 10: the verdict per item against its model (VCTK items only).
+            let verdict = try candidates[item.item].map { models in
+                try SmokeVerdict.score(
+                    item: item, analysis: analysis, candidates: models.map { ($0, analyses[$0.item]!) })
+            }
+            #expect(verdict == golden.verdict, "\(item.item): verdict")
+            #expect((golden.verdict == nil) == (item.corpus != "vctk"), "\(item.item): verdict presence")
         }
     }
 

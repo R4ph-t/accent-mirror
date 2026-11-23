@@ -226,7 +226,9 @@ enum Golden {
         let decoder = CanonicalJSON.decoder()
         var outcomes: Set<String> = []
         var verdicts: Set<String> = []
-        for path in try Golden.files() where !path.hasPrefix("invalid/") && !path.hasPrefix("examples/") {
+        // scoring/ holds spec 10's AnalysisResult goldens (checked by AMScoringTests; covered by the digest here).
+        for path in try Golden.files()
+        where !path.hasPrefix("invalid/") && !path.hasPrefix("examples/") && !path.hasPrefix("scoring/") {
             let response = try decoder.decode(
                 AnalysisResponse.self, from: Data(contentsOf: Golden.directory.appendingPathComponent(path)))
             switch response.outcome {

@@ -1376,6 +1376,24 @@
     {
       "item" : "vctk-p245_002",
       "l1Digest" : "ded17f9c8b0ebd39e4fe7b2c97eec23adc0421ad069aa843fd6729f3e3ad01d3",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "inconclusive" : {
+                "reasons" : [
+                  {
+                    "noApplicableStressMeasure" : {
+
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p288_002"
+      },
       "words" : [
 
       ]
@@ -1383,6 +1401,41 @@
     {
       "item" : "vctk-p245_018",
       "l1Digest" : "5a24e7776a08cd6ba237022527698a113272154080a6f65bc5822aa5e7169f5e",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "feedback" : {
+                "partial" : [
+                  "contrast"
+                ],
+                "rows" : [
+                  {
+                    "kind" : "roughTiming",
+                    "syllables" : [
+
+                    ],
+                    "values" : {
+
+                    }
+                  },
+                  {
+                    "kind" : "pitchRange",
+                    "syllables" : [
+
+                    ],
+                    "values" : {
+                      "model" : 5.3116907050217,
+                      "you" : 2.298766267023545
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p288_018"
+      },
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1416,6 +1469,24 @@
     {
       "item" : "vctk-p288_002",
       "l1Digest" : "f1b82ff0c73c138a7a22d3981bc54307086f0499fa1836263b928088b682979d",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "inconclusive" : {
+                "reasons" : [
+                  {
+                    "noApplicableStressMeasure" : {
+
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p245_002"
+      },
       "words" : [
 
       ]
@@ -1423,6 +1494,34 @@
     {
       "item" : "vctk-p288_018",
       "l1Digest" : "be7eb8470303f5371f12243d88c5f7a02bac3bf75b5f5ac9e11a21a65fa01b12",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "noClearDifference" : {
+                "reasons" : [
+                  {
+                    "mediumConfidenceOnly" : {
+                      "measures" : [
+                        "stressPlacement",
+                        "contrast",
+                        "tooMuchContrast",
+                        "weakLength"
+                      ]
+                    }
+                  },
+                  {
+                    "timingRough" : {
+
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p360_018"
+      },
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1456,6 +1555,24 @@
     {
       "item" : "vctk-p360_002",
       "l1Digest" : "856071f276c181c068252d1de773d6aa5d3307fea84a0a13caae2888490e127b",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "inconclusive" : {
+                "reasons" : [
+                  {
+                    "noApplicableStressMeasure" : {
+
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p245_002"
+      },
       "words" : [
 
       ]
@@ -1463,6 +1580,43 @@
     {
       "item" : "vctk-p360_018",
       "l1Digest" : "4c3704e9567703fb620f42ca55ee1bd6e7b5b4da14697f9f4670c5703fbe54fa",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "noClearDifference" : {
+                "reasons" : [
+                  {
+                    "optionalMeasuresUnavailable" : {
+                      "measures" : [
+                        "pitchRange",
+                        "shapeMatch",
+                        "finalDirection"
+                      ]
+                    }
+                  },
+                  {
+                    "mediumConfidenceOnly" : {
+                      "measures" : [
+                        "stressPlacement",
+                        "contrast",
+                        "tooMuchContrast",
+                        "weakLength"
+                      ]
+                    }
+                  },
+                  {
+                    "timingRough" : {
+
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p288_018"
+      },
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1494,5 +1648,5 @@
       ]
     }
   ],
-  "thresholdsVersion" : 4
+  "thresholdsVersion" : 6
 }
