@@ -1,6 +1,6 @@
 # 01: Contract v2
 
-Status: Draft · Branch: – · Depends on: 00 (project skeleton) · Estimate: 3–4 h agent run + 1 h Raph review
+Status: Ready · Branch: – · Depends on: 00 (project skeleton) · Estimate: 3–4 h agent run + 1 h Raph review
 · Risk: high
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56

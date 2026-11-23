@@ -1,6 +1,6 @@
 # 04: Pitch tracker
 
-Status: Draft · Branch: – · Depends on: 01 (contract v2) · Estimate: 3–4 h agent run + 1 h Raph review
+Status: Ready · Branch: – · Depends on: 01 (contract v2) · Estimate: 3–4 h agent run + 1 h Raph review
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
 Europe/Paris). Row 04 is "as before", so the behaviour comes from v1's `AMPitch` section and spec row 04, with the
