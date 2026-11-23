@@ -107,4 +107,42 @@ code nor spec 23's refiner.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Built 2026-11-23 on `factory/07-syllable-segmenter` (hand build, Claude Code).
+
+- **Where.** `AMProsody`: `SyllableSegmenter.swift` (the segmenter, its nested `WordSpan` and `Input`) and
+  `Segmentation.swift` (the L1 output: `SyllableSegmentation` with its `Key` and `digest()`, `SegmentedWord`,
+  `SyllableSplit`, `SegmentedSyllable`, and the level and timing rules). `WordSpan` is nested as
+  `SyllableSegmenter.WordSpan` because AMCore already has a public `WordSpan` (the contract's display word).
+- **Word edges.** Reported word edges are the injected span, clamped to the take. The first syllable starts at the
+  word start and the last ends at the word end, so word timing is the union of its syllables. The padded window
+  (`alignment.asrPaddingMs`, clamped at neighbours' unpadded spans and the take's ends, never narrower than the span)
+  is recorded per word as `searchWindow` and used only to find nuclei: a peak counts if it is a local maximum within
+  the window and lies inside the unpadded span.
+- **Split.** 10 ms frame RMS (vDSP) smoothed over 5 frames; voiced nuclei are voiced local maxima, neighbours merged
+  across valleys shallower than `confidence.splitValleyMinDB` (3 dB), giving the peak count P. Boundaries are the
+  N − 1 deepest envelope minima inside the span (each at least 0.5 dB below both sides), keeping every syllable at
+  least 40 ms long and voiced. If that can't give N − 1 boundaries, the split is proportional to phone count. s_w =
+  max(0, 0.9 − 0.3·|P − N|) on the valley path, 0.35 on the fallback.
+- **Features.** d = syllable duration; e = RMS over the syllable's samples in dBFS, floored at −60
+  (`prominence.energyMinimumDBFS`). Exposure: no syllable, substituted word or inserted word follows, or the next one
+  starts more than `prominence.exposurePauseMs` after the syllable ends.
+- **Timing.** The share of all segmented syllables at medium or above (`SyllableSegmenter.timing(of:thresholds:)`).
+  An empty take is Poor.
+- **Key.** `l0Key` (opaque string from the caller), `transcriptRevision`, `pronunciationHash` (SHA-256 of the
+  canonical JSON of `[{word, arpabet}]` sorted by word) and `algorithmVersion`. `digest()` is the SHA-256 of the
+  output's canonical JSON.
+- **Thresholds.** Added `confidence.spanSanityMinMs` 60, `.spanSanityMaxMs` 1500, `.spanSanityFailed` 0.3,
+  `.splitValleyMinDB` 3, `.splitExact` 0.9, `.splitPerMismatch` 0.3, `.splitFallback` 0.35 and
+  `syllableBoundaries.medianErrorMaxMs` 30, `.withinToleranceMs` 50, `.withinToleranceShareMin` 0.80 (first v2
+  values, not tuned). `thresholdsVersion` 3 → 4 with a new golden record.
+- **TTS gate.** `TTSMarkerGateTests`: voice `com.apple.voice.compact.en-US.Samantha`, three pinned phrases with pinned
+  ARPAbet. Word markers come through the delegate's `willSpeak marker:` (the `toMarkerCallback` of `write` delivers
+  none on macOS 26). A marker's `byteSampleOffset` is divided by the buffer's bytes per frame. Its resolution is the
+  synthesizer's 512-sample buffer (about 23 ms at 22.05 kHz), which doesn't matter here because the marker is the
+  truth by definition. Each word span runs from its marker to the next one (the last to the end of the audio).
+  Audio is resampled to 16 kHz in memory.
+- **Report.** `AMSyllableEval` + `am-syllables` + `scripts/eval-syllables.sh` (sandboxed, no network, reads no
+  corpus) write `syllable-boundaries-<configDigest8>.{json,md}`. The MFA reference groups MFA phones into syllables
+  by position, using spec 06's syllabifier on the segmenter's pronunciation, so english_mfa's non-ARPAbet phones
+  need no mapping; a word whose phone count differs is excluded. All five real-speech lines print NOT EVALUATED
+  (waiting on spec 23).
