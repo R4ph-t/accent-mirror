@@ -24,6 +24,7 @@ public struct Thresholds: Sendable, Hashable, Codable {
     public var decision = Decision()
     public var agreement = Agreement()
     public var wordTimestamps = WordTimestamps()
+    public var syllableBoundaries = SyllableBoundaries()
     public var performance = Performance()
 
     public init() {}
@@ -113,6 +114,17 @@ public struct Thresholds: Sendable, Hashable, Codable {
         /// Final direction: voiced frames in the window.
         public var finalDirectionHighFrames = 15.0
         public var finalDirectionMediumFrames = 10.0
+        /// Word span sanity, spec 07: 1 inside [min, max] and not overlapping a neighbour, else `spanSanityFailed`.
+        public var spanSanityMinMs = 60.0
+        public var spanSanityMaxMs = 1500.0
+        public var spanSanityFailed = 0.3
+        /// Syllable split s_w, spec 07: `splitExact` when the nuclei between valleys of at least `splitValleyMinDB`
+        /// match the dictionary count, minus `splitPerMismatch` per syllable of difference; `splitFallback` for the
+        /// phone-count proportional split.
+        public var splitValleyMinDB = 3.0
+        public var splitExact = 0.9
+        public var splitPerMismatch = 0.3
+        public var splitFallback = 0.35
         public init() {}
     }
 
@@ -257,6 +269,15 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public var medianErrorMaxMs = 40.0
         public var withinToleranceMs = 80.0
         public var withinToleranceShareMin = 0.85
+        public init() {}
+    }
+
+    /// Syllable-boundary bars, spec 07 (first v2, Open question 1): segmenter syllable boundaries against MFA phone
+    /// alignments syllabified by spec 06. Evaluation gates only; no analysis output reads them.
+    public struct SyllableBoundaries: Sendable, Hashable, Codable {
+        public var medianErrorMaxMs = 30.0
+        public var withinToleranceMs = 50.0
+        public var withinToleranceShareMin = 0.80
         public init() {}
     }
 

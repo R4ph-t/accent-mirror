@@ -60,6 +60,11 @@ let package = Package(
         .target(name: "AMTimestampEval", dependencies: ["AMCore", "AMAlignment"]),
         .testTarget(name: "AMTimestampEvalTests", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),
         .executableTarget(name: "am-timestamps", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),
+        // Local evaluation tooling (spec 07): the syllable-boundary report. Never linked into the app, never run by CI.
+        .target(name: "AMSyllableEval",
+                dependencies: ["AMCore", "AMAlignment", "AMCapture", "AMProsody", "AMTimestampEval"]),
+        .testTarget(name: "AMSyllableEvalTests", dependencies: ["AMCore", "AMAlignment", "AMProsody", "AMSyllableEval"]),
+        .executableTarget(name: "am-syllables", dependencies: ["AMCore", "AMSyllableEval"]),
     ],
     swiftLanguageModes: [.v6]
 )
