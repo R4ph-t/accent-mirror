@@ -1,28 +1,36 @@
 # 07: Syllable segmenter and timing confidence
 
-Status: Ready · Branch: – · Depends on: 03 (replayed word timings), 06 (syllable counts) · Estimate: 3–4 h agent
-run + 1 h Raph review
+Status: Ready · Branch: – · Depends on: 06 (syllable counts; word boundaries are injected, and the real-speech gates
+wait on 23) · Estimate: 3–4 h agent run + 1 h Raph review
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
 Europe/Paris): row 07 ("as before; the real-speech boundary check uses MFA as a baseline; human boundary labels are
 dropped", Raph 09:14), §2 (lengthening exposure), §5 and first v2 §5 (confidence), v1 `SyllableSegmenter`, CTO
-decision 4 (~80 ms padding).
+decision 4 (~80 ms padding). Amended by CTO's ruling on spec 03 (2026-11-23 13:00): word boundaries are injected (spec
+23 refines them after Whisper), padding is this spec's analysis-window choice, the synthetic gate runs on TTS marker
+timings, and only the real-speech gates wait for spec 23.
 
 ## Goal
 
 Split each `present` word's span into its dictionary syllables, compute raw per-syllable duration and intensity,
 mark lengthening-exposed syllables, and score word, syllable and take timing confidence. This is the L1
-segmentation stage (§9.2). Runs on replayed word timings in CI.
+segmentation stage (§9.2). It builds against an injected word-boundary source, so it needs neither spec 03's ASR
+code nor spec 23's refiner.
 
 ## Behaviour
 
 - Input: the take's 16 kHz samples, the `WordAlignment` (spec 06), each word's syllable count and phones (spec 06),
-  word timings with probabilities (`FixtureTimestamper` from spec 03 in tests), and a `VoicingSource` (the protocol from spec 01; tests use a synthetic source, the pipeline wires spec 05's
-  `ACFVoicing`).
+  **injected word boundaries** (one `WordSpan` per phrase word, with start, end and the ASR word probability) and a
+  `VoicingSource` (the protocol from spec 01; tests use a synthetic source, the pipeline wires spec 05's `ACFVoicing`).
+- `WordSpan` is a small value type this spec defines next to the segmenter (start and end in seconds, probability
+  0–1). It doesn't import spec 03 or spec 23. The pipeline (spec 12) maps spec 03's `WordTimestamp`, after spec 23's
+  `WordBoundaryRefiner`, onto it. Tests inject spans directly.
 - Only `present` words get syllables. `substituted` words keep their word edges only (anchors for spec 09) and are
   never measured.
-- Padding: each Whisper word span is widened by about 80 ms on both sides before searching, clamped so it never
-  crosses the neighbouring word's unpadded span or the take's ends.
+- Padding (this spec's analysis window, moved here from spec 03 by CTO's ruling): each injected word span is widened
+  by about 80 ms on both sides before searching, clamped so it never crosses the neighbouring word's unpadded span or
+  the take's ends. The padding is a search window only. Reported word and syllable boundaries are never the padded
+  edges.
 - Boundaries: at intensity-envelope minima between voiced nuclei, constrained to the dictionary syllable count. If
   that fails, split proportionally to phone count. When the dictionary count and the number of energy peaks
   disagree, the dictionary count wins and confidence drops.
@@ -44,6 +52,14 @@ segmentation stage (§9.2). Runs on replayed word timings in CI.
 
 - The synthetic pulse-train fixture (a 3 s train of known syllable envelopes over voiced carriers) is generated in
   test code, with matching synthetic word timings.
+- **Synthetic gate (TTS markers are the boundary truth).** A set of short phrases is spoken by an on-device
+  `AVSpeechSynthesizer` English voice with `write(_:toBufferCallback:toMarkerCallback:)`. The word markers' sample
+  offsets are the word boundaries, injected as `WordSpan`s with probability 1, and they're the truth for this gate.
+  The gate: every word boundary the segmenter reports stays within 10 ms of the injected marker (padding never moves
+  it), and syllable counts match the dictionary. Syllable-boundary truth isn't available from TTS, so syllable
+  accuracy stays with the pulse train. The phrases and the voice identifier are pinned in the test. Audio is
+  generated at test time, never committed, and nothing is fetched. If no English voice is installed, the test is
+  skipped with that reason and the PR says NOT RUN.
 - Real-speech check (local, not `make check`): see Open question 1. Report at
   `docs/agreement/reports/syllable-boundaries-<configDigest8>.{json,md}` with the §6.6 identity header from spec
   02 when present.
@@ -60,6 +76,10 @@ segmentation stage (§9.2). Runs on replayed word timings in CI.
 
 ## Open question (built with the default)
 
+0. **Real-speech gates wait on spec 23.** The speechocean762 recall check and the VCTK false-positive check (spec 02's
+   sets), and the MFA syllable-boundary bar below, run only once spec 23 has shipped a refiner. Until then, the report
+   prints those lines as NOT EVALUATED (waiting on spec 23), which is not a pass. The code paths and the report shape
+   are built now.
 1. **Real-speech bar with MFA instead of hand labels.** The first v2 asked for 200+ hand-labelled VCTK held-out
    boundaries from ≥ 6 speakers, median ≤ 30 ms and ≥ 80% within 50 ms, with calibrated confidence. Raph dropped hand
    labels (09:14) and the row now says "MFA as a baseline". Default: Montreal Forced Aligner phone alignments of
@@ -76,11 +96,14 @@ segmentation stage (§9.2). Runs on replayed word timings in CI.
    - a word whose energy shows one peak fewer than the dictionary count keeps the dictionary count and gets s_w =
      0.6;
    - a 1.8 s word span gets span sanity 0.3;
-   - padding never crosses a neighbouring word;
+   - padding never crosses a neighbouring word, and reported word boundaries are never the padded edges;
+   - the TTS marker gate: reported word boundaries stay within 10 ms of the injected markers (or the test is
+     skipped with "no English voice");
    - a substituted word has edges but no syllables;
    - the last syllable and a syllable before a 200 ms pause are exposed; one before a 100 ms pause isn't;
    - a take with 60% of syllables at medium or above is Rough.
-3. Optional, local: `scripts/eval-syllables.sh` writes the report or prints NOT EVALUATED.
+3. Optional, local: `scripts/eval-syllables.sh` writes the report. The real-speech lines print NOT EVALUATED
+   (waiting on spec 23) until spec 23 ships.
 
 ## Implementation notes
 
