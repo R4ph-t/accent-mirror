@@ -46,8 +46,8 @@ public enum PositiveSetGates {
         public let gate: Gate
     }
 
-    /// Every positive-set gate (§6.7): spec 09's band coverage, spec 10's any-diff, placement-diff, inconclusive and
-    /// coverage gates, and spec 22's positive-set placement-FP gate. Gate values come from `Thresholds.agreement`.
+    /// Every positive-set gate (§6.7): spec 09's band coverage, spec 10's any-diff, placement-diff, inconclusive,
+    /// coverage and tolerance gates, and spec 22's positive-set placement-FP gate. Gate values come from `Thresholds.agreement`.
     public static func dependents(thresholds: Thresholds = .current) -> [Dependent] {
         func d(_ name: String, _ spec: String, _ key: String, _ path: KeyPath<Thresholds.Agreement, Double>,
                _ direction: Gate.Direction) -> Dependent {
@@ -62,6 +62,13 @@ public enum PositiveSetGates {
             d("Placement-diff pairs, worst speaker", "spec 10", "agreement.placementDiffWorstSpeakerMax", \.placementDiffWorstSpeakerMax, .atMost),
             d("Inconclusive pairs", "spec 10", "agreement.inconclusivePairsMax", \.inconclusivePairsMax, .atMost),
             d("Evaluation coverage", "spec 10", "agreement.evaluationCoverageMin", \.evaluationCoverageMin, .atLeast),
+            // Spec 10's tolerance rows (first v2 §6.7). Weak length and nPVI name no share, so the gate is the largest
+            // |Δ| over pairs: the tolerance holds for every pair.
+            d("Contrast ratio within tolerance", "spec 10", "agreement.contrastRatioWithinShareMin", \.contrastRatioWithinShareMin, .atLeast),
+            d("Weak length, largest |Δ|", "spec 10", "agreement.weakLengthMaxDeltaPoints", \.weakLengthMaxDeltaPoints, .atMost),
+            d("nPVI, largest |Δ|", "spec 10", "agreement.npviMaxDelta", \.npviMaxDelta, .atMost),
+            d("Pitch range ratio at or above minimum", "spec 10", "agreement.pitchRangeRatioShareMin", \.pitchRangeRatioShareMin, .atLeast),
+            d("Final direction agreement", "spec 10", "agreement.finalDirectionAgreementMin", \.finalDirectionAgreementMin, .atLeast),
             d("Positive-set placement false positives (synthetic references)", "spec 22", "agreement.placementDiffPairsMax", \.placementDiffPairsMax, .atMost),
         ]
     }

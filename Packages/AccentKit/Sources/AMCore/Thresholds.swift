@@ -195,6 +195,11 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public var weakLengthPointsAboveModel = 15.0
         public var pitchRangeBelowModelRatio = 0.6
         public var pitchRangeNarrowerSemitones = 3.0
+        /// v1's "ship only if stable" diffs (spec 10, Open question 1): on by default; spec 11 measures stability on
+        /// 3 takes in a row and turns a flag off if it fails. Off: the measure is still computed, the diff never shows.
+        public var weakLengthEnabled = true
+        public var pitchRangeEnabled = true
+        public var finalDirectionEnabled = true
         public init() {}
     }
 
