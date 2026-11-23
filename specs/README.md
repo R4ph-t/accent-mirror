@@ -17,7 +17,7 @@ the timestamp check to proceed after the skeleton.
 | 00 | [Project skeleton (by hand)](00-project-skeleton.md) | Done | – | – | 0.5 h |
 | 01 | [Contract v2](01-contract-v2.md) | Done | 00 | 3–4 h | 1 h |
 | 02 | [Agreement harness](02-agreement-harness.md) | Ready | 01 | 6–8 h | 1.5 h |
-| 03 | [Timestamp feasibility](03-timestamp-feasibility.md) | Ready | 00 | 3–4 h | 1 h |
+| 03 | [Timestamp feasibility](03-timestamp-feasibility.md) | Done | 00 | 3–4 h | 1 h |
 | 04 | [Pitch tracker](04-pitch-tracker.md) | Done | 01 | 3–4 h | 1 h |
 | 05 | [Take quality and endpointing](05-take-quality-endpointing.md) | Done | 01 (no dependency on 04) | 3–4 h | 1 h |
 | 06 | [Pronunciation, alignment, normalisation](06-pronunciation-alignment.md) | Done | 01 | 4–5 h | 1 h |
