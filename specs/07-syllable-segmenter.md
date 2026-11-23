@@ -1,6 +1,6 @@
 # 07: Syllable segmenter and timing confidence
 
-Status: Ready · Branch: – · Depends on: 06 (syllable counts; word boundaries are injected, and the real-speech gates
+Status: Done · Branch: factory/07-syllable-segmenter · Depends on: 06 (syllable counts; word boundaries are injected, and the real-speech gates
 wait on 23) · Estimate: 3–4 h agent run + 1 h Raph review
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56

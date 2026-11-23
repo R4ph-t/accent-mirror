@@ -29,7 +29,7 @@ Spec 11 cannot start until these four are implemented and tested here (and the v
 1. **Outer folds exclude every token of their speakers.** The 72 speakers behind the 134 intelligible stress-wrong
    words are split into 5 speaker-disjoint folds, stratified child/adult, fold seed fixed in the split manifest.
    For outer fold k, the tuning pool is: the other 4 folds' stress-wrong words; the train-half all-5-agree
-   intelligible correct words of speakers **not** in fold k; the 18 VCTK tuning speakers. Every token of every
+   intelligible correct words of speakers **not** in fold k; the VCTK tuning speakers (≥ 18). Every token of every
    fold-k speaker is excluded, correct words included. Expected counts: of the 1,705 train-half correct words, 406
    (34 speakers who also have stress-wrong words) drop out whenever their speaker is in the outer fold; 1,299 (86
    speakers) are in no fold and always usable. Test-half correct words are never in any tuning pool. A test asserts
@@ -42,7 +42,7 @@ Spec 11 cannot start until these four are implemented and tested here (and the v
    from spec 22). Each path's out-of-fold results are pooled over the 134 words, then compared, with paired per-word
    wins and losses. The report records each fold's `configDigest` once and every path's results under it. A test
    with two stub paths proves both received the identical config digest per fold.
-4. **Selection only on tuning speakers.** The split manifest exposes the 18 VCTK tuning speakers through an API that
+4. **Selection only on tuning speakers.** The split manifest exposes the VCTK tuning speakers (≥ 18) through an API that
    cannot return held-out VCTK speakers or speechocean762 words (enforced by type, not by convention). Spec 22's TTS
    voice selection and every inner tuning step use that API only.
 
@@ -86,18 +86,19 @@ the only L2 recall number is the CV estimate of the tuning procedure.
 
 - `tools/pick_vctk_eval_speakers.py` (pure Python 3, no dependencies): filters mic1, every shared-text file 001–024
   present, not p280 or p315, not one of the bundled 8 (p225, p226, p227, p233, p241, p252, p311, p345); balances by
-  accent region and gender with a stratified round-robin over speaker-info accent groups, fixed seed; picks 30;
-  splits by speaker **18 tuning / 12 held-out**. It writes `fixtures/vctk/eval-speakers.json` (speaker, accent,
+  accent region and gender with a stratified round-robin over speaker-info accent groups, fixed seed; picks at least 30;
+  splits by speaker into **≥ 18 tuning / ≥ 12 held-out** (floors, not exact counts; the actual counts, 24 / 16 after
+  CTO's ruling below, are recorded in the manifest as `tuningCount` / `heldOutCount`). It writes `fixtures/vctk/eval-speakers.json` (speaker, accent,
   gender, split, file SHA-256s).
 - `scripts/fetch-vctk.sh`: fetches the VCTK 0.92 archive (about 11 GB) into a git-ignored cache, verifies its
   SHA-256 pin, extracts and trims only CPO's 20 phrases for the bundled 8 and the 30 eval speakers (about 40 MB),
   and caches them keyed by the eval-speakers manifest hash. Trim: 2–6 s, the same cut rule for every speaker (Open
   question 2).
 - Pair builder: each eval speaker's take of a phrase against that phrase's bundled reference (p225; p226 for 015) is
-  the headline unit: 12 × 20 = 240 held-out pairs (minimum 150; ≥ 18 phrases after trimming; ≥ 12 held-out
+  the headline unit: held-out speakers × kept phrases (originally 12 × 20 = 240; minimum 150; ≥ 18 phrases after trimming; ≥ 12 held-out
   speakers). Pairs against all 8 bundled voices are a correlated secondary number. Held-out speakers are never a
   reference, never in a band and never in A(w) (true by construction; a test checks it).
-- VCTK CV estimate: 6 speaker-disjoint outer folds over the 18 tuning speakers, reported as "CV estimate, not
+- VCTK CV estimate: 6 speaker-disjoint outer folds over the tuning speakers (≥ 18), reported as "CV estimate, not
   shipped".
 
 ### CTO ruling on the positive-set shortfall (2026-11-23, after 13:20 Europe/Paris)
@@ -122,6 +123,22 @@ the minimums of 150 and 18. CTO ruled:
   headline pairs, phrases kept, held-out speakers, and clips rejected by the trim per phrase. The next step would be
   LibriTTS-R (CC BY 4.0) as an extra positive source, which is a new CTO decision. Lowering the minimums is not.
 - The smoke set (§6.3a) and the speechocean762 sets don't change.
+
+### CTO ruling on merging with the positive set NOT EVALUATED (2026-11-23 14:18 Europe/Paris)
+
+After fix round 2 (`c097498`): 203 headline pairs (≥ 150 met), 16 held-out speakers (≥ 12 met), but only 15 phrases
+against ≥ 18. CTO ruled: merge first and follow up after, on these conditions.
+
+- **NOT EVALUATED never counts as a pass.** A check in the harness, run by PR CI, fails if any downstream gate, the
+  release-gate summary or a report's overall line treats the positive set as passing while it says NOT EVALUATED.
+  Gates that consume the positive set print NOT EVALUATED (blocked on spec 24), never PASS and never "waived".
+- **The speaker counts are floors:** ≥ 18 tuning and ≥ 12 held-out. The actual 24 / 16 are recorded in
+  `fixtures/vctk/eval-speakers.json`.
+- **The follow-up is spec 24** (VCTK positive-set phrase coverage). It splits the long shared prompts 021 and 023 into
+  2–6 s sub-phrases, and counts LibriTTS-R's shared-text phrases only if that's still short.
+- Gates in specs 08 and 09 (and any later spec) that consume the positive-set result are **blocked** on spec 24, not
+  waived.
+- The merge still needs Raph's Merge OK (committed CC BY 4.0 audio and `THIRD_PARTY_NOTICES.md`).
 
 ### speechocean762 (§6.3)
 
