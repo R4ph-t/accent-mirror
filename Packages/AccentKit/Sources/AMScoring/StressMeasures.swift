@@ -229,9 +229,12 @@ struct StressMeasures {
     /// nPVI = 100 × mean |d_k − d_k+1| / ((d_k + d_k+1) / 2); nil with fewer than 3 syllables.
     static func npvi(_ durations: [Double]) -> Double? {
         guard durations.count >= 3 else { return nil }
-        let terms = zip(durations, durations.dropFirst()).map { a, b in
-            a + b > 0 ? abs(a - b) / ((a + b) / 2) : 0
+        var sum = 0.0
+        for k in 0..<(durations.count - 1) {
+            let a = durations[k], b = durations[k + 1]
+            let mean = (a + b) / 2
+            if mean > 0 { sum += abs(a - b) / mean }
         }
-        return 100 * terms.reduce(0, +) / Double(terms.count)
+        return 100 * sum / Double(durations.count - 1)
     }
 }
