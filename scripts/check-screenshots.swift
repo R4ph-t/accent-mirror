@@ -2,9 +2,23 @@
 // (a blank or failed frame). Local only: `make screenshots` runs it; CI does not.
 //
 //   swift scripts/check-screenshots.swift screenshots/ui-shell
+//
+// A frame is 2× its fixture's window: 2400 × 1600 for the default 1200 × 800 pt, or 2× the fixture's `window`
+// field (`narrow-inspector-open` is 960 × 680 pt, so 1920 × 1360). Run from the repo root.
 import AppKit
 
-let expected = (width: 2400, height: 1600)
+let defaultSize = (width: 2400, height: 1600)
+let statesDir = URL(fileURLWithPath: "AccentMirror/Resources/Fixtures/states")
+
+/// The expected pixel size for a fixture, from its JSON `window` field when it has one.
+func expectedSize(_ fixture: String) -> (width: Int, height: Int) {
+    guard let data = try? Data(contentsOf: statesDir.appendingPathComponent("\(fixture).json")),
+          let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+          let window = json["window"] as? [String: Any],
+          let width = (window["width"] as? NSNumber)?.intValue, let height = (window["height"] as? NSNumber)?.intValue
+    else { return defaultSize }
+    return (width * 2, height * 2)
+}
 let minDistinctColours = 200 // sampled on a grid; a real frame has thousands
 let minLuminanceSpread = 12.0 // standard deviation of luminance, 0–255
 
@@ -15,12 +29,15 @@ var failures: [String] = []
 if files.isEmpty { failures.append("no screenshots in \(dir.path)") }
 
 var names = Set<String>()
+var sizes = Set<String>()
 for file in files {
     let base = file.replacingOccurrences(of: "@2x.png", with: "")
     guard base.hasSuffix("-light") || base.hasSuffix("-dark") else {
         failures.append("\(file): not named <fixture>-{light,dark}@2x.png"); continue
     }
-    names.insert(String(base.dropLast(base.hasSuffix("-light") ? 6 : 5)))
+    let fixture = String(base.dropLast(base.hasSuffix("-light") ? 6 : 5))
+    names.insert(fixture)
+    let expected = expectedSize(fixture)
     guard let rep = NSBitmapImageRep(data: (try? Data(contentsOf: dir.appendingPathComponent(file))) ?? Data()) else {
         failures.append("\(file): unreadable"); continue
     }
@@ -28,6 +45,7 @@ for file in files {
         failures.append("\(file): \(rep.pixelsWide) × \(rep.pixelsHigh), expected \(expected.width) × \(expected.height)")
         continue
     }
+    sizes.insert("\(rep.pixelsWide) × \(rep.pixelsHigh)")
     var colours = Set<UInt32>()
     var sum = 0.0, sumSquares = 0.0, count = 0.0
     for y in stride(from: 0, to: rep.pixelsHigh, by: 8) {
@@ -52,7 +70,7 @@ for name in names.sorted() {
 }
 
 if failures.isEmpty {
-    print("check-screenshots: OK, \(files.count) frames (\(names.count) fixtures × light/dark), all \(expected.width) × \(expected.height) and not blank.")
+    print("check-screenshots: OK, \(files.count) frames (\(names.count) fixtures × light/dark), each 2× its window (\(sizes.sorted().joined(separator: ", "))) and not blank.")
 } else {
     failures.forEach { FileHandle.standardError.write(Data("check-screenshots: \($0)\n".utf8)) }
     exit(1)

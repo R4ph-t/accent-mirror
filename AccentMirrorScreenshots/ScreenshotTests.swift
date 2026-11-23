@@ -40,9 +40,10 @@ struct ScreenshotTests {
         let library = try #require(FixtureLibrary(bundle: Bundle(for: ShellModel.self)))
         let loaded = try library.load(frame.fixture)
         try FileManager.default.createDirectory(at: Self.outputDirectory, withIntermediateDirectories: true)
-        let window = WindowRenderer.makeWindow(model: ShellModel(fixture: loaded), appearance: frame.appearance)
-        let png = try await WindowRenderer.capture(window)
-        await WindowRenderer.dispose(window)
-        try png.write(to: Self.outputDirectory.appendingPathComponent("\(frame.fixture)-\(frame.appearance.rawValue)@2x.png"))
+        let size = WindowRenderer.pointSize(for: loaded.fixture)
+        let result = try await WindowRenderer.render(model: ShellModel(fixture: loaded), appearance: frame.appearance, size: size)
+        // In the run's log: whether each window was freed before the next case (fixes round 5, item 3).
+        print("[screenshots] \(frame.testDescription): window released \(result.released), app windows \(result.liveWindows)")
+        try result.png.write(to: Self.outputDirectory.appendingPathComponent("\(frame.fixture)-\(frame.appearance.rawValue)@2x.png"))
     }
 }

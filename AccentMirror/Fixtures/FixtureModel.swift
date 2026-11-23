@@ -27,6 +27,13 @@ struct UIFixture: Decodable, Sendable {
     /// Coordinator outcome that leaves no trace in the UI (`cancelled`).
     var outcome: String?
     var inspectorOpen: Bool?
+    /// The window size the screenshot runner renders this state at, in points. Nil: the default 1200 × 800.
+    var window: WindowSize?
+
+    struct WindowSize: Decodable, Sendable, Equatable {
+        var width: Double
+        var height: Double
+    }
 
     enum Phase: String, Decodable, Sendable {
         /// The phrase has no take on screen.

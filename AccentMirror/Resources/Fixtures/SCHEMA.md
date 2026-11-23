@@ -32,6 +32,7 @@ time.
 | `persistence` | string? | `saved` \| `notSaved` \| `saveFailed` \| `savedPruneFailed` |
 | `outcome` | string? | Coordinator outcome with no UI trace (`cancelled`) |
 | `inspectorOpen` | bool? | Opens the Details inspector |
+| `window` | object? | `{width, height}` in points: the window size the screenshot runner uses. Defaults to 1200 × 800. At least the 960 × 680 minimum |
 
 ### analysis
 
