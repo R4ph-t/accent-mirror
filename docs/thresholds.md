@@ -155,6 +155,9 @@ thresholds table and "first v2" the first v2 (09:10), both carried over "as befo
 | Weak-length diff | `diffs.weakLengthPointsAboveModel` | 15 | points of W | v1 | 10 | Yours this many points above the model's |
 | Pitch-range diff, ratio | `diffs.pitchRangeBelowModelRatio` | 0.6 | × model's range | v1 | 10 | |
 | Pitch-range diff, width | `diffs.pitchRangeNarrowerSemitones` | 3 | st | v1 | 10 | And at least this much narrower |
+| Weak-length diff enabled | `diffs.weakLengthEnabled` | 1 | 1 = on, 0 = off | v1 ("ship only if stable"), spec 10 Open question 1 | 10 | Vowel reduction. Spec 11 turns it off if 3-take stability fails |
+| Pitch-range diff enabled | `diffs.pitchRangeEnabled` | 1 | 1 = on, 0 = off | v1 ("ship only if stable"), spec 10 Open question 1 | 10 | Spec 11 turns it off if 3-take stability fails |
+| Final-direction diff enabled | `diffs.finalDirectionEnabled` | 1 | 1 = on, 0 = off | v1 ("ship only if stable"), spec 10 Open question 1 | 10 | Spec 11 turns it off if 3-take stability fails |
 | Shape match frames | `measures.shapeMatchMinOverlappingFrames` | 20 | overlapping voiced frames | §1.1, first v2 §11 | 10 | Fewer: `.unavailable(.tooFewOverlappingFrames)` |
 
 ## Native band

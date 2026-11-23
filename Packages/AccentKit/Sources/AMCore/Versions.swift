@@ -7,7 +7,7 @@ public enum Versions {
     /// Bump when an algorithm change can change any output for the same inputs.
     public static let algorithmVersion = 1
     /// Bump when any value in `Thresholds` changes.
-    public static let thresholdsVersion = 4
+    public static let thresholdsVersion = 6
     /// Bump when a contract type's shape or JSON changes.
     public static let contractVersion = 1
 
