@@ -23,6 +23,7 @@ public struct Thresholds: Sendable, Hashable, Codable {
     public var band = Band()
     public var decision = Decision()
     public var agreement = Agreement()
+    public var wordTimestamps = WordTimestamps()
     public var performance = Performance()
 
     public init() {}
@@ -245,6 +246,15 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public var baselineMinLiftCapPoints = 0.10
         public var baselineFalsePositiveMaxExcessPoints = 0.01
         public var bootstrapResamples = 2000.0
+        public init() {}
+    }
+
+    /// Word-timestamp feasibility bars, spec 03 (first v2, "as before"): ASR word starts and ends against the word
+    /// baseline, on spans padded by `alignment.asrPaddingMs`. Evaluation gates only; no analysis output reads them.
+    public struct WordTimestamps: Sendable, Hashable, Codable {
+        public var medianErrorMaxMs = 40.0
+        public var withinToleranceMs = 80.0
+        public var withinToleranceShareMin = 0.85
         public init() {}
     }
 

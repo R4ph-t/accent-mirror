@@ -206,6 +206,17 @@ thresholds table and "first v2" the first v2 (09:10), both carried over "as befo
 | Baseline: FP mirror | `agreement.baselineFalsePositiveMaxExcessPoints` | 0.01 | points | §6.5 | 02 | D ≤ B* + this |
 | Bootstrap resamples | `agreement.bootstrapResamples` | 2000 | resamples | §6.6 | 02 | Seed in the manifest |
 
+## Word timestamps (`Thresholds.wordTimestamps`)
+
+Spec 03's feasibility bars: the shipped ASR's word starts and ends against the word baseline (MFA, spec 03 Open
+question 5), on Whisper spans padded by `alignment.asrPaddingMs`. Under a bar, the report goes to CTO.
+
+| Name | Key | Value | Unit | Plan | Owner spec | Notes |
+|---|---|---|---|---|---|---|
+| Word-boundary median error | `wordTimestamps.medianErrorMaxMs` | 40 | ms | first v2 | 03 | Median absolute error over comparable starts and ends |
+| Word-boundary tolerance | `wordTimestamps.withinToleranceMs` | 80 | ms | first v2 | 03 | The "within 80 ms" of the next row |
+| Word boundaries within tolerance | `wordTimestamps.withinToleranceShareMin` | 0.85 | share of comparable boundaries | first v2 | 03 | At least 85% within 80 ms |
+
 ## Performance
 
 | Name | Key | Value | Unit | Plan | Owner spec | Notes |
