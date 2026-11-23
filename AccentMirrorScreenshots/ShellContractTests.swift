@@ -242,16 +242,121 @@ struct ShellContractTests {
         #expect(row?.sentence.plain.contains { "\u{25B2}\u{25B4}\u{26A0}".contains($0) } == false)
     }
 
+    /// Every `rows-*` fixture: one per diff-row kind it demonstrates (round 4 adds `rows-contrast`).
+    private static let rowFixtures = [
+        "rows-contrast", "rows-final-direction-higher", "rows-final-direction-lower", "rows-range", "rows-too-much-contrast",
+    ]
+
+    @Test func theRowFixturesAreTheFiveWeExpect() throws {
+        #expect(try library.allNames().filter { $0.hasPrefix("rows-") } == Self.rowFixtures)
+    }
+
     /// B11 / 12:19 a: each row fixture draws its own take, not the close-match one, and no two share one.
     @Test func rowFixturesUseTheirOwnTake() throws {
-        let names = ["rows-range", "rows-final-direction-higher", "rows-final-direction-lower", "rows-too-much-contrast"]
         var takes: [String] = []
-        for name in names {
+        for name in Self.rowFixtures {
             let take = try #require(try library.load(name).fixture.take, "\(name)")
             #expect(take != "photography-take04-close", "\(name)")
             takes.append(take)
         }
-        #expect(Set(takes).count == names.count)
+        #expect(Set(takes).count == Self.rowFixtures.count)
+    }
+
+    /// Round 4, Designer answer 3: each row fixture carries exactly one row, so its take shows one difference.
+    @Test(arguments: [
+        ("rows-range", "Use more of your voice range. Your pitch stays flatter than the model's."),
+        ("rows-contrast", "Make HAR and LOOKS stronger. Right now they sound like the syllables around them."),
+        ("rows-final-direction-higher", "End higher, the way the model does."),
+        ("rows-final-direction-lower", "End lower, the way the model does."),
+        ("rows-too-much-contrast", "You can soften HAR and LOOKS a little. The model doesn't push them as hard."),
+    ])
+    func rowFixtureCarriesOneRow(_ name: String, _ sentence: String) throws {
+        #expect(try library.load(name).fixture.analysis?.verdict?.rows?.count == 1, "\(name)")
+        #expect(try sentences(name) == [sentence])
+    }
+
+    private func take(_ id: String) throws -> TakeFixture {
+        let url = library.root.appendingPathComponent("takes").appendingPathComponent(id + ".json")
+        return try JSONDecoder().decode(TakeFixture.self, from: Data(contentsOf: url))
+    }
+
+    private func prominences(_ take: TakeFixture) -> [String: Double] {
+        Dictionary(take.words.flatMap(\.syllables).map { ($0.text, $0.prominence) }, uniquingKeysWith: { a, _ in a })
+    }
+
+    private func pitch(_ take: TakeFixture) -> [Double] { take.pitch.flatMap(\.points).map(\.st) }
+
+    /// Round 4: a photography row take differs from the close-match take only in its own dimension, so the
+    /// charts show one difference: the bars named by the row, or your pitch line, never both.
+    @Test func rowTakesChangeOnlyTheirOwnDimension() throws {
+        let close = try take("photography-take04-close")
+        let stressed: Set<String> = ["tog", "har", "looks"]
+        func changedBars(_ name: String) throws -> Set<String> {
+            let mine = prominences(try #require(try library.load(name).take))
+            return Set(prominences(close).keys.filter { mine[$0] != prominences(close)[$0] })
+        }
+        func pitchChanged(_ name: String) throws -> Bool {
+            zip(pitch(try #require(try library.load(name).take)), pitch(close)).contains { abs($0 - $1) > 0.01 }
+        }
+        // Lines only.
+        for name in ["rows-range", "rows-final-direction-lower"] {
+            #expect(try changedBars(name).isEmpty, "\(name)")
+            #expect(try pitchChanged(name), "\(name)")
+        }
+        // Bars only, and only stressed ones (no small-syllable change, which would be a reduction row).
+        #expect(try changedBars("rows-contrast") == ["har", "looks"])
+        #expect(try changedBars("rows-too-much-contrast").isSubset(of: stressed))
+        for name in ["rows-contrast", "rows-too-much-contrast"] { #expect(try !pitchChanged(name), "\(name)") }
+        let weak = prominences(try #require(try library.load("rows-contrast").take))
+        let strong = prominences(try #require(try library.load("rows-too-much-contrast").take))
+        for word in ["har", "looks"] {
+            #expect(weak[word]! < prominences(close)[word]!)
+            #expect(strong[word]! > prominences(close)[word]!)
+            #expect(strong[word]! > strong["tog"]!)
+        }
+    }
+
+    /// Round 4, Designer answer 1: "End higher" sits on a question whose native really rises at the end, and
+    /// your ending falls; "End lower" on the statement, whose native falls while yours rises.
+    @Test func finalDirectionTakesMatchTheirRow() throws {
+        func ending(_ points: [Double]) -> Double { points[points.count - 1] - points[points.count - 3] }
+        let higher = try library.load("rows-final-direction-higher")
+        #expect(higher.phrase.text == "Is photography harder than it looks?")
+        #expect(higher.fixture.sidebar?.selectedPhraseID == higher.phrase.id)
+        #expect(ending(higher.phrase.band.flatMap(\.points).map(\.st)) > 3)
+        #expect(ending(pitch(try #require(higher.take))) < -3)
+        let words = try #require(higher.take).words.compactMap(\.expected)
+        #expect(words == higher.phrase.words.map { $0.text.lowercased().trimmingCharacters(in: .punctuationCharacters) })
+
+        let lower = try library.load("rows-final-direction-lower")
+        #expect(ending(lower.phrase.band.flatMap(\.points).map(\.st)) < -3)
+        #expect(ending(pitch(try #require(lower.take))) > 3)
+    }
+
+    /// Round 4, Designer answer 2: too much contrast names every syllable that's over, joined like the other rows.
+    @Test(arguments: [
+        (["HAR"], "You can soften HAR a little. The model doesn't push it as hard."),
+        (["HAR", "LOOKS"], "You can soften HAR and LOOKS a little. The model doesn't push them as hard."),
+        (["TOG", "HAR", "LOOKS"], "You can soften TOG, HAR and LOOKS a little. The model doesn't push them as hard."),
+    ])
+    func tooMuchContrastNamesEverySyllable(_ targets: [String], _ sentence: String) {
+        let row = Copy.row(DiffRow(kind: .tooMuchContrast, targets: targets))
+        #expect(row.plain == sentence)
+        #expect(row.filter { $0.role == .stressed }.map(\.text) == targets)
+    }
+
+    /// Row order: too much contrast comes last whatever order the result lists the rows in
+    /// (`feedback-too-much-contrast-last`), and drops out when three rows come before it.
+    @Test func tooMuchContrastComesLastAndOnlyWithRoom() throws {
+        let rows = try card("feedback-too-much-contrast-last").rows.map(\.sentence.plain)
+        #expect(rows.count == 2)
+        #expect(rows.first?.hasPrefix("Keep the small syllables short and light") == true)
+        #expect(rows.last?.hasPrefix("You can soften HAR and LOOKS") == true)
+        let full = ShellPresenter.orderedRows([
+            DiffRow(kind: .tooMuchContrast, targets: ["HAR"]), DiffRow(kind: .range),
+            DiffRow(kind: .reduction, targets: ["ra"]), DiffRow(kind: .finalDirection, direction: "lower"),
+        ])
+        #expect(full.map(\.kind) == [.reduction, .range, .finalDirection])
     }
 
     /// B11 / 12:19 b: targetWordsMissing names words of the fixture's own phrase, and the take has a missing

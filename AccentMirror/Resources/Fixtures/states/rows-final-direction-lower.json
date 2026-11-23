@@ -1,6 +1,6 @@
 {
   "name": "rows-final-direction-lower",
-  "summary": "The final-direction row, lower.",
+  "summary": "The final-direction row, lower: only your ending differs (it rises where the model falls).",
   "phrase": "photography",
   "phase": "showingTake",
   "savedTakes": [
@@ -14,15 +14,6 @@
     "verdict": {
       "kind": "feedback",
       "rows": [
-        {
-          "kind": "reduction",
-          "targets": [
-            "ra",
-            "phy",
-            "der",
-            "than"
-          ]
-        },
         {
           "kind": "finalDirection",
           "direction": "lower"

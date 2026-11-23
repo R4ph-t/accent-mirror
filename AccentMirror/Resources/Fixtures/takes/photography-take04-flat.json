@@ -71,7 +71,7 @@
           "text": "har",
           "start": 0.455,
           "end": 0.595,
-          "prominence": 0.5,
+          "prominence": 0.9,
           "stressed": true,
           "label": "caps"
         },
@@ -127,7 +127,7 @@
           "text": "looks",
           "start": 0.77,
           "end": 0.995,
-          "prominence": 0.52,
+          "prominence": 0.95,
           "stressed": true,
           "label": "caps"
         }

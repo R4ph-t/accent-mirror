@@ -1,225 +1,209 @@
 {
-  "id": "photography-rising-end",
-  "text": "Photography is harder than it looks.",
-  "subtitle": "My Phrases · From demo-talk.m4a",
-  "rangeSemitones": 12,
+  "id": "photography-take04-weak-contrast",
+  "number": 4,
+  "hasAudio": true,
+  "alignment": "aligned",
+  "level": "normal",
   "words": [
     {
-      "text": "Photography",
+      "kind": "present",
+      "expected": "photography",
+      "heard": "photography",
       "stressCheck": "checked",
-      "start": 0.003,
-      "end": 0.379,
       "syllables": [
         {
           "text": "pho",
           "start": 0.003,
-          "end": 0.07,
-          "prominence": 0.22,
+          "end": 0.075,
+          "prominence": 0.35,
           "stressed": false,
           "label": "lower"
         },
         {
           "text": "tog",
-          "start": 0.076,
-          "end": 0.232,
+          "start": 0.08,
+          "end": 0.235,
           "prominence": 1.0,
           "stressed": true,
           "label": "caps"
         },
         {
           "text": "ra",
-          "start": 0.237,
-          "end": 0.29,
-          "prominence": 0.2,
+          "start": 0.24,
+          "end": 0.295,
+          "prominence": 0.35,
           "stressed": false,
           "label": "lower"
         },
         {
           "text": "phy",
-          "start": 0.296,
-          "end": 0.379,
-          "prominence": 0.25,
+          "start": 0.3,
+          "end": 0.385,
+          "prominence": 0.38,
           "stressed": false,
           "label": "lower"
         }
       ]
     },
     {
-      "text": "is",
+      "kind": "present",
+      "expected": "is",
+      "heard": "is",
       "stressCheck": "checked",
-      "start": 0.385,
-      "end": 0.444,
       "syllables": [
         {
           "text": "is",
-          "start": 0.385,
-          "end": 0.444,
-          "prominence": 0.22,
+          "start": 0.39,
+          "end": 0.45,
+          "prominence": 0.32,
           "stressed": false,
           "label": "lower"
         }
       ]
     },
     {
-      "text": "harder",
+      "kind": "present",
+      "expected": "harder",
+      "heard": "harder",
       "stressCheck": "checked",
-      "start": 0.451,
-      "end": 0.665,
       "syllables": [
         {
           "text": "har",
-          "start": 0.451,
-          "end": 0.593,
-          "prominence": 0.9,
+          "start": 0.455,
+          "end": 0.595,
+          "prominence": 0.5,
           "stressed": true,
           "label": "caps"
         },
         {
           "text": "der",
-          "start": 0.598,
-          "end": 0.665,
-          "prominence": 0.2,
+          "start": 0.6,
+          "end": 0.668,
+          "prominence": 0.3,
           "stressed": false,
           "label": "lower"
         }
       ]
     },
     {
-      "text": "than",
+      "kind": "present",
+      "expected": "than",
+      "heard": "than",
       "stressCheck": "checked",
-      "start": 0.671,
-      "end": 0.715,
       "syllables": [
         {
           "text": "than",
-          "start": 0.671,
-          "end": 0.715,
-          "prominence": 0.18,
+          "start": 0.673,
+          "end": 0.718,
+          "prominence": 0.3,
           "stressed": false,
           "label": "lower"
         }
       ]
     },
     {
-      "text": "it",
+      "kind": "present",
+      "expected": "it",
+      "heard": "it",
       "stressCheck": "checked",
-      "start": 0.722,
-      "end": 0.76,
       "syllables": [
         {
           "text": "it",
-          "start": 0.722,
-          "end": 0.76,
-          "prominence": 0.15,
+          "start": 0.724,
+          "end": 0.762,
+          "prominence": 0.26,
           "stressed": false,
           "label": "lower"
         }
       ]
     },
     {
-      "text": "looks.",
+      "kind": "present",
+      "expected": "looks",
+      "heard": "looks",
       "stressCheck": "checked",
-      "start": 0.767,
-      "end": 0.996,
       "syllables": [
         {
           "text": "looks",
-          "start": 0.767,
-          "end": 0.996,
-          "prominence": 1.0,
+          "start": 0.77,
+          "end": 0.995,
+          "prominence": 0.52,
           "stressed": true,
           "label": "caps"
         }
       ]
     }
   ],
-  "band": [
+  "pitch": [
     {
       "points": [
         {
           "t": 0.014,
-          "st": -0.2,
-          "half": 0.45
+          "st": 0.12999999999999998
         },
         {
           "t": 0.068,
-          "st": 1.2,
-          "half": 0.45
+          "st": 1.32
         },
         {
           "t": 0.16,
-          "st": 7.9,
-          "half": 0.45
+          "st": 7.015
         },
         {
           "t": 0.224,
-          "st": 5.6,
-          "half": 0.45
+          "st": 5.06
         },
         {
           "t": 0.257,
-          "st": 2.1,
-          "half": 0.45
+          "st": 2.085
         },
         {
           "t": 0.323,
-          "st": -0.1,
-          "half": 0.45
+          "st": 0.21499999999999997
         },
         {
           "t": 0.395,
-          "st": -1.1,
-          "half": 0.45
+          "st": -0.635
         },
         {
           "t": 0.454,
-          "st": 2.1,
-          "half": 0.45
+          "st": 2.085
         },
         {
           "t": 0.526,
-          "st": 5.1,
-          "half": 0.45
+          "st": 4.635
         },
         {
           "t": 0.585,
-          "st": 3.1,
-          "half": 0.45
+          "st": 2.9349999999999996
         },
         {
           "t": 0.651,
-          "st": -0.3,
-          "half": 0.45
+          "st": 0.044999999999999984
         },
         {
           "t": 0.723,
-          "st": -2.3,
-          "half": 0.45
+          "st": -1.6549999999999998
         },
         {
           "t": 0.749,
-          "st": -1.3,
-          "half": 0.45
+          "st": -0.8049999999999999
         },
         {
           "t": 0.798,
-          "st": 2.1,
-          "half": 0.45
+          "st": 2.085
         },
         {
           "t": 0.847,
-          "st": 1.2,
-          "half": 0.45
+          "st": 1.32
         },
         {
           "t": 0.913,
-          "st": 3.4,
-          "half": 0.45
+          "st": -2.08
         },
         {
           "t": 0.986,
-          "st": 7.2,
-          "half": 0.45
+          "st": -7.095
         }
       ]
     }

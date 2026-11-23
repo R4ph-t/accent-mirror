@@ -69,8 +69,10 @@ enum Copy {
         case .finalDirection:
             return [.plain(row.direction == "higher" ? "End higher, the way the model does." : "End lower, the way the model does.")]
         case .tooMuchContrast:
-            return [.plain("You can soften ")] + joinedStressed(row.targets ?? []) +
-                [.plain(" a little. The model doesn't push it as hard.")]
+            // Names every syllable that's over (Designer, round 4): "You can soften HAR and LOOKS a little."
+            let targets = row.targets ?? []
+            return [.plain("You can soften ")] + joinedStressed(targets) +
+                [.plain(" a little. The model doesn't push \(targets.count > 1 ? "them" : "it") as hard.")]
         }
     }
 
@@ -93,6 +95,7 @@ enum Copy {
         return sentence
     }
 
+    /// "A", "A and B", "A, B and C", each in bold caps.
     private static func joinedStressed(_ words: [String]) -> Sentence {
         var out: Sentence = []
         for (index, word) in words.enumerated() {

@@ -149,7 +149,7 @@ Each bullet is at least one fixture. Light and dark screenshots are required for
 52. `inspector-open` — Details inspector visible, listing measure states (`evaluated` / `unavailable` / `notApplicable` with reasons), STRESS lines, and save state when the take is not saved.
 53. `coming-soon-expanded` — Noun and Verb Pairs expanded to the non-selectable "No phrases yet…" line.
 
-Diff-row kinds, order, icons and sentences that are not already covered by the result mockup (range, final direction, too much contrast) each have a fixture so their copy can be screenshotted. Each of those fixtures draws its own take, so the charts agree with the sentence (r3 B11): `rows-range` a flatter YOU line and smaller HAR and LOOKS bars (it also carries the too-little-contrast row); `rows-final-direction-higher` an ending that falls where the native rises; `rows-final-direction-lower` an ending that rises where the native falls; `rows-too-much-contrast` bigger HAR and LOOKS bars. The final-direction icon is `arrow.up.right` for "End higher" and `arrow.down.right` for "End lower" (r3 B10).
+Diff-row kinds, order, icons and sentences that are not already covered by the result mockup (contrast, range, final direction, too much contrast) each have a `rows-*` fixture so their copy can be screenshotted. Each `rows-*` fixture carries exactly one row and draws its own take, which differs from the close-match take only in that row's dimension, so the charts show one difference and agree with the sentence (r3 B11, Designer round 4): `rows-contrast` smaller HAR and LOOKS bars ("Make HAR and LOOKS stronger."); `rows-range` only a flatter YOU line; `rows-final-direction-higher` the question "Is photography harder than it looks?", whose native really rises at the end, with your ending falling; `rows-final-direction-lower` the statement, whose native falls, with your ending rising; `rows-too-much-contrast` bigger HAR and LOOKS bars ("You can soften HAR and LOOKS a little."). The too-much-contrast sentence names every syllable that's over, joined like the other rows ("A", "A and B", "A, B and C"). Row order and the 3-row cap have their own fixtures: `rough-timing-first` (rough timing first; four rows in the result, three shown) and `feedback-too-much-contrast-last` (too much contrast listed first in the result, shown last after reduction). The final-direction icon is `arrow.up.right` for "End higher" and `arrow.down.right` for "End lower" (r3 B10).
 
 Hover ghosts, Option-to-show-earlier-takes, and the 150 ms voice-switch ease may be still in 19 (a fixture that *would* show ghosts is enough if the still cannot animate). They are finished in spec 20. The recording playhead must be visible in the `recording` screenshots. Interpolated pitch (45% opacity, 1.5 pt) and breaks at pauses over 250 ms / `modelOnly` / `youOnly` should already follow Designer spec v2 §9 and §13.7 when the fixture provides that geometry, so the written states are honest.
 
@@ -212,10 +212,11 @@ Addendum A5 says: "A(w) = the context-compatible dictionary pronunciation plus t
   That keeps the frames deterministic.
 - **Fixtures.** The JSON is in `AccentMirror/Resources/Fixtures/` (`states/`, `phrases/`, `takes/`, documented in
   `SCHEMA.md`) and is bundled as a folder reference. `-UIFixture <name>` picks one at launch; without it the app shows
-  `empty`. There are 62 states: the 53 listed above (with `op-audioUnreadable-clip/-take` and
-  `op-savedPruneFailed`/`cancelled` as separate files), plus `rows-range`, `rows-final-direction-lower/-higher`,
-  `rows-too-much-contrast`, `stress-differs-but-accepted`, `tp-first-in-plan-order` and
-  `pitch-interpolated-and-breaks`.
+  `empty`. There are 64 states: the 53 listed above (with `op-audioUnreadable-clip/-take` and
+  `op-savedPruneFailed`/`cancelled` as separate files), plus `rows-contrast`, `rows-range`,
+  `rows-final-direction-lower/-higher`, `rows-too-much-contrast`, `feedback-too-much-contrast-last`,
+  `stress-differs-but-accepted`, `tp-first-in-plan-order` and `pitch-interpolated-and-breaks` (round 4 added
+  `rows-contrast` and `feedback-too-much-contrast-last`).
 - **No second domain model.** AMCore has no contract types yet (spec 01), so the Decodable types in
   `AccentMirror/Fixtures/FixtureModel.swift` use the plan v2 names and are the only model. `ShellPresenter` maps them
   to what each card draws, and `Copy` holds every sentence. Both are pure and UI-free; the views only draw. When
@@ -273,3 +274,19 @@ Addendum A5 says: "A(w) = the context-compatible dictionary pronunciation plus t
     unchanged. AppKit's excessive-live-window warning still shows once per run: a shown window isn't freed in the
     async test (see the PR's open points). `scripts/check-screenshots.sh` skips its git step outside a work tree, so
     the VM no longer prints "fatal: not a git repository".
+- **Fixes round 4 (2026-11-23).** The Designer's answers to round 3's open points:
+  - "End higher" moved to a phrase whose native really rises: `phrases/photography-question` ("Is photography
+    harder than it looks?", under My Phrases in that fixture's sidebar) with the take
+    `photography-question-take04-end-falls`. The `photography-rising-end` variant is gone.
+  - Too much contrast names every over-contrast syllable with the shared joiner: "You can soften HAR and LOOKS a
+    little. The model doesn't push them as hard." ("it" for one syllable). Tests cover one, two and three.
+  - One row per `rows-*` fixture. `rows-range` keeps only the range row and its take only the flatter line;
+    `rows-final-direction-lower` and `rows-too-much-contrast` lose their reduction rows, and their takes keep the
+    close-match small syllables. A data test checks each row take changes only its own dimension.
+  - New `rows-contrast` (take `photography-take04-weak-contrast`: smaller HAR and LOOKS bars, nothing else).
+  - "Too much contrast is always last" lost its only fixture, so `feedback-too-much-contrast-last` (take
+    `photography-take04-strong-contrast-unreduced`, the round-3 strong-contrast take) now covers it.
+    `rough-timing-first` still covers rough-first and the 3-row cap.
+  - `inc-targetWordsMissing-many` is unchanged.
+  - This supersedes round 3's notes on `photography-rising-end`, on `rows-range` carrying the contrast row, and on
+    there being no too-little-contrast fixture.

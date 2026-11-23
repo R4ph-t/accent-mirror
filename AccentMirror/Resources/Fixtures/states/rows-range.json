@@ -1,6 +1,6 @@
 {
   "name": "rows-range",
-  "summary": "The range row.",
+  "summary": "The range row: only your flatter line differs.",
   "phrase": "photography",
   "phase": "showingTake",
   "savedTakes": [
@@ -14,13 +14,6 @@
     "verdict": {
       "kind": "feedback",
       "rows": [
-        {
-          "kind": "contrast",
-          "targets": [
-            "HAR",
-            "LOOKS"
-          ]
-        },
         {
           "kind": "range"
         }
