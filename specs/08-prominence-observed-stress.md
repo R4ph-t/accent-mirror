@@ -84,6 +84,10 @@ explicit tests of the undiscounted path:
 
 - Spec 02's `PlacementDetector` gets the real implementation. `scripts/agreement.sh --suite l2-shared` can then run
   locally on speechocean762; it is reported, not gated (gating is spec 11).
+- **Positive set (CTO ruling, 2026-11-23 14:18):** no gate in this spec consumes spec 02's VCTK positive-set result.
+  The `l2-shared` run is speechocean762 and is reported only, and the VCTK CV estimate this detector enables is "CV
+  estimate, not shipped", reported only. If a gate that reads the positive set is ever added here, it is blocked on
+  spec 24 while the positive set reads NOT EVALUATED, never waived.
 - The 157 unintelligible words run through it: every one inconclusive or unscored, never a placement diff.
 - Smoke set goldens added: per item, the L1 digest and the placement decision before and after suppression.
 

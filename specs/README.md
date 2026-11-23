@@ -22,10 +22,11 @@ the timestamp check to proceed after the skeleton.
 | 05 | [Take quality and endpointing](05-take-quality-endpointing.md) | Done | 01 (no dependency on 04) | 3–4 h | 1 h |
 | 06 | [Pronunciation, alignment, normalisation](06-pronunciation-alignment.md) | Done | 01 | 4–5 h | 1 h |
 | 23 | [Word-boundary refinement](23-word-boundary-refinement.md) | Ready | 03, 04, 07 (downstream gate) | 6–8 h | 1.5 h |
+| 24 | [VCTK positive-set phrase coverage](24-vctk-positive-phrase-coverage.md) | Ready | 02 | 3–4 h | 1 h |
 | 07 | [Syllable segmenter and timing confidence](07-syllable-segmenter.md) | Done | 06 (word boundaries injected; its real-speech gates wait on 23) | 3–4 h | 1 h |
 | 18 | [UI foundation](18-ui-foundation.md) | Done | 00 | 3–5 h | 1 h |
 | 19 | [Fixture-driven UI shell](19-fixture-driven-ui-shell.md) | Done | 18 | 6–8 h | 1.5 h |
 | 08 | [Prominence and observed stress](08-prominence-observed-stress.md) | Ready | 02, 04, 07 | 4–5 h | 1 h |
-| 09 | [Partial time map and native band](09-partial-time-map-band.md) | Ready | 02, 04, 07 | 3–4 h | 1 h |
+| 09 | [Partial time map and native band](09-partial-time-map-band.md) | Ready | 02, 04, 07 (band-coverage gate blocked on 24) | 3–4 h | 1 h |
 | 10 | [Measures, verdict and diffs](10-measures-verdict-diffs.md) | Ready | 02, 08, 09 | 4–5 h | 1.5 h |
 | 22 | [Synthetic native references (evaluation only)](22-synthetic-native-references.md) | Ready | 02, 10 | 4–6 h | 1.5 h |
