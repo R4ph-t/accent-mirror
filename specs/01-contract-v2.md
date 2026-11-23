@@ -49,6 +49,9 @@ where it is used as a key).
   ships the data types and their validation (segments ordered by model time then your time, mapped ranges monotone,
   anchors inside their segment). `toModel`, `toYou` and playback lookup are spec 09.
 - **Timing:** `TimingLevel` = `good, rough, poor`.
+- **Voicing seam:** `protocol VoicingSource: Sendable` with an `id` (the `voicingID`) and a per-frame voiced
+  decision over 10 ms frames. It lives here so spec 05 (`ACFVoicing`) and spec 07 (the syllable segmenter) can both
+  use it without importing each other; this spec ships the protocol only, no implementation.
 - **Persistence:** `PersistenceStatus` = `notSaved(NotSavedReason)`, `pending`, `saved(TakeID)`,
   `saveFailed(StorageError)`, `savedPruneFailed(TakeID, StorageError)`. `NotSavedReason` = `takeProblem, failed,
   cancelled, notAccepted`.
