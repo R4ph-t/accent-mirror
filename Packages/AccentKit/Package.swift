@@ -13,12 +13,15 @@ let modules: [(name: String, dependencies: [String])] = [
     ("AMScoring", ["AMCore", "AMProsody", "AMWarp"]),
     ("AMLibrary", ["AMCore"]),
     ("AMPipeline", ["AMCore", "AMCapture", "AMAlignment", "AMPitch", "AMProsody", "AMWarp", "AMScoring", "AMLibrary"]),
+    // Evaluation only (spec 02): manifests, folds, statistics and the reporter. The app never links it.
+    ("AMEvaluation", ["AMCore"]),
 ]
 
 let package = Package(
     name: "AccentKit",
     platforms: [.macOS(.v26), .iOS(.v26)],
-    products: modules.map { .library(name: $0.name, targets: [$0.name]) },
+    products: modules.map { .library(name: $0.name, targets: [$0.name]) }
+        + [.executable(name: "am-eval", targets: ["am-eval"])],
     targets: modules.flatMap { module -> [Target] in
         [
             .target(
@@ -32,6 +35,14 @@ let package = Package(
                 exclude: module.name == "AMCore" ? ["Golden"] : []
             ),
         ]
-    },
+    } + [
+        // The agreement harness's command-line runner (spec 02), called by scripts/agreement.sh and friends. Tool
+        // only: the app target depends on AMPipeline alone and never links this or AMEvaluation.
+        .executableTarget(
+            name: "am-eval",
+            dependencies: [.target(name: "AMPipeline"), .target(name: "AMEvaluation")],
+            path: "Sources/am-eval"
+        ),
+    ],
     swiftLanguageModes: [.v6]
 )
