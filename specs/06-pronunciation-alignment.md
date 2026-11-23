@@ -1,6 +1,6 @@
 # 06: Pronunciation, alignment, normalisation
 
-Status: Draft · Branch: – · Depends on: 01 (contract v2) · Estimate: 4–5 h agent run + 1 h Raph review · Risk: high
+Status: Ready · Branch: – · Depends on: 01 (contract v2) · Estimate: 4–5 h agent run + 1 h Raph review · Risk: high
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
 Europe/Paris): §3.1 (pronunciation selection), §3.3 (context-compatible pronunciation), §4.1–§4.3 (normalisation,
