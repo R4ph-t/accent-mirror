@@ -41,5 +41,10 @@ public enum Versions {
         GoldenDigest(
             algorithmVersion: 1, thresholdsVersion: 4, contractVersion: 1,
             digest: "fce6552351e9076ad0daea2d2c1b02a6ec0dd547ad4611de73f52e3ec38fa351"),
+        // Spec 10: `diffs.weakLengthEnabled`, `.pitchRangeEnabled`, `.finalDirectionEnabled` added (on; Open question
+        // 1), and the scoring goldens under Golden/scoring/. Version 5 is held by spec 23 (#27).
+        GoldenDigest(
+            algorithmVersion: 1, thresholdsVersion: 6, contractVersion: 1,
+            digest: "ba13dd10863932382111046991d0c2ec4a629904c7d5a395b7422789eaa9d8bf"),
     ]
 }

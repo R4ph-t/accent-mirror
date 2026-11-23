@@ -1,0 +1,1276 @@
+{
+  "alignment" : {
+    "pairs" : [
+      {
+        "present" : {
+          "phrase" : 0,
+          "you" : {
+            "end" : 0.66,
+            "start" : 0.1
+          }
+        }
+      }
+    ]
+  },
+  "applicability" : {
+    "contrast" : {
+      "applicable" : {
+        "requirement" : "required"
+      }
+    },
+    "finalDirection" : {
+      "notApplicable" : {
+        "reason" : "modelHasNoFinalVoicing"
+      }
+    },
+    "pitchRange" : {
+      "applicable" : {
+        "requirement" : "optional"
+      }
+    },
+    "rhythm" : {
+      "applicable" : {
+        "requirement" : "inspectorOnly"
+      }
+    },
+    "shapeMatch" : {
+      "applicable" : {
+        "requirement" : "optional"
+      }
+    },
+    "stressPlacement" : {
+      "applicable" : {
+        "requirement" : "required"
+      }
+    },
+    "tooMuchContrast" : {
+      "applicable" : {
+        "requirement" : "required"
+      }
+    },
+    "weakLength" : {
+      "applicable" : {
+        "requirement" : "required"
+      }
+    }
+  },
+  "identity" : {
+    "config" : {
+      "algorithmVersion" : 1,
+      "asrModelID" : "replayed-word-timings",
+      "contractVersion" : 1,
+      "pitchTrackerID" : "pyin-1",
+      "thresholdsVersion" : 6,
+      "voicingID" : "acf-1"
+    },
+    "reference" : {
+      "nativeSetHash" : "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "phraseID" : "photography",
+      "pronunciationOverridesHash" : "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "recordingID" : "p225-photography",
+      "recordingSHA256" : "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "targetsHash" : "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "transcriptRevision" : 1
+    },
+    "takeAudioSHA256" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "measures" : {
+    "contrast" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : 1.6479604687265466
+      }
+    },
+    "finalDirection" : {
+      "notApplicable" : {
+        "reason" : "modelHasNoFinalVoicing"
+      }
+    },
+    "pitchRange" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : 6.038755980861245
+      }
+    },
+    "rhythm" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : 28.936423054070133
+      }
+    },
+    "shapeMatch" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : 0.45055296033333997
+      }
+    },
+    "stressPlacement" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : 1.1433329406312944
+      }
+    },
+    "tooMuchContrast" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : 1.6479604687265466
+      }
+    },
+    "weakLength" : {
+      "evaluated" : {
+        "confidence" : "high",
+        "value" : 85.7142857142857
+      }
+    }
+  },
+  "model" : {
+    "medianF0Hz" : 150,
+    "pitch" : [
+      {
+        "frames" : [
+          {
+            "semitones" : 0,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.1111111111111111,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.2222222222222222,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.3333333333333333,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.4444444444444444,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.5555555555555556,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.6666666666666666,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.7777777777777778,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0.8888888888888888,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.052631578947368,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.105263157894737,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.157894736842105,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.2105263157894735,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.2631578947368425,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.315789473684211,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.368421052631579,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.421052631578947,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.473684210526316,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.526315789473684,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.578947368421053,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.631578947368421,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.684210526315789,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.7368421052631575,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.7894736842105265,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.842105263157895,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.894736842105263,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5.947368421052632,
+            "voiced" : true
+          },
+          {
+            "semitones" : 6,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.8571428571428572,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.7142857142857144,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.5714285714285714,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.4285714285714286,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.2857142857142856,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.1428571428571428,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1,
+            "voiced" : true
+          },
+          {
+            "semitones" : -3,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.909090909090909,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.8181818181818183,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.7272727272727275,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.6363636363636362,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.5454545454545454,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.4545454545454546,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.3636363636363638,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.2727272727272725,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.1818181818181817,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2.090909090909091,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2,
+            "voiced" : true
+          }
+        ],
+        "start" : 0.1
+      }
+    ],
+    "syllables" : [
+      {
+        "indexInWord" : 0,
+        "prominence" : 0.30697746143461685,
+        "range" : {
+          "end" : 0.2,
+          "start" : 0.1
+        },
+        "share" : 0.19999999999999996,
+        "stress" : "unstressed",
+        "stressSource" : "dictionary",
+        "text" : "photography#0",
+        "wordIndex" : 0
+      },
+      {
+        "indexInWord" : 1,
+        "prominence" : 1,
+        "range" : {
+          "end" : 0.4,
+          "start" : 0.2
+        },
+        "share" : 0.3999999999999999,
+        "stress" : "primary",
+        "stressSource" : "dictionary",
+        "text" : "photography#1",
+        "wordIndex" : 0
+      },
+      {
+        "indexInWord" : 2,
+        "prominence" : 0.03142986234485759,
+        "range" : {
+          "end" : 0.48000000000000004,
+          "start" : 0.4
+        },
+        "share" : 0.16,
+        "stress" : "unstressed",
+        "stressSource" : "dictionary",
+        "text" : "photography#2",
+        "wordIndex" : 0
+      },
+      {
+        "indexInWord" : 3,
+        "prominence" : 0,
+        "range" : {
+          "end" : 0.6000000000000001,
+          "start" : 0.48000000000000004
+        },
+        "share" : 0.24000000000000005,
+        "stress" : "unstressed",
+        "stressSource" : "dictionary",
+        "text" : "photography#3",
+        "wordIndex" : 0
+      }
+    ],
+    "words" : [
+      {
+        "range" : {
+          "end" : 0.6000000000000001,
+          "start" : 0.1
+        },
+        "syllables" : [
+          0,
+          1,
+          2,
+          3
+        ],
+        "text" : "photography"
+      }
+    ]
+  },
+  "modelAxis" : {
+    "end" : 0.6000000000000001,
+    "start" : 0.1
+  },
+  "nativeBand" : [
+    {
+      "lower" : -1.5,
+      "time" : 0.1,
+      "upper" : 1.5
+    },
+    {
+      "lower" : -1.3888888888888888,
+      "time" : 0.11,
+      "upper" : 1.6111111111111112
+    },
+    {
+      "lower" : -1.2777777777777777,
+      "time" : 0.12,
+      "upper" : 1.7222222222222223
+    },
+    {
+      "lower" : -1.1666666666666667,
+      "time" : 0.13,
+      "upper" : 1.8333333333333333
+    },
+    {
+      "lower" : -1.0555555555555556,
+      "time" : 0.14,
+      "upper" : 1.9444444444444444
+    },
+    {
+      "lower" : -0.9444444444444444,
+      "time" : 0.15,
+      "upper" : 2.0555555555555554
+    },
+    {
+      "lower" : -0.8333333333333334,
+      "time" : 0.16,
+      "upper" : 2.1666666666666665
+    },
+    {
+      "lower" : -0.7222222222222222,
+      "time" : 0.17,
+      "upper" : 2.2777777777777777
+    },
+    {
+      "lower" : -0.6111111111111112,
+      "time" : 0.18,
+      "upper" : 2.388888888888889
+    },
+    {
+      "lower" : -0.5,
+      "time" : 0.19,
+      "upper" : 2.5
+    },
+    {
+      "lower" : 3.5,
+      "time" : 0.2,
+      "upper" : 6.5
+    },
+    {
+      "lower" : 3.552631578947368,
+      "time" : 0.21,
+      "upper" : 6.552631578947368
+    },
+    {
+      "lower" : 3.605263157894737,
+      "time" : 0.22,
+      "upper" : 6.605263157894737
+    },
+    {
+      "lower" : 3.6578947368421053,
+      "time" : 0.23,
+      "upper" : 6.657894736842105
+    },
+    {
+      "lower" : 3.7105263157894735,
+      "time" : 0.24,
+      "upper" : 6.7105263157894735
+    },
+    {
+      "lower" : 3.7631578947368425,
+      "time" : 0.25,
+      "upper" : 6.7631578947368425
+    },
+    {
+      "lower" : 3.8157894736842106,
+      "time" : 0.26,
+      "upper" : 6.815789473684211
+    },
+    {
+      "lower" : 3.8684210526315788,
+      "time" : 0.27,
+      "upper" : 6.868421052631579
+    },
+    {
+      "lower" : 3.921052631578947,
+      "time" : 0.28,
+      "upper" : 6.921052631578947
+    },
+    {
+      "lower" : 3.973684210526316,
+      "time" : 0.29,
+      "upper" : 6.973684210526316
+    },
+    {
+      "lower" : 4.026315789473684,
+      "time" : 0.3,
+      "upper" : 7.026315789473684
+    },
+    {
+      "lower" : 4.078947368421053,
+      "time" : 0.31,
+      "upper" : 7.078947368421053
+    },
+    {
+      "lower" : 4.131578947368421,
+      "time" : 0.32,
+      "upper" : 7.131578947368421
+    },
+    {
+      "lower" : 4.184210526315789,
+      "time" : 0.33,
+      "upper" : 7.184210526315789
+    },
+    {
+      "lower" : 4.2368421052631575,
+      "time" : 0.34,
+      "upper" : 7.2368421052631575
+    },
+    {
+      "lower" : 4.2894736842105265,
+      "time" : 0.35000000000000003,
+      "upper" : 7.2894736842105265
+    },
+    {
+      "lower" : 4.342105263157895,
+      "time" : 0.36,
+      "upper" : 7.342105263157895
+    },
+    {
+      "lower" : 4.394736842105263,
+      "time" : 0.37,
+      "upper" : 7.394736842105263
+    },
+    {
+      "lower" : 4.447368421052632,
+      "time" : 0.38,
+      "upper" : 7.447368421052632
+    },
+    {
+      "lower" : 4.5,
+      "time" : 0.39,
+      "upper" : 7.5
+    },
+    {
+      "lower" : -3.5,
+      "time" : 0.4,
+      "upper" : -0.5
+    },
+    {
+      "lower" : -3.357142857142857,
+      "time" : 0.41000000000000003,
+      "upper" : -0.3571428571428572
+    },
+    {
+      "lower" : -3.2142857142857144,
+      "time" : 0.42,
+      "upper" : -0.2142857142857144
+    },
+    {
+      "lower" : -3.071428571428571,
+      "time" : 0.43,
+      "upper" : -0.0714285714285714
+    },
+    {
+      "lower" : -2.928571428571429,
+      "time" : 0.44,
+      "upper" : 0.0714285714285714
+    },
+    {
+      "lower" : -2.7857142857142856,
+      "time" : 0.45,
+      "upper" : 0.2142857142857144
+    },
+    {
+      "lower" : -2.642857142857143,
+      "time" : 0.46,
+      "upper" : 0.3571428571428572
+    },
+    {
+      "lower" : -2.5,
+      "time" : 0.47000000000000003,
+      "upper" : 0.5
+    },
+    {
+      "lower" : -4.5,
+      "time" : 0.48,
+      "upper" : -1.5
+    },
+    {
+      "lower" : -4.409090909090909,
+      "time" : 0.49,
+      "upper" : -1.4090909090909092
+    },
+    {
+      "lower" : -4.318181818181818,
+      "time" : 0.5,
+      "upper" : -1.3181818181818183
+    },
+    {
+      "lower" : -4.2272727272727275,
+      "time" : 0.51,
+      "upper" : -1.2272727272727275
+    },
+    {
+      "lower" : -4.136363636363637,
+      "time" : 0.52,
+      "upper" : -1.1363636363636362
+    },
+    {
+      "lower" : -4.045454545454545,
+      "time" : 0.53,
+      "upper" : -1.0454545454545454
+    },
+    {
+      "lower" : -3.9545454545454546,
+      "time" : 0.54,
+      "upper" : -0.9545454545454546
+    },
+    {
+      "lower" : -3.8636363636363638,
+      "time" : 0.55,
+      "upper" : -0.8636363636363638
+    },
+    {
+      "lower" : -3.7727272727272725,
+      "time" : 0.56,
+      "upper" : -0.7727272727272725
+    },
+    {
+      "lower" : -3.6818181818181817,
+      "time" : 0.5700000000000001,
+      "upper" : -0.6818181818181817
+    },
+    {
+      "lower" : -3.590909090909091,
+      "time" : 0.58,
+      "upper" : -0.5909090909090908
+    },
+    {
+      "lower" : -3.5,
+      "time" : 0.59,
+      "upper" : -0.5
+    }
+  ],
+  "phraseID" : "photography",
+  "pitchAxis" : [
+    -12,
+    12
+  ],
+  "recordedAt" : 1795420800,
+  "stress" : [
+    {
+      "confidence" : "high",
+      "expectedPattern" : [
+        "unstressed",
+        "primary",
+        "unstressed",
+        "unstressed"
+      ],
+      "margin" : 1.1433329406312944,
+      "observedPrimary" : 0,
+      "referenceAnomaly" : false,
+      "word" : 0
+    }
+  ],
+  "takeID" : "take-0001",
+  "timeMap" : {
+    "segments" : [
+      {
+        "mapped" : {
+          "anchors" : [
+            {
+              "model" : 0.1,
+              "you" : 0.1
+            },
+            {
+              "model" : 0.2,
+              "you" : 0.30000000000000004
+            },
+            {
+              "model" : 0.4,
+              "you" : 0.44000000000000006
+            },
+            {
+              "model" : 0.48000000000000004,
+              "you" : 0.54
+            },
+            {
+              "model" : 0.6000000000000001,
+              "you" : 0.66
+            }
+          ],
+          "comparable" : true,
+          "model" : {
+            "end" : 0.6000000000000001,
+            "start" : 0.1
+          },
+          "you" : {
+            "end" : 0.66,
+            "start" : 0.1
+          }
+        }
+      }
+    ]
+  },
+  "timing" : "good",
+  "verdict" : {
+    "feedback" : {
+      "partial" : [
+
+      ],
+      "rows" : [
+        {
+          "acceptedSyllable" : 1,
+          "heardSyllable" : 0,
+          "kind" : "placement",
+          "syllables" : [
+            1,
+            0
+          ],
+          "values" : {
+            "model" : 1.7153607265041837,
+            "you" : 1.1433329406312944
+          },
+          "word" : 0
+        },
+        {
+          "kind" : "contrast",
+          "syllables" : [
+
+          ],
+          "values" : {
+            "model" : 4.186477385849299,
+            "you" : 1.6479604687265466
+          }
+        },
+        {
+          "kind" : "weakLength",
+          "syllables" : [
+
+          ],
+          "values" : {
+            "model" : 50,
+            "you" : 85.7142857142857
+          }
+        }
+      ]
+    }
+  },
+  "you" : {
+    "medianF0Hz" : 150,
+    "pitch" : [
+      {
+        "frames" : [
+          {
+            "semitones" : 4,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.052631578947368,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.105263157894737,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.157894736842105,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.2105263157894735,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.2631578947368425,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.315789473684211,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.368421052631579,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.421052631578947,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.473684210526316,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.526315789473684,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.578947368421053,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.631578947368421,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.684210526315789,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.7368421052631575,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.7894736842105265,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.842105263157895,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.894736842105263,
+            "voiced" : true
+          },
+          {
+            "semitones" : 4.947368421052632,
+            "voiced" : true
+          },
+          {
+            "semitones" : 5,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.0769230769230769,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.1538461538461537,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.2307692307692308,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.3076923076923077,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.3846153846153846,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.4615384615384617,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.5384615384615383,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.6153846153846154,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.6923076923076923,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.7692307692307692,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.8461538461538463,
+            "voiced" : true
+          },
+          {
+            "semitones" : 1.9230769230769231,
+            "voiced" : true
+          },
+          {
+            "semitones" : 2,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.8888888888888888,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.7777777777777778,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.6666666666666667,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.5555555555555556,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.4444444444444444,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.33333333333333337,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.2222222222222222,
+            "voiced" : true
+          },
+          {
+            "semitones" : -0.11111111111111116,
+            "voiced" : true
+          },
+          {
+            "semitones" : 0,
+            "voiced" : true
+          },
+          {
+            "semitones" : -2,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.9090909090909092,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.8181818181818181,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.7272727272727273,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.6363636363636362,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.5454545454545454,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.4545454545454546,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.3636363636363638,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.2727272727272727,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.1818181818181817,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1.0909090909090908,
+            "voiced" : true
+          },
+          {
+            "semitones" : -1,
+            "voiced" : true
+          }
+        ],
+        "start" : 0.1
+      }
+    ],
+    "syllables" : [
+      {
+        "indexInWord" : 0,
+        "prominence" : 1,
+        "range" : {
+          "end" : 0.30000000000000004,
+          "start" : 0.1
+        },
+        "share" : 0.35714285714285715,
+        "stress" : "primary",
+        "stressSource" : "measured",
+        "text" : "photography#0",
+        "wordIndex" : 0
+      },
+      {
+        "indexInWord" : 1,
+        "prominence" : 0.556535204251158,
+        "range" : {
+          "end" : 0.44000000000000006,
+          "start" : 0.30000000000000004
+        },
+        "share" : 0.25,
+        "stress" : "unstressed",
+        "stressSource" : "measured",
+        "text" : "photography#1",
+        "wordIndex" : 0
+      },
+      {
+        "indexInWord" : 2,
+        "prominence" : 0.1723947448557823,
+        "range" : {
+          "end" : 0.54,
+          "start" : 0.44000000000000006
+        },
+        "share" : 0.17857142857142852,
+        "stress" : "unstressed",
+        "stressSource" : "measured",
+        "text" : "photography#2",
+        "wordIndex" : 0
+      },
+      {
+        "indexInWord" : 3,
+        "prominence" : 0,
+        "range" : {
+          "end" : 0.66,
+          "start" : 0.54
+        },
+        "share" : 0.21428571428571425,
+        "stress" : "unstressed",
+        "stressSource" : "measured",
+        "text" : "photography#3",
+        "wordIndex" : 0
+      }
+    ],
+    "words" : [
+      {
+        "range" : {
+          "end" : 0.66,
+          "start" : 0.1
+        },
+        "syllables" : [
+          0,
+          1,
+          2,
+          3
+        ],
+        "text" : "photography"
+      }
+    ]
+  },
+  "youPitchOnModel" : [
+    {
+      "frames" : [
+        {
+          "semitones" : 4,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.157894736842105,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.2105263157894735,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.368421052631579,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.473684210526316,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.578947368421053,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.684210526315789,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.7894736842105265,
+          "voiced" : true
+        },
+        {
+          "semitones" : 4.894736842105263,
+          "voiced" : true
+        },
+        {
+          "semitones" : 5,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.0769230769230769,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.0769230769230769,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.1538461538461537,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.2307692307692308,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.2307692307692308,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.3076923076923077,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.3846153846153846,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.3846153846153846,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.4615384615384617,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.5384615384615383,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.6153846153846154,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.6153846153846154,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.6923076923076923,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.7692307692307692,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.7692307692307692,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.8461538461538463,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.9230769230769231,
+          "voiced" : true
+        },
+        {
+          "semitones" : 1.9230769230769231,
+          "voiced" : true
+        },
+        {
+          "semitones" : 2,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.8888888888888888,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.6666666666666667,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.5555555555555556,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.4444444444444444,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.33333333333333337,
+          "voiced" : true
+        },
+        {
+          "semitones" : -0.11111111111111116,
+          "voiced" : true
+        },
+        {
+          "semitones" : 0,
+          "voiced" : true
+        },
+        {
+          "semitones" : -2,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.9090909090909092,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.8181818181818181,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.7272727272727273,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.6363636363636362,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.5454545454545454,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.4545454545454546,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.3636363636363638,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.2727272727272727,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.1818181818181817,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1.0909090909090908,
+          "voiced" : true
+        },
+        {
+          "semitones" : -1,
+          "voiced" : true
+        }
+      ],
+      "start" : 0.1
+    }
+  ]
+}
