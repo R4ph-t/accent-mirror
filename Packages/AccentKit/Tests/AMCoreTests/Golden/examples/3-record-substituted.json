@@ -1,0 +1,17 @@
+{
+  "verdict" : {
+    "verdict" : {
+      "inconclusive" : {
+        "reasons" : [
+          {
+            "targetWordsMissing" : {
+              "words" : [
+                0
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "identity" : {
+    "config" : {
+      "algorithmVersion" : 1,
+      "asrModelID" : "whisperkit-base.en",
+      "contractVersion" : 1,
+      "pitchTrackerID" : "pyin-1",
+      "thresholdsVersion" : 1,
+      "voicingID" : "acf-1"
+    },
+    "reference" : {
+      "nativeSetHash" : "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "phraseID" : "record",
+      "pronunciationOverridesHash" : "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "recordingID" : "p225-record",
+      "recordingSHA256" : "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "targetsHash" : "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "transcriptRevision" : 1
+    },
+    "takeAudioSHA256" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "outcome" : {
+    "failed" : {
+      "error" : {
+        "inferenceFailed" : {
+          "stage" : "measureStress"
+        }
+      }
+    }
+  },
+  "requestID" : "5D7C0E1A-0000-4000-8000-000000000001"
+}

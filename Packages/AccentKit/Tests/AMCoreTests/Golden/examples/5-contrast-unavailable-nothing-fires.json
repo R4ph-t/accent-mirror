@@ -1,0 +1,17 @@
+{
+  "verdict" : {
+    "verdict" : {
+      "inconclusive" : {
+        "reasons" : [
+          {
+            "requiredMeasureUnavailable" : {
+              "measures" : [
+                "contrast"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "verdict" : {
+    "verdict" : {
+      "noClearDifference" : {
+        "reasons" : [
+          {
+            "pitchShapeBelowClose" : {
+              "shapeMatch" : 0.5
+            }
+          }
+        ]
+      }
+    }
+  }
+}
