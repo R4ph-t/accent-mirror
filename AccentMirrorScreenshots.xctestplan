@@ -7,12 +7,6 @@
     }
   ],
   "defaultOptions": {
-    "environmentVariableEntries": [
-      {
-        "key": "SCREENSHOT_DIR",
-        "value": "$(SRCROOT)\/screenshots\/ui-shell"
-      }
-    ],
     "targetForVariableExpansion": {
       "containerPath": "container:AccentMirror.xcodeproj",
       "identifier": "F2C86F492183F5E03540787F",
