@@ -15,7 +15,7 @@ the timestamp check to proceed after the skeleton.
 | # | Spec | Status | Depends on | Agent run | Raph review |
 |---|---|---|---|---|---|
 | 00 | [Project skeleton (by hand)](00-project-skeleton.md) | Done | – | – | 0.5 h |
-| 01 | [Contract v2](01-contract-v2.md) | Ready | 00 | 3–4 h | 1 h |
+| 01 | [Contract v2](01-contract-v2.md) | Done | 00 | 3–4 h | 1 h |
 | 02 | [Agreement harness](02-agreement-harness.md) | Ready | 01 | 6–8 h | 1.5 h |
 | 03 | [Timestamp feasibility](03-timestamp-feasibility.md) | Ready | 00 | 3–4 h | 1 h |
 | 04 | [Pitch tracker](04-pitch-tracker.md) | Ready | 01 | 3–4 h | 1 h |
