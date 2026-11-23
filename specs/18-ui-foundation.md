@@ -151,4 +151,31 @@ If `NavigationSplitView` fights solid chrome on macOS 26, use the AppKit split-v
 
 ## Implementation notes
 
-_(filled in by the agent)_
+- **Split view: the AppKit fallback.** On macOS 26, `NavigationSplitView` always draws its sidebar as a floating Liquid
+  Glass panel. The only opt-out is an Info.plist key, which agents may not touch. Following the Open question, the
+  window uses `ShellSplitView`, a plain `NSSplitViewController` whose three items (sidebar 240 pt, detail, inspector
+  280 pt) are ordinary items, not `.sidebar` items. They host opaque SwiftUI roots, with no vibrancy, blur or glass,
+  and a zero-width divider. The inspector item starts collapsed.
+- **Chrome.** `WindowChrome` hides the title, makes the title bar transparent over a full-size content view, and adds
+  an empty `NSToolbar` (unified) only so the title bar is 52 pt tall and the traffic lights sit over the sidebar. The
+  toolbar itself is SwiftUI, drawn on `surface.base` (`ToolbarView`). A hit test confirms clicks reach the SwiftUI
+  controls under the empty toolbar.
+- **Tokens.** `AccentMirror/Design/Palette.swift` is the single token table (light, dark, Increase Contrast, Reduce
+  Transparency). It is injected per split pane by `ThemeRoot`. Hex values appear only in that file. Type roles are in
+  `Typography.swift`, measurements in `Metrics` (`Surface.swift`).
+- **Increase Contrast.** "One step darker" for hairlines is read as the next ink step, `baseline` (#D3CDC1 / #34322E),
+  at 1 pt. See the PR's spec gaps.
+- **Fonts.** The official TTFs and each family's `OFL.txt` are in `AccentMirror/Resources/Fonts/<Family>/`, bundled as
+  a folder reference so each licence stays next to its fonts. They are registered at launch with
+  `CTFontManagerRegisterFontsForURL` (process scope, from the bundle, no network). The About panel lists the families
+  and shows both OFL texts. Sources and hashes are in `THIRD_PARTY_NOTICES.md`.
+- **Grain.** `scripts/make-grain.swift` generated the tiling Perlin noise once (seeded, 218 lattice cells per 256 pt
+  tile, about 0.85 per pt, 2 octaves). It is committed as `Assets.xcassets/Grain.imageset` at 256, 512 and 768 px.
+  `SurfaceBackground` composites it on each surface (sidebar, base, cards), under that surface's text, at 4.5% / 5%.
+  It is hidden with Reduce Transparency or Increase Contrast.
+- **Sidebar.** The static manifest stub is `LibraryManifest.stub`. Noun and Verb Pairs is "coming soon" because it has
+  zero phrases. The selected row is the Addendum A1 glyph plus Geist 13 / 600 in `lime.sidebarText`. Hover uses the
+  `row.hover` tint at 13 / 400, primary. The focus ring is 2 pt, radius 6. The Reduce Motion hook drops the hover fade.
+- **Commands.** View ▸ Hide Sidebar (⌃⌘S) replaces the system sidebar command. There is no sidebar button in the
+  chrome and no number-key shortcuts.
+

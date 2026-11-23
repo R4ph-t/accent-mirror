@@ -23,6 +23,13 @@ targets:
     platform: macOS
     sources:
       - path: AccentMirror
+        excludes:
+          - Resources/Fonts
+      # Bundled OFL fonts (spec 18), as a folder reference so each family's official OFL.txt stays next to
+      # its font files in the app bundle (Contents/Resources/Fonts/<Family>/).
+      - path: AccentMirror/Resources/Fonts
+        type: folder
+        buildPhase: resources
     dependencies:
       - package: AccentKit
         product: AMPipeline
