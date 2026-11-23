@@ -350,6 +350,34 @@ func l2Shared(_ args: Arguments, root: URL) throws -> Int32 {
     return 0
 }
 
+/// The VCTK positive set: pair counts from the trimmed cache. Metrics are NOT EVALUATED until spec 10.
+func positive(_ args: Arguments, root: URL) throws -> Int32 {
+    let manifest = try VCTKEvalSpeakersManifest.load(root.appendingPathComponent(Paths.evalSpeakers))
+    let cache = args.value("vctk").map(URL.init(fileURLWithPath:))
+        ?? root.appendingPathComponent("eval-cache/vctk/current")
+    guard let data = try? Data(contentsOf: cache.appendingPathComponent("trim-report.json")),
+        let report = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+        let kept = report["kept"] as? [String]
+    else {
+        print("positive: NOT EVALUATED (no trimmed VCTK cache: run scripts/fetch-vctk.sh)")
+        return 0
+    }
+    let clips = Set(kept.compactMap { name -> VCTKClip? in
+        let parts = name.split(separator: "_")
+        return parts.count == 2 ? VCTKClip(speaker: String(parts[0]), phrase: String(parts[1])) : nil
+    })
+    let pairs = VCTKPairs(manifest: manifest, available: clips)
+    let rejected = (report["rejected"] as? [Any])?.count ?? 0
+    print("positive: \(kept.count) clips kept, \(rejected) rejected by the 2–6 s trim")
+    print("positive: headline pairs \(pairs.headline.count) (\(Set(pairs.headline.map(\.phrase)).count) phrases, \(Set(pairs.headline.map(\.speaker)).count) held-out speakers), secondary pairs \(pairs.secondary.count) (correlated)")
+    let shortfalls = pairs.shortfalls()
+    print(shortfalls.isEmpty
+        ? "positive: pair set evaluable; metrics NOT EVALUATED until spec 10 wires measures and verdicts"
+        : "positive: NOT EVALUATED (\(shortfalls.joined(separator: "; ")))")
+    print("VCTK CV estimate (6 folds over the 18 tuning speakers): NOT EVALUATED until spec 08")
+    return 0
+}
+
 func tune(_ args: Arguments, root: URL) -> Int32 {
     let grid = TuningGrid()
     print("tune: grid of \(grid.weights.count) weight points × \(grid.lambdas.count) λ × \(grid.tauPairs.count)³ τ pairs per n-bucket = \(grid.count) points")
@@ -365,7 +393,7 @@ func usage() {
           vctk-trim --eval-speakers <json> --raw <dir> --out <dir>         trim and cache the VCTK clips
           vctk-split [--eval-speakers <json>] [--out <json>]               write fixtures/splits/vctk.json
           smoke-build --selection <json> --so762 <dir> --vctk <dir> --out <dir>
-          suite --suite smoke|l2-shared [--write-report] [--release]
+          suite --suite smoke|l2-shared|positive [--write-report] [--release]
           tune
         """)
 }
@@ -385,6 +413,7 @@ do {
         switch try args.required("suite") {
         case "smoke": exit(try smoke(root: root))
         case "l2-shared": exit(try l2Shared(args, root: root))
+        case "positive": exit(try positive(args, root: root))
         case let other: throw CLIError.usage("unknown suite \(other)")
         }
     case "tune": exit(tune(args, root: try repositoryRoot()))
