@@ -1,6 +1,6 @@
 # 05: Take quality and endpointing
 
-Status: Ready · Branch: – · Depends on: 01 (contract v2; no dependency on 04) · Estimate: 3–4 h agent run + 1 h
+Status: Done · Branch: factory/05-take-quality-endpointing · Depends on: 01 (contract v2; no dependency on 04) · Estimate: 3–4 h agent run + 1 h
 Raph review
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
