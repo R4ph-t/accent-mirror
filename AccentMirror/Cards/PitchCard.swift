@@ -94,10 +94,13 @@ private struct PitchPlot: View {
                 endLabel("YOU", color: palette.textPrimary, frame: frame, y: y)
             }
             if let message = pitch.message {
+                // On a card-coloured backing so the native band stops behind it (Designer review, fix 5).
                 Text(message)
                     .typeRole(.small)
                     .foregroundStyle(palette.textSecondary)
                     .fixedSize()
+                    .padding(.horizontal, 6)
+                    .background(palette.surfaceCard, in: RoundedRectangle(cornerRadius: Metrics.markRadius, style: .continuous))
                     .position(x: frame.x(0.5), y: frame.midY)
             }
         }

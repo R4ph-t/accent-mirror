@@ -9,21 +9,21 @@ Specs 01–02 and 04–10 (contract, agreement harness, signal and text front en
 (Raph waived spec approval on 2026-11-23: "once written go straight to building without asking"). Specs 11–17 and 20–21 come later. Spec 11 must not start before the rev 4 evaluation protocol (Raph,
 09:56) is in place: it lands in 02 (speaker-isolated folds, the clean 1,400-word FP set, the matched-config fold
 runner, the tuning-only selection API) and 22 (TTS voices chosen on the 18 VCTK tuning speakers). Rows 18 and
-19 are built (PR #4) and will be marked Done in their fix batch. Spec 03 does not wait on spec 11; Raph allowed
+19 are built (PR #4) and Done after their fix batch (PR #11). Spec 03 does not wait on spec 11; Raph allowed
 the timestamp check to proceed after the skeleton.
 
 | # | Spec | Status | Depends on | Agent run | Raph review |
 |---|---|---|---|---|---|
 | 00 | [Project skeleton (by hand)](00-project-skeleton.md) | Done | – | – | 0.5 h |
-| 01 | [Contract v2](01-contract-v2.md) | Ready | 00 | 3–4 h | 1 h |
+| 01 | [Contract v2](01-contract-v2.md) | Done | 00 | 3–4 h | 1 h |
 | 02 | [Agreement harness](02-agreement-harness.md) | Ready | 01 | 6–8 h | 1.5 h |
 | 03 | [Timestamp feasibility](03-timestamp-feasibility.md) | Ready | 00 | 3–4 h | 1 h |
 | 04 | [Pitch tracker](04-pitch-tracker.md) | Ready | 01 | 3–4 h | 1 h |
 | 05 | [Take quality and endpointing](05-take-quality-endpointing.md) | Ready | 01 (no dependency on 04) | 3–4 h | 1 h |
 | 06 | [Pronunciation, alignment, normalisation](06-pronunciation-alignment.md) | Ready | 01 | 4–5 h | 1 h |
 | 07 | [Syllable segmenter and timing confidence](07-syllable-segmenter.md) | Ready | 03, 06 | 3–4 h | 1 h |
-| 18 | [UI foundation](18-ui-foundation.md) | Draft | 00 | 3–5 h | 1 h |
-| 19 | [Fixture-driven UI shell](19-fixture-driven-ui-shell.md) | Draft | 18 | 6–8 h | 1.5 h |
+| 18 | [UI foundation](18-ui-foundation.md) | Done | 00 | 3–5 h | 1 h |
+| 19 | [Fixture-driven UI shell](19-fixture-driven-ui-shell.md) | Done | 18 | 6–8 h | 1.5 h |
 | 08 | [Prominence and observed stress](08-prominence-observed-stress.md) | Ready | 02, 04, 07 | 4–5 h | 1 h |
 | 09 | [Partial time map and native band](09-partial-time-map-band.md) | Ready | 02, 04, 07 | 3–4 h | 1 h |
 | 10 | [Measures, verdict and diffs](10-measures-verdict-diffs.md) | Ready | 02, 08, 09 | 4–5 h | 1.5 h |

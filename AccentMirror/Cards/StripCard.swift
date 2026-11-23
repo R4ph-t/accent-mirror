@@ -53,8 +53,8 @@ struct StripCard: View {
             }
         case .recording(let clusters, let playhead):
             RecordingRow(clusters: clusters, playhead: playhead)
-        case .flat(let start, let end, let caption):
-            FlatRow(start: start, end: end, caption: caption)
+        case .takeProblem(let clusters, let shape, let caption):
+            TakeProblemRow(clusters: clusters, shape: shape, caption: caption)
         case .bars(let clusters, let slots, _):
             ZStack {
                 BarsCanvas(clusters: clusters, rowHeight: 56)
@@ -108,8 +108,8 @@ func barJitter(_ seed: Int, _ index: Int) -> Double {
 }
 
 /// Bar heights for one syllable cluster: its envelope scaled by measured prominence.
-func clusterBars(_ cluster: StripCluster, width: CGFloat, maxHeight: CGFloat, pitch: CGFloat = 3)
-    -> [(x: CGFloat, height: CGFloat)] {
+func clusterBars(_ cluster: StripCluster, width: CGFloat, maxHeight: CGFloat, pitch: CGFloat = 3,
+                 minHeight: CGFloat = 1.5) -> [(x: CGFloat, height: CGFloat)] {
     let x0 = CGFloat(cluster.start) * width + 2
     let x1 = CGFloat(cluster.end) * width - 2
     guard x1 > x0 else { return [] }
@@ -118,7 +118,7 @@ func clusterBars(_ cluster: StripCluster, width: CGFloat, maxHeight: CGFloat, pi
         let u = (Double(index) + 0.5) / Double(count)
         let envelope = pow(sin(Double.pi * u), 0.8)
         let jitter = 0.55 + 0.45 * barJitter(cluster.seed, index)
-        let height = max(1.5, maxHeight * CGFloat(cluster.prominence * envelope * jitter))
+        let height = max(minHeight, maxHeight * CGFloat(cluster.prominence * envelope * jitter))
         return (x0 + CGFloat(index) * pitch, height)
     }
 }
@@ -138,13 +138,16 @@ struct BarsCanvas: View {
                 where bar.x < CGFloat(clipAt) * size.width {
                     let rect = CGRect(x: bar.x, y: midY - bar.height / 2, width: 1.5, height: bar.height)
                     let path = Path(roundedRect: rect, cornerRadius: 0.75)
-                    if cluster.lime {
+                    switch cluster.fill {
+                    case .stressed:
                         context.fill(path, with: .linearGradient(
                             Gradient(colors: [palette.lime2, palette.lime1, palette.lime2]),
                             startPoint: CGPoint(x: 0, y: rect.minY), endPoint: CGPoint(x: 0, y: rect.maxY)
                         ))
-                    } else {
+                    case .neutral:
                         context.fill(path, with: .color(palette.stripBar))
+                    case .yours:
+                        context.fill(path, with: .color(palette.stripBarYou))
                     }
                 }
             }
@@ -179,36 +182,58 @@ private struct RecordingRow: View {
     }
 }
 
-private struct FlatRow: View {
+/// Your row for a take problem with audio (§7.1, mockup-error-final2): the take's syllables as strip.bar
+/// clusters, flattened to a near-silent line (too quiet), cut flat at the top (clipped) or as heard (plain), with
+/// the caption centred under it.
+private struct TakeProblemRow: View {
     @Environment(\.palette) private var palette
-    var start: Double
-    var end: Double
+    var clusters: [StripCluster]
+    var shape: TakeProblemShape
     var caption: String?
 
     var body: some View {
         GeometryReader { proxy in
             Canvas { context, size in
-                var x = CGFloat(start) * size.width
-                var index = 0
-                while x < CGFloat(end) * size.width {
-                    let h: CGFloat = 1.5 + CGFloat(barJitter(7, index)) * 1.2
-                    context.fill(
-                        Path(roundedRect: CGRect(x: x, y: size.height / 2 - h / 2, width: 1.5, height: h), cornerRadius: 0.75),
-                        with: .color(palette.stripBar)
-                    )
-                    x += 3
-                    index += 1
+                let midY = size.height / 2
+                for cluster in clusters {
+                    for bar in bars(cluster, width: size.width, rowHeight: size.height) {
+                        let rect = CGRect(x: bar.x, y: midY - bar.height / 2, width: 1.5, height: bar.height)
+                        context.fill(Path(roundedRect: rect, cornerRadius: 0.75), with: .color(palette.stripBar))
+                    }
                 }
             }
             if let caption {
                 Text(caption)
                     .typeRole(.small)
                     .foregroundStyle(palette.textSecondary)
-                    .position(x: proxy.size.width / 2, y: proxy.size.height / 2 + 14)
+                    // Just under the near-silent line, as in the mockup; under a full-height waveform it moves
+                    // down into the label line so it never sits on the bars.
+                    .position(x: proxy.size.width / 2, y: shape == .nearSilent ? proxy.size.height / 2 + 14 : proxy.size.height + 12)
             }
         }
         .accessibilityElement()
         .accessibilityLabel(caption ?? "Your take")
+    }
+
+    private func bars(_ cluster: StripCluster, width: CGFloat, rowHeight: CGFloat) -> [(x: CGFloat, height: CGFloat)] {
+        switch shape {
+        case .nearSilent:
+            // 2 to 4 pt: the syllables still read as groups and the loudest swell a little, but there is almost
+            // nothing there (mockup-error-final2).
+            let loudest = clusters.map(\.prominence).max() ?? 1
+            var relative = cluster
+            relative.prominence = loudest > 0 ? cluster.prominence / loudest : 0
+            return clusterBars(relative, width: width, maxHeight: 2.5).map { ($0.x, 2 + $0.height * 0.8) }
+        case .clipped:
+            // Driven past the ceiling, so most bars stop at the same flat top.
+            let ceiling = (rowHeight - 4) * 0.5
+            var loud = cluster
+            loud.prominence = 1
+            return clusterBars(loud, width: width, maxHeight: (rowHeight - 4) * 1.6)
+                .map { ($0.x, min($0.height, ceiling)) }
+        case .plain:
+            return clusterBars(cluster, width: width, maxHeight: rowHeight - 4)
+        }
     }
 }
 
