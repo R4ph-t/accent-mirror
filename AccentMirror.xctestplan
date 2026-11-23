@@ -1,0 +1,82 @@
+{
+  "configurations": [
+    {
+      "id": "5C7B1E2A-0D1F-4E6B-9A3C-18190F1C0A01",
+      "name": "Unit",
+      "options": {}
+    }
+  ],
+  "defaultOptions": {
+    "targetForVariableExpansion": {
+      "containerPath": "container:AccentMirror.xcodeproj",
+      "identifier": "F2C86F492183F5E03540787F",
+      "name": "AccentMirror"
+    }
+  },
+  "testTargets": [
+    {
+      "target": {
+        "containerPath": "container:Packages\/AccentKit",
+        "identifier": "AMAlignmentTests",
+        "name": "AMAlignmentTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:Packages\/AccentKit",
+        "identifier": "AMCaptureTests",
+        "name": "AMCaptureTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:Packages\/AccentKit",
+        "identifier": "AMCoreTests",
+        "name": "AMCoreTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:Packages\/AccentKit",
+        "identifier": "AMLibraryTests",
+        "name": "AMLibraryTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:Packages\/AccentKit",
+        "identifier": "AMPipelineTests",
+        "name": "AMPipelineTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:Packages\/AccentKit",
+        "identifier": "AMPitchTests",
+        "name": "AMPitchTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:Packages\/AccentKit",
+        "identifier": "AMProsodyTests",
+        "name": "AMProsodyTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:Packages\/AccentKit",
+        "identifier": "AMScoringTests",
+        "name": "AMScoringTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:Packages\/AccentKit",
+        "identifier": "AMWarpTests",
+        "name": "AMWarpTests"
+      }
+    }
+  ],
+  "version": 1
+}

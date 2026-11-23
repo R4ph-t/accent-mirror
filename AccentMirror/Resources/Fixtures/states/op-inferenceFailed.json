@@ -6,6 +6,6 @@
   "savedTakes": [],
   "operationalError": {
     "kind": "inferenceFailed",
-    "stage": "measuring stress"
+    "stage": "measuringStress"
   }
 }

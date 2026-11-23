@@ -13,6 +13,9 @@ struct Palette: Equatable, Sendable {
     var textSecondary: Color
     var textTertiary: Color
     var stripBar: Color
+    /// Your unstressed bars in a result: clearly darker than the native row's strip.bar, so your row reads as a
+    /// full waveform (Designer review of PR #4, fix 3).
+    var stripBarYou: Color
     var pitchNative: Color
     var pitchYou: Color
     var pitchTexture: Color
@@ -67,6 +70,7 @@ struct Palette: Equatable, Sendable {
         textSecondary: Color(hex: 0x69645C), // Addendum A2
         textTertiary: Color(hex: 0x9C968B),
         stripBar: Color(rgb: 70, 64, 56, 0.24),
+        stripBarYou: Color(rgb: 28, 26, 23, 0.50), // Designer: rgba(28,26,23,0.50)
         pitchNative: Color(rgb: 120, 113, 102, 0.38),
         pitchYou: Color(hex: 0x1C1A17),
         pitchTexture: Color(rgb: 70, 64, 56, 0.055),
@@ -97,6 +101,8 @@ struct Palette: Equatable, Sendable {
         textSecondary: Color(hex: 0xA39D93),
         textTertiary: Color(hex: 0x6E6961),
         stripBar: Color(rgb: 240, 235, 225, 0.20),
+        // Sampled from mockup-result-dark-final2@2x.png, your row's grey bars (see the PR).
+        stripBarYou: Color(rgb: 242, 239, 233, 0.60),
         pitchNative: Color(rgb: 165, 158, 147, 0.40),
         pitchYou: Color(hex: 0xF7F4EE),
         pitchTexture: Color(rgb: 240, 235, 225, 0.045),
