@@ -268,4 +268,8 @@ Addendum A5 says: "A(w) = the context-compatible dictionary pronunciation plus t
   - The targetWordsMissing fixtures name words of "Photography is harder than it looks." and their takes have the
     matching missing slots and pitch breaks: "harder" (`-missing-harder`), "harder" and "looks"
     (`-missing-harder-looks`), and photography, harder and looks for `-many` (`-missing-three`).
-  - Renders come from the test VM (`make screenshots-vm`), never the host.
+  - Renders come from the test VM (`make screenshots-vm`), never the host. Two runs gave byte-identical PNGs.
+  - The screenshot run tears each window down after its capture (`WindowRenderer.dispose`), which leaves the frames
+    unchanged. AppKit's excessive-live-window warning still shows once per run: a shown window isn't freed in the
+    async test (see the PR's open points). `scripts/check-screenshots.sh` skips its git step outside a work tree, so
+    the VM no longer prints "fatal: not a git repository".
