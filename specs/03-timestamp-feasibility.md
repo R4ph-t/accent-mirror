@@ -1,6 +1,6 @@
 # 03: Timestamp feasibility
 
-Status: Ready · Branch: – · Depends on: 00 (project skeleton; the plan table listed 01, but
+Status: Done · Branch: factory/03-timestamp-feasibility · Depends on: 00 (project skeleton; the plan table listed 01, but
 Raph allowed 03 to proceed after the skeleton) · Estimate: 3–4 h agent run + 1 h Raph review
 · Risk: high
 

@@ -18,6 +18,8 @@ enum Metrics {
     static let markRadius: CGFloat = 4
     static let controlHeight: CGFloat = 28
     static let sidebarRowHeight: CGFloat = 32
+    /// "No pitch to show for this take" sits with its baseline this far above the bottom of the pitch plot.
+    static let noPitchBaselineInset: CGFloat = 8
 }
 
 /// A solid token surface with the grain composited on it (under its text, never over it).

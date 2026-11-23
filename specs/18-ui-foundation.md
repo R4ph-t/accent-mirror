@@ -2,7 +2,7 @@
 
 Status: Done · Branch: factory/18-19-ui-shell (PR #4), fixes on factory/18-19-fixes · Depends on: 00 (project skeleton) · Estimate: 3–5 h agent run + 1 h Raph review
 
-Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)", including Addendum 2026-11-23 (r2), which wins wherever it differs). Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px).
+Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)", including Addendum 2026-11-23 (r2) and Addendum 2026-11-23 (r3); r3 wins over r2 and spec v2 wherever they differ). Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px).
 
 ## Goal
 
@@ -54,7 +54,7 @@ Increase Contrast: tertiary text becomes secondary, secondary becomes #5F5A52 (l
 | button.A to button.B | #7ED321 to #C2EA2E | #C8F03C to #5BE3A6 | Record and Stop, diagonal |
 | onLime | #122405 | #10200A | text on the button |
 | wash | lime.2 at 7% fading to 0 at 70% height | lime.2 at 9%, same fade | pitch card top |
-| mistake | #2457E6 (5.5:1 on card) | #86A8FF (7.1:1 on card) | mistakes only, never red |
+| mistake | #2457E6 (5.5:1 on card) | #86A8FF (7.1:1 on card) | mistakes only, never red. In a card-1 sentence: bold caps in this blue only; the triangle and dotted underline are for strip labels only (Addendum r3 B3, §10) |
 
 Gradients: horizontal for the accent (lime.1 to lime.2), vertical for stressed bars (lime.2 at the tips, lime.1 at the centre line, lime.2 at the other tip), diagonal for the button. The button gets a white highlight on its top half at 22%.
 
@@ -64,7 +64,7 @@ Red, purple, gold and amber are not used anywhere, in either theme.
 
 #### Type
 
-All three fonts are bundled in the app, unmodified, under the SIL Open Font License 1.1. They are not relicensed as GPL. Keep each official `OFL.txt` next to the font files in the app bundle, credit them in About, and add them to `THIRD_PARTY_NOTICES.md`. Bundle the official releases. Weights: Geist 400/600/700, Geist Mono 500, Funnel Display 600.
+All three fonts are bundled in the app, unmodified, under the SIL Open Font License 1.1. They are not relicensed as GPL. Keep each official `OFL.txt` next to the font files in the app bundle, credit them in About, and add them to `THIRD_PARTY_NOTICES.md`. Bundle the official releases. Weights: Geist 400/600/700, Geist Mono 500, Funnel Display 600, plus the real Geist Italic (variable) for heard words. Geist Mono Italic is not used or bundled, and nothing gets a synthetic slant (Addendum r3 B2).
 
 - Geist and Geist Mono: Copyright 2023 Vercel, in collaboration with basement.studio. Official `LICENSE.txt` declares no Reserved Font Name after the copyright line.
 - Funnel Display: Copyright 2024 The Funnel Project Authors (`https://github.com/Dicotype/Funnel`). The Google Fonts `OFL.txt` also declares no Reserved Font Name.
