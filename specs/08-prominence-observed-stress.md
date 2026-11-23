@@ -214,4 +214,64 @@ if __name__ == "__main__":
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Built by hand on 2026-11-23 (Claude Code, Opus) on `factory/08-prominence-observed-stress`.
+
+**Layout.** `AMProsody` holds the pure rules: `Prominence.swift` (P over the caller's comparable set, λ discount,
+floors, degenerate cases, display prominence), `ObservedStress.swift` (`ComparableSyllable`, `TakeProminence`,
+`ObservedStress`: primary, margin, n-bucket confidence capped by syllable confidence, secondary),
+`AcceptedSet.swift` (`WordAcceptedSet`: A(w), matched pattern, nearest pattern, S and U, `isReferenceAnomaly`),
+`Placement.swift` (`placementDecision(observed:accepted:confidence:exposure:)`, the one rule) and `Contrast.swift`
+(C and W on raw durations). `AMPipeline/StressPlacementDetector.swift` runs the §6.3 stages (replayed word timings →
+spec 06 aligner → spec 07 segmenter → spec 04 pYIN → prominence → `placementDecision`) and reports before/after
+suppression. `am-eval` adapts it to spec 02's `PlacementDetector` (`Detector.swift`), records Whisper timings once
+(`record-timings`), and checks the smoke goldens (`smoke-detector`, `Smoke.swift`). AMEvaluation stays AMCore-only:
+the detector can't live there, and the app never links it. `tools/worked_examples.py` is the appendix verbatim.
+
+**Thresholds.** None added or changed: every value this spec reads was already in `Thresholds.prominence` (spec 01).
+`thresholdsVersion` stays 4 and no golden digest was appended.
+
+**Choices the spec left open (least-committal; listed in the PR as spec gaps).**
+1. *`referenceAnomaly`* is checked against A(w) without the model voice's own reading. With its own reading in A(w)
+   the rule could never fire. Another native of the phrase at high confidence on the same syllable clears it.
+2. *S from the context pronunciation* is its primary and secondary syllables (a native alternative's S is its
+   observed primary and secondary, as written). Monosyllables and words with no observed stress use the context
+   pattern. Which words spec 10 pools into C and W is spec 10's.
+3. *Primary ties* go to the earlier syllable (margin 0, so low). The script's sort would pick the later one; no worked
+   example ties.
+4. *Secondary* is the most prominent syllable not next to the primary, if its display prominence is ≥ 0.75 × the
+   primary's. A take whose P are all equal displays 0 everywhere and has no secondary.
+5. *A zero-length syllable* gets ln(1 ms) so P stays finite (algorithm constant `Prominence.minimumDurationS`).
+6. *`placementDecision`* returns nil for an empty A(w) (no decision). Its suppressions, checked in order:
+   `lowSyllableConfidence`, `exposedSyllable` (exposed and stress below high), `stressConfidenceBelowHigh`. Spec 02's
+   `PlacementSuppression` gained `stressConfidenceBelowHigh`, because rev 4.1 suppresses any medium or low mismatch and
+   the enum had no case for it. The shared mode checks Poor timing, then low word confidence, then the rule's own
+   reasons. `missingTarget` stays unused: an absent word is `present: false`, never a suppressed flag.
+7. *Pronunciations in the shared mode*: the label fixture's ref-phones for decided words, else the corpus
+   `resource/text-phone`, else CMUdict's first variant, else one schwa per spelling syllable. The corpus has one vowel
+   with no stress digit ("HERE", `HH IH AH0`), which doesn't parse, so it falls through to CMUdict.
+8. *Smoke inputs*: speechocean762 items decide the manifest's labelled words, with A(w) from spec 02's rule
+   (ref-phones, else the POS-selected CMUdict variant). VCTK items decide every polysyllabic word under the starter
+   rule (overrides only, no tagger), so stress-shift words are `expectedAmbiguous` and undecided. The inputs are
+   committed, so CI never runs the tagger.
+9. *`harnessConfig()`* now names `acf-1` voicing (the detector runs it), so report config digests change.
+10. *VCTK CV estimate*: not computed. It is a positive-set number, the positive set is NOT EVALUATED (blocked on spec
+    24), and the fold-tuned run is spec 11. `am-eval suite --suite positive` says so instead of "until spec 08".
+
+**Smoke goldens** (`fixtures/smoke/detector/`: `inputs.json`, `timestamps/` from `openai_whisper-base.en` at the
+pinned commit, `goldens.json`; 292 KB, smoke folder 4.5 MB of 5). `SmokePlacementGoldenTests` replays them in
+`make test`. Release-built `am-eval` and the debug test agree on every L1 digest. With the initial (untuned)
+thresholds: 53 items, 129 decided words, 108 present; 70 flagged before suppression, 11 after (9 of the 100
+stress-correct words, 2 of the 20 stress-wrong ones). Never a rate gate.
+
+**l2-shared (reported, not gated; initial thresholds, untuned).** Word timings were recorded once with
+`am-eval record-timings --set l2-shared` (1,178 utterances, `openai_whisper-base.en`, into the git-ignored
+`eval-cache/speechocean762-timings`), then `scripts/agreement.sh --suite l2-shared` replays them:
+- recall: 134 words, 41 present; 23 flagged before suppression, **5 after (3.7%)**.
+- clean 1,400: 1,091 present; 701 flagged before suppression, **150 after (10.7%, Wilson [9.2%, 12.4%])**. The plan's
+  bar for the shipped config is ≤ 1.6%, so these initial values are far off it. That is spec 11's tuning question and
+  goes to CTO. Nothing was tuned or lowered here.
+- **157 unintelligible: 0 placement diffs.** Whisper hears none of them as the transcript word, so all are absent
+  (inconclusive), and 4 have no A(w).
+- Most recall words are absent because Whisper base.en transcribes a stress-wrong L2 word as a different word, so
+  the aligner marks it substituted. The detector never sees those words, which caps recall whatever the thresholds.
+  Worth a look in spec 11 or 23.
