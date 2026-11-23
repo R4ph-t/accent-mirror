@@ -8,7 +8,8 @@ import Foundation
 /// - Neighbouring labels that show keep at least `minimumGap` (4 pt) between their edges.
 /// - `.always` labels (stressed syllables, the mistake marker, target words) always show, even if two of them
 ///   would touch.
-/// - Otherwise `.high` labels are placed before `.low` ones, and within a priority left to right: a label shows
+/// - Otherwise `.high` labels (heard and missing words) are placed before `.low` ones (unstressed syllables,
+///   non-target words), and within a priority left to right: a label shows
 ///   only if it keeps the gap to every label already showing.
 /// - A label that is hidden still belongs to its row's tooltip and accessibility label (the views do that).
 enum LabelLayout {
@@ -46,6 +47,24 @@ enum LabelLayout {
         }
         return shown
     }
+
+    /// A strip syllable label's priority (Addendum r4 C6): stressed (bold caps or a measured-stressed bar) and the
+    /// mistake marker always show; heard words (a substitution in quotes, "+ so") give way after unstressed
+    /// syllables; unstressed syllables give way first.
+    static func syllablePriority(_ style: ClusterLabel.Style, stressedBar: Bool) -> Priority {
+        if stressedBar { return .always }
+        switch style {
+        case .caps, .mistake: return .always
+        case .heard: return .high
+        case .lower: return .low
+        }
+    }
+
+    /// A missing word's struck-through label gives way after unstressed syllables, like a heard word.
+    static let missingWordPriority = Priority.high
+
+    /// A pitch word label: target words always show, the others give way first.
+    static func wordPriority(isTarget: Bool) -> Priority { isTarget ? .always : .low }
 
     /// True if the two labels are closer than `gap` edge to edge (or overlap).
     static func collide(_ a: Item, _ b: Item, gap: Double = minimumGap) -> Bool {

@@ -76,10 +76,62 @@ struct LabelLayoutTests {
         #expect(LabelLayout.Priority.allCases == [.always, .high, .low])
     }
 
-    @MainActor @Test func targetWordsCarryAStressOrAreNamedByARow() throws {
+    /// r4 C6 hide order: unstressed syllables first, then heard ("photograph", "+ so") and missing words; stressed,
+    /// mistake (and target) labels never.
+    @Test func syllableAndWordPrioritiesFollowTheHideOrder() {
+        #expect(LabelLayout.syllablePriority(.lower, stressedBar: false) == .low)
+        #expect(LabelLayout.syllablePriority(.heard, stressedBar: false) == .high)
+        #expect(LabelLayout.missingWordPriority == .high)
+        #expect(LabelLayout.syllablePriority(.caps, stressedBar: true) == .always)
+        #expect(LabelLayout.syllablePriority(.caps, stressedBar: false) == .always)
+        #expect(LabelLayout.syllablePriority(.mistake, stressedBar: true) == .always)
+        // A lowercase label on a bar measured as stressed is still stressed.
+        #expect(LabelLayout.syllablePriority(.lower, stressedBar: true) == .always)
+        #expect(LabelLayout.wordPriority(isTarget: true) == .always)
+        #expect(LabelLayout.wordPriority(isTarget: false) == .low)
+    }
+
+    /// The hide order end to end on one crowded row: an unstressed syllable, a heard word, a missing word and a
+    /// stressed syllable all collide. Only the stressed one and the first higher-priority label (left to right) show.
+    @Test func crowdedRowHidesInTheR4Order() {
+        let items = [
+            Item(center: 10, width: 20, priority: LabelLayout.syllablePriority(.lower, stressedBar: false)),
+            Item(center: 26, width: 20, priority: LabelLayout.syllablePriority(.heard, stressedBar: false)),
+            Item(center: 50, width: 20, priority: LabelLayout.missingWordPriority),
+            Item(center: 66, width: 20, priority: LabelLayout.syllablePriority(.caps, stressedBar: true)),
+        ]
+        #expect(LabelLayout.visibility(items) == [false, true, false, true])
+    }
+
+    @MainActor @Test func targetWordsCarryAStressOrAreNamedInCardOne() throws {
         let library = try #require(FixtureLibrary(bundle: Bundle(for: ShellModel.self)))
         let pitch = ShellPresenter.pitch(try library.load("result-feedback"))
         let targets = pitch.words.filter(\.isTarget).map { ShellPresenter.normalizedWord($0.text) }
-        #expect(targets == ["photography", "harder", "looks"])
+        // Stressed: photography, harder, looks. "than" is named as a whole word in "ra, phy, der, than".
+        #expect(targets == ["photography", "harder", "than", "looks"])
+    }
+
+    @MainActor @Test func namedTargetWordsComeFromRowsTheSentenceAndTheManifest() {
+        let phrase = ["Photography", "is", "harder", "than", "it", "looks."]
+        // A row's word, and a row target that is a whole word; a syllable (HAR) names no word.
+        let rows = [DiffRow(kind: .placement, word: "photography"), DiffRow(kind: .contrast, targets: ["HAR", "LOOKS"])]
+        #expect(ShellPresenter.namedTargetWords(rows: rows, sentenceWords: [], manifestTargets: [], phraseWords: phrase)
+            == ["photography", "looks"])
+        // Words the card-1 sentence names (targetWordsMissing).
+        #expect(ShellPresenter.namedTargetWords(rows: [], sentenceWords: ["is"], manifestTargets: [], phraseWords: phrase)
+            == ["is"])
+        // Manifest targets add to the set, never replace it, and a stressed word stays a target without them.
+        let named = ShellPresenter.namedTargetWords(rows: rows, sentenceWords: [], manifestTargets: ["it"], phraseWords: phrase)
+        #expect(named == ["photography", "looks", "it"])
+        let harder = NativeWord(text: "harder", stressCheck: nil, start: 0, end: 1, syllables: [
+            Syllable(text: "har", start: 0, end: 0.5, prominence: 1, stressed: true, label: .caps),
+            Syllable(text: "der", start: 0.5, end: 1, prominence: 0.2, stressed: false, label: .lower),
+        ])
+        #expect(ShellPresenter.isTargetWord(harder, named: named))
+        let than = NativeWord(text: "than", stressCheck: nil, start: 0, end: 1, syllables: [
+            Syllable(text: "than", start: 0, end: 1, prominence: 0.2, stressed: false, label: .lower),
+        ])
+        #expect(!ShellPresenter.isTargetWord(than, named: named))
+        #expect(ShellPresenter.isTargetWord(than, named: ["than"]))
     }
 }

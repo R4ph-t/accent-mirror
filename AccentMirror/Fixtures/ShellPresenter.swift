@@ -447,11 +447,33 @@ enum ShellPresenter {
 
     // MARK: Pitch
 
-    /// A target word under the pitch plot: one that carries a stressed native syllable (it has a Lime mark on the
-    /// baseline), or one a diff row names. Its label always shows; the other words' labels give way first when
-    /// the plot is narrow (fixes round 5).
-    static func isTargetWord(_ word: NativeWord, rowWords: Set<String>) -> Bool {
-        word.syllables.contains(where: \.stressed) || rowWords.contains(normalizedWord(word.text))
+    /// A target word under the pitch plot (Addendum r4 C6): one that carries a stressed native syllable (it has a
+    /// Lime mark on the baseline), or one named in `named`. Its label always shows; the other words' labels give
+    /// way first when the plot is narrow.
+    static func isTargetWord(_ word: NativeWord, named: Set<String>) -> Bool {
+        word.syllables.contains(where: \.stressed) || named.contains(normalizedWord(word.text))
+    }
+
+    /// The words card 1 names, normalised: a row's word (placement) or a whole word among its targets ("than" in
+    /// "ra, phy, der, than"; a syllable like HAR names no word on its own), the words an inconclusive sentence
+    /// names (targetWordsMissing), plus the starter manifest's `targets` for the phrase, which add to the set and
+    /// never replace it.
+    static func namedTargetWords(rows: [DiffRow], sentenceWords: [String], manifestTargets: [String],
+                                 phraseWords: [String]) -> Set<String> {
+        let words = Set(phraseWords.map(normalizedWord))
+        let fromRows = rows.flatMap { row in (row.word.map { [$0] } ?? []) + (row.targets ?? []) }
+        return Set((fromRows + sentenceWords + manifestTargets).map(normalizedWord)).intersection(words)
+    }
+
+    /// `namedTargetWords` for a fixture: the rows card 1 shows (feedback only), its inconclusive words, and the
+    /// manifest's targets for this phrase.
+    static func namedTargetWords(_ loaded: LoadedFixture) -> Set<String> {
+        let verdict = loaded.fixture.analysis?.verdict
+        let rows = verdict?.kind == .feedback ? orderedRows(verdict?.rows ?? []) : []
+        let manifest = loaded.fixture.manifest ?? .stub
+        let targets = manifest.packs.flatMap(\.phrases).first { $0.id == loaded.phrase.id }?.targets ?? []
+        return namedTargetWords(rows: rows, sentenceWords: verdict?.inconclusive?.words ?? [], manifestTargets: targets,
+                                phraseWords: loaded.phrase.words.map(\.text))
     }
 
     static func normalizedWord(_ text: String) -> String {
@@ -470,14 +492,14 @@ enum ShellPresenter {
             if you.isEmpty { message = Copy.noPitch }
         }
         let stressed = phrase.words.flatMap(\.syllables).filter(\.stressed).map { (start: $0.start, end: $0.end) }
-        let rowWords = Set((loaded.fixture.analysis?.verdict?.rows ?? []).compactMap { $0.word.map(normalizedWord) })
+        let named = namedTargetWords(loaded)
         return PitchPresentation(
             rangeSemitones: phrase.rangeSemitones,
             band: phrase.band,
             you: you,
             message: message,
             words: phrase.words.map { word in
-                (text: word.text, start: word.start, end: word.end, isTarget: isTargetWord(word, rowWords: rowWords))
+                (text: word.text, start: word.start, end: word.end, isTarget: isTargetWord(word, named: named))
             },
             stressedSpans: stressed,
             texture: nativeClusters(phrase)

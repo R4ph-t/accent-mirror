@@ -21,7 +21,7 @@ time.
 | `name` | string | Same as the file name |
 | `summary` | string | What the state shows |
 | `phrase` | string | `phrases/<phrase>.json` |
-| `manifest` | object? | Replaces the static library stub (`packs[].{id,title,phrases[].{id,text}}`). A pack with no phrases is "coming soon" |
+| `manifest` | object? | Replaces the static library stub (`packs[].{id,title,phrases[].{id,text,targets?}}`; `targets` adds words to the pitch plot's target words, r4 C6). A pack with no phrases is "coming soon" |
 | `sidebar` | object? | `{selectedPhraseID, expandedPackIDs[]}`. Defaults to Photography selected, My Phrases and Stress Shifts open |
 | `phase` | `empty` \| `recording` \| `analysing` \| `showingTake` | What the coordinator is doing |
 | `recording` | object? | `{elapsed: "0:02", playhead: 0.46}` while recording |

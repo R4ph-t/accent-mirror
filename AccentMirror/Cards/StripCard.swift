@@ -325,13 +325,12 @@ private struct ClusterLabels: View {
     private func entries(width: CGFloat) -> [Entry] {
         let syllables: [Entry] = clusters.compactMap { cluster in
             guard let label = cluster.label else { return nil }
-            let stressed = label.style == .caps || label.style == .mistake || cluster.fill == .stressed
             return Entry(
                 content: .syllable(label, tooltip: cluster.tooltip),
                 center: CGFloat((cluster.start + cluster.end) / 2) * width,
                 span: CGFloat(cluster.end - cluster.start) * width,
                 width: LabelView.width(label),
-                priority: stressed ? .always : (label.style == .heard ? .high : .low),
+                priority: LabelLayout.syllablePriority(label.style, stressedBar: cluster.fill == .stressed),
                 spoken: label.style == .mistake ? Copy.mistakeLabelAccessibility(label.text) : label.text,
                 tooltip: Copy.hiddenLabelTooltip(label.text, note: cluster.tooltip)
             )
@@ -342,7 +341,7 @@ private struct ClusterLabels: View {
                 center: CGFloat(slot.position) * width,
                 span: 24,
                 width: TextMeasure.width(slot.expected, role: .small),
-                priority: .high,
+                priority: LabelLayout.missingWordPriority,
                 spoken: Copy.hiddenLabelTooltip(slot.expected, note: Copy.missingTooltip),
                 tooltip: Copy.hiddenLabelTooltip(slot.expected, note: Copy.missingTooltip)
             )
