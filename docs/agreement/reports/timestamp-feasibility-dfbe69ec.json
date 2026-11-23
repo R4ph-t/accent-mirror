@@ -1,0 +1,772 @@
+{
+  "accuracy" : {
+    "calibration" : {
+      "high" : {
+        "boundaries" : 2564,
+        "meanAbsErrorMs" : 143.08502340093602,
+        "probabilityMax" : 1,
+        "probabilityMin" : 0.98,
+        "words" : 1282
+      },
+      "low" : {
+        "boundaries" : 2216,
+        "meanAbsErrorMs" : 145.10379061371842,
+        "probabilityMax" : 0.97,
+        "probabilityMin" : 0.33,
+        "words" : 1108
+      },
+      "medianProbability" : 0.98,
+      "outcome" : "PASS"
+    },
+    "coverage" : {
+      "comparable" : 2390,
+      "missingFromASROnly" : 47,
+      "missingFromBaselineOnly" : 0,
+      "missingFromBoth" : 0,
+      "phraseTokens" : 2437
+    },
+    "medianOutcome" : "FAIL",
+    "outcome" : "FAIL",
+    "padded" : {
+      "boundaries" : 4780,
+      "meanErrorMs" : 144.02092050209205,
+      "medianErrorMs" : 120,
+      "shareWithinTolerance" : 0.3677824267782427
+    },
+    "perPhrase" : [
+      {
+        "key" : "002",
+        "padded" : {
+          "boundaries" : 176,
+          "meanErrorMs" : 120.2840909090909,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.4034090909090909
+        },
+        "raw" : {
+          "boundaries" : 176,
+          "meanErrorMs" : 104.82954545454545,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.42045454545454547
+        }
+      },
+      {
+        "key" : "003",
+        "padded" : {
+          "boundaries" : 286,
+          "meanErrorMs" : 152.9020979020979,
+          "medianErrorMs" : 125,
+          "shareWithinTolerance" : 0.3321678321678322
+        },
+        "raw" : {
+          "boundaries" : 286,
+          "meanErrorMs" : 141.2237762237762,
+          "medianErrorMs" : 140,
+          "shareWithinTolerance" : 0.2762237762237762
+        }
+      },
+      {
+        "key" : "004",
+        "padded" : {
+          "boundaries" : 240,
+          "meanErrorMs" : 142.33333333333334,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.3625
+        },
+        "raw" : {
+          "boundaries" : 240,
+          "meanErrorMs" : 125,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.425
+        }
+      },
+      {
+        "key" : "005",
+        "padded" : {
+          "boundaries" : 316,
+          "meanErrorMs" : 148.86075949367088,
+          "medianErrorMs" : 125,
+          "shareWithinTolerance" : 0.39556962025316456
+        },
+        "raw" : {
+          "boundaries" : 316,
+          "meanErrorMs" : 139.0506329113924,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.43354430379746833
+        }
+      },
+      {
+        "key" : "006",
+        "padded" : {
+          "boundaries" : 258,
+          "meanErrorMs" : 123.87596899224806,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.41472868217054265
+        },
+        "raw" : {
+          "boundaries" : 258,
+          "meanErrorMs" : 102.48062015503876,
+          "medianErrorMs" : 80,
+          "shareWithinTolerance" : 0.5193798449612403
+        }
+      },
+      {
+        "key" : "007",
+        "padded" : {
+          "boundaries" : 164,
+          "meanErrorMs" : 161.34146341463415,
+          "medianErrorMs" : 140,
+          "shareWithinTolerance" : 0.3048780487804878
+        },
+        "raw" : {
+          "boundaries" : 164,
+          "meanErrorMs" : 150,
+          "medianErrorMs" : 120,
+          "shareWithinTolerance" : 0.32926829268292684
+        }
+      },
+      {
+        "key" : "008",
+        "padded" : {
+          "boundaries" : 350,
+          "meanErrorMs" : 154.6,
+          "medianErrorMs" : 130,
+          "shareWithinTolerance" : 0.3514285714285714
+        },
+        "raw" : {
+          "boundaries" : 350,
+          "meanErrorMs" : 145.8,
+          "medianErrorMs" : 120,
+          "shareWithinTolerance" : 0.29714285714285715
+        }
+      },
+      {
+        "key" : "009",
+        "padded" : {
+          "boundaries" : 208,
+          "meanErrorMs" : 121.875,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.39903846153846156
+        },
+        "raw" : {
+          "boundaries" : 208,
+          "meanErrorMs" : 113.41346153846153,
+          "medianErrorMs" : 90,
+          "shareWithinTolerance" : 0.4230769230769231
+        }
+      },
+      {
+        "key" : "010",
+        "padded" : {
+          "boundaries" : 112,
+          "meanErrorMs" : 125.53571428571429,
+          "medianErrorMs" : 120,
+          "shareWithinTolerance" : 0.39285714285714285
+        },
+        "raw" : {
+          "boundaries" : 112,
+          "meanErrorMs" : 116.60714285714286,
+          "medianErrorMs" : 90,
+          "shareWithinTolerance" : 0.44642857142857145
+        }
+      },
+      {
+        "key" : "011",
+        "padded" : {
+          "boundaries" : 410,
+          "meanErrorMs" : 118.82926829268293,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.45365853658536587
+        },
+        "raw" : {
+          "boundaries" : 410,
+          "meanErrorMs" : 103.1219512195122,
+          "medianErrorMs" : 90,
+          "shareWithinTolerance" : 0.4951219512195122
+        }
+      },
+      {
+        "key" : "012",
+        "padded" : {
+          "boundaries" : 176,
+          "meanErrorMs" : 181.875,
+          "medianErrorMs" : 150,
+          "shareWithinTolerance" : 0.24431818181818182
+        },
+        "raw" : {
+          "boundaries" : 176,
+          "meanErrorMs" : 171.07954545454547,
+          "medianErrorMs" : 180,
+          "shareWithinTolerance" : 0.3465909090909091
+        }
+      },
+      {
+        "key" : "013",
+        "padded" : {
+          "boundaries" : 156,
+          "meanErrorMs" : 163.07692307692307,
+          "medianErrorMs" : 155,
+          "shareWithinTolerance" : 0.3269230769230769
+        },
+        "raw" : {
+          "boundaries" : 156,
+          "meanErrorMs" : 156.4102564102564,
+          "medianErrorMs" : 130,
+          "shareWithinTolerance" : 0.36538461538461536
+        }
+      },
+      {
+        "key" : "014",
+        "padded" : {
+          "boundaries" : 240,
+          "meanErrorMs" : 114.375,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.42916666666666664
+        },
+        "raw" : {
+          "boundaries" : 240,
+          "meanErrorMs" : 91.45833333333333,
+          "medianErrorMs" : 60,
+          "shareWithinTolerance" : 0.6625
+        }
+      },
+      {
+        "key" : "015",
+        "padded" : {
+          "boundaries" : 220,
+          "meanErrorMs" : 148.5,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.34545454545454546
+        },
+        "raw" : {
+          "boundaries" : 220,
+          "meanErrorMs" : 129.5909090909091,
+          "medianErrorMs" : 95,
+          "shareWithinTolerance" : 0.4681818181818182
+        }
+      },
+      {
+        "key" : "016",
+        "padded" : {
+          "boundaries" : 332,
+          "meanErrorMs" : 144.4879518072289,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.3674698795180723
+        },
+        "raw" : {
+          "boundaries" : 332,
+          "meanErrorMs" : 127.07831325301204,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.4759036144578313
+        }
+      },
+      {
+        "key" : "017",
+        "padded" : {
+          "boundaries" : 128,
+          "meanErrorMs" : 165.234375,
+          "medianErrorMs" : 140,
+          "shareWithinTolerance" : 0.28125
+        },
+        "raw" : {
+          "boundaries" : 128,
+          "meanErrorMs" : 151.953125,
+          "medianErrorMs" : 165,
+          "shareWithinTolerance" : 0.421875
+        }
+      },
+      {
+        "key" : "018",
+        "padded" : {
+          "boundaries" : 250,
+          "meanErrorMs" : 161.2,
+          "medianErrorMs" : 130,
+          "shareWithinTolerance" : 0.328
+        },
+        "raw" : {
+          "boundaries" : 250,
+          "meanErrorMs" : 146.88,
+          "medianErrorMs" : 80,
+          "shareWithinTolerance" : 0.504
+        }
+      },
+      {
+        "key" : "019",
+        "padded" : {
+          "boundaries" : 302,
+          "meanErrorMs" : 165.0662251655629,
+          "medianErrorMs" : 140,
+          "shareWithinTolerance" : 0.33112582781456956
+        },
+        "raw" : {
+          "boundaries" : 302,
+          "meanErrorMs" : 158.97350993377484,
+          "medianErrorMs" : 120,
+          "shareWithinTolerance" : 0.3708609271523179
+        }
+      },
+      {
+        "key" : "020",
+        "padded" : {
+          "boundaries" : 126,
+          "meanErrorMs" : 179.52380952380952,
+          "medianErrorMs" : 160,
+          "shareWithinTolerance" : 0.3333333333333333
+        },
+        "raw" : {
+          "boundaries" : 126,
+          "meanErrorMs" : 172.06349206349208,
+          "medianErrorMs" : 125,
+          "shareWithinTolerance" : 0.3253968253968254
+        }
+      },
+      {
+        "key" : "024",
+        "padded" : {
+          "boundaries" : 330,
+          "meanErrorMs" : 127.87878787878788,
+          "medianErrorMs" : 120,
+          "shareWithinTolerance" : 0.4
+        },
+        "raw" : {
+          "boundaries" : 330,
+          "meanErrorMs" : 119.93939393939394,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.38181818181818183
+        }
+      }
+    ],
+    "perVoice" : [
+      {
+        "key" : "p225",
+        "padded" : {
+          "boundaries" : 578,
+          "meanErrorMs" : 141.3840830449827,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.3737024221453287
+        },
+        "raw" : {
+          "boundaries" : 578,
+          "meanErrorMs" : 126.9204152249135,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.45501730103806226
+        }
+      },
+      {
+        "key" : "p226",
+        "padded" : {
+          "boundaries" : 620,
+          "meanErrorMs" : 156.9516129032258,
+          "medianErrorMs" : 130,
+          "shareWithinTolerance" : 0.33548387096774196
+        },
+        "raw" : {
+          "boundaries" : 620,
+          "meanErrorMs" : 144.17741935483872,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.39838709677419354
+        }
+      },
+      {
+        "key" : "p227",
+        "padded" : {
+          "boundaries" : 588,
+          "meanErrorMs" : 152.5,
+          "medianErrorMs" : 130,
+          "shareWithinTolerance" : 0.35374149659863946
+        },
+        "raw" : {
+          "boundaries" : 588,
+          "meanErrorMs" : 141.37755102040816,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.4030612244897959
+        }
+      },
+      {
+        "key" : "p233",
+        "padded" : {
+          "boundaries" : 602,
+          "meanErrorMs" : 146.4451827242525,
+          "medianErrorMs" : 120,
+          "shareWithinTolerance" : 0.36046511627906974
+        },
+        "raw" : {
+          "boundaries" : 602,
+          "meanErrorMs" : 134.58471760797343,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.39368770764119604
+        }
+      },
+      {
+        "key" : "p241",
+        "padded" : {
+          "boundaries" : 564,
+          "meanErrorMs" : 137.53546099290782,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.39184397163120566
+        },
+        "raw" : {
+          "boundaries" : 564,
+          "meanErrorMs" : 124.37943262411348,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.44680851063829785
+        }
+      },
+      {
+        "key" : "p252",
+        "padded" : {
+          "boundaries" : 612,
+          "meanErrorMs" : 137.46732026143792,
+          "medianErrorMs" : 110,
+          "shareWithinTolerance" : 0.3790849673202614
+        },
+        "raw" : {
+          "boundaries" : 612,
+          "meanErrorMs" : 123.80718954248366,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.42483660130718953
+        }
+      },
+      {
+        "key" : "p311",
+        "padded" : {
+          "boundaries" : 608,
+          "meanErrorMs" : 137.38486842105263,
+          "medianErrorMs" : 120,
+          "shareWithinTolerance" : 0.3848684210526316
+        },
+        "raw" : {
+          "boundaries" : 608,
+          "meanErrorMs" : 122.51644736842105,
+          "medianErrorMs" : 90,
+          "shareWithinTolerance" : 0.4621710526315789
+        }
+      },
+      {
+        "key" : "p345",
+        "padded" : {
+          "boundaries" : 608,
+          "meanErrorMs" : 141.99013157894737,
+          "medianErrorMs" : 120,
+          "shareWithinTolerance" : 0.3651315789473684
+        },
+        "raw" : {
+          "boundaries" : 608,
+          "meanErrorMs" : 130.04934210526315,
+          "medianErrorMs" : 100,
+          "shareWithinTolerance" : 0.4029605263157895
+        }
+      }
+    ],
+    "raw" : {
+      "boundaries" : 4780,
+      "meanErrorMs" : 131.0418410041841,
+      "medianErrorMs" : 100,
+      "shareWithinTolerance" : 0.42301255230125523
+    },
+    "rawCalibration" : {
+      "high" : {
+        "boundaries" : 2564,
+        "meanAbsErrorMs" : 128.17082683307333,
+        "probabilityMax" : 1,
+        "probabilityMin" : 0.98,
+        "words" : 1282
+      },
+      "low" : {
+        "boundaries" : 2216,
+        "meanAbsErrorMs" : 134.36371841155236,
+        "probabilityMax" : 0.97,
+        "probabilityMin" : 0.33,
+        "words" : 1108
+      },
+      "medianProbability" : 0.98,
+      "outcome" : "PASS"
+    },
+    "rawMeanSignedEndMs" : -137.5062761506277,
+    "rawMeanSignedStartMs" : -120.02510460251054,
+    "shareOutcome" : "FAIL"
+  },
+  "baseline" : {
+    "acousticModel" : "english_mfa.zip",
+    "acousticModelSHA256" : "2c08bd4f82c3943dd57ac09aeac99dbce17a1e1bfe9fd932c8d95cd13d971068",
+    "command" : "mfa align --clean --overwrite --output_format json --num_jobs 4 CORPUS english_mfa.dict english_mfa.zip OUTPUT",
+    "dictionary" : "english_mfa.dict",
+    "dictionarySHA256" : "975bf9c7791535c5aec57995e0bd2b77eb7ca364d1d974c2134e07bb0f16b079",
+    "name" : "Montreal Forced Aligner",
+    "version" : "3.4.4"
+  },
+  "comparator" : {
+    "locale" : "en_US",
+    "name" : "Apple SpeechAnalyzer (SpeechTranscriber)",
+    "status" : "comparator not present (AssetInventory status: supported)"
+  },
+  "corpus" : {
+    "absentClips" : [
+      "p227_007",
+      "p233_010",
+      "p241_015",
+      "p241_020"
+    ],
+    "archiveSHA256" : "f96258be9fdc2cbff6559541aae7ea4f59df3fcaf5cf963aae5ca647357e359c",
+    "attribution" : "Audio and transcripts from CSTR VCTK Corpus 0.92 (Yamagishi, Veaux, MacDonald; University of Edinburgh, Centre for Speech Technology Research), CC BY 4.0, https://doi.org/10.7488/ds/2645",
+    "audio" : "wav48_silence_trimmed/<speaker>/<speaker>_<text>_mic1.flac, as published",
+    "clips" : 155,
+    "name" : "VCTK 0.92",
+    "speakers" : [
+      "p225",
+      "p226",
+      "p227",
+      "p233",
+      "p241",
+      "p252",
+      "p311",
+      "p345"
+    ],
+    "specifiedClips" : 159,
+    "textIDs" : [
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014",
+      "015",
+      "016",
+      "017",
+      "018",
+      "019",
+      "020",
+      "024"
+    ]
+  },
+  "gate" : {
+    "asrWarmBudgetMs" : 900,
+    "medianErrorMaxMs" : 40,
+    "minShareWithinTolerance" : 0.85,
+    "spanPaddingMs" : 80,
+    "toleranceMs" : 80
+  },
+  "generatedAt" : "2026-11-23T11:28:35Z",
+  "identity" : {
+    "cleanTree" : true,
+    "config" : {
+      "algorithmVersion" : 1,
+      "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+      "contractVersion" : 1,
+      "pitchTrackerID" : "none",
+      "thresholdsVersion" : 3,
+      "voicingID" : "none"
+    },
+    "configCanonicalJSON" : "{\"config\":{\"algorithmVersion\":1,\"asrModelID\":\"openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631\",\"contractVersion\":1,\"pitchTrackerID\":\"none\",\"thresholdsVersion\":3,\"voicingID\":\"none\"},\"thresholds\":{\"agreement\":{\"anyDiffPairsMax\":0.05,\"anyDiffWorstPhraseMax\":0.3,\"anyDiffWorstSpeakerMax\":0.15,\"bandCoverageMedianMin\":0.8,\"baselineBootstrapLowerPoints\":-0.05,\"baselineCeiling\":0.85,\"baselineFalsePositiveMaxExcessPoints\":0.01,\"baselineMaxShortfallPoints\":0.03,\"baselineMinLiftCapPoints\":0.1,\"bootstrapResamples\":2000,\"contrastRatioHigh\":1.43,\"contrastRatioLow\":0.7,\"contrastRatioWithinShareMin\":0.9,\"endToEndFalsePositiveMax\":0.02,\"endToEndRecallWithinPoints\":0.1,\"evaluationCoverageMin\":0.9,\"finalDirectionAgreementMin\":0.9,\"inconclusivePairsMax\":0.1,\"l2FalsePositiveMax\":0.02,\"l2FalsePositiveWorstSpeakerMax\":0.1,\"l2RecallMin\":0.8,\"l2RecallWilsonLowerMin\":0.7,\"npviMaxDelta\":15,\"pitchRangeRatioMin\":0.6,\"pitchRangeRatioShareMin\":0.95,\"placementDiffPairsMax\":0.02,\"placementDiffWorstSpeakerMax\":0.07,\"positiveHeldOutSpeakers\":12,\"positiveMinPairs\":150,\"referenceAnomalyReviewShare\":0.2,\"smokeSetMaxSeconds\":60,\"syntheticControlDiffsMax\":0.02,\"unintelligiblePlacementDiffsMax\":0,\"weakLengthMaxDeltaPoints\":15,\"whichSyllableAccuracyMin\":0.8},\"alignment\":{\"asrPaddingMs\":80,\"gapScore\":-1,\"matchScore\":2,\"mismatchScore\":-1},\"applicability\":{\"contrastMinStressed\":1,\"contrastMinUnstressed\":2,\"pitchMinModelVoicedFrames\":20,\"placementMinSyllables\":2,\"rhythmMinSyllables\":3},\"band\":{\"lowerPercentile\":10,\"singleTakeHalfWidthSemitones\":1.5,\"upperPercentile\":90},\"capture\":{\"clipLevel\":0.999,\"clipRunSamples\":3,\"clippedShare\":0.005,\"endOfTakeS\":1.2,\"endpointArmSpeechS\":0.3,\"floorClampHighDBFS\":-35,\"floorClampLowDBFS\":-70,\"floorPercentile\":10,\"floorWindowS\":2,\"importLimitS\":15,\"noSpeechS\":0.15,\"noSpeechVoicedS\":0.3,\"offsetAboveFloorDB\":6,\"onsetAboveFloorDB\":10,\"onsetFrames\":3,\"onsetMinimumDBFS\":-50,\"onsetVoicedWithinMs\":100,\"preRollMs\":200,\"provisionalFloorDBFS\":-60,\"recordingCapS\":20,\"retractionAboveFloorDB\":10,\"ringBufferMs\":500,\"settleNonSpeechMs\":300,\"settleStationaryAfterS\":2,\"stationarySpreadDB\":6,\"tooQuietDBFS\":-40,\"tooShortS\":0.5},\"confidence\":{\"contrastHigh\":0.9,\"contrastMedium\":0.7,\"finalDirectionHighFrames\":15,\"finalDirectionMediumFrames\":10,\"levelHigh\":0.7,\"levelMedium\":0.45,\"pitchHigh\":0.7,\"pitchMedium\":0.5,\"timingGood\":0.8,\"timingRough\":0.5},\"decision\":{\"closeMinShapeMatch\":0.7,\"maxDiffRows\":3,\"maxNonFillerInsertions\":2,\"minComparableCoverage\":0.7,\"minMatchShare\":0.8},\"diffs\":{\"contrastBelowModelRatio\":0.7,\"contrastModelMinimum\":1.3,\"pitchRangeBelowModelRatio\":0.6,\"pitchRangeNarrowerSemitones\":3,\"tooMuchContrastAboveModelRatio\":2,\"weakLengthPointsAboveModel\":15},\"finalDirection\":{\"extendedWindowMs\":300,\"fallSemitonesPerSecond\":-5,\"minVoicedFrames\":10,\"riseSemitonesPerSecond\":5,\"windowMs\":200},\"measures\":{\"shapeMatchMinOverlappingFrames\":20},\"performance\":{\"asrWarmMs\":900,\"endToEndBudgetS\":2,\"nonASRStagesMs\":500},\"pitch\":{\"axisInitialSemitones\":12,\"axisMaxSemitones\":24,\"axisStepSemitones\":6,\"hopMs\":10,\"lineBreakMs\":250,\"maxF0Hz\":500,\"medianFilterFrames\":5,\"minF0Hz\":60,\"minVoicedRunMs\":30,\"voicingProbability\":0.5,\"windowMs\":40},\"prominence\":{\"durationFloorLn\":0.05,\"durationWeight\":0.4,\"energyFloorDB\":1,\"energyMinimumDBFS\":-60,\"energyWeight\":0.3,\"exposurePauseMs\":150,\"lengtheningLambda\":1.6,\"pitchFloorSemitones\":1,\"pitchMinVoicedFrames\":3,\"pitchWeight\":0.3,\"secondaryStressShare\":0.75,\"tauHigh\":{\"syllables2to4\":0.5,\"syllables5to8\":0.5,\"syllables9Plus\":0.5},\"tauMedium\":{\"syllables2to4\":0.25,\"syllables5to8\":0.25,\"syllables9Plus\":0.25}},\"voicing\":{\"aboveFloorDB\":3,\"hopMs\":10,\"maxLagMs\":16.7,\"minLagMs\":2,\"minPeak\":0.45,\"windowMs\":40},\"wordTimestamps\":{\"medianErrorMaxMs\":40,\"withinToleranceMs\":80,\"withinToleranceShareMin\":0.85}}}",
+    "configDigest" : "dfbe69ecb19fc4dee69801d68d5a34d91f594f18446afbd7462dd3adc1dba430",
+    "configDigestRecipe" : "printf '%s' \"$(plutil -extract identity.configCanonicalJSON raw -o - <report>.json)\" | shasum -a 256",
+    "corpusManifestHash" : "1ba061d2ca470e64ae96b6aeab93251255e0505226348eb962f423fc0723e716",
+    "corpusManifestRecipe" : "shasum -a 256 <clip files> | cut -d' ' -f1 | LC_ALL=C sort | shasum -a 256",
+    "evaluatedCommit" : "0a2913c60f3fac6e30f1e088665b2c3c5b418ec7",
+    "labelFile" : "fixtures/vctk/mfa-word-baseline.json",
+    "labelHash" : "e2751a293ac6a886775d0ae1bd608d6d27ef9c48a0c1f09362859899ec8dcb59",
+    "sourceTreeHash" : "893a385879a60d7848c9d9ab967ef78f15c8e2ac44014ddbf1fdc1fe973a06c0",
+    "sourceTreeRecipe" : "git ls-tree -r --full-tree <commit> | grep -v \"$(printf '\\t')docs/agreement/reports/\" | LC_ALL=C sort | shasum -a 256",
+    "toolchain" : {
+      "hardware" : "Apple M3 Max, Mac15,11",
+      "macOS" : "26.3 (25D125)",
+      "swift" : "swift-driver version: 1.127.14.1 Apple Swift version 6.2.3 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)",
+      "xcode" : "Xcode 26.2 build 17C52"
+    }
+  },
+  "model" : {
+    "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+    "decoding" : "greedy (temperature 0, WhisperKit fallback), English, word timestamps",
+    "files" : [
+      {
+        "path" : "model/AudioEncoder.mlmodelc/analytics/coremldata.bin",
+        "sha256" : "c4e096b2abd561f00b9b698401df3fbe1a0d0c8d2476ff19cb4e1995680e827e",
+        "size" : 243,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/analytics/coremldata.bin"
+      },
+      {
+        "path" : "model/AudioEncoder.mlmodelc/coremldata.bin",
+        "sha256" : "e316980638e2099e83cb1a93b903717dc12b3c2168d0ab69113764c3767696ba",
+        "size" : 347,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/coremldata.bin"
+      },
+      {
+        "path" : "model/AudioEncoder.mlmodelc/metadata.json",
+        "sha256" : "d6785fae31c3f86d60058c14c79902f716f106dd9e36af7d3fe78b9c34867fce",
+        "size" : 1863,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/metadata.json"
+      },
+      {
+        "path" : "model/AudioEncoder.mlmodelc/model.mil",
+        "sha256" : "dc74813e26fce790fe22a33dcef8be535b9dce566f38a8bdb677f5e07dcf9138",
+        "size" : 579125,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/model.mil"
+      },
+      {
+        "path" : "model/AudioEncoder.mlmodelc/model.mlmodel",
+        "sha256" : "1d42038f84b508da5ce9b953302387ffedc097c346d36a56b765109002b6080e",
+        "size" : 79853,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/model.mlmodel"
+      },
+      {
+        "path" : "model/AudioEncoder.mlmodelc/weights/weight.bin",
+        "sha256" : "74f15e6d2f7694af54e90227cbf22fd6c04082638f163b78a909967b16edc1c7",
+        "size" : 41189632,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/AudioEncoder.mlmodelc/weights/weight.bin"
+      },
+      {
+        "path" : "model/MelSpectrogram.mlmodelc/analytics/coremldata.bin",
+        "sha256" : "7f77e6457285248f99cd7aa3fd4cc2efbb17733e63e7023ac53abe1f95785d07",
+        "size" : 243,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/MelSpectrogram.mlmodelc/analytics/coremldata.bin"
+      },
+      {
+        "path" : "model/MelSpectrogram.mlmodelc/coremldata.bin",
+        "sha256" : "dabdc5aa69f6ef4d97dc9499f5c30514e00e96b53b750b33a5a6471363c71662",
+        "size" : 328,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/MelSpectrogram.mlmodelc/coremldata.bin"
+      },
+      {
+        "path" : "model/MelSpectrogram.mlmodelc/metadata.json",
+        "sha256" : "66a60d0babfcae566910a6d699471efde002d92205a7d349e16989ca4d6729d3",
+        "size" : 1848,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/MelSpectrogram.mlmodelc/metadata.json"
+      },
+      {
+        "path" : "model/MelSpectrogram.mlmodelc/model.mil",
+        "sha256" : "b8063d8e57c113472ac7c2d248e44383568a018978a753c1884ac406b997a374",
+        "size" : 10176,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/MelSpectrogram.mlmodelc/model.mil"
+      },
+      {
+        "path" : "model/MelSpectrogram.mlmodelc/weights/weight.bin",
+        "sha256" : "ee77f9b67765f7abc33f16374081b2389cf1d3a89536187b241950c5a2e5d6c1",
+        "size" : 354080,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/MelSpectrogram.mlmodelc/weights/weight.bin"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/analytics/coremldata.bin",
+        "sha256" : "e870aac5de88676c1ad93cb3939f257e6de30e5235c3f9d7686398ebecafdb8d",
+        "size" : 243,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/analytics/coremldata.bin"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/coremldata.bin",
+        "sha256" : "4b23ff9d9fe376f2b86f9cf55af3218560a4e4d692041360510fbad490c0db43",
+        "size" : 633,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/coremldata.bin"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/metadata.json",
+        "sha256" : "da9be60fd96a13938445fd589a54bf56f77474efd541027bfb79537ddf67d10c",
+        "size" : 4753,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/metadata.json"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/model.mil",
+        "sha256" : "e380edc70b68dc1e06c1ae19aaa8fd5f85a2b14242b9cc871ce5648cfb3ed3ce",
+        "size" : 200444,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/model.mil"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/model.mlmodel",
+        "sha256" : "72f1214f7c8b26e467dd8233572eaa5cbe200f30a36b918d4c289f9fc8c4f401",
+        "size" : 160348,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/model.mlmodel"
+      },
+      {
+        "path" : "model/TextDecoder.mlmodelc/weights/weight.bin",
+        "sha256" : "4649599bd2d97f87ffc716e6da2f61a06c06ac5a9424dd23edc3d4bf66fb6221",
+        "size" : 104121136,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/TextDecoder.mlmodelc/weights/weight.bin"
+      },
+      {
+        "path" : "model/config.json",
+        "sha256" : "ab22779256bdb966a5dc4f033cb9ac6471e0e1e2574fda258655c8ad2a5ea700",
+        "size" : 1454,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/config.json"
+      },
+      {
+        "path" : "model/generation_config.json",
+        "sha256" : "ea4714d2f89ab6de18c6dead99c10fbeeb383768fa6b564d9d4d7889140d70b5",
+        "size" : 982,
+        "url" : "https://huggingface.co/argmaxinc/whisperkit-coreml/resolve/0f63a7800b00dd0226abd051b906c246e1907482/openai_whisper-base.en/generation_config.json"
+      },
+      {
+        "path" : "tokenizer/config.json",
+        "sha256" : "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+        "size" : 1937,
+        "url" : "https://huggingface.co/openai/whisper-base.en/resolve/911407f4214e0e1d82085af863093ec0b66f9cd6/config.json"
+      },
+      {
+        "path" : "tokenizer/tokenizer.json",
+        "sha256" : "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+        "size" : 2405679,
+        "url" : "https://huggingface.co/openai/whisper-base.en/resolve/911407f4214e0e1d82085af863093ec0b66f9cd6/tokenizer.json"
+      },
+      {
+        "path" : "tokenizer/tokenizer_config.json",
+        "sha256" : "14f84bdf4b9ecdbd4738ddc81c17a1baedfc02bb93c6e049c951e15a1b40b70d",
+        "size" : 805,
+        "url" : "https://huggingface.co/openai/whisper-base.en/resolve/911407f4214e0e1d82085af863093ec0b66f9cd6/tokenizer_config.json"
+      }
+    ],
+    "modelSHA256" : "a59b5631ca10e3067f1af5ee23d2d03c0cc6c00c8399f030ce2d99a4e98401fd",
+    "shippingModel" : "openai_whisper-base.en",
+    "sources" : [
+      {
+        "commit" : "0f63a7800b00dd0226abd051b906c246e1907482",
+        "folder" : "openai_whisper-base.en",
+        "license" : "MIT",
+        "repo" : "https://huggingface.co/argmaxinc/whisperkit-coreml",
+        "role" : "model"
+      },
+      {
+        "commit" : "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "license" : "Apache-2.0",
+        "repo" : "https://huggingface.co/openai/whisper-base.en",
+        "role" : "tokenizer"
+      }
+    ],
+    "whisperKitCommit" : "1bbc57cb7fe6410248a685b1c5a3c6d56adc2ed4",
+    "whisperKitVersion" : "1.1.1"
+  },
+  "notes" : [
+    "Clips are the official VCTK 0.92 wav48_silence_trimmed mic1 files, untrimmed by this spec: no shared 02/15 trim exists yet.",
+    "Comparable tokens: the longest in-order match of normalised words (lower case, punctuation stripped) against the transcript's phrase tokens, on each side. Padded spans are not clamped to the clip.",
+    "4 of the 159 specified clips are not in the VCTK 0.92 archive (p227_007, p233_010, p241_015, p241_020). They are reported, not replaced."
+  ],
+  "suite" : "timestamp-feasibility",
+  "timing" : {
+    "budgetOutcome" : "PASS",
+    "clipSeconds" : {
+      "count" : 155,
+      "maxMs" : 9.0283125,
+      "medianMs" : 5.928375,
+      "p90Ms" : 7.723625
+    },
+    "coldASRMs" : 251.604584,
+    "loadMs" : 747.229209,
+    "verifyMs" : 82.518167,
+    "warmASR" : {
+      "count" : 154,
+      "maxMs" : 294.462458,
+      "medianMs" : 114.67922899999999,
+      "p90Ms" : 150.264666
+    },
+    "warmBudgetMs" : 900
+  },
+  "verdict" : {
+    "calibration" : "PASS",
+    "medianError" : "FAIL",
+    "overall" : "FAIL",
+    "shareWithinTolerance" : "FAIL",
+    "warmBudget" : "PASS"
+  }
+}
