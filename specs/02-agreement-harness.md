@@ -330,6 +330,25 @@ and 16 held-out (21 F / 19 M).
 **Smoke set.** 47 speechocean762 utterances (20 stress-wrong + 100 unanimous correct words, train speakers only) and
 6 VCTK clips (p245, p288, p360 × 002, 018): 4.3 MB. The 5 MB cap is read as 5,000,000 bytes for the whole folder.
 
+**Positive-set guard (fix round 3, CTO ruling 14:18).**
+- *One consumer:* `PositiveSetGates.line` (`PositiveSet.swift`) is the one function that turns a positive-set
+  measurement into a gate line. It covers spec 09's band coverage, spec 10's any-diff, placement-diff, inconclusive
+  and coverage gates, and spec 22's positive-set placement-FP gate. While `VCTKPairs.status()` is NOT EVALUATED, it
+  returns `MetricStatus.blocked` ("NOT EVALUATED (blocked on spec 24: …)") whatever was measured, and it marks the
+  line `dependsOnPositiveSet`.
+- *No Bool leak:* `MetricStatus.isPass` is an exhaustive switch, and only `.pass` is true.
+- *Release summary:* `ReleaseSummary` takes the positive-set status, prints a `Positive set:` line, and is never MET
+  unless the set is evaluable. Reports record `positiveSet` and `summaryLines`.
+- *Report check:* `scripts/check-positive-set-guard.sh` fails a report JSON in any of three cases while the set is
+  NOT EVALUATED (a missing status counts as NOT EVALUATED): a dependent line says PASS, `Release gate: MET`, or a
+  `Positive set:` line other than NOT EVALUATED. It also fails any report that mentions a waiver.
+  `check-report-identity.sh` runs it.
+- *Tests:* doctored fixtures in `scripts/test-check-report-identity.sh`. `PositiveSetGuardTests` runs the script on a
+  written report and doctored copies, so PR CI covers it.
+- *Speaker counts:* the picker writes `tuningCount` / `heldOutCount` (24 / 16) and refuses counts below the floors
+  (≥ 18 / ≥ 12). `VCTKEvalSpeakersManifest.meetsFloors()` checks that they match the listed speakers and meet the
+  floors. The 6 CV folds stay.
+
 **Choices the spec left open** (least-committal, listed in the PR): λ grid step 0.1 (11 values); the full grid is
 6.3 × 10⁸ points, so the runner walks any slice and the search strategy is for spec 08/11; FP tie-break order
 shared-detector, VCTK placement, any-diff; the §2 constraints 1.6% / 4% live in `TuningSelectionRule`, not
