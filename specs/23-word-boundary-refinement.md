@@ -1,6 +1,6 @@
 # 23: Word-boundary refinement
 
-Status: Draft · Branch: – · Depends on: 03 (WhisperKit word timings, the unpadded bar and its eval), 04 (pYIN) ·
+Status: Ready · Branch: – · Depends on: 03 (WhisperKit word timings, the unpadded bar and its eval), 04 (pYIN) ·
 Estimate: 6–8 h agent run + 1.5 h Raph review · Risk: high
 
 Source: CTO ruling on spec 03 (2026-11-23 13:00 Europe/Paris, relayed by Accent Mirror Lead). WhisperKit `base.en`

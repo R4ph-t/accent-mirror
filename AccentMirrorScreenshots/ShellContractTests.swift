@@ -198,8 +198,13 @@ struct ShellContractTests {
         guard case .takeProblem(_, .clipped, "Too loud to measure"?) = try you("tp-clipped") else {
             Issue.record("tp-clipped"); return
         }
-        guard case .takeProblem(_, .plain, nil) = try you("tp-wordsDontMatch") else { Issue.record("tp-wordsDontMatch"); return }
-        guard case .takeProblem(_, .plain, nil) = try you("tp-tooShort") else { Issue.record("tp-tooShort"); return }
+        // Round 3, Designer answer 3: too short and words don't match get the too-quiet treatment and a caption.
+        guard case .takeProblem(_, .nearSilent, "Words didn't match the phrase"?) = try you("tp-wordsDontMatch") else {
+            Issue.record("tp-wordsDontMatch"); return
+        }
+        guard case .takeProblem(_, .nearSilent, "Too short to measure"?) = try you("tp-tooShort") else {
+            Issue.record("tp-tooShort"); return
+        }
 
         let problemNames = try library.allNames().filter { $0.hasPrefix("tp-") } + ["tooQuiet"]
         for name in problemNames {
@@ -214,6 +219,218 @@ struct ShellContractTests {
                 guard case .placeholder = ShellPresenter.strip(loaded).you else { Issue.record("\(name)"); continue }
             }
         }
+    }
+
+    // MARK: Round 3, Addendum r3 and the 12:19 batch
+
+    /// B6: your unstressed bars use the final2 values in both themes.
+    @Test func yourUnstressedBarTokensAreTheFinal2Values() {
+        func rgba(_ c: Color) -> [Int] {
+            let r = c.resolve(in: EnvironmentValues())
+            return [r.red, r.green, r.blue, r.opacity].map { Int(($0 * 255).rounded()) }
+        }
+        #expect(rgba(Palette.light.stripBarYou) == rgba(Color(.sRGB, red: 28 / 255, green: 26 / 255, blue: 23 / 255, opacity: 0.50)))
+        #expect(rgba(Palette.dark.stripBarYou) == rgba(Color(.sRGB, red: 247 / 255, green: 244 / 255, blue: 238 / 255, opacity: 0.58)))
+    }
+
+    /// B3 (§10): in a card-1 sentence the mistake is only bold caps in mistake blue. The sentence carries no
+    /// triangle or underline glyph; those belong to strip labels (`ClusterLabel.Style.mistake`).
+    @Test func cardSentenceMistakeIsCapsOnly() throws {
+        let row = try card("result-feedback").rows.first { $0.sentence.contains { $0.role == .mistake } }
+        let mistakes = row?.sentence.filter { $0.role == .mistake }.map(\.text)
+        #expect(mistakes == ["PHO"])
+        #expect(row?.sentence.plain.contains { "\u{25B2}\u{25B4}\u{26A0}".contains($0) } == false)
+    }
+
+    /// Every `rows-*` fixture: one per diff-row kind it demonstrates (round 4 adds `rows-contrast`).
+    private static let rowFixtures = [
+        "rows-contrast", "rows-final-direction-higher", "rows-final-direction-lower", "rows-range", "rows-too-much-contrast",
+    ]
+
+    @Test func theRowFixturesAreTheFiveWeExpect() throws {
+        #expect(try library.allNames().filter { $0.hasPrefix("rows-") } == Self.rowFixtures)
+    }
+
+    /// B11 / 12:19 a: each row fixture draws its own take, not the close-match one, and no two share one.
+    @Test func rowFixturesUseTheirOwnTake() throws {
+        var takes: [String] = []
+        for name in Self.rowFixtures {
+            let take = try #require(try library.load(name).fixture.take, "\(name)")
+            #expect(take != "photography-take04-close", "\(name)")
+            takes.append(take)
+        }
+        #expect(Set(takes).count == Self.rowFixtures.count)
+    }
+
+    /// Round 4, Designer answer 3: each row fixture carries exactly one row, so its take shows one difference.
+    @Test(arguments: [
+        ("rows-range", "Use more of your voice range. Your pitch stays flatter than the model's."),
+        ("rows-contrast", "Make HAR and LOOKS stronger. Right now they sound like the syllables around them."),
+        ("rows-final-direction-higher", "End higher, the way the model does."),
+        ("rows-final-direction-lower", "End lower, the way the model does."),
+        ("rows-too-much-contrast", "You can soften HAR and LOOKS a little. The model doesn't push them as hard."),
+    ])
+    func rowFixtureCarriesOneRow(_ name: String, _ sentence: String) throws {
+        #expect(try library.load(name).fixture.analysis?.verdict?.rows?.count == 1, "\(name)")
+        #expect(try sentences(name) == [sentence])
+    }
+
+    private func take(_ id: String) throws -> TakeFixture {
+        let url = library.root.appendingPathComponent("takes").appendingPathComponent(id + ".json")
+        return try JSONDecoder().decode(TakeFixture.self, from: Data(contentsOf: url))
+    }
+
+    private func prominences(_ take: TakeFixture) -> [String: Double] {
+        Dictionary(take.words.flatMap(\.syllables).map { ($0.text, $0.prominence) }, uniquingKeysWith: { a, _ in a })
+    }
+
+    private func pitch(_ take: TakeFixture) -> [Double] { take.pitch.flatMap(\.points).map(\.st) }
+
+    /// Round 4: a photography row take differs from the close-match take only in its own dimension, so the
+    /// charts show one difference: the bars named by the row, or your pitch line, never both.
+    @Test func rowTakesChangeOnlyTheirOwnDimension() throws {
+        let close = try take("photography-take04-close")
+        let stressed: Set<String> = ["tog", "har", "looks"]
+        func changedBars(_ name: String) throws -> Set<String> {
+            let mine = prominences(try #require(try library.load(name).take))
+            return Set(prominences(close).keys.filter { mine[$0] != prominences(close)[$0] })
+        }
+        func pitchChanged(_ name: String) throws -> Bool {
+            zip(pitch(try #require(try library.load(name).take)), pitch(close)).contains { abs($0 - $1) > 0.01 }
+        }
+        // Lines only.
+        for name in ["rows-range", "rows-final-direction-lower"] {
+            #expect(try changedBars(name).isEmpty, "\(name)")
+            #expect(try pitchChanged(name), "\(name)")
+        }
+        // Bars only, and only stressed ones (no small-syllable change, which would be a reduction row).
+        #expect(try changedBars("rows-contrast") == ["har", "looks"])
+        #expect(try changedBars("rows-too-much-contrast").isSubset(of: stressed))
+        for name in ["rows-contrast", "rows-too-much-contrast"] { #expect(try !pitchChanged(name), "\(name)") }
+        let weak = prominences(try #require(try library.load("rows-contrast").take))
+        let strong = prominences(try #require(try library.load("rows-too-much-contrast").take))
+        for word in ["har", "looks"] {
+            #expect(weak[word]! < prominences(close)[word]!)
+            #expect(strong[word]! > prominences(close)[word]!)
+            #expect(strong[word]! > strong["tog"]!)
+        }
+    }
+
+    /// Round 4, Designer answer 1: "End higher" sits on a question whose native really rises at the end, and
+    /// your ending falls; "End lower" on the statement, whose native falls while yours rises.
+    @Test func finalDirectionTakesMatchTheirRow() throws {
+        func ending(_ points: [Double]) -> Double { points[points.count - 1] - points[points.count - 3] }
+        let higher = try library.load("rows-final-direction-higher")
+        #expect(higher.phrase.text == "Is photography harder than it looks?")
+        #expect(higher.fixture.sidebar?.selectedPhraseID == higher.phrase.id)
+        #expect(ending(higher.phrase.band.flatMap(\.points).map(\.st)) > 3)
+        #expect(ending(pitch(try #require(higher.take))) < -3)
+        let words = try #require(higher.take).words.compactMap(\.expected)
+        #expect(words == higher.phrase.words.map { $0.text.lowercased().trimmingCharacters(in: .punctuationCharacters) })
+
+        let lower = try library.load("rows-final-direction-lower")
+        #expect(ending(lower.phrase.band.flatMap(\.points).map(\.st)) < -3)
+        #expect(ending(pitch(try #require(lower.take))) > 3)
+    }
+
+    /// Round 4, Designer answer 2: too much contrast names every syllable that's over, joined like the other rows.
+    @Test(arguments: [
+        (["HAR"], "You can soften HAR a little. The model doesn't push it as hard."),
+        (["HAR", "LOOKS"], "You can soften HAR and LOOKS a little. The model doesn't push them as hard."),
+        (["TOG", "HAR", "LOOKS"], "You can soften TOG, HAR and LOOKS a little. The model doesn't push them as hard."),
+    ])
+    func tooMuchContrastNamesEverySyllable(_ targets: [String], _ sentence: String) {
+        let row = Copy.row(DiffRow(kind: .tooMuchContrast, targets: targets))
+        #expect(row.plain == sentence)
+        #expect(row.filter { $0.role == .stressed }.map(\.text) == targets)
+    }
+
+    /// Row order: too much contrast comes last whatever order the result lists the rows in
+    /// (`feedback-too-much-contrast-last`), and drops out when three rows come before it.
+    @Test func tooMuchContrastComesLastAndOnlyWithRoom() throws {
+        let rows = try card("feedback-too-much-contrast-last").rows.map(\.sentence.plain)
+        #expect(rows.count == 2)
+        #expect(rows.first?.hasPrefix("Keep the small syllables short and light") == true)
+        #expect(rows.last?.hasPrefix("You can soften HAR and LOOKS") == true)
+        let full = ShellPresenter.orderedRows([
+            DiffRow(kind: .tooMuchContrast, targets: ["HAR"]), DiffRow(kind: .range),
+            DiffRow(kind: .reduction, targets: ["ra"]), DiffRow(kind: .finalDirection, direction: "lower"),
+        ])
+        #expect(full.map(\.kind) == [.reduction, .range, .finalDirection])
+    }
+
+    /// B11 / 12:19 b: targetWordsMissing names words of the fixture's own phrase, and the take has a missing
+    /// slot for exactly those words.
+    @Test func missingWordsComeFromThePhraseAndMatchTheSlots() throws {
+        let expected = [
+            "inc-targetWordsMissing-one": ["harder"],
+            "inc-targetWordsMissing-two": ["harder", "looks"],
+        ]
+        for name in try library.allNames() where name.hasPrefix("inc-targetWordsMissing") {
+            let loaded = try library.load(name)
+            let words = loaded.fixture.analysis?.verdict?.inconclusive?.words ?? []
+            if let want = expected[name] { #expect(words == want, "\(name)") }
+            let phraseWords = Set(loaded.phrase.words.map { $0.text.lowercased().trimmingCharacters(in: .punctuationCharacters) })
+            #expect(!words.isEmpty && words.allSatisfy(phraseWords.contains), "\(name)")
+            guard case .bars(_, let slots, _) = ShellPresenter.strip(loaded).you else { Issue.record("\(name)"); continue }
+            #expect(slots.map(\.expected) == words, "\(name)")
+            #expect(ShellPresenter.pitch(loaded).message == nil, "\(name) still has pitch to show")
+        }
+    }
+
+    // MARK: Round 3, 12:19 batch c: final-direction icons
+
+    @Test func finalDirectionIconFollowsTheDirection() throws {
+        let higher = try card("rows-final-direction-higher").rows.first { $0.sentence.plain.hasPrefix("End higher") }
+        #expect(higher?.icon == "arrow.up.right")
+        let lower = try card("rows-final-direction-lower").rows.first { $0.sentence.plain.hasPrefix("End lower") }
+        #expect(lower?.icon == "arrow.down.right")
+    }
+
+    // MARK: Round 3, Designer answer 1: the noClearDifference sentence
+
+    private static let ncdSentences: [NoClearDifferenceReason: String] = [
+        .pitchShapeBelowClose: "No clear difference in stress or rhythm. Your pitch moves a little differently from the model's, but not in one place we can point to.",
+        .optionalMeasuresUnavailable: "No clear difference in stress or rhythm. Some pitch measures couldn't be taken on this take.",
+        .mediumConfidenceOnly: "Nothing stood out clearly enough to point at. Try another take to check.",
+        .timingRough: "No clear difference, but the timing match was rough, so small differences may be hidden.",
+    ]
+
+    /// Each §13 item 1 reason on its own gives its full sentence, with or without quiet-line reasons beside it.
+    @Test(arguments: [
+        NoClearDifferenceReason.pitchShapeBelowClose, .optionalMeasuresUnavailable, .mediumConfidenceOnly, .timingRough,
+    ])
+    func noClearDifferenceReasonOnItsOwn(_ reason: NoClearDifferenceReason) {
+        let expected = Self.ncdSentences[reason]
+        #expect(Copy.noClearDifference([reason]).plain == expected)
+        #expect(Copy.noClearDifference([.insertionsPresent, reason, .nonTargetWordsIncomplete]).plain == expected)
+    }
+
+    /// Several §13 item 1 reasons: the first in §13 order wins, whatever order the result lists them in.
+    @Test func noClearDifferenceFirstApplicableReasonWins() {
+        #expect(Copy.noClearDifference([.timingRough, .pitchShapeBelowClose]).plain == Self.ncdSentences[.pitchShapeBelowClose])
+        #expect(Copy.noClearDifference([.timingRough, .mediumConfidenceOnly, .optionalMeasuresUnavailable]).plain ==
+            Self.ncdSentences[.optionalMeasuresUnavailable])
+        #expect(Copy.noClearDifference([.timingRough, .mediumConfidenceOnly]).plain == Self.ncdSentences[.mediumConfidenceOnly])
+        #expect(Copy.noClearDifference(NoClearDifferenceReason.allCases.reversed()).plain ==
+            Self.ncdSentences[.pitchShapeBelowClose])
+    }
+
+    /// No §13 item 1 reason: the bare sentence, and the A6 quiet line (if any) sits under it.
+    @Test func noClearDifferenceBareSentenceOnlyWhenNoReasonApplies() {
+        let bare = "No clear difference in stress or rhythm."
+        #expect(Copy.noClearDifference([]).plain == bare)
+        #expect(Copy.noClearDifference([.insertionsPresent]).plain == bare)
+        #expect(Copy.noClearDifference([.nonTargetWordsIncomplete]).plain == bare)
+        #expect(Copy.noClearDifference([.nonTargetWordsIncomplete, .insertionsPresent]).plain == bare)
+    }
+
+    /// The ncd fixtures follow the same rule end to end.
+    @Test func noClearDifferenceFixturesUseTheirReasonSentence() throws {
+        #expect(try sentences("ncd-pitchShapeBelowClose") == [Self.ncdSentences[.pitchShapeBelowClose]!])
+        #expect(try sentences("ncd-optionalMeasuresUnavailable") == [Self.ncdSentences[.optionalMeasuresUnavailable]!])
+        #expect(try sentences("ncd-mediumConfidenceOnly") == [Self.ncdSentences[.mediumConfidenceOnly]!])
+        #expect(try sentences("ncd-timingRough") == [Self.ncdSentences[.timingRough]!])
     }
 
     @Test func noVoicedFramesKeepsItsMessage() throws {
@@ -239,11 +456,21 @@ struct ShellContractTests {
     /// The italics are the real bundled faces, not a slanted copy or a system fallback.
     @Test func italicFacesAreBundled() {
         BundledFonts.register(from: Bundle(for: ShellModel.self))
-        for name in [BundledFonts.geistItalic, BundledFonts.geistMonoMediumItalic] {
+        for name in [BundledFonts.geistItalic] {
             let font = CTFontCreateWithName(name as CFString, 12, nil)
             #expect(CTFontCopyPostScriptName(font) as String == name)
             #expect(CTFontGetSymbolicTraits(font).contains(.traitItalic), "\(name)")
         }
+    }
+
+    /// Designer answer 4 (round 3): no Geist Mono italic is bundled, and mono labels stay upright.
+    @Test func noMonoItalicIsBundled() throws {
+        let geist = try #require(BundledFonts.fontsDirectory(in: Bundle(for: ShellModel.self)))
+            .appendingPathComponent("Geist", isDirectory: true)
+        let files = try FileManager.default.contentsOfDirectory(atPath: geist.path)
+        #expect(!files.contains { $0.hasPrefix("GeistMono-Italic") })
+        #expect(!BundledFonts.allPostScriptNames.contains { $0.hasPrefix("GeistMono") && $0.hasSuffix("Italic") })
+        #expect(TypeRole.mono.italicFontName == TypeRole.mono.fontName)
     }
 
     @Test func comingSoonIsDrivenByAnEmptyPack() {

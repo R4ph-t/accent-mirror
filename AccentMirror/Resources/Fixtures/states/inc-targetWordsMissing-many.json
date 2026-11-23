@@ -9,16 +9,16 @@
     2,
     1
   ],
-  "take": "photography-take04-close",
+  "take": "photography-take04-missing-three",
   "analysis": {
     "verdict": {
       "kind": "inconclusive",
       "inconclusive": {
         "reason": "targetWordsMissing",
         "words": [
-          "explained",
-          "rainbow",
-          "physically"
+          "photography",
+          "harder",
+          "looks"
         ]
       }
     },

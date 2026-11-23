@@ -17,6 +17,10 @@ enum WindowRenderer {
 
     /// Builds a window with the same chrome and root view the app uses.
     static func makeWindow(model: ShellModel, appearance: Appearance) -> NSWindow {
+        autoreleasepool { buildWindow(model: model, appearance: appearance) }
+    }
+
+    private static func buildWindow(model: ShellModel, appearance: Appearance) -> NSWindow {
         let window = NSWindow(
             contentRect: NSRect(origin: .zero, size: pointSize),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
@@ -59,6 +63,21 @@ enum WindowRenderer {
               let png = srgb.representation(using: .png, properties: [:])
         else { throw RenderError.encode }
         return png
+    }
+
+    /// Tears a captured window down so it is deallocated before the next one: 124 frames otherwise leave over
+    /// 100 live windows (AppKit's excessive-window warning). Runs after the capture, so the frames don't change.
+    static func dispose(_ window: NSWindow) async {
+        autoreleasepool {
+            window.orderOut(nil)
+            window.toolbar = nil
+            window.contentViewController = nil
+            window.delegate = nil
+            window.close()
+        }
+        // Let the run loop turn so AppKit and SwiftUI drop their last references.
+        try? await Task.sleep(for: .milliseconds(30))
+        await Task.yield()
     }
 
     enum RenderError: Error { case noFrameView, bitmap, encode }

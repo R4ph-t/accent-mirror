@@ -43,6 +43,8 @@ enum Copy {
     static let yourTakeAppearsHere = "Your take appears here."
     static let tooQuietToMeasure = "Too quiet to measure"
     static let tooLoudToMeasure = "Too loud to measure"
+    static let tooShortToMeasure = "Too short to measure"
+    static let wordsDidntMatch = "Words didn't match the phrase"
     static let noPitch = "No pitch to show for this take"
     static let unalignable = "This take was recorded for the old wording, so it can't be compared."
     static let notComparable = "NOT COMPARABLE"
@@ -67,8 +69,10 @@ enum Copy {
         case .finalDirection:
             return [.plain(row.direction == "higher" ? "End higher, the way the model does." : "End lower, the way the model does.")]
         case .tooMuchContrast:
-            return [.plain("You can soften ")] + joinedStressed(row.targets ?? []) +
-                [.plain(" a little. The model doesn't push it as hard.")]
+            // Names every syllable that's over (Designer, round 4): "You can soften HAR and LOOKS a little."
+            let targets = row.targets ?? []
+            return [.plain("You can soften ")] + joinedStressed(targets) +
+                [.plain(" a little. The model doesn't push \(targets.count > 1 ? "them" : "it") as hard.")]
         }
     }
 
@@ -91,6 +95,7 @@ enum Copy {
         return sentence
     }
 
+    /// "A", "A and B", "A, B and C", each in bold caps.
     private static func joinedStressed(_ words: [String]) -> Sentence {
         var out: Sentence = []
         for (index, word) in words.enumerated() {
@@ -243,13 +248,14 @@ enum Copy {
         }
     }
 
-    /// The caption under your strip row for a take problem with audio (§7.1). Only the Designer's two
-    /// captions exist; too short and words don't match have none (see the PR's open points).
+    /// The caption under your strip row for a take problem with audio (§7.1, Designer answer 3 of round 3).
     static func takeProblemCaption(_ problem: TakeProblem) -> String? {
         switch problem {
         case .tooQuiet: tooQuietToMeasure
         case .clipped: tooLoudToMeasure
-        default: nil
+        case .tooShort: tooShortToMeasure
+        case .wordsDontMatch: wordsDidntMatch
+        case .noMicrophone, .micDenied, .noSpeech: nil
         }
     }
 
