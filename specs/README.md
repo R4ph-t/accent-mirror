@@ -12,5 +12,9 @@ flipped to Ready. Spec 03 does not wait on spec 11; Raph allowed the timestamp c
 |---|---|---|---|---|---|
 | 00 | [Project skeleton (by hand)](00-project-skeleton.md) | Done | – | – | 0.5 h |
 | 03 | [Timestamp feasibility](03-timestamp-feasibility.md) | Draft | 00 | 3–4 h | 1 h |
+| 04 | [Pitch tracker](04-pitch-tracker.md) | Draft | 01 | 3–4 h | 1 h |
+| 05 | [Take quality and endpointing](05-take-quality-endpointing.md) | Draft | 01 (no dependency on 04) | 3–4 h | 1 h |
+| 06 | [Pronunciation, alignment, normalisation](06-pronunciation-alignment.md) | Draft | 01 | 4–5 h | 1 h |
+| 07 | [Syllable segmenter and timing confidence](07-syllable-segmenter.md) | Draft | 03, 06 | 3–4 h | 1 h |
 | 18 | [UI foundation](18-ui-foundation.md) | Draft | 00 | 3–5 h | 1 h |
 | 19 | [Fixture-driven UI shell](19-fixture-driven-ui-shell.md) | Draft | 18 | 6–8 h | 1.5 h |
