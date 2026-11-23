@@ -72,6 +72,31 @@ The app target depends on `AMPipeline`.
 - Tunable numbers live in `docs/thresholds.md` and `AMCore/Thresholds.swift`. They are tuned only on the tuning
   split, never on held-out clips, and never lowered quietly: a change says why in the PR.
 
+### UI tests run in the test VM, never on Raph's screen
+
+App-hosted tests (today `make test-ui`, which is `make screenshots`: every UI fixture rendered in light and dark,
+plus the blank-frame check) open real windows and take over the screen they run on. On Raph's Mac they run in the
+headless Tart test VM (`wg-ci`, Xcode 26.2, shared with WriteGood), through the installed Manufacture CLI:
+
+```sh
+make test-ui-vm      # the screenshot run in the VM (also: make screenshots-vm)
+make test-vm         # AccentKit's package tests in the VM
+make test-ui-vm UI_TEST_FLAGS=-only-testing:AccentMirrorScreenshots/ScreenshotTests   # just the affected tests
+```
+
+- Agents (the factory, Claude Code in Herdr) never run `make test-ui` or `make screenshots` on the host; both refuse
+  for them. Never set `AM_HOST_UI_OK` (Raph's own override). Running a UI test from Xcode is Raph's, by hand.
+- The VM has one lock and runs are serial, CI-style jobs included. Run only the affected tests while iterating, keep
+  one VM command per builder at a time, and never start a second while one runs.
+- Read the last line, which starts with `Tests:` or `VM:` (through make any failure exits 2). `Tests: passed`;
+  `Tests: failed (rc 1)` is a real failure: fix it. `VM: not running …` (exit 2), `VM: busy …` (exit 3: retry later)
+  and `VM: sync failed …` (exit 4) are not test failures: say so in the PR and never fall back to the host. Never
+  start, stop or reset the VM; that's Raph's.
+- Results come back to `.factory/vm-results/<stamp>/` (git-ignored): the `.xcresult`, and the screenshot PNGs in
+  `<stamp>.xcresult.attachments/ui-shell/`.
+- The guest builds from the synced tree with `make generate`, so code must compile with the Xcode 26.2 SDK.
+- `make test` (package tests, no windows) and `make build` / `make check` stay fine on the host and in CI.
+
 ## Raph-only areas
 
 Agents never touch these: code signing, team ID, provisioning, entitlements, the hardened runtime, notarization,
@@ -97,6 +122,8 @@ make generate   # xcodegen generate
 make build      # macOS app, unsigned
 make test       # swift test on AccentKit
 make check      # build + test + corpus guard (and its self-test) + no AppKit/UIKit in AccentKit
+make test-ui-vm # UI/screenshot tests in the test VM (agents: never host test-ui / screenshots)
+make test-vm    # package tests in the test VM
 ```
 
 ## Commits
