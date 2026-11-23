@@ -135,12 +135,16 @@ Built 2026-11-23 on `factory/07-syllable-segmenter` (hand build, Claude Code).
   `.splitValleyMinDB` 3, `.splitExact` 0.9, `.splitPerMismatch` 0.3, `.splitFallback` 0.35 and
   `syllableBoundaries.medianErrorMaxMs` 30, `.withinToleranceMs` 50, `.withinToleranceShareMin` 0.80 (first v2
   values, not tuned). `thresholdsVersion` 3 → 4 with a new golden record.
-- **TTS gate.** `TTSMarkerGateTests`: voice `com.apple.voice.compact.en-US.Samantha`, three pinned phrases with pinned
-  ARPAbet. Word markers come through the delegate's `willSpeak marker:` (the `toMarkerCallback` of `write` delivers
-  none on macOS 26). A marker's `byteSampleOffset` is divided by the buffer's bytes per frame. Its resolution is the
-  synthesizer's 512-sample buffer (about 23 ms at 22.05 kHz), which doesn't matter here because the marker is the
-  truth by definition. Each word span runs from its marker to the next one (the last to the end of the audio).
-  Audio is resampled to 16 kHz in memory.
+- **TTS gate.** `TTSMarkerGateTests`: voice `com.apple.voice.compact.en-US.Samantha` (on this Mac and on the
+  macos-26 runner, so the gate runs in CI), three pinned phrases with pinned ARPAbet. Each phrase is spoken as SSML
+  with a named bookmark `w<N>` before each word. Bookmarks are read from both the `write` marker callback and the
+  delegate's `willSpeak marker:` (macOS 26 voices use only the delegate) and kept once per name. Synthesis ends at
+  the zero-length final buffer plus `didFinish`. Phrases are synthesized one at a time (`.serialized`): concurrent
+  synthesizers lost markers on the runner (fix round 1). A missing, extra or out-of-order bookmark fails the test.
+  A marker's `byteSampleOffset` is divided by the buffer's bytes per frame. Its resolution is the synthesizer's
+  512-sample buffer (about 23 ms at 22.05 kHz), which doesn't matter because the marker is the truth by definition.
+  Each word span runs from its bookmark to the next (the last to the end of the audio). Audio is resampled to
+  16 kHz in memory.
 - **Report.** `AMSyllableEval` + `am-syllables` + `scripts/eval-syllables.sh` (sandboxed, no network, reads no
   corpus) write `syllable-boundaries-<configDigest8>.{json,md}`. The MFA reference groups MFA phones into syllables
   by position, using spec 06's syllabifier on the segmenter's pronunciation, so english_mfa's non-ARPAbet phones
