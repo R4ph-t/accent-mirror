@@ -104,6 +104,7 @@ From the right: the inspector toggle, the take menu, You, Record, Model.
 - **Record:** 104 wide, the Lime button gradient with onLime text and a filled dot. The recording appearance (Stop with a filled square, same Lime, plus "● RECORDING 0:02" in lime.text Geist Mono) is styled here; live capture waits for a later spec.
 - **Take menu:** "TAKE 03" in Geist Mono with a chevron, or "TAKES" when there are none. Unsaved-attempt labelling is spec 19.
 - **Title block:** the phrase in Funnel Display 16 / 600, with a subtitle in Geist 12 secondary: "{pack} · Native speaker {voice}, VCTK" for starter phrases and "My Phrases · From {file name}" for clips. The Photography fixture uses "My Phrases · From demo-talk.m4a".
+- **Narrow windows (fixes round 5):** the title block keeps at least 160 pt. Within it the subtitle and then the title truncate. To make room, the controls compact in steps, each only when the previous one doesn't fit: Model and You become their play icons; then the take menu becomes its chevron (with 8 pt gaps); then Record keeps only its dot. Tooltips and VoiceOver keep every word.
 
 ### App target
 
@@ -178,4 +179,7 @@ If `NavigationSplitView` fights solid chrome on macOS 26, use the AppKit split-v
   `row.hover` tint at 13 / 400, primary. The focus ring is 2 pt, radius 6. The Reduce Motion hook drops the hover fade.
 - **Commands.** View ▸ Hide Sidebar (⌃⌘S) replaces the system sidebar command. There is no sidebar button in the
   chrome and no number-key shortcuts.
-
+- **Fixes round 5 (2026-11-23).** The toolbar title keeps 160 pt (see Toolbar) through `ToolbarLayout` and the
+  controls' compact forms (`ToolbarView`, `Metrics.toolbarTitleMinWidth`). The 960 × 680 minimum still holds for the
+  window frame. With the inspector open and a three-row card 1, though, the wrapped rows hold the window at 732 pt
+  (see spec 19's round 5 note and the PR's open points).

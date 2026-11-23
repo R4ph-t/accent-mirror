@@ -155,10 +155,28 @@ Hover ghosts, Option-to-show-earlier-takes, and the 150 ms voice-switch ease may
 
 ### Scripted screenshots
 
-- Add a screenshot **test target** (or an equivalent test-hosted runner) that, for each fixture × {light, dark}, opens a 1200 × 800 pt window, seeds that fixture, and writes a PNG at 2× (2400 × 1600). One command regenerates the whole set. Running it twice produces the same images.
+- Add a screenshot **test target** (or an equivalent test-hosted runner) that, for each fixture × {light, dark}, opens a 1200 × 800 pt window, seeds that fixture, and writes a PNG at 2× (2400 × 1600). One command regenerates the whole set. Running it twice produces the same images. A fixture may name another window size (`window`, at least the 960 pt minimum width); its frame is 2× that size. Every frame shows exactly that window's content area, never a smaller window scaled up (fixes round 5).
 - No hand-clicking, no cursor, no dev overlays, no live user data. No microphone, no network, no WhisperKit.
 - **This target is not run by CI and is not part of `make check`.** AGENTS.md stands: CI never launches the app, never uses the microphone, never runs UI tests. Implementation of this spec may add a local `make screenshots` target; it must not be called from `.github/workflows/ci.yml`.
 - Output goes to a gitignored or reviewed-artifact folder (for example `screenshots/ui-shell/`), named `<fixture>-{light,dark}@2x.png`. The four primary states are compared against the final2 mockups. The other states are the set sent back to Designer.
+
+### Narrow windows (fixes round 5)
+
+- **Labels keep 4 pt apart.** The syllable labels under each strip row, and the word labels under the pitch plot,
+  keep at least 4 pt between neighbouring labels that show.
+- **What gives way.** When a label can't fit, unstressed syllable labels and non-target word labels are hidden
+  first. Heard-word and missing-word labels go only after those. Stressed syllable labels (bold caps, the mistake
+  marker) and target word labels always show. A target word carries a stressed native syllable (a Lime mark on the
+  baseline) or is named by a diff row.
+- **Nothing is lost.** A hidden label keeps a tooltip over its syllable or word, and the row's accessibility label
+  still reads every syllable or word.
+- **One tested rule.** The decision (which labels show, given centres, widths, priorities and the 4 pt gap) is the
+  pure `LabelLayout.visibility`, with Swift Testing cases for the collision case, stressed and target labels
+  always showing, the priority order and the no-collision case.
+- **Toolbar.** The toolbar title keeps at least 160 pt (spec 18, Toolbar).
+- **Regression fixture.** `narrow-inspector-open` renders the narrowest window, 960 pt wide, with the inspector
+  open, in light and dark. Its height is 732 pt: the shortest the shell allows in that state, because card 1's rows
+  wrap at that width (see the round 5 note).
 
 ### Visual and copy rules already in spec 18 that this shell must keep
 
@@ -290,3 +308,24 @@ Addendum A5 says: "A(w) = the context-compatible dictionary pronunciation plus t
   - `inc-targetWordsMissing-many` is unchanged.
   - This supersedes round 3's notes on `photography-rising-end`, on `rows-range` carrying the contrast row, and on
     there being no too-little-contrast fixture.
+- **Fixes round 5 (2026-11-23).** The Designer's follow-ups after PR #21:
+  - **1200 × 800 pt reference frames.** Round 4's frames held a window of about 1020 × 684 pt drawn into
+    2400 × 1600 px. The test VM's screen is narrower than 1200 pt, and AppKit shrinks a window that doesn't fit its
+    screen when the window is ordered front (`constrainFrameRect`). The renderer's window now keeps the size it is
+    given (`WindowRenderer.RenderWindow`), and the capture throws `wrongSize` unless the frame view and content view
+    are exactly the requested size. Measured against `mockup-*-final2@2x.png`: the sidebar edge, card edges, card 1
+    top and pitch card bottom now land within 2 px (1 pt) of the mockups (they were 10–28 px off).
+  - **Narrow windows.** The label rule above lives in `AccentMirror/Design/LabelLayout.swift`, and its tests in
+    `AccentMirrorScreenshots/LabelLayoutTests.swift`. Widths come from `TextMeasure` (the role's bundled face, size
+    and tracking). The toolbar uses `ToolbarLayout`: the controls are offered what is left after a 160 pt title and a
+    16 pt gap, and `ViewThatFits` picks the first form that fits. In order: full; Model and You as play icons; then
+    the take menu as its chevron (gaps 8 pt); then Record as its dot (40 wide). Tooltips and VoiceOver keep every
+    word. Inside the title block the title and subtitle each truncate to the block's width.
+  - **Fixture `window`.** States can name their window size (`SCHEMA.md`). `narrow-inspector-open` is
+    `inspector-open` at 960 × 732. At 960 × 680 the window held at 732 pt: card 1's sentences wrap at a 440 pt detail
+    width, and their height sets the window's minimum. `scripts/check-screenshots.sh` reads each fixture's size.
+  - **One test case per frame.** `ScreenshotTests.render` is parameterised over every fixture × appearance, so each
+    case builds, captures and tears down its own window. Its frames were byte-identical (SHA-256 of all 128) to
+    round 4's last run. The "excessive live window count" warning still shows once per run: the log line per case
+    shows no window is freed before the next one, even after a second's wait (an open point).
+  - 65 states now (64 plus `narrow-inspector-open`), 130 frames.
