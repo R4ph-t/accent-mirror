@@ -48,22 +48,51 @@ struct StripPresentation: Sendable {
         case placeholder
         /// Live bars in strip.bar up to a 2 pt Lime playhead.
         case recording(clusters: [StripCluster], playhead: Double)
-        /// A flat, near-silent line; the caption names the reason when there is one.
-        case flat(start: Double, end: Double, caption: String?)
+        /// A take problem with audio (§7.1): the take drawn as a waveform grouped by syllable, in strip.bar, no
+        /// labels, no Lime, shaped by the problem, with a Geist 12 secondary caption naming it when there is one.
+        case takeProblem(clusters: [StripCluster], shape: TakeProblemShape, caption: String?)
         /// Bars; labels hidden for analysing and unalignable takes.
         case bars(clusters: [StripCluster], slots: [MissingSlot], showsLabels: Bool)
     }
 }
 
+/// How a take problem's audio is drawn in your row.
+enum TakeProblemShape: Sendable, Equatable {
+    /// Too quiet: a flat, near-silent waveform, a couple of points tall.
+    case nearSilent
+    /// Clipped: the waveform cut flat at the top (and, mirrored, at the bottom).
+    case clipped
+    /// Too short, words don't match: the take as heard, grey, unlabelled.
+    case plain
+}
+
 struct StripCluster: Sendable, Equatable {
+    /// Bar colour role. Stressed bars are Lime; your other bars are darker than the native row's (Designer
+    /// review of PR #4, fix 3), except heard-only words, take problems and in-flight takes, which stay strip.bar.
+    enum Fill: Sendable, Equatable {
+        /// Measured as stressed: the vertical Lime bar gradient.
+        case stressed
+        /// strip.bar: the native row, and your grey bars (recording, analysing, unalignable, inserted,
+        /// substituted, take problems).
+        case neutral
+        /// strip.you: your unstressed bars in a result.
+        case yours
+    }
+
     var start: Double
     var end: Double
     var prominence: Double
-    var lime: Bool
+    var fill: Fill
     var label: ClusterLabel?
     /// Stable seed so the bar texture is the same on every render.
     var seed: Int
     var tooltip: String?
+}
+
+/// A syllable of your take, by word and index within the word.
+struct FlaggedSyllable: Hashable, Sendable {
+    var word: String
+    var index: Int
 }
 
 struct ClusterLabel: Sendable, Equatable {
@@ -123,8 +152,9 @@ enum ShellPresenter {
         if isRecording { youEnabled = false }
 
         let takeMenu: ToolbarState.TakeMenuLabel
-        if fixture.phase == .showingTake, let take, take.number == nil, take.hasAudio,
-           let problem, [.tooQuiet, .clipped, .tooShort].contains(problem) {
+        if fixture.phase == .showingTake, let take, take.hasAudio, problem != nil {
+            // A take problem is never saved and never counts as a take (§7): with audio, You plays the last
+            // try, so the menu names it whatever the take file says (A7).
             takeMenu = .lastTryNotSaved
         } else if fixture.phase == .showingTake, let number = take?.number {
             takeMenu = .take(number)
@@ -231,9 +261,10 @@ enum ShellPresenter {
         case .close:
             rows = [CardRow(icon: "checkmark.circle", iconIsMistake: false, sentence: Copy.close(measures: measures), trailing: .none)]
         case .noClearDifference:
-            if let sentence = Copy.noClearDifference(verdict.reasons ?? []) {
-                rows = [CardRow(icon: "equal.circle", iconIsMistake: false, sentence: sentence, trailing: .none)]
-            }
+            rows = [CardRow(
+                icon: "equal.circle", iconIsMistake: false,
+                sentence: Copy.noClearDifference(verdict.reasons ?? []), trailing: .none
+            )]
         case .inconclusive:
             if let value = verdict.inconclusive {
                 rows = [CardRow(
@@ -288,7 +319,8 @@ enum ShellPresenter {
             return word.syllables.map { syllable in
                 seed += 1
                 return StripCluster(
-                    start: syllable.start, end: syllable.end, prominence: syllable.prominence, lime: syllable.stressed,
+                    start: syllable.start, end: syllable.end, prominence: syllable.prominence,
+                    fill: syllable.stressed ? .stressed : .neutral,
                     label: ClusterLabel(
                         text: unchecked || syllable.label == .lower ? syllable.text.lowercased() : syllable.text.uppercased(),
                         style: unchecked || syllable.label == .lower ? .lower : .caps
@@ -300,7 +332,10 @@ enum ShellPresenter {
         }
     }
 
-    static func yourClusters(_ take: TakeFixture, allGrey: Bool) -> (clusters: [StripCluster], slots: [MissingSlot]) {
+    /// Your row. `flagged` holds the only syllables that may carry the mistake marker (see `flaggedSyllables`);
+    /// any other `mistake` label in the take is drawn as a plain lowercase label.
+    static func yourClusters(_ take: TakeFixture, allGrey: Bool, flagged: Set<FlaggedSyllable> = [])
+        -> (clusters: [StripCluster], slots: [MissingSlot]) {
         var clusters: [StripCluster] = []
         var slots: [MissingSlot] = []
         var seed = 101
@@ -310,19 +345,21 @@ enum ShellPresenter {
                 if let position = pair.slot { slots.append(MissingSlot(position: position, expected: pair.expected ?? "")) }
             case .present:
                 let unchecked = pair.stressCheck == .expectedAmbiguous || pair.stressCheck == .referenceAnomaly
-                for syllable in pair.syllables {
+                let word = (pair.expected ?? pair.heard ?? "").lowercased()
+                for (index, syllable) in pair.syllables.enumerated() {
                     seed += 1
                     let style: ClusterLabel.Style
                     if unchecked { style = .lower } else {
                         switch syllable.label {
                         case .caps: style = .caps
                         case .lower: style = .lower
-                        case .mistake: style = .mistake
+                        case .mistake:
+                            style = flagged.contains(FlaggedSyllable(word: word, index: index)) ? .mistake : .lower
                         }
                     }
                     clusters.append(StripCluster(
                         start: syllable.start, end: syllable.end, prominence: syllable.prominence,
-                        lime: syllable.stressed && !allGrey,
+                        fill: syllable.stressed ? .stressed : .yours,
                         label: ClusterLabel(text: style == .lower ? syllable.text.lowercased() : syllable.text.uppercased(), style: style),
                         seed: seed, tooltip: unchecked ? Copy.ambiguousTooltip : nil
                     ))
@@ -336,7 +373,7 @@ enum ShellPresenter {
                     seed += 1
                     let isMiddle = index == pair.syllables.count / 2
                     clusters.append(StripCluster(
-                        start: syllable.start, end: syllable.end, prominence: syllable.prominence, lime: false,
+                        start: syllable.start, end: syllable.end, prominence: syllable.prominence, fill: .neutral,
                         label: isMiddle ? ClusterLabel(text: label, style: .heard) : nil,
                         seed: seed, tooltip: tooltip
                     ))
@@ -344,7 +381,7 @@ enum ShellPresenter {
             }
         }
         if allGrey {
-            clusters = clusters.map { var c = $0; c.label = nil; c.lime = false; return c }
+            clusters = clusters.map { var c = $0; c.label = nil; c.fill = .neutral; return c }
         }
         return (clusters, slots)
     }
@@ -370,19 +407,38 @@ enum ShellPresenter {
             } else if take.alignment == .unalignable {
                 you = .bars(clusters: yourClusters(take, allGrey: true).clusters, slots: [], showsLabels: false)
             } else if let problem = firstTakeProblem(loaded) {
-                let span = take.words.flatMap(\.syllables)
-                you = .flat(
-                    start: span.map(\.start).min() ?? 0, end: span.map(\.end).max() ?? 1,
-                    caption: problem == .tooQuiet ? Copy.tooQuietToMeasure : nil
+                you = .takeProblem(
+                    clusters: yourClusters(take, allGrey: true).clusters,
+                    shape: takeProblemShape(problem),
+                    caption: Copy.takeProblemCaption(problem)
                 )
             } else if fixture.analysis?.verdict == nil {
                 you = .placeholder
             } else {
-                let parts = yourClusters(take, allGrey: false)
+                let parts = yourClusters(take, allGrey: false, flagged: flaggedSyllables(fixture.analysis))
                 you = .bars(clusters: parts.clusters, slots: parts.slots, showsLabels: true)
             }
         }
         return StripPresentation(native: native, you: you)
+    }
+
+    static func takeProblemShape(_ problem: TakeProblem) -> TakeProblemShape {
+        switch problem {
+        case .tooQuiet: .nearSilent
+        case .clipped: .clipped
+        default: .plain
+        }
+    }
+
+    /// The mistake marker goes only on the syllable named after "not" in a placement row that card 1 shows:
+    /// your stress is outside the accepted set at high confidence (§8, §13 item 5). Every other verdict
+    /// (close, noClearDifference, inconclusive, feedback without that row) shows no marker.
+    static func flaggedSyllables(_ analysis: Analysis?) -> Set<FlaggedSyllable> {
+        guard let verdict = analysis?.verdict, verdict.kind == .feedback else { return [] }
+        return Set(orderedRows(verdict.rows ?? []).compactMap { row in
+            guard row.kind == .placement, let word = row.word, let heard = row.heardIndex else { return nil }
+            return FlaggedSyllable(word: word.lowercased(), index: heard)
+        })
     }
 
     // MARK: Pitch

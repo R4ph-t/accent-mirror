@@ -99,6 +99,126 @@ struct ShellContractTests {
         }
     }
 
+    // MARK: Designer review of PR #4 (fixes 1 to 6)
+
+    /// Your strip labels that carry the mistake marker, as (word syllable text, upper-cased).
+    private func markedSyllables(_ loaded: LoadedFixture) -> [String] {
+        guard case .bars(let clusters, _, let showsLabels) = ShellPresenter.strip(loaded).you, showsLabels else { return [] }
+        return clusters.compactMap { $0.label?.style == .mistake ? $0.label?.text : nil }
+    }
+
+    /// The syllable card 1 names after "not", when it shows a placement row.
+    private func placementHeardSyllable(_ loaded: LoadedFixture) -> String? {
+        guard let verdict = loaded.fixture.analysis?.verdict, verdict.kind == .feedback else { return nil }
+        let row = ShellPresenter.orderedRows(verdict.rows ?? []).first { $0.kind == .placement }
+        guard let row, let syllables = row.syllables, let heard = row.heardIndex else { return nil }
+        return syllables[heard].uppercased()
+    }
+
+    /// §8, §13 item 5: the marker shows only with a placement row (stress outside the accepted set at high
+    /// confidence), and only on the syllable named after "not". Checked on every fixture.
+    @Test func mistakeMarkerOnlyWithAPlacementRow() throws {
+        for name in try library.allNames() {
+            let loaded = try library.load(name)
+            let marked = markedSyllables(loaded)
+            if let heard = placementHeardSyllable(loaded), loaded.take?.alignment == .aligned,
+               ShellPresenter.firstTakeProblem(loaded) == nil {
+                #expect(marked == [heard], "\(name)")
+            } else {
+                #expect(marked.isEmpty, "\(name) shows the mistake marker without a placement row")
+            }
+        }
+    }
+
+    /// The same rule on the fixture data itself, so a fixture never carries strip data from another state:
+    /// a take drawn with labels has a `mistake` syllable only when its state has a placement row.
+    @Test func fixtureDataMarksOnlyPlacementStates() throws {
+        for name in try library.allNames() {
+            let loaded = try library.load(name)
+            guard case .bars(_, _, true) = ShellPresenter.strip(loaded).you, let take = loaded.take else { continue }
+            let raw = take.words.flatMap(\.syllables).filter { $0.label == .mistake }.map { $0.text.uppercased() }
+            #expect(raw == (placementHeardSyllable(loaded).map { [$0] } ?? []), "\(name)")
+        }
+    }
+
+    @Test func inconclusiveAndNoClearDifferenceNeverShowTheMarker() throws {
+        for name in try library.allNames() where name.hasPrefix("inc-") || name.hasPrefix("ncd-") {
+            #expect(markedSyllables(try library.load(name)).isEmpty, "\(name)")
+        }
+        // Low confidence: no Lime peak in photography either (the stress wasn't clear).
+        let low = try library.load("inc-requiredMeasureUnavailable-lowConfidence")
+        guard case .bars(let clusters, _, _) = ShellPresenter.strip(low).you else { Issue.record("no bars"); return }
+        #expect(clusters.prefix(4).allSatisfy { $0.fill != .stressed })
+    }
+
+    /// Fix 2: every noClearDifference result has its equal.circle row first; quiet lines sit under it.
+    @Test func noClearDifferenceAlwaysHasItsRow() throws {
+        for name in try library.allNames() where name.hasPrefix("ncd-") {
+            let card = try card(name)
+            #expect(card.rows.count == 1, "\(name)")
+            #expect(card.rows.first?.icon == "equal.circle", "\(name)")
+            #expect(card.rows.first?.iconIsMistake == false, "\(name)")
+        }
+        let insertions = try card("ncd-insertionsPresent")
+        #expect(insertions.rows.map(\.sentence.plain) == ["No clear difference in stress or rhythm."])
+        #expect(insertions.infoLines.map(\.plain) == ["You added \u{201C}so\u{201D}. It's left out of the comparison."])
+        #expect(insertions.infoLines.first?.contains { $0.role == .heard && $0.text == "\u{201C}so\u{201D}" } == true)
+        #expect(try sentences("ncd-nonTargetWordsIncomplete") == ["No clear difference in stress or rhythm."])
+    }
+
+    /// Fix 3: your unstressed bars use their own darker token; the native row and heard-only words never do.
+    @Test func yourUnstressedBarsUseTheirOwnTone() throws {
+        let loaded = try library.load("result-feedback")
+        let strip = ShellPresenter.strip(loaded)
+        #expect(!strip.native.contains { $0.fill == .yours })
+        guard case .bars(let clusters, _, _) = strip.you else { Issue.record("no bars"); return }
+        #expect(clusters.contains { $0.fill == .yours })
+        #expect(clusters.allSatisfy { $0.fill != .neutral })
+        let inserted = try library.load("feedback-insertions")
+        guard case .bars(let withInsertion, _, _) = ShellPresenter.strip(inserted).you else { Issue.record("no bars"); return }
+        #expect(withInsertion.first { $0.label?.text == "+ so" }?.fill == .neutral)
+    }
+
+    @Test(arguments: [Palette.light, Palette.dark])
+    func yourBarsAreDarkerThanTheNativeRow(_ p: Palette) {
+        let you = p.stripBarYou.resolve(in: EnvironmentValues())
+        let native = p.stripBar.resolve(in: EnvironmentValues())
+        #expect(you.opacity > native.opacity + 0.2)
+    }
+
+    /// Fixes 4 and 6 (§7.1, A7): a take problem with audio draws the take grouped by syllable, shaped and
+    /// captioned by the problem, and the menu reads LAST TRY · NOT SAVED; without audio it's the placeholder.
+    @Test func takeProblemsYourRowAndTakeMenu() throws {
+        func you(_ name: String) throws -> StripPresentation.YouRow { ShellPresenter.strip(try library.load(name)).you }
+        guard case .takeProblem(let quiet, .nearSilent, Copy.tooQuietToMeasure?) = try you("tooQuiet") else {
+            Issue.record("tooQuiet"); return
+        }
+        #expect(quiet.count > 4 && quiet.allSatisfy { $0.fill == .neutral && $0.label == nil })
+        guard case .takeProblem(_, .clipped, "Too loud to measure"?) = try you("tp-clipped") else {
+            Issue.record("tp-clipped"); return
+        }
+        guard case .takeProblem(_, .plain, nil) = try you("tp-wordsDontMatch") else { Issue.record("tp-wordsDontMatch"); return }
+        guard case .takeProblem(_, .plain, nil) = try you("tp-tooShort") else { Issue.record("tp-tooShort"); return }
+
+        let problemNames = try library.allNames().filter { $0.hasPrefix("tp-") } + ["tooQuiet"]
+        for name in problemNames {
+            let loaded = try library.load(name)
+            let toolbar = ShellPresenter.toolbar(for: loaded)
+            if loaded.take?.hasAudio == true {
+                #expect(toolbar.takeMenu == .lastTryNotSaved, "\(name)")
+                #expect(toolbar.youEnabled, "\(name)")
+            } else {
+                #expect(toolbar.takeMenu == .take(3), "\(name)")
+                #expect(!toolbar.youEnabled, "\(name)")
+                guard case .placeholder = ShellPresenter.strip(loaded).you else { Issue.record("\(name)"); continue }
+            }
+        }
+    }
+
+    @Test func noVoicedFramesKeepsItsMessage() throws {
+        #expect(ShellPresenter.pitch(try library.load("noVoicedFrames")).message == "No pitch to show for this take")
+    }
+
     @Test func comingSoonIsDrivenByAnEmptyPack() {
         #expect(LibraryManifest.stub.packs.filter(\.isComingSoon).map(\.id) == ["noun-verb-pairs"])
     }

@@ -42,6 +42,7 @@ enum Copy {
     static let analysing = "Analysing your take\u{2026}"
     static let yourTakeAppearsHere = "Your take appears here."
     static let tooQuietToMeasure = "Too quiet to measure"
+    static let tooLoudToMeasure = "Too loud to measure"
     static let noPitch = "No pitch to show for this take"
     static let unalignable = "This take was recorded for the old wording, so it can't be compared."
     static let notComparable = "NOT COMPARABLE"
@@ -157,14 +158,18 @@ enum Copy {
 
     // MARK: noClearDifference (§13.1)
 
-    /// The card 1 sentence for the first reason that has one. Reasons covered only by an A6 quiet line return nil.
-    static func noClearDifference(_ reasons: [NoClearDifferenceReason]) -> Sentence? {
+    /// The card 1 sentence for the first reason that has one. When every reason is covered only by an A6 quiet
+    /// line (insertionsPresent, nonTargetWordsIncomplete), the row still shows, with the stem the §13.1
+    /// sentences share; the quiet line then sits under it.
+    static func noClearDifference(_ reasons: [NoClearDifferenceReason]) -> Sentence {
         let ordered = NoClearDifferenceReason.allCases.filter(reasons.contains)
         for reason in ordered {
             if let sentence = noClearDifferenceSentence(reason) { return [.plain(sentence)] }
         }
-        return nil
+        return [.plain(noClearDifferenceStem)]
     }
+
+    static let noClearDifferenceStem = "No clear difference in stress or rhythm."
 
     static func noClearDifferenceSentence(_ reason: NoClearDifferenceReason) -> String? {
         switch reason {
@@ -235,6 +240,16 @@ enum Copy {
         case .tooQuiet: "That take was too quiet to hear clearly. Move closer to the mic or speak up."
         case .clipped: "That take was too loud and distorted. Move back a little or lower the input level."
         case .wordsDontMatch: "Some words didn't match the phrase. Read it exactly as written, then try again."
+        }
+    }
+
+    /// The caption under your strip row for a take problem with audio (§7.1). Only the Designer's two
+    /// captions exist; too short and words don't match have none (see the PR's open points).
+    static func takeProblemCaption(_ problem: TakeProblem) -> String? {
+        switch problem {
+        case .tooQuiet: tooQuietToMeasure
+        case .clipped: tooLoudToMeasure
+        default: nil
         }
     }
 
