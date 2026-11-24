@@ -1,0 +1,10 @@
+{
+  "name": "recording-live-2000ms",
+  "summary": "Recording 2 s in: the take has reached the model's length, so the Lime playhead is at the right edge.",
+  "phrase": "photography",
+  "phase": "recording",
+  "savedTakes": [3, 2, 1],
+  "take": "photography-recording",
+  "recording": {"elapsed": "0:02", "playhead": 0, "seconds": 2.0},
+  "chart": {}
+}

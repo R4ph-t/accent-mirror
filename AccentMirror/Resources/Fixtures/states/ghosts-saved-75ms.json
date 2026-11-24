@@ -1,0 +1,20 @@
+{
+  "name": "ghosts-saved-75ms",
+  "summary": "Take 03 just saved, 75 ms into the 150 ms fade (v3 §3.3; the v3 form of ghosts-hover): take 02 fading in towards 30% while take 01 steps from 30% to 20%.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [3, 2, 1],
+  "take": "photography-take03",
+  "analysis": {
+    "verdict": {"notScored": {}},
+    "timing": "good",
+    "comparableCoverage": 0.96,
+    "describe": {
+      "you": {"lengthSeconds": {"value": 2.4}, "syllablesPerSecond": {"value": 4.2}, "pitchRangeSemitones": {"value": 4}, "rhythmNPVI": {"value": 38}, "endingDirection": "rise"},
+      "native": {"voices": 8, "lengthSeconds": {"min": 1.9, "max": 2.3, "count": 8}, "syllablesPerSecond": {"min": 4.3, "max": 5.1, "count": 8}, "pitchRangeSemitones": {"min": 6, "max": 9, "count": 8}, "rhythmNPVI": {"min": 52, "max": 61, "count": 8}, "endingDirections": {"fall": 5, "rise": 3}}
+    }
+  },
+  "earlierTakes": ["photography-take02", "photography-take01"],
+  "earlierTakesVisible": true,
+  "chart": {"clockMs": 75, "earlierTakes": {"change": "saved", "before": ["photography-take01"]}}
+}

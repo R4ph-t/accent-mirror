@@ -37,6 +37,51 @@ struct UIFixture: Decodable, Sendable {
     var modelRecording: ModelRecording?
     /// The window size the screenshot runner renders this state at, in points. Nil: the default 1200 × 800.
     var window: WindowSize?
+    /// Spec 20: the charts' motion inputs, frozen on the fixture clock. The screenshot runner also renders every
+    /// state that has one with Reduce Motion on.
+    var chart: ChartFixture?
+
+    struct ChartFixture: Decodable, Sendable {
+        /// Milliseconds since every change in this state began (hover, loop, ghosts, voice switch). Nil: 0.
+        var clockMs: Double?
+        /// Model or You playing, frozen at `position` along that take's own timeline (0…1).
+        var playback: Playback?
+        /// The phrase word whose strip label the pointer is over.
+        var hoveredWord: Int?
+        /// The phrase word a label click is looping, and how many seconds into the loop the frame is.
+        var loopingWord: Int?
+        var loopElapsed: Double?
+        /// The earlier takes' last change: `saved` (a new take came in; `before` were the ghosts until then),
+        /// `toggledOff` or `toggledOn` (⇧⌘G).
+        var earlierTakes: EarlierTakesChange?
+        /// `takes/<id>.json` hovered in the open take menu: drawn as the only ghost.
+        var menuPreview: String?
+        var voiceSwitch: VoiceSwitch?
+
+        struct Playback: Decodable, Sendable {
+            enum Side: String, Decodable, Sendable { case model, you }
+            var side: Side
+            var position: Double
+        }
+
+        struct EarlierTakesChange: Decodable, Sendable {
+            enum Change: String, Decodable, Sendable { case saved, toggledOff, toggledOn }
+            var change: Change
+            /// `takes/<id>.json`, newest first: the earlier takes before a `saved` change.
+            var before: [String]?
+        }
+
+        /// The selected voice changed to `phrase` (the new voice's native side) with your take re-timed onto it
+        /// (`take`). `pending`: the subtitle names the new voice and the old drawing stays; `easing`: the new L2
+        /// arrived `clockMs` ago; `done`: drawn on the new voice.
+        struct VoiceSwitch: Decodable, Sendable {
+            enum Stage: String, Decodable, Sendable { case pending, easing, done }
+            var phrase: String
+            var take: String?
+            var voice: String
+            var stage: Stage
+        }
+    }
 
     struct PlayBothFrame: Decodable, Sendable {
         var elapsed: Double
@@ -69,8 +114,10 @@ struct UIFixture: Decodable, Sendable {
 
     struct Recording: Decodable, Sendable {
         var elapsed: String
-        /// Playhead position on your timeline, 0…1.
+        /// Older fixtures: how far in, as a fraction of the model's duration.
         var playhead: Double
+        /// Seconds of envelope recorded so far (spec 20's live strip); wins over `playhead`.
+        var seconds: Double?
     }
 }
 

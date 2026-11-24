@@ -36,7 +36,23 @@ time.
 | `earlierTakesVisible` | bool? | View ▸ Show Earlier Takes for this state (`result-earlier-takes-off`); nil keeps the remembered choice, on by default |
 | `playBoth` | object? | `{elapsed, modelSeconds, youSeconds}`: Play Both frozen on an injected clock at `elapsed` s (`playing-both`) |
 | `modelRecording` | object? | The inspector's MODEL RECORDING: `{voice, region?, attribution, voices[]}` (voices feed the pop-up) |
+| `chart` | object? | Spec 20's motion inputs, frozen on the fixture clock (below). A state with one is also rendered with Reduce Motion (`<name>-reduce-motion-{light,dark}@2x.png`) |
 | `window` | object? | `{width, height}` in points: the window size the screenshot runner uses. Defaults to 1200 × 800. At least the 960 × 680 minimum |
+
+`recording` also takes `seconds`: how much envelope has been recorded (spec 20's live row). Without it, `playhead` is
+read as a fraction of the model's duration.
+
+### chart (spec 20)
+
+| Field | Type | Meaning |
+|---|---|---|
+| `clockMs` | number? | Milliseconds since every change in this state began (hover, loop, ghosts, voice switch). Default 0 |
+| `playback` | object? | `{side: model \| you, position}`: Model or You playing, frozen at `position` (0…1) on that take's own timeline |
+| `hoveredWord` | int? | The phrase word whose strip label the pointer is over |
+| `loopingWord` | int? | The phrase word a label click is looping; `loopElapsed` is seconds into the loop |
+| `earlierTakes` | object? | `{change: saved \| toggledOff \| toggledOn, before?: [take ids]}`: the ghosts' last change |
+| `menuPreview` | string? | A take hovered in the open take menu: drawn as the only ghost |
+| `voiceSwitch` | object? | `{phrase, take?, voice, stage: pending \| easing \| done}`: the new voice's phrase file and your take re-timed onto it |
 
 ### analysis
 

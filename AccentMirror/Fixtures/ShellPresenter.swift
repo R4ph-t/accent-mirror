@@ -52,12 +52,14 @@ struct StripPresentation: Sendable {
     var you: YouRow
     /// Native syllable to your matching syllable; empty unless your row shows labelled bars.
     var connectors: [TimingConnector]
+    /// The same syllable pairs as indices into `native` and your clusters, for the played-syllable outline (r6 E4).
+    var pairs: [SyllablePair] = []
 
     enum YouRow: Sendable {
         /// Dashed placeholder, "Your take appears here."
         case placeholder
-        /// Live bars in strip.bar up to a 2 pt Lime playhead.
-        case recording(clusters: [StripCluster], playhead: Double)
+        /// Live bars in strip.bar, binned from the envelope stream, up to a 2 pt Lime playhead (§7, A3, r6 E9).
+        case recording(envelope: RecordingEnvelope)
         /// A take problem with audio (§7.1): the take drawn as a waveform grouped by syllable, in strip.bar, no
         /// labels, shaped by the problem, with a Geist 12 secondary caption naming it when there is one.
         case takeProblem(clusters: [StripCluster], shape: TakeProblemShape, caption: String?)
@@ -373,12 +375,12 @@ enum ShellPresenter {
         let fixture = loaded.fixture
         let you: StripPresentation.YouRow
         var connectors: [TimingConnector] = []
+        var pairs: [SyllablePair] = []
         switch fixture.phase {
         case .empty:
             you = .placeholder
         case .recording:
-            let clusters = loaded.take.map { yourClusters($0, labelled: false).clusters } ?? []
-            you = .recording(clusters: clusters, playhead: fixture.recording?.playhead ?? 0)
+            you = .recording(envelope: recordingEnvelope(loaded))
         case .analysing:
             let parts = loaded.take.map { yourClusters($0, labelled: false) }
             you = .bars(clusters: parts?.clusters ?? [], slots: [], showsLabels: false)
@@ -401,9 +403,51 @@ enum ShellPresenter {
                 let parts = yourClusters(take, labelled: true, phrase: loaded.phrase)
                 you = .bars(clusters: parts.clusters, slots: parts.slots, showsLabels: true)
                 connectors = TimingConnectors.connectors(phrase: loaded.phrase, take: take)
+                pairs = syllablePairs(phrase: loaded.phrase, take: take)
             }
         }
-        return StripPresentation(native: native, you: you, connectors: connectors)
+        return StripPresentation(native: native, you: you, connectors: connectors, pairs: pairs)
+    }
+
+    /// The recording's envelope stream. Fixtures synthesise it from the take's syllables: `recording.seconds` of
+    /// audio, or the old `playhead` fraction of the model's duration.
+    static func recordingEnvelope(_ loaded: LoadedFixture) -> RecordingEnvelope {
+        let seconds = playbackSeconds(loaded)
+        let recording = loaded.fixture.recording
+        let elapsed = recording?.seconds ?? (recording?.playhead ?? 0) * seconds.model
+        let syllables = loaded.take.map { yourClusters($0, labelled: false).clusters } ?? []
+        return .synthetic(syllables: syllables, takeSeconds: seconds.you, elapsed: elapsed)
+    }
+
+    /// Native syllable to your matching syllable, as indices into the strip's two cluster lists, in the same walk as
+    /// the connectors: words in alignment order, then syllables by index within each word.
+    static func syllablePairs(phrase: PhraseFixture, take: TakeFixture) -> [SyllablePair] {
+        var starts: [Int] = []
+        var total = 0
+        for word in phrase.words {
+            starts.append(total)
+            total += word.syllables.count
+        }
+        var out: [SyllablePair] = []
+        var nativeWord = 0
+        var yourOffset = 0
+        for pair in take.words {
+            switch pair.kind {
+            case .missing:
+                nativeWord += 1
+            case .inserted:
+                yourOffset += pair.syllables.count
+            case .present, .substituted:
+                guard phrase.words.indices.contains(nativeWord) else { return out }
+                let count = min(phrase.words[nativeWord].syllables.count, pair.syllables.count)
+                for index in 0..<count {
+                    out.append(SyllablePair(native: starts[nativeWord] + index, you: yourOffset + index))
+                }
+                yourOffset += pair.syllables.count
+                nativeWord += 1
+            }
+        }
+        return out
     }
 
     /// Too short and words don't match use the too-quiet treatment (Designer answer 3, round 3).

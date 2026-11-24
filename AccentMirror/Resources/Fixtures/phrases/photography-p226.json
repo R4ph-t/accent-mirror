@@ -1,0 +1,50 @@
+{
+  "id": "photography-p226",
+  "text": "Photography is harder than it looks.",
+  "subtitle": "Stress Shifts · Native speaker p226, VCTK",
+  "rangeSemitones": 12,
+  "words": [
+    {"text": "Photography", "stressCheck": "checked", "start": 0.003, "end": 0.43,
+     "expectedStress": ["unstressed", "primary", "unstressed", "unstressed"],
+     "syllables": [
+       {"text": "pho", "start": 0.003, "end": 0.08, "prominence": 0.25},
+       {"text": "tog", "start": 0.086, "end": 0.27, "prominence": 1.0},
+       {"text": "ra", "start": 0.276, "end": 0.34, "prominence": 0.22},
+       {"text": "phy", "start": 0.346, "end": 0.43, "prominence": 0.28}
+     ]},
+    {"text": "is", "stressCheck": "checked", "start": 0.437, "end": 0.49, "expectedStress": ["unstressed"],
+     "syllables": [{"text": "is", "start": 0.437, "end": 0.49, "prominence": 0.2}]},
+    {"text": "harder", "stressCheck": "checked", "start": 0.497, "end": 0.7, "expectedStress": ["primary", "unstressed"],
+     "syllables": [
+       {"text": "har", "start": 0.497, "end": 0.63, "prominence": 0.95},
+       {"text": "der", "start": 0.636, "end": 0.7, "prominence": 0.22}
+     ]},
+    {"text": "than", "stressCheck": "checked", "start": 0.707, "end": 0.75, "expectedStress": ["unstressed"],
+     "syllables": [{"text": "than", "start": 0.707, "end": 0.75, "prominence": 0.16}]},
+    {"text": "it", "stressCheck": "checked", "start": 0.757, "end": 0.79, "expectedStress": ["unstressed"],
+     "syllables": [{"text": "it", "start": 0.757, "end": 0.79, "prominence": 0.14}]},
+    {"text": "looks.", "stressCheck": "checked", "start": 0.797, "end": 0.996, "expectedStress": ["primary"],
+     "syllables": [{"text": "looks", "start": 0.797, "end": 0.996, "prominence": 0.95}]}
+  ],
+  "band": [
+    {"points": [
+      {"t": 0.014, "st": -0.5, "half": 0.5},
+      {"t": 0.078, "st": 1.8, "half": 0.5},
+      {"t": 0.19, "st": 9.4, "half": 0.5},
+      {"t": 0.26, "st": 6.2, "half": 0.5},
+      {"t": 0.3, "st": 2.5, "half": 0.5},
+      {"t": 0.37, "st": 0.2, "half": 0.5},
+      {"t": 0.44, "st": -1.4, "half": 0.5},
+      {"t": 0.5, "st": 2.6, "half": 0.5},
+      {"t": 0.565, "st": 6.0, "half": 0.5},
+      {"t": 0.62, "st": 3.4, "half": 0.5},
+      {"t": 0.69, "st": -0.6, "half": 0.5},
+      {"t": 0.755, "st": -2.6, "half": 0.5},
+      {"t": 0.78, "st": -1.6, "half": 0.5},
+      {"t": 0.82, "st": 2.4, "half": 0.5},
+      {"t": 0.87, "st": 1.0, "half": 0.5},
+      {"t": 0.93, "st": -3.2, "half": 0.5},
+      {"t": 0.988, "st": -9.6, "half": 0.5}
+    ]}
+  ]
+}

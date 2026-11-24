@@ -4,9 +4,13 @@ import SwiftUI
 /// (at least 7 pt, display-only), your line 2 pt in one colour, bridged frames lighter and thinner, breaks only where
 /// the fixture's segments break, earlier takes as faint 1 pt lines behind. The baseline is a plain hairline. The pitch
 /// card takes whatever height is left.
+///
+/// Spec 20: the 1 pt playhead on model time and the hover or loop column come from `PitchChart`; ghosts, the band
+/// and your line arrive already faded or re-timed for this clock time.
 struct PitchCard: View {
     @Environment(\.palette) private var palette
-    var pitch: PitchPresentation
+    var chart: PitchChart
+    private var pitch: PitchPresentation { chart.pitch }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -20,7 +24,7 @@ struct PitchCard: View {
             .frame(height: 16)
             .padding(.bottom, 8)
             GeometryReader { proxy in
-                PitchPlot(pitch: pitch, size: proxy.size)
+                PitchPlot(pitch: pitch, playhead: chart.playhead, highlight: chart.highlight, size: proxy.size)
             }
             // The plot (top to baseline) never gets shorter than 120 pt (r4 C8); the word labels sit below it.
             .frame(minHeight: Metrics.pitchPlotMinHeight + PlotFrame.wordLabelHeight)
@@ -137,6 +141,8 @@ private struct PlotFrame {
 private struct PitchPlot: View {
     @Environment(\.palette) private var palette
     var pitch: PitchPresentation
+    var playhead: Double?
+    var highlight: ChartHighlight?
     var size: CGSize
 
     var body: some View {
@@ -210,6 +216,15 @@ private struct PitchPlot: View {
     private func draw(in context: inout GraphicsContext, frame: PlotFrame) {
         let range = pitch.rangeSemitones
 
+        // The hover or loop box as a full-height column over the word's model time (r6 E3), behind everything.
+        if let highlight, pitch.words.indices.contains(highlight.word) {
+            let word = pitch.words[highlight.word]
+            let fill = highlight.strength == .loop ? palette.highlightLoop : palette.highlightHover
+            let column = CGRect(x: frame.x(word.start), y: frame.top,
+                                width: frame.x(word.end) - frame.x(word.start), height: frame.baselineY - frame.top)
+            context.fill(Path(column), with: .color(fill.opacity(highlight.opacity)))
+        }
+
         // The native recording's waveform as a faint texture behind (hidden with Increase Contrast).
         if palette.showsPitchTexture {
             for cluster in pitch.texture {
@@ -272,6 +287,13 @@ private struct PitchPlot: View {
                     style: StrokeStyle(lineWidth: voiced ? 2 : 1.5, lineCap: .round, lineJoin: .round)
                 )
             }
+        }
+
+        // The 1 pt playhead on model time (§9), across the plot; it still moves with Reduce Motion.
+        if let playhead {
+            let x = frame.x(playhead)
+            context.fill(Path(CGRect(x: x - 0.5, y: frame.top, width: 1, height: frame.baselineY - frame.top)),
+                         with: .color(palette.textPrimary))
         }
     }
 
