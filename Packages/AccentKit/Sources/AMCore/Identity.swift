@@ -56,16 +56,37 @@ public struct ReferenceIdentity: Sendable, Hashable, Codable {
     }
 }
 
+/// Whether an analysis ran the verdict path (spec 28). The shipped app runs `.off`; evaluation pins `.on`.
+public enum ScoringMode: String, Sendable, Hashable, Codable, CaseIterable {
+    case off, on
+}
+
 /// Everything that determines one analysis: your audio, the reference and the configuration.
 public struct AnalysisIdentity: Sendable, Hashable, Codable {
     public let takeAudioSHA256: String
     public let reference: ReferenceIdentity
     public let config: ConfigIdentity
+    /// Spec 28. A take saved before scoring could be off has no key and decodes as `.on` (it was scored); every new
+    /// take writes the key.
+    public let scoringMode: ScoringMode
 
-    public init(takeAudioSHA256: String, reference: ReferenceIdentity, config: ConfigIdentity) {
+    public init(
+        takeAudioSHA256: String, reference: ReferenceIdentity, config: ConfigIdentity, scoringMode: ScoringMode = .on
+    ) {
         self.takeAudioSHA256 = takeAudioSHA256
         self.reference = reference
         self.config = config
+        self.scoringMode = scoringMode
+    }
+
+    enum CodingKeys: String, CodingKey { case takeAudioSHA256, reference, config, scoringMode }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        takeAudioSHA256 = try container.decode(String.self, forKey: .takeAudioSHA256)
+        reference = try container.decode(ReferenceIdentity.self, forKey: .reference)
+        config = try container.decode(ConfigIdentity.self, forKey: .config)
+        scoringMode = try container.decodeIfPresent(ScoringMode.self, forKey: .scoringMode) ?? .on
     }
 }
 

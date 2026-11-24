@@ -3,11 +3,9 @@
 //
 // Pronunciation (Designer v1 §8.3, Addendum A5): each word's context variant is chosen once (the tagger for
 // stress-shift words) and persisted; a persisted value is used only while its folded text still matches the word. A
-// content word of two or more syllables that isn't in CMUdict gets its stress measured from the clip: the clip is
-// analysed once with every syllable accepted, its observed primary at high confidence becomes the word's stress
-// (persisted too), and the clip is analysed again with the final words. A word whose stress can't be measured stays
-// ambiguous: no placement decision. A(w) is then the persisted context primary plus the clip's own high-confidence
-// observed primary, which the analyzer adds from the native reading.
+// content word of two or more syllables that isn't in CMUdict stays ambiguous (spec 28: its stress used to be measured
+// from the clip, but observed stress is verdict-only now and out of the shipped graph). With scoring on, A(w) is the
+// persisted context primary plus the clip's own high-confidence observed primary (`VerdictScorer`).
 
 import AMAlignment
 import AMCore
@@ -60,25 +58,9 @@ public struct ImportedPhrases: Sendable {
     ) async throws -> (reference: DerivedRecord, pronunciations: [StoredPronunciation]) {
         let previous = Self.persisted(stored)
         let first = expected(text, persisted: previous)
-        var chosen = Self.stored(first, previous: stored)
-        let measuring = first.words.filter(Self.needsMeasuring)
-        if !measuring.isEmpty {
-            let probe = PhraseInput(id: id, words: Self.words(first, measuring: true), transcriptRevision: revision)
-            let record = try await analyzer.analyseNative(take: clip, phrase: probe)
-            let observed = DerivedCoding.native(in: record).map { native in
-                Dictionary(native.l1.analysis.words.compactMap { result in result.observed.map { (result.word, $0) } },
-                           uniquingKeysWith: { a, _ in a })
-            } ?? [:]
-            for word in measuring {
-                guard let stress = observed[word.index], stress.confidence == .high,
-                    stress.primary < word.syllableCount
-                else { continue }
-                let phones = (0..<word.syllableCount).map { $0 == stress.primary ? "AH1" : "AH0" }
-                chosen[word.index.rawValue] = StoredPronunciation(
-                    word: word.index.rawValue, text: word.folded, arpabet: phones.joined(separator: " "),
-                    expectedAmbiguous: false, chosenBy: PronunciationSource.unknown.rawValue)
-            }
-        }
+        // Spec 28: an out-of-vocabulary word's stress is no longer measured from the clip (observed stress is
+        // verdict-only and out of the shipped graph); it stays ambiguous, so no syllable of it is marked.
+        let chosen = Self.stored(first, previous: stored)
         let final = expected(text, persisted: Self.persisted(chosen.ordered))
         let input = PhraseInput(id: id, words: Self.words(final, measuring: false), transcriptRevision: revision)
         return (try await analyzer.analyseNative(take: clip, phrase: input), chosen.ordered)
@@ -113,7 +95,8 @@ public struct ImportedPhrases: Sendable {
                     nil
                 }
             return PlacementTake.Word(
-                index: word.index, text: word.text, pronunciation: pronunciation, accepted: accepted)
+                index: word.index, text: word.text, pronunciation: pronunciation, accepted: accepted,
+                expectedStress: word.expectedPattern)
         }
     }
 

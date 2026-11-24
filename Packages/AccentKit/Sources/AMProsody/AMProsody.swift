@@ -1,6 +1,6 @@
 // AMProsody: stress, rhythm and intonation features.
-// Spec 07: the L1 syllable segmenter. Spec 08: prominence, observed stress, A(w), S and U, contrast, and the one
-// placement rule (`placementDecision`).
+// Spec 07: the L1 syllable segmenter. Spec 08: prominence and its display. Spec 28 moved observed stress, A(w) and
+// the placement rule to AMPlacement; the pure measure helpers (`PitchStatistics`) moved down here from AMScoring.
 
 import Foundation
 import AMCore

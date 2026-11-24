@@ -5,70 +5,10 @@
 // the share of comparable frames where your frame is voiced too; it is the confidence of every pitch measure.
 
 import AMCore
+import AMPlacement
+import AMProsody
 import AMWarp
 import Foundation
-
-/// A final pitch direction (§11): rise at or above +5 st/s, fall at or below −5 st/s, else level.
-public enum PitchDirection: String, Sendable, Hashable, Codable, CaseIterable {
-    case rise, fall, level
-
-    public init(slope: Double, thresholds: Thresholds.FinalDirection = Thresholds.current.finalDirection) {
-        self = slope >= thresholds.riseSemitonesPerSecond ? .rise
-            : slope <= thresholds.fallSemitonesPerSecond ? .fall : .level
-    }
-}
-
-/// The final window of one take (§11): its voiced frames and their least-squares slope.
-public struct FinalWindow: Sendable, Hashable {
-    /// Voiced frames in the window (200 ms, or 300 ms when 200 ms holds too few).
-    public let voicedFrames: Int
-    /// Least-squares slope in st/s; nil with fewer than `finalDirection.minVoicedFrames` voiced frames.
-    public let slope: Double?
-
-    /// The final 200 ms of voiced frames ending at the last voiced frame inside `material` (the take's comparable
-    /// words, whatever their class); extended back to 300 ms when 200 ms holds fewer than the minimum.
-    public init(
-        pitch: [PitchSegment], material: [TimeRange], hopSeconds hop: Double,
-        thresholds: Thresholds.FinalDirection = Thresholds.current.finalDirection
-    ) {
-        // (centre time, semitones) of every voiced frame inside the material.
-        let voiced: [(t: Double, st: Double)] = pitch.flatMap { segment in
-            segment.frames.enumerated().compactMap { j, frame -> (Double, Double)? in
-                let t = segment.start + (Double(j) + 0.5) * hop
-                guard frame.voiced, material.contains(where: { $0.start <= t && t <= $0.end }) else { return nil }
-                return (t, frame.semitones)
-            }
-        }
-        guard let last = voiced.max(by: { $0.t < $1.t })?.t else {
-            self.init(voicedFrames: 0, slope: nil)
-            return
-        }
-        let minimum = Int(thresholds.minVoicedFrames)
-        // A frame is in a window of length w when its centre is within w of the last centre (half-open, so 200 ms
-        // holds 20 frames at a 10 ms hop).
-        func window(_ ms: Double) -> [(t: Double, st: Double)] {
-            voiced.filter { last - $0.t < ms / 1000 - hop / 2 }
-        }
-        var frames = window(thresholds.windowMs)
-        if frames.count < minimum { frames = window(thresholds.extendedWindowMs) }
-        self.init(voicedFrames: frames.count, slope: frames.count >= minimum ? Self.slope(frames) : nil)
-    }
-
-    init(voicedFrames: Int, slope: Double?) {
-        self.voicedFrames = voicedFrames
-        self.slope = slope
-    }
-
-    /// Least-squares slope of semitones on seconds; nil when every frame has the same time.
-    static func slope(_ points: [(t: Double, st: Double)]) -> Double? {
-        let n = Double(points.count)
-        let meanT = points.reduce(0) { $0 + $1.t } / n
-        let meanS = points.reduce(0) { $0 + $1.st } / n
-        let sxx = points.reduce(0) { $0 + ($1.t - meanT) * ($1.t - meanT) }
-        guard sxx > 0 else { return nil }
-        return points.reduce(0) { $0 + ($1.t - meanT) * ($1.st - meanS) } / sxx
-    }
-}
 
 /// The pitch measures of one pair.
 struct PitchMeasures {
@@ -156,18 +96,9 @@ struct PitchMeasures {
         return level == .low ? .unavailable(.lowConfidence) : .evaluated(slope, level)
     }
 
-    /// P90 − P10 in st (linear-interpolated percentiles, the band's); nil with no frame.
+    /// P90 − P10 in st (moved down to `PitchStatistics`, spec 28).
     static func range(_ values: [Double], thresholds: Thresholds.Band) -> Double? {
-        guard !values.isEmpty else { return nil }
-        let sorted = values.sorted()
-        return percentile(sorted, thresholds.upperPercentile) - percentile(sorted, thresholds.lowerPercentile)
-    }
-
-    static func percentile(_ sorted: [Double], _ p: Double) -> Double {
-        let position = p / 100 * Double(sorted.count - 1)
-        let lo = Int(position.rounded(.down))
-        let hi = min(lo + 1, sorted.count - 1)
-        return sorted[lo] + (position - Double(lo)) * (sorted[hi] - sorted[lo])
+        PitchStatistics.range(values, thresholds: thresholds)
     }
 
     /// Pearson r; nil when either side has zero variance.

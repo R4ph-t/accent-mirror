@@ -8,6 +8,7 @@ import Accelerate
 import AMAlignment
 import AMCore
 import AMLibrary
+import AMProsody
 @preconcurrency import AVFAudio
 import Foundation
 
@@ -96,7 +97,9 @@ public struct StarterReferences: Sendable {
             let pronunciation = try word.pronunciation ?? Pronunciation(arpabet: fallbackPhones(word.text, dictionary: dictionary))
             let pattern = word.expectedPattern ?? []
             let accepted = pattern.count >= 2 ? pattern.firstIndex(of: .primary).map { Set([$0]) } : nil
-            return PlacementTake.Word(index: word.index, text: word.text, pronunciation: pronunciation, accepted: accepted)
+            return PlacementTake.Word(
+                index: word.index, text: word.text, pronunciation: pronunciation, accepted: accepted,
+                expectedStress: word.expectedPattern)
         }
         return PhraseInput(id: phrase.id, words: words)
     }

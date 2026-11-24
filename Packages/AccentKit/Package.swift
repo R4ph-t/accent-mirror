@@ -10,9 +10,16 @@ let modules: [(name: String, dependencies: [String])] = [
     ("AMPitch", ["AMCore"]),
     ("AMProsody", ["AMCore", "AMAlignment", "AMPitch"]),
     ("AMWarp", ["AMCore", "AMPitch"]),
-    ("AMScoring", ["AMCore", "AMProsody", "AMWarp"]),
+    // Spec 28: the verdict path, out of the shipped graph. AMPlacement is the leaf holding observed stress, A(w) and
+    // the placement rule; AMScoring and AMVerdicts build on it. AMPipeline (what the app links) reaches none of the
+    // three (ShippedGraphTests).
+    ("AMPlacement", ["AMCore", "AMCapture", "AMAlignment", "AMPitch", "AMProsody"]),
+    ("AMScoring", ["AMCore", "AMProsody", "AMWarp", "AMPlacement"]),
     ("AMLibrary", ["AMCore"]),
-    ("AMPipeline", ["AMCore", "AMCapture", "AMAlignment", "AMPitch", "AMProsody", "AMWarp", "AMScoring", "AMLibrary"]),
+    ("AMPipeline", ["AMCore", "AMCapture", "AMAlignment", "AMPitch", "AMProsody", "AMWarp", "AMLibrary"]),
+    // The verdict scorer (`VerdictScorer`), pair scoring and the placement goldens. Evaluation and Milestone 2 only.
+    ("AMVerdicts", ["AMCore", "AMCapture", "AMAlignment", "AMPitch", "AMProsody", "AMWarp", "AMPlacement", "AMScoring",
+                    "AMPipeline"]),
     // Evaluation only (spec 02): manifests, folds, statistics and the reporter. The app never links it.
     ("AMEvaluation", ["AMCore"]),
 ]
@@ -22,6 +29,13 @@ let modules: [(name: String, dependencies: [String])] = [
 /// version; its weights are fetched separately and SHA-256 checked (Resources/Models/).
 let externalDependencies: [String: [Target.Dependency]] = [
     "AMAlignment": [.product(name: "WhisperKit", package: "WhisperKit")],
+]
+
+/// Extra modules a test target links beyond its own. AMPipelineTests also links AMVerdicts (spec 28): the scoring-off
+/// tests compare the shipped run with a `VerdictScorer` run, and the smoke and pipeline goldens pin `VerdictScorer`.
+/// Test-only: AMPipeline itself never depends on AMVerdicts (ShippedGraphTests).
+let extraTestDependencies: [String: [String]] = [
+    "AMPipeline": ["AMVerdicts"],
 ]
 
 let package = Package(
@@ -42,7 +56,7 @@ let package = Package(
             ),
             .testTarget(
                 name: "\(module.name)Tests",
-                dependencies: [.target(name: module.name)],
+                dependencies: ([module.name] + (extraTestDependencies[module.name] ?? [])).map { .target(name: $0) },
                 // AMCore's golden JSON is read from the source tree by path (spec 01), not bundled.
                 exclude: module.name == "AMCore" ? ["Golden"] : [],
                 resources: module.name == "AMAlignment" ? [.copy("Fixtures")] : nil
@@ -53,7 +67,8 @@ let package = Package(
         // only: the app target depends on AMPipeline alone and never links this or AMEvaluation.
         .executableTarget(
             name: "am-eval",
-            dependencies: [.target(name: "AMPipeline"), .target(name: "AMEvaluation")],
+            // Pinned to the verdict scorer (spec 28): evaluation always runs `VerdictScorer()`.
+            dependencies: [.target(name: "AMPipeline"), .target(name: "AMEvaluation"), .target(name: "AMVerdicts")],
             path: "Sources/am-eval"
         ),
         // Local evaluation tooling (spec 03): never linked into the app, never run by CI.

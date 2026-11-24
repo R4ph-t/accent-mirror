@@ -1,6 +1,8 @@
 import AMAlignment
 import AMCore
 import AMPipeline
+import AMPlacement
+import AMVerdicts
 import AMProsody
 import Foundation
 import Testing

@@ -6,6 +6,9 @@ import AMCapture
 import AMCore
 import AMEvaluation
 import AMPipeline
+import AMPlacement
+import AMProsody
+import AMVerdicts
 import AMPitch
 import Foundation
 
@@ -592,6 +595,8 @@ func positive(_ args: Arguments, root: URL) async throws -> Int32 {
         case .verdict(.close): "close"
         case .verdict(.noClearDifference): "noClearDifference"
         case .verdict(.inconclusive): "inconclusive"
+        // Spec 28: unreachable (the runner throws on it); named so a regression is visible.
+        case .verdict(.notScored): "notScored"
         }
     }.mapValues(\.count).sorted { $0.key < $1.key }.map { "\($0.key) \($0.value)" }.joined(separator: ", ")
     let measuredLine = "pairs measured: scoring \(run.outcomes.count), band coverage \(run.band.count) of \(pairs.headline.count) headline pairs (\(decisions.isEmpty ? "none" : decisions)); thresholds are initial and untuned"

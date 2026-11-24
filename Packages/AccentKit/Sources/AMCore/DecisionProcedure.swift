@@ -100,19 +100,34 @@ public enum Decision: Sendable, Hashable, Codable {
     enum VerdictCodingKeys: String, CodingKey { case _0 = "verdict" }
 }
 
+/// The take-problem gate (spec 28 §1a): steps 1–2 of the decision procedure, on the shipped path whatever the
+/// scorer. Quality problems first (Designer's order), then `wordsDontMatch` when the match share is below
+/// `minMatchShare` or there are too many non-filler insertions. Nil: the take can be analysed.
+public func decideTakeProblem(
+    takeProblems: [TakeProblem], alignment: AlignmentSummary, thresholds: Thresholds = .current
+) -> TakeProblem? {
+    let limits = thresholds.decision
+    // 1. Quality checks.
+    if let problem = TakeProblem.first(of: takeProblems) { return problem }
+    // 2. Word alignment.
+    if alignment.matchShare < limits.minMatchShare
+        || Double(alignment.nonFillerInsertions.count) > limits.maxNonFillerInsertions
+    {
+        return .wordsDontMatch
+    }
+    return nil
+}
+
 /// Plan §1.2, in order; the first match wins.
 public func decide(_ input: DecisionInput, thresholds: Thresholds = .current) -> Decision {
     let limits = thresholds.decision
     let measures = input.measures
 
-    // 1. Quality checks.
-    if let problem = TakeProblem.first(of: input.takeProblems) { return .takeProblem(problem) }
-
-    // 2. Word alignment.
-    if input.alignment.matchShare < limits.minMatchShare
-        || Double(input.alignment.nonFillerInsertions.count) > limits.maxNonFillerInsertions
+    // 1 and 2. Quality checks, then word alignment: the shared take-problem gate.
+    if let problem = decideTakeProblem(
+        takeProblems: input.takeProblems, alignment: input.alignment, thresholds: thresholds)
     {
-        return .takeProblem(.wordsDontMatch)
+        return .takeProblem(problem)
     }
 
     // 3. Target words missing or substituted.

@@ -60,16 +60,22 @@ public struct L1Key: Sendable, Hashable, Codable {
     public var text: String { (try? CanonicalJSON.sha256(self)) ?? "" }
 }
 
-/// L2: the L1 key + `ReferenceIdentity + thresholdsVersion`.
+/// L2: the L1 key + `ReferenceIdentity + thresholdsVersion + scoringMode` (spec 28: an `.on` comparison is never
+/// served for an `.off` request, or the other way round).
 public struct L2Key: Sendable, Hashable, Codable {
     public let l1: L1Key
     public let reference: ReferenceIdentity
     public let thresholdsVersion: Int
+    public let scoringMode: ScoringMode
 
-    public init(l1: L1Key, reference: ReferenceIdentity, thresholdsVersion: Int = Versions.thresholdsVersion) {
+    public init(
+        l1: L1Key, reference: ReferenceIdentity, thresholdsVersion: Int = Versions.thresholdsVersion,
+        scoringMode: ScoringMode
+    ) {
         self.l1 = l1
         self.reference = reference
         self.thresholdsVersion = thresholdsVersion
+        self.scoringMode = scoringMode
     }
 
     public var text: String { (try? CanonicalJSON.sha256(self)) ?? "" }
@@ -87,13 +93,14 @@ public struct L0Analysis: Sendable, Equatable, Codable {
     public let words: [WordTimestamp]
 }
 
-/// One take against its transcript: refined word timings, the alignment and its summary, syllables and placements.
+/// One take against its transcript: refined word timings, the alignment and its summary, syllables and pitch. No
+/// observed stress or placement decision (spec 28): records written before still decode, their extra keys ignored.
 public struct L1Analysis: Sendable, Equatable, Codable {
     public let key: L1Key
     /// The words after the boundary source (spec 23); what alignment and syllables were built on.
     public let words: [WordTimestamp]
     public let summary: AlignmentSummary
-    public let analysis: PlacementAnalysis
+    public let analysis: TakeProsody
 }
 
 /// Your take compared with one reference: the outcome and what evaluation reads beside it.

@@ -2,6 +2,7 @@
 // and the verdict through spec 01's decision procedure. Rows carry structured values only; copy is the app's.
 
 import AMCore
+import AMPlacement
 import AMProsody
 import AMWarp
 import Foundation

@@ -42,6 +42,8 @@ enum Golden {
         fixture(
             "analysed-inconclusive.json",
             response(.analysed(result(verdict: .inconclusive([.targetWordsMissing([WordIndex(0)])]))))),
+        // Spec 28: scoring off.
+        fixture("analysed-not-scored.json", response(.analysed(notScoredResult()), identity: notScoredIdentity)),
         fixture("examples/1-close.json", Decision.verdict(.close)),
         fixture("examples/2-shape-0.5.json", Decision.verdict(.noClearDifference([.pitchShapeBelowClose(0.5)]))),
         fixture(
@@ -57,6 +59,10 @@ enum Golden {
 
     /// Not decodable: a feedback verdict with 4 rows. Kept under Golden/ so it counts in the digest.
     static let fourRowsPath = "invalid/analysed-feedback-4-rows.json"
+
+    /// Spec 28: a take saved before scoring could be off, byte for byte as main had `analysed-close.json` (no
+    /// `scoringMode`, no `describe`, no `comparableCoverage`). Never re-recorded.
+    static let legacyScoredPath = "analysed-legacy-scored.json"
 
     // MARK: Values
 
@@ -76,10 +82,51 @@ enum Golden {
     static let feedbackVerdict = Verdict.feedback(
         rows: BoundedRows([DiffRow(kind: .roughTiming), Scenario.placementRow])!, partial: [])
 
-    static func response(_ outcome: AnalysisOutcome) -> AnalysisResponse {
+    static func response(_ outcome: AnalysisOutcome, identity: AnalysisIdentity = identity) -> AnalysisResponse {
         AnalysisResponse(
             requestID: RequestID(UUID(uuidString: "5D7C0E1A-0000-4000-8000-000000000001")!), identity: identity,
             outcome: outcome)
+    }
+
+    static let notScoredIdentity = AnalysisIdentity(
+        takeAudioSHA256: identity.takeAudioSHA256, reference: identity.reference, config: config, scoringMode: .off)
+
+    /// Spec 28: "record" analysed with scoring off. `.notScored`, no measures, applicability or stress lines; both
+    /// speakers' syllables follow the context-resolved pattern (never `.measured`); coverage and the description set.
+    static func notScoredResult() -> AnalysisResult {
+        let scored = result(verdict: .close)
+        func dictionary(_ speaker: SpeakerAnalysis) -> SpeakerAnalysis {
+            let pattern: [SyllableStress] = [.primary, .unstressed]
+            return SpeakerAnalysis(
+                words: speaker.words.map {
+                    WordSpan(text: $0.text, range: $0.range, syllables: $0.syllables, expectedStress: pattern)
+                },
+                syllables: speaker.syllables.map {
+                    SyllableMeasure(
+                        text: $0.text, wordIndex: $0.wordIndex, indexInWord: $0.indexInWord, range: $0.range,
+                        share: $0.share, prominence: $0.prominence, stress: pattern[$0.indexInWord],
+                        stressSource: .dictionary)
+                },
+                pitch: speaker.pitch, medianF0Hz: speaker.medianF0Hz)
+        }
+        let you = SpeakerDescription(
+            lengthSeconds: .value(0.6), syllablesPerSecond: .value(3.25), pitchRangeSemitones: .value(3.5),
+            rhythmNPVI: .missing(.tooFewSyllables), finalSlope: .value(12.5), endingDirection: .rise)
+        let natives = [
+            SpeakerDescription(
+                lengthSeconds: .value(0.52), syllablesPerSecond: .value(3.75), pitchRangeSemitones: .value(2.25),
+                rhythmNPVI: .missing(.tooFewSyllables), finalSlope: .value(-8), endingDirection: .fall),
+            SpeakerDescription(
+                lengthSeconds: .value(0.58), syllablesPerSecond: .value(3.5), pitchRangeSemitones: .value(4),
+                rhythmNPVI: .missing(.tooFewSyllables), finalSlope: .missing(.tooFewFinalFrames), endingDirection: nil),
+        ]
+        return AnalysisResult(
+            phraseID: scored.phraseID, takeID: scored.takeID, recordedAt: scored.recordedAt, model: dictionary(scored.model),
+            you: dictionary(scored.you), modelAxis: scored.modelAxis, alignment: scored.alignment,
+            timeMap: scored.timeMap, youPitchOnModel: scored.youPitchOnModel, nativeBand: scored.nativeBand,
+            pitchAxis: scored.pitchAxis, timing: scored.timing, stress: [], measures: [:], applicability: .empty,
+            verdict: .notScored, identity: notScoredIdentity, comparableCoverage: 1,
+            describe: DescribedMeasures(you: you, native: NativeDescription(natives)))
     }
 
     private static func range(_ start: Double, _ end: Double) -> TimeRange { try! TimeRange(start: start, end: end) }
@@ -241,6 +288,7 @@ enum Golden {
                 case .close: verdicts.insert("close")
                 case .noClearDifference: verdicts.insert("noClearDifference")
                 case .inconclusive: verdicts.insert("inconclusive")
+                case .notScored: verdicts.insert("notScored")
                 }
             case .takeProblem: outcomes.insert("takeProblem")
             case .failed: outcomes.insert("failed")
@@ -248,7 +296,57 @@ enum Golden {
             }
         }
         #expect(outcomes == ["analysed", "takeProblem", "failed", "cancelled"])
-        #expect(verdicts == ["feedback", "close", "noClearDifference", "inconclusive"])
+        #expect(verdicts == ["feedback", "close", "noClearDifference", "inconclusive", "notScored"])
+    }
+
+    @Test("spec 28: the legacy scored take decodes as scored and re-encodes byte-identically once scoringMode is stripped")
+    func legacyScoredRoundTrips() throws {
+        let data = try Data(contentsOf: Golden.directory.appendingPathComponent(Golden.legacyScoredPath))
+        #expect(!String(decoding: data, as: UTF8.self).contains("scoringMode"), "the legacy golden predates scoringMode")
+        let response = try CanonicalJSON.decoder().decode(AnalysisResponse.self, from: data)
+        guard case .analysed(let result) = response.outcome else {
+            Issue.record("expected an analysed outcome")
+            return
+        }
+        #expect(result.verdict == .close, "it keeps its old verdict")
+        #expect(response.identity.scoringMode == .on && result.identity.scoringMode == .on)
+        #expect(result.describe == nil && result.comparableCoverage == nil)
+        #expect(result.model.words.allSatisfy { $0.expectedStress == nil })
+
+        // Re-encode, strip the one added key (scoringMode, in both identities), compare with the file.
+        var object = try #require(
+            try JSONSerialization.jsonObject(with: CanonicalJSON.encode(response)) as? [String: Any])
+        var identity = try #require(object["identity"] as? [String: Any])
+        #expect(identity.removeValue(forKey: "scoringMode") as? String == "on")
+        object["identity"] = identity
+        var outcome = try #require(object["outcome"] as? [String: Any])
+        var analysed = try #require(outcome["analysed"] as? [String: Any])
+        var encoded = try #require(analysed["result"] as? [String: Any])
+        #expect(encoded["describe"] == nil && encoded["comparableCoverage"] == nil, "omitted, not null")
+        var inner = try #require(encoded["identity"] as? [String: Any])
+        #expect(inner.removeValue(forKey: "scoringMode") as? String == "on")
+        encoded["identity"] = inner
+        analysed["result"] = encoded
+        outcome["analysed"] = analysed
+        object["outcome"] = outcome
+        let stripped = try CanonicalJSON.canonicalize(JSONSerialization.data(withJSONObject: object))
+        #expect(stripped == (try CanonicalJSON.canonicalize(data)), "byte-identical after stripping scoringMode")
+    }
+
+    @Test("spec 28: the not-scored golden is scoring-off and round-trips byte-identically")
+    func notScoredRoundTrips() throws {
+        let data = try Data(contentsOf: Golden.directory.appendingPathComponent("analysed-not-scored.json"))
+        let response = try CanonicalJSON.decoder().decode(AnalysisResponse.self, from: data)
+        guard case .analysed(let result) = response.outcome else {
+            Issue.record("expected an analysed outcome")
+            return
+        }
+        #expect(result.verdict == .notScored && result.identity.scoringMode == .off)
+        #expect(result.measures.isEmpty && result.applicability.isEmpty && result.stress.isEmpty)
+        #expect(result.comparableCoverage != nil && result.describe != nil)
+        #expect((result.model.syllables + result.you.syllables).allSatisfy { $0.stressSource != .measured })
+        #expect(try CanonicalJSON.encode(response) == CanonicalJSON.canonicalize(data))
+        #expect(String(decoding: try CanonicalJSON.encode(Verdict.notScored), as: UTF8.self) == #"{"notScored":{}}"#)
     }
 
     @Test("the five §1.3 example goldens are what the decision procedure returns") func examplesMatchProcedure() throws {
@@ -300,7 +398,15 @@ enum Golden {
                 next.algorithmVersion - previous.algorithmVersion, next.thresholdsVersion - previous.thresholdsVersion,
                 next.contractVersion - previous.contractVersion,
             ]
-            #expect(up.allSatisfy { $0 >= 0 } && up.contains { $0 > 0 }, "versions must increase between records")
+            // Spec 28 (CTO): `scoringMode`, `describe`, `comparableCoverage` and `expectedStress` are additive (old JSON
+            // still decodes), so no version moved; its golden record repeats (1, 8, 2) with a new digest. That one
+            // triple is the only allowed repeat.
+            let additiveRepeat = up == [0, 0, 0]
+                && (next.algorithmVersion, next.thresholdsVersion, next.contractVersion) == (1, 8, 2)
+                && next.digest == records.last?.digest
+            #expect(
+                up.allSatisfy { $0 >= 0 } && (up.contains { $0 > 0 } || additiveRepeat),
+                "versions must increase between records")
         }
     }
 

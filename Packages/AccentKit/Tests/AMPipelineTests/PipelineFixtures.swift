@@ -6,6 +6,9 @@ import AMAlignment
 import AMCore
 import AMLibrary
 import AMPipeline
+import AMPlacement
+import AMProsody
+import AMVerdicts
 import AMPitch
 import Foundation
 import Synchronization

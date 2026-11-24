@@ -1,0 +1,362 @@
+{
+  "identity" : {
+    "config" : {
+      "algorithmVersion" : 1,
+      "aligner" : "whisper",
+      "alignerModelSHA256" : "none",
+      "asrModelID" : "whisperkit-base.en",
+      "contractVersion" : 2,
+      "pitchTrackerID" : "pyin-1",
+      "thresholdsVersion" : 8,
+      "voicingID" : "acf-1"
+    },
+    "reference" : {
+      "nativeSetHash" : "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "phraseID" : "record",
+      "pronunciationOverridesHash" : "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "recordingID" : "p225-record",
+      "recordingSHA256" : "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "targetsHash" : "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "transcriptRevision" : 1
+    },
+    "scoringMode" : "off",
+    "takeAudioSHA256" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "outcome" : {
+    "analysed" : {
+      "result" : {
+        "alignment" : {
+          "pairs" : [
+            {
+              "present" : {
+                "phrase" : 0,
+                "you" : {
+                  "end" : 0.8,
+                  "start" : 0.2
+                }
+              }
+            }
+          ]
+        },
+        "applicability" : {
+
+        },
+        "comparableCoverage" : 1,
+        "describe" : {
+          "native" : {
+            "endingDirections" : {
+              "fall" : 1
+            },
+            "finalSlope" : {
+              "count" : 1,
+              "max" : -8,
+              "min" : -8
+            },
+            "finalSlopes" : [
+              -8
+            ],
+            "lengthSeconds" : {
+              "count" : 2,
+              "max" : 0.58,
+              "min" : 0.52
+            },
+            "pitchRangeSemitones" : {
+              "count" : 2,
+              "max" : 4,
+              "min" : 2.25
+            },
+            "rhythmNPVI" : {
+              "count" : 0
+            },
+            "syllablesPerSecond" : {
+              "count" : 2,
+              "max" : 3.75,
+              "min" : 3.5
+            },
+            "voices" : 2
+          },
+          "you" : {
+            "endingDirection" : "rise",
+            "finalSlope" : {
+              "value" : {
+                "value" : 12.5
+              }
+            },
+            "lengthSeconds" : {
+              "value" : {
+                "value" : 0.6
+              }
+            },
+            "pitchRangeSemitones" : {
+              "value" : {
+                "value" : 3.5
+              }
+            },
+            "rhythmNPVI" : {
+              "missing" : {
+                "reason" : "tooFewSyllables"
+              }
+            },
+            "syllablesPerSecond" : {
+              "value" : {
+                "value" : 3.25
+              }
+            }
+          }
+        },
+        "identity" : {
+          "config" : {
+            "algorithmVersion" : 1,
+            "aligner" : "whisper",
+            "alignerModelSHA256" : "none",
+            "asrModelID" : "whisperkit-base.en",
+            "contractVersion" : 2,
+            "pitchTrackerID" : "pyin-1",
+            "thresholdsVersion" : 8,
+            "voicingID" : "acf-1"
+          },
+          "reference" : {
+            "nativeSetHash" : "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "phraseID" : "record",
+            "pronunciationOverridesHash" : "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "recordingID" : "p225-record",
+            "recordingSHA256" : "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "targetsHash" : "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "transcriptRevision" : 1
+          },
+          "scoringMode" : "off",
+          "takeAudioSHA256" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "measures" : {
+
+        },
+        "model" : {
+          "medianF0Hz" : 196,
+          "pitch" : [
+            {
+              "frames" : [
+                {
+                  "semitones" : 2,
+                  "voiced" : true
+                },
+                {
+                  "semitones" : 1.5,
+                  "voiced" : true
+                },
+                {
+                  "semitones" : 0.75,
+                  "voiced" : false
+                },
+                {
+                  "semitones" : -0.5,
+                  "voiced" : true
+                }
+              ],
+              "start" : 0.1
+            }
+          ],
+          "syllables" : [
+            {
+              "indexInWord" : 0,
+              "prominence" : 1,
+              "range" : {
+                "end" : 0.34,
+                "start" : 0.1
+              },
+              "share" : 0.46,
+              "stress" : "primary",
+              "stressSource" : "dictionary",
+              "text" : "REC",
+              "wordIndex" : 0
+            },
+            {
+              "indexInWord" : 1,
+              "prominence" : 0,
+              "range" : {
+                "end" : 0.62,
+                "start" : 0.34
+              },
+              "share" : 0.54,
+              "stress" : "unstressed",
+              "stressSource" : "dictionary",
+              "text" : "ord",
+              "wordIndex" : 0
+            }
+          ],
+          "words" : [
+            {
+              "expectedStress" : [
+                "primary",
+                "unstressed"
+              ],
+              "range" : {
+                "end" : 0.62,
+                "start" : 0.1
+              },
+              "syllables" : [
+                0,
+                1
+              ],
+              "text" : "record"
+            }
+          ]
+        },
+        "modelAxis" : {
+          "end" : 0.62,
+          "start" : 0.1
+        },
+        "nativeBand" : [
+          {
+            "lower" : 0.5,
+            "time" : 0.1,
+            "upper" : 3.5
+          },
+          {
+            "lower" : 0,
+            "time" : 0.2,
+            "upper" : 3
+          },
+          {
+            "lower" : -0.75,
+            "time" : 0.3,
+            "upper" : 2.25
+          }
+        ],
+        "phraseID" : "record",
+        "pitchAxis" : [
+          -12,
+          12
+        ],
+        "recordedAt" : 1795420800,
+        "stress" : [
+
+        ],
+        "takeID" : "take-0001",
+        "timeMap" : {
+          "segments" : [
+            {
+              "mapped" : {
+                "anchors" : [
+                  {
+                    "model" : 0.1,
+                    "you" : 0.2
+                  },
+                  {
+                    "model" : 0.34,
+                    "you" : 0.42
+                  },
+                  {
+                    "model" : 0.62,
+                    "you" : 0.8
+                  }
+                ],
+                "comparable" : true,
+                "model" : {
+                  "end" : 0.62,
+                  "start" : 0.1
+                },
+                "you" : {
+                  "end" : 0.8,
+                  "start" : 0.2
+                }
+              }
+            }
+          ]
+        },
+        "timing" : "rough",
+        "verdict" : {
+          "notScored" : {
+
+          }
+        },
+        "you" : {
+          "medianF0Hz" : 120,
+          "pitch" : [
+            {
+              "frames" : [
+                {
+                  "semitones" : -1,
+                  "voiced" : true
+                },
+                {
+                  "semitones" : 0.5,
+                  "voiced" : true
+                },
+                {
+                  "semitones" : 3,
+                  "voiced" : true
+                }
+              ],
+              "start" : 0.2
+            }
+          ],
+          "syllables" : [
+            {
+              "indexInWord" : 0,
+              "prominence" : 0.25,
+              "range" : {
+                "end" : 0.42,
+                "start" : 0.2
+              },
+              "share" : 0.37,
+              "stress" : "primary",
+              "stressSource" : "dictionary",
+              "text" : "re",
+              "wordIndex" : 0
+            },
+            {
+              "indexInWord" : 1,
+              "prominence" : 1,
+              "range" : {
+                "end" : 0.8,
+                "start" : 0.42
+              },
+              "share" : 0.63,
+              "stress" : "unstressed",
+              "stressSource" : "dictionary",
+              "text" : "CORD",
+              "wordIndex" : 0
+            }
+          ],
+          "words" : [
+            {
+              "expectedStress" : [
+                "primary",
+                "unstressed"
+              ],
+              "range" : {
+                "end" : 0.8,
+                "start" : 0.2
+              },
+              "syllables" : [
+                0,
+                1
+              ],
+              "text" : "record"
+            }
+          ]
+        },
+        "youPitchOnModel" : [
+          {
+            "frames" : [
+              {
+                "semitones" : -1,
+                "voiced" : true
+              },
+              {
+                "semitones" : 0.5,
+                "voiced" : true
+              },
+              {
+                "semitones" : 3,
+                "voiced" : true
+              }
+            ],
+            "start" : 0.1
+          }
+        ]
+      }
+    }
+  },
+  "requestID" : "5D7C0E1A-0000-4000-8000-000000000001"
+}

@@ -6,6 +6,9 @@
 import AMAlignment
 import AMCore
 import AMPipeline
+import AMPlacement
+import AMProsody
+import AMVerdicts
 import Foundation
 import Testing
 
@@ -61,7 +64,7 @@ struct ShippedAlignerTests {
         #expect(graph.dependencies["am-timestamps"]?.contains(Self.ctcTarget) == true)
 
         let closure = graph.closure(of: "AMPipeline")
-        #expect(closure.contains("AMScoring") && closure.contains("AMProsody"))
+        #expect(closure.contains("AMWarp") && closure.contains("AMProsody"))
         #expect(!closure.contains(Self.ctcTarget), "AMPipeline (what the app links) must not reach \(Self.ctcTarget)")
         #expect(!graph.libraryModules.contains(Self.ctcTarget), "\(Self.ctcTarget) must not be a library product")
     }

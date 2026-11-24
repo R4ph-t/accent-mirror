@@ -1,5 +1,6 @@
 import AMAlignment
 import AMCore
+import AMPlacement
 import AMProsody
 import Foundation
 import Testing

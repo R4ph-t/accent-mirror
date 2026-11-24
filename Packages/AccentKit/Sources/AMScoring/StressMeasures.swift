@@ -3,6 +3,7 @@
 // your take, so your P and the model's P are measured over the same material.
 
 import AMCore
+import AMPlacement
 import AMProsody
 import Foundation
 
@@ -226,15 +227,6 @@ struct StressMeasures {
         return share >= thresholds.contrastHigh ? .high : share >= thresholds.contrastMedium ? .medium : .low
     }
 
-    /// nPVI = 100 × mean |d_k − d_k+1| / ((d_k + d_k+1) / 2); nil with fewer than 3 syllables.
-    static func npvi(_ durations: [Double]) -> Double? {
-        guard durations.count >= 3 else { return nil }
-        var sum = 0.0
-        for k in 0..<(durations.count - 1) {
-            let a = durations[k], b = durations[k + 1]
-            let mean = (a + b) / 2
-            if mean > 0 { sum += abs(a - b) / mean }
-        }
-        return 100 * sum / Double(durations.count - 1)
-    }
+    /// nPVI (moved down to `PitchStatistics`, spec 28).
+    static func npvi(_ durations: [Double]) -> Double? { PitchStatistics.npvi(durations) }
 }
