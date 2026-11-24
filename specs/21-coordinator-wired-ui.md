@@ -111,10 +111,13 @@ through earlier takes. Everything on device.
 
 ### Results and problems
 
-- `analysed` → the result state: card 1 "WHAT TO CHANGE" (1–3 rows, or close / noClearDifference / inconclusive with
-  v2 §13.1 and Addendum A4 copy), the placement-only line (§13 item 3), the quiet lines (A6), the strip, the pitch
-  card and the inspector (§14: measures with state and reason, STRESS lines, timing match, model recording
-  attribution). Copy stays in the app's `Copy.swift`; AccentKit returns structured values only.
+- `analysed` → the v3 result state: card 1 **"YOUR TAKE"** with the result row, Play Both and at most one quiet
+  line (low coverage from `AnalysisResult.comparableCoverage`, then rough timing, then inserted words; v3 §3.1
+  copy), the strip, the pitch card with earlier takes on by default, and the inspector's MEASURE / YOU /
+  NATIVE RANGE table from spec 28's `describe` plus ALIGNMENT (Clear / Rough) and model recording attribution.
+  No WHAT TO CHANGE, no diff / close / noClearDifference / inconclusive rows, no placement-only line, no
+  STRESS lines, no measure states, no diff icons. Copy stays in the app's `Copy.swift`; AccentKit returns
+  structured values only.
 - `takeProblem` → card 1 "YOUR TAKE" with the first problem's row and Try Again (v2 §11.1, B7). Too quiet, clipped,
   too short and words don't match stay playable with You and the take menu reads "LAST TRY · NOT SAVED" (A7, B8)
   until the next take or a phrase change. Nothing is saved.
@@ -123,7 +126,8 @@ through earlier takes. Everything on device.
   never shows with a banner for the same take.
 - `cancelled` → nothing. **saveFailed** → the result as normal plus one notice with Try Again Saving and a close
   button, once per take; an operational error wins the slot. **savedPruneFailed** → nothing, logged.
-- VoiceOver announces "Recording" at start, "Analysing" at stop, then the first card-1 sentence (polite).
+- VoiceOver announces "Recording" at start, "Analysing" at stop, then "Result ready. Your take is drawn over
+  the model's." for an analysed take (v3 §5). A take problem still announces that problem's sentence.
 
 ### Playback (v1 §5.3, v2 §9–10)
 
@@ -148,8 +152,8 @@ through earlier takes. Everything on device.
     right-aligned in Geist Mono 12 `text.tertiary` (the F/M tag is Designer's call). The selected voice is checked.
   - Closed state: "Southern England · p225".
   - Toolbar subtitle: "{pack} · Native speaker from {region}, VCTK", e.g. "Stress Shifts · Native speaker from
-    Southern England, VCTK". The inspector's attribution keeps speaker ID, corpus and licence. The STRESS lines keep
-    the speaker ID ("you match p311").
+    Southern England, VCTK". The inspector's attribution keeps speaker ID, corpus and licence. There are no
+    STRESS lines (v3 §4; E7's STRESS-lines bullet is gone).
   - A switch recomputes L2 only (spec 12) and uses spec 20's ease; the subtitle updates at once.
 - **Input** pop-up in the inspector lists spec 14's devices; the choice is used for the next take and remembered.
   No level next to it (E5: the meter lives in the recording row only).
@@ -162,7 +166,7 @@ Every shortcut has its menu item.
 
 ## Defaults
 
-- Thresholds are whatever is on main after spec 11.
+- Thresholds stay as they are on main. This spec doesn't retune them, and spec 11 is `Replaced by 28`.
 - The selected voice per phrase is remembered across launches; the default is the manifest's headline voice.
 
 ## Guardrails

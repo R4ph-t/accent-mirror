@@ -33,9 +33,10 @@ interaction on top. Where the text below conflicts with this block, this block w
   connectors (spec 29) re-time with the voice-switch ease, like the band.
 - **The native band ("Native range") is display-only:** no colour change, copy or motion implies outside the band is
   wrong; it re-times on a voice switch in one 150 ms ease as before.
-- **Playhead time mapping** uses `PartialTimeMap`'s inverse lookup as spec 28 leaves it; gaps show no playhead on the
-  other row rather than interpolating. Play Both's playhead (model half, pause, your half) is drawn here on the
-  injected clock.
+- **Playhead time mapping** uses `TimeWarp.toYou` / `toModel` (`AMWarp/TimeWarp.swift:171–174`; spec 28 §5 is
+  tests only, no new `PartialTimeMap` lookup). Gaps and missing or inserted words return nil, so there is no
+  playhead on the other row rather than interpolating. Play Both's playhead (model half, pause, your half) is
+  drawn here on the injected clock.
 
 ## Goal
 
@@ -59,14 +60,14 @@ can feed them live data without touching the drawing. No audio, no microphone, n
 ### Playhead (§9, v1 §5.3)
 
 - A 1 pt `text.primary` line across both the strip and the pitch plot while audio plays, on the model timeline.
-  Playing your take moves it through spec 09's `PartialTimeMap` (`toModel`); across a youOnly stretch it holds at
+  Playing your take moves it through `TimeWarp.toModel` (spec 09's warp, spec 28 §5); across a youOnly stretch it holds at
   the gap edge.
 - It's driven by a playback position the view is given (time and which take); this spec doesn't play audio.
 - Reduce Motion: the playhead still moves (it carries information).
 
 ### Syllable being played (Addendum r6 E4)
 
-- While Model, You, a diff row or a loop plays, the syllable being played gets a **1 pt `text.secondary` outline**,
+- While Model, You, Play Both or a loop plays, the syllable being played gets a **1 pt `text.secondary` outline**,
   radius 4, 3 pt outside its bars, on both strip rows (the matching syllable in the other row too, through the
   syllable pairs). It jumps from syllable to syllable with no animation, together with the 1 pt playhead.
 - The strip card header shows ▶ "Playing the model" or "Playing your take" in Geist 12 `text.secondary` while audio
