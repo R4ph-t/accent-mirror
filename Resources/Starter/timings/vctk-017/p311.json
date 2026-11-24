@@ -1,0 +1,57 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "bd757fdf438c64c55779ee32848d93ef32f2936c6c5df73f1383bae7eec581f4",
+  "clipID" : "p311_017",
+  "formatVersion" : 1,
+  "text" : "Others have tried to explain the phenomenon physically.",
+  "words" : [
+    {
+      "end" : 0.34,
+      "probability" : 0.91,
+      "start" : 0.16,
+      "word" : " Others"
+    },
+    {
+      "end" : 0.54,
+      "probability" : 1,
+      "start" : 0.34,
+      "word" : " have"
+    },
+    {
+      "end" : 0.72,
+      "probability" : 1,
+      "start" : 0.54,
+      "word" : " tried"
+    },
+    {
+      "end" : 0.96,
+      "probability" : 1,
+      "start" : 0.72,
+      "word" : " to"
+    },
+    {
+      "end" : 1.26,
+      "probability" : 1,
+      "start" : 0.96,
+      "word" : " explain"
+    },
+    {
+      "end" : 1.5,
+      "probability" : 0.99,
+      "start" : 1.26,
+      "word" : " the"
+    },
+    {
+      "end" : 1.84,
+      "probability" : 0.9,
+      "start" : 1.5,
+      "word" : " phenomenon"
+    },
+    {
+      "end" : 2.36,
+      "probability" : 0.99,
+      "start" : 1.84,
+      "word" : " physically."
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "930f3fcda4771859f0763f59f856a50457c117f9d3fca96f290f2cc002afb51a",
+  "clipID" : "p227_018",
+  "formatVersion" : 1,
+  "text" : "Aristotle thought that the rainbow was caused by reflection in the sun's rays by the rain.",
+  "words" : [
+    {
+      "end" : 0.33,
+      "probability" : 0.99,
+      "start" : 0.17,
+      "word" : " Aristotle"
+    },
+    {
+      "end" : 1.37,
+      "probability" : 0.97,
+      "start" : 0.33,
+      "word" : " thought"
+    },
+    {
+      "end" : 1.61,
+      "probability" : 0.97,
+      "start" : 1.37,
+      "word" : " that"
+    },
+    {
+      "end" : 1.77,
+      "probability" : 0.98,
+      "start" : 1.61,
+      "word" : " the"
+    },
+    {
+      "end" : 1.97,
+      "probability" : 0.98,
+      "start" : 1.77,
+      "word" : " rainbow"
+    },
+    {
+      "end" : 2.35,
+      "probability" : 0.98,
+      "start" : 1.97,
+      "word" : " was"
+    },
+    {
+      "end" : 2.61,
+      "probability" : 0.99,
+      "start" : 2.35,
+      "word" : " caused"
+    },
+    {
+      "end" : 2.91,
+      "probability" : 0.98,
+      "start" : 2.61,
+      "word" : " by"
+    },
+    {
+      "end" : 3.49,
+      "probability" : 0.89,
+      "start" : 2.91,
+      "word" : " reflection"
+    },
+    {
+      "end" : 3.91,
+      "probability" : 0.97,
+      "start" : 3.49,
+      "word" : " in"
+    },
+    {
+      "end" : 4.03,
+      "probability" : 0.99,
+      "start" : 3.91,
+      "word" : " the"
+    },
+    {
+      "end" : 4.45,
+      "probability" : 0.93,
+      "start" : 4.03,
+      "word" : " sun's"
+    },
+    {
+      "end" : 4.63,
+      "probability" : 0.99,
+      "start" : 4.45,
+      "word" : " rays"
+    },
+    {
+      "end" : 5.07,
+      "probability" : 0.8,
+      "start" : 4.63,
+      "word" : " by"
+    },
+    {
+      "end" : 5.25,
+      "probability" : 0.85,
+      "start" : 5.07,
+      "word" : " the"
+    },
+    {
+      "end" : 5.45,
+      "probability" : 0.92,
+      "start" : 5.25,
+      "word" : " rain."
+    }
+  ]
+}

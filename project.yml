@@ -38,6 +38,11 @@ targets:
       - path: AccentMirror/Resources/Fixtures
         type: folder
         buildPhase: resources
+      # The starter library (spec 15): manifest, VCTK 0.92 native recordings (CC BY 4.0), word timings and analyses.
+      # A folder reference, read-only in the bundle at Contents/Resources/Starter/.
+      - path: Resources/Starter
+        type: folder
+        buildPhase: resources
     dependencies:
       - package: AccentKit
         product: AMPipeline

@@ -154,7 +154,20 @@ app build and CI never run it. The pinned manifest, `LICENSE` and `NOTICE` are i
 
 ## VCTK (CC BY 4.0)
 
-Not yet bundled; notice added by spec 02.
+Bundled with the app by spec 15 as the starter library's native recordings (`Resources/Starter/`, read-only at
+`Contents/Resources/Starter/`).
+
+- Work: Christophe Veaux, Junichi Yamagishi, Kirsten MacDonald, "CSTR VCTK Corpus: English Multi-speaker Corpus
+  for CSTR Voice Cloning Toolkit (version 0.92)", The Centre for Speech Technology Research (CSTR), University of
+  Edinburgh. https://doi.org/10.7488/ds/2645
+- Source: https://datashare.ed.ac.uk/handle/10283/3443 (archive pinned in `fixtures/corpora/vctk.pin.json`).
+- Licence: Creative Commons Attribution 4.0 International (CC BY 4.0),
+  https://creativecommons.org/licenses/by/4.0/
+- Bundled: 101 clips of 14 shared-text prompts by 8 speakers (p225, p226, p227, p233, p241, p252, p311, p345;
+  mic1). Changes: each clip is trimmed to its speech (200 ms before, 300 ms after) and re-encoded as mono 16-bit
+  FLAC at its source rate; word timings (WhisperKit) and prosody analyses are derived from it. Per-clip source,
+  speaker, accent, trim and SHA-256: `Resources/Starter/manifest.json`; per-speaker list:
+  `Resources/Starter/ATTRIBUTION.md`.
 
 ## LibriTTS-R (CC BY 4.0)
 
