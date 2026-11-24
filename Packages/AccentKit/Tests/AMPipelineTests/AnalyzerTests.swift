@@ -127,72 +127,82 @@ import Testing
         #expect(world.reference.rebuilds == [model, model], "one rebuild per request, then reported")
     }
 
-    @Test("cancel 100 ms into a request, during ASR: .cancelled within about 300 ms, the model stays loaded")
-    func cancelDuringASR() async throws {
-        let world = try await PipelineFixtures.world()
-        let slow = SlowTimestamper(base: world.timings, seconds: 2)
-        let host = SpeechModelHost(asrModelID: slow.asrModelID) { slow }
-        let asrStarted = Mutex<ContinuousClock.Instant?>(nil)
-        var configuration = try Analyzer.Configuration.shipped()
-        configuration.beforeStage = { stage in
-            if stage == .recogniseWords { asrStarted.withLock { $0 = .now } }
-        }
-        let analyzer = Analyzer(speech: host, configuration: configuration)
-        // Times are taken where they happen: the return inside the analysis task, the cancel on a high-QoS GCD thread
-        // (as in #53), so a cooperative pool busy with the other suites' work doesn't move them.
-        let returned = Mutex<ContinuousClock.Instant?>(nil)
+    /// One cancelled request: the cancel is armed from the stage hook when `stage` starts, fired from a high-QoS GCD
+    /// timer at `delay` after the request started and at least `intoStage` after `stage` starts, and the return is timed inside
+    /// the analysis task. A busy cooperative pool (the suites run in parallel) moves neither time (as in #53).
+    struct CancelAttempt {
+        let response: AnalysisResponse
+        /// Return minus cancel; nil when the cancel never fired.
+        let elapsed: Duration?
+    }
+
+    static func cancelled(
+        at stage: Stage, after delay: Duration, intoStage: Duration = .zero, take: TakeAudio, world: PipelineFixtures.World, host: SpeechModelHost
+    ) async throws -> CancelAttempt {
+        let task = Mutex<Task<(AnalysisResponse, ContinuousClock.Instant), Never>?>(nil)
+        let cancelledAt = Mutex<ContinuousClock.Instant?>(nil)
         let submitted = ContinuousClock.now
-        let task = Task(priority: .high) {
-            let response = await analyzer.analyse(
-                take: world.you, phrase: world.phrase, reference: world.reference,
-                voice: PipelineFixtures.voice(PipelineFixtures.modelItem))
-            returned.withLock { $0 = .now }
-            return response
-        }
-        // 100 ms into the request, and inside ASR: in a debug build under a parallel test run the stages before ASR
-        // can take longer than 100 ms, and this test is about cancelling the recogniser.
-        try await Task.sleep(until: submitted + .milliseconds(100))
-        while asrStarted.withLock({ $0 }) == nil { try await Task.sleep(for: .milliseconds(5)) }
-        let cancelled: ContinuousClock.Instant = await withCheckedContinuation { continuation in
-            DispatchQueue.global(qos: .userInteractive).async {
-                let now = ContinuousClock.now
-                task.cancel()
-                continuation.resume(returning: now)
+        var configuration = try Analyzer.Configuration.shipped()
+        configuration.beforeStage = { running in
+            guard running == stage else { return }
+            let wait = max(intoStage, delay - submitted.duration(to: .now))
+            DispatchQueue.global(qos: .userInteractive).asyncAfter(
+                deadline: .now() + .nanoseconds(Int(wait.components.attoseconds / 1_000_000_000 + wait.components.seconds * 1_000_000_000))
+            ) {
+                cancelledAt.withLock { $0 = .now }
+                task.withLock { $0 }?.cancel()
             }
         }
-        let response = await task.value
-        let elapsed = cancelled.duration(to: try #require(returned.withLock { $0 }))
+        let analyzer = Analyzer(speech: host, configuration: configuration)
+        let running = Task(priority: .high) {
+            let response = await analyzer.analyse(
+                take: take, phrase: world.phrase, reference: world.reference,
+                voice: PipelineFixtures.voice(PipelineFixtures.modelItem))
+            return (response, ContinuousClock.now)
+        }
+        task.withLock { $0 = running }
+        let (response, returned) = await running.value
+        return CancelAttempt(response: response, elapsed: cancelledAt.withLock { $0 }.map { $0.duration(to: returned) })
+    }
+
+    @Test("cancel 100 ms into a request, during ASR: .cancelled within about 300 ms, the model stays loaded",
+          .timeLimit(.minutes(2)))
+    func cancelDuringASR() async throws {
+        let world = try await PipelineFixtures.world()
+        // A 30 s decode, so the cancel always lands inside ASR however slow the stages before it are.
+        let slow = SlowTimestamper(base: world.timings, seconds: 30)
+        let host = SpeechModelHost(asrModelID: slow.asrModelID) { slow }
+        let attempt = try await Self.cancelled(
+            at: .recogniseWords, after: .milliseconds(100), take: world.you, world: world, host: host)
+        let elapsed = try #require(attempt.elapsed)
         print("cancel during ASR: answered \(elapsed) after the cancel")
-        #expect(response.outcome == .cancelled)
+        #expect(attempt.response.outcome == .cancelled)
         #expect(elapsed < .milliseconds(300))
         #expect(await host.isLoaded, "a cancel never tears the model down")
         #expect(await host.loadAttempts == 1)
     }
 
-    @Test("cancel outside ASR (pitch on a long take) is seen within one stage")
+    @Test("cancel outside ASR (pitch on a long take) is seen within one stage", .timeLimit(.minutes(2)))
     func cancelOutsideASR() async throws {
         let world = try await PipelineFixtures.world()
-        let long = TakeAudio(
-            samples: Array(repeating: world.you.samples, count: 7).flatMap { $0 }, clipID: world.you.clipID,
-            recordedAt: PipelineFixtures.recordedAt)
-        let started = Mutex<ContinuousClock.Instant?>(nil)
-        let analyzer = try PipelineFixtures.analyzer(world) { stage in
-            if stage == .trackPitch { started.withLock { $0 = .now } }
+        // On a loaded runner pitch on a long take can finish before the cancel lands; that attempt proves nothing and
+        // is retried with a longer take, up to three times (as in #53).
+        var copies = 7
+        for _ in 0..<3 {
+            let long = TakeAudio(
+                samples: Array(repeating: world.you.samples, count: copies).flatMap { $0 }, clipID: world.you.clipID,
+                recordedAt: PipelineFixtures.recordedAt)
+            let attempt = try await Self.cancelled(
+                at: .trackPitch, after: .zero, intoStage: .milliseconds(20), take: long, world: world, host: SpeechModelHost(ready: world.timings))
+            guard let elapsed = attempt.elapsed, attempt.response.outcome == .cancelled, elapsed > .zero else {
+                copies *= 2
+                continue
+            }
+            print("cancel outside ASR: answered \(elapsed) after the cancel (target ≤ 50 ms on the Mac)")
+            #expect(elapsed < .milliseconds(300))
+            return
         }
-        let task = Task {
-            await analyzer.analyse(
-                take: long, phrase: world.phrase, reference: world.reference,
-                voice: PipelineFixtures.voice(PipelineFixtures.modelItem))
-        }
-        while started.withLock({ $0 }) == nil { try await Task.sleep(for: .milliseconds(1)) }
-        try await Task.sleep(for: .milliseconds(20))
-        let cancelled = ContinuousClock.now
-        task.cancel()
-        let response = await task.value
-        let elapsed = ContinuousClock.now - cancelled
-        print("cancel outside ASR: answered \(elapsed) after the cancel (target ≤ 50 ms on the Mac)")
-        #expect(response.outcome == .cancelled)
-        #expect(elapsed < .milliseconds(300))
+        Issue.record("in three attempts the cancel never landed while pitch was running")
     }
 
     @Test("per-stage times without ASR; the non-ASR stages fit the generous 500 ms budget")
