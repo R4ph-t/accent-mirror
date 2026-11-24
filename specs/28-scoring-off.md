@@ -146,7 +146,7 @@ v3 §4's inspector shows plain measures for you, next to the range across the ph
 ## Open question (built with the default)
 
 1. Expected stress lives in `SyllableMeasure.stress` (default) or a new `WordSpan.expectedStress`. Use the default unless it can't express `expectedAmbiguous`.
-2. On `.notScored`, the inspector's TIMING row reads the existing timing level only. Default: keep it, since it describes the alignment, not the speaker.
+2. On `.notScored`, the inspector's timing row (spec 29 renames it ALIGNMENT, "Clear / Rough", per Designer v3.1) reads the existing `TimingLevel` only. Default: keep it, since it describes the alignment, not the speaker. This spec doesn't rename it.
 
 ## How to test (Raph)
 
