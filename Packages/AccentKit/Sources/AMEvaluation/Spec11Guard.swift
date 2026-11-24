@@ -58,6 +58,45 @@ public struct GuardRun: Sendable, Hashable, Codable {
         public let short: Int
     }
 
+    /// Spec 26 (`.nucleus`): per group the inconclusive reasons on both sides, the confident subset and the counts'
+    /// sources; the §5 flip breakdown; on the synthetic set the TTS-marker check.
+    public struct Nucleus26: Sendable, Hashable, Codable {
+        public struct Group: Sendable, Hashable, Codable {
+            public let bucket: String
+            public let words: Int, flips: Int
+            public let oracleShort: Int, candidateShort: Int, oracleAmbiguous: Int, candidateAmbiguous: Int
+            public let oracleLow: Int, candidateLow: Int
+            public let confident: Int, confidentFlips: Int, confidentOracleInconclusive: Int,
+                       confidentCandidateInconclusive: Int
+            public let oracleCountMatch: Int, reducedForm: Int, cmudictAlternate: Int
+        }
+        public struct Markers: Sendable, Hashable, Codable {
+            public let words: Int
+            public let startAbsMs: [Double], endAbsMs: [Double]
+            public let agreeWords: Int, agreeFlips: Int, restWords: Int, restFlips: Int
+        }
+        public let groups: [Group]
+        public let transitions: [String: Int]
+        public let nucleiMoved: Int, sameNuclei: Int
+        public let sameNucleiBy: [String: Int]
+        public let exposureChangedFlips: Int, exposureChangedWords: Int
+        public let markers: Markers?
+
+        /// The groups summed (pooled).
+        public var pooled: Group {
+            func sum(_ k: KeyPath<Group, Int>) -> Int { groups.reduce(0) { $0 + $1[keyPath: k] } }
+            return Group(bucket: "pooled", words: sum(\.words), flips: sum(\.flips), oracleShort: sum(\.oracleShort),
+                         candidateShort: sum(\.candidateShort), oracleAmbiguous: sum(\.oracleAmbiguous),
+                         candidateAmbiguous: sum(\.candidateAmbiguous), oracleLow: sum(\.oracleLow),
+                         candidateLow: sum(\.candidateLow), confident: sum(\.confident),
+                         confidentFlips: sum(\.confidentFlips),
+                         confidentOracleInconclusive: sum(\.confidentOracleInconclusive),
+                         confidentCandidateInconclusive: sum(\.confidentCandidateInconclusive),
+                         oracleCountMatch: sum(\.oracleCountMatch), reducedForm: sum(\.reducedForm),
+                         cmudictAlternate: sum(\.cmudictAlternate))
+        }
+    }
+
     public struct Comparison: Sendable, Hashable, Codable {
         public let id: String
         public let candidate: String
@@ -77,6 +116,8 @@ public struct GuardRun: Sendable, Hashable, Codable {
         /// Spec 25: present when the run had nuclei (a pitch track).
         public var nearEdge: NearEdge? = nil
         public var nucleusOracle: [NucleusBucket]? = nil
+        /// Spec 26: present on `.nucleus` runs from spec 26's harness.
+        public var nucleus26: Nucleus26? = nil
 
         public var evaluated: Bool { status == "evaluated" && words > 0 }
     }

@@ -90,61 +90,17 @@ func nucleusCount(_ args: Arguments, root: URL) async throws -> Int32 {
     try NucleusCountGrid.validate(
         zip(inputs, speakersOf).map { NucleusCountGrid.Clip(clipID: $0.clipID, speaker: $1, vowels: []) }, split: split)
 
-    var prepared: [PreparedClip] = []
-    var skipped: [String] = []
-    for (input, speaker) in zip(inputs, speakersOf) {
-        let file = mfa.appendingPathComponent(speaker).appendingPathComponent(input.clipID + ".json")
-        guard FileManager.default.fileExists(atPath: file.path) else {
-            skipped.append("\(input.clipID): no MFA output")
-            continue
-        }
-        let tiers = try MFATiers(contentsOf: file)
-        let samples = try WhisperKitTimestamper.samples(fromFileAt: URL(fileURLWithPath: input.audio))
-        let track = try await PYINTracker(thresholds: base.pitch).track(samples, sampleRate: 16_000)
-        let envelope = NucleusDetector.envelope(samples: samples, sampleRate: 16_000)
-        let voiced = NucleusDetector.voicedCells(track, count: envelope.count)
-
-        let phrase = selector.expectedPhrase(for: PhraseText(text: input.transcript, origin: .starter))
-        let mfaWords = tiers.words.filter { !$0.label.isEmpty && $0.label != "<eps>" && $0.label != "spn" }
-        let match = lcsMatch(phrase.words.map(\.folded), mfaWords.map { WordText.fold($0.label) })
-        var words: [NucleusAssigner.Word] = []
-        var contexts: [Int] = []
-        for (position, expected) in phrase.words.enumerated() {
-            guard let m = match[position], let pronunciation = expected.pronunciation,
-                  !pronunciation.syllables.isEmpty else { continue }
-            let allowed = AllowedSyllableCounts.of(
-                word: expected.text, context: pronunciation, dictionary: dictionary, reducedForms: reduced)
-            words.append(NucleusAssigner.Word(start: mfaWords[m].start, end: mfaWords[m].end,
-                                              syllables: pronunciation.syllables.count, allowed: allowed.counts))
-            contexts.append(pronunciation.syllables.count)
-        }
-        let vowels = tiers.vowels.map { $0.start...$0.end }
-        prepared.append(PreparedClip(
-            clip: NucleusCountGrid.Clip(clipID: input.clipID, speaker: speaker, vowels: vowels),
-            envelope: envelope, voiced: voiced, words: words, contexts: contexts))
-    }
+    let (prepared, skipped) = try await prepareCountClips(
+        inputs: inputs, speakers: speakersOf, mfa: mfa, selector: selector, dictionary: dictionary, reduced: reduced,
+        pitch: base.pitch)
     if !skipped.isEmpty { print("nucleus-count: skipped \(skipped.joined(separator: "; "))") }
     let clips = prepared.map(\.clip)
     try NucleusCountGrid.validate(clips, split: split)
 
     var all: [NucleusCountGrid.Metrics] = []
     for point in points {
-        let thresholds = point.applied(to: base)
-        let detector = NucleusDetector(thresholds: thresholds)
-        let outcomes = prepared.map { clip -> NucleusCountGrid.ClipOutcome in
-            let nuclei = detector.detect(envelope: clip.envelope, voiced: clip.voiced)
-            let result = NucleusAssigner.assign(nuclei.map(\.peakTime), to: clip.words, thresholds: thresholds)
-            let words = result.words.map {
-                NucleusCountGrid.WordOutcome(allowed: $0.allowed ?? [$0.dictionaryCount], available: $0.available,
-                                             short: $0.short, nonContextCount: $0.assignedCount != nil)
-            }
-            let assigned = result.nuclei.compactMap { $0 }.flatMap { $0 }.map {
-                NucleusCountGrid.AssignedNucleus(peak: nuclei[$0].peakTime,
-                                                 region: nuclei[$0].region.start...nuclei[$0].region.end)
-            }
-            return NucleusCountGrid.ClipOutcome(words: words, nuclei: assigned)
-        }
-        all.append(NucleusCountGrid.metrics(point: point, clips: clips, outcomes: outcomes))
+        all.append(NucleusCountGrid.metrics(
+            point: point, clips: clips, outcomes: countOutcomes(prepared, thresholds: point.applied(to: base))))
     }
     let chosen = NucleusCountGrid.choose(all, voicedWithinMs: voicedWithin)
     let feasible = all.count(where: \.feasible)
@@ -182,6 +138,99 @@ func nucleusCount(_ args: Arguments, root: URL) async throws -> Int32 {
     }
     print("nucleus-count: NO FEASIBLE POINT (0/\(all.count) reach vowel-inside ≥ 90%): nothing changes; go to §6")
     return 2
+}
+
+/// Loads each clip once: the envelope, pYIN voicing and the comparable words (MFA-timed, with N_w).
+private func prepareCountClips(
+    inputs: [CountInput], speakers speakersOf: [String], mfa: URL, selector: PronunciationSelector,
+    dictionary: PronouncingDictionary, reduced: ReducedForms, pitch: Thresholds.Pitch
+) async throws -> ([PreparedClip], [String]) {
+    var prepared: [PreparedClip] = []
+    var skipped: [String] = []
+    for (input, speaker) in zip(inputs, speakersOf) {
+        let file = mfa.appendingPathComponent(speaker).appendingPathComponent(input.clipID + ".json")
+        guard FileManager.default.fileExists(atPath: file.path) else {
+            skipped.append("\(input.clipID): no MFA output")
+            continue
+        }
+        let tiers = try MFATiers(contentsOf: file)
+        let samples = try WhisperKitTimestamper.samples(fromFileAt: URL(fileURLWithPath: input.audio))
+        let track = try await PYINTracker(thresholds: pitch).track(samples, sampleRate: 16_000)
+        let envelope = NucleusDetector.envelope(samples: samples, sampleRate: 16_000)
+        let voiced = NucleusDetector.voicedCells(track, count: envelope.count)
+
+        let phrase = selector.expectedPhrase(for: PhraseText(text: input.transcript, origin: .starter))
+        let mfaWords = tiers.words.filter { !$0.label.isEmpty && $0.label != "<eps>" && $0.label != "spn" }
+        let match = lcsMatch(phrase.words.map(\.folded), mfaWords.map { WordText.fold($0.label) })
+        var words: [NucleusAssigner.Word] = []
+        var contexts: [Int] = []
+        for (position, expected) in phrase.words.enumerated() {
+            guard let m = match[position], let pronunciation = expected.pronunciation,
+                  !pronunciation.syllables.isEmpty else { continue }
+            let allowed = AllowedSyllableCounts.of(
+                word: expected.text, context: pronunciation, dictionary: dictionary, reducedForms: reduced)
+            words.append(NucleusAssigner.Word(start: mfaWords[m].start, end: mfaWords[m].end,
+                                              syllables: pronunciation.syllables.count, allowed: allowed.counts))
+            contexts.append(pronunciation.syllables.count)
+        }
+        let vowels = tiers.vowels.map { $0.start...$0.end }
+        prepared.append(PreparedClip(
+            clip: NucleusCountGrid.Clip(clipID: input.clipID, speaker: speaker, vowels: vowels),
+            envelope: envelope, voiced: voiced, words: words, contexts: contexts))
+    }
+    return (prepared, skipped)
+}
+
+/// One point's outcomes over the prepared clips.
+private func countOutcomes(_ prepared: [PreparedClip], thresholds: Thresholds) -> [NucleusCountGrid.ClipOutcome] {
+    let detector = NucleusDetector(thresholds: thresholds)
+    return prepared.map { clip -> NucleusCountGrid.ClipOutcome in
+        let nuclei = detector.detect(envelope: clip.envelope, voiced: clip.voiced)
+        let result = NucleusAssigner.assign(nuclei.map(\.peakTime), to: clip.words, thresholds: thresholds)
+        let words = result.words.map {
+            NucleusCountGrid.WordOutcome(allowed: $0.allowed ?? [$0.dictionaryCount], available: $0.available,
+                                         short: $0.short, nonContextCount: $0.assignedCount != nil)
+        }
+        let assigned = result.nuclei.compactMap { $0 }.flatMap { $0 }.map {
+            NucleusCountGrid.AssignedNucleus(peak: nuclei[$0].peakTime,
+                                             region: nuclei[$0].region.start...nuclei[$0].region.end)
+        }
+        return NucleusCountGrid.ClipOutcome(words: words, nuclei: assigned)
+    }
+}
+
+/// Spec 26 §5: `am-eval nucleus-count-held-out --inputs <guard/held-out/inputs.json> --mfa <…/aligned> --out <json>`.
+/// Count-match and vowel-inside on the held-out VCTK speakers at the head's nucleus values only. Reported in the
+/// nucleus-jitter report, never used to choose: it evaluates one point (the committed one) and chooses nothing.
+func nucleusCountHeldOut(_ args: Arguments, root: URL) async throws -> Int32 {
+    let split = try JSONDecoder().decode(
+        VCTKSplitManifest.self, from: Data(contentsOf: root.appendingPathComponent("fixtures/splits/vctk.json")))
+    let inputs = try JSONDecoder().decode([CountInput].self, from: Data(contentsOf: try args.url("inputs")))
+    let speakersOf = inputs.map { String($0.clipID.prefix { $0 != "_" }) }
+    let heldOut = Set(split.heldOut)
+    guard speakersOf.allSatisfy(heldOut.contains) else {
+        throw CLIError.failed("nucleus-count-held-out reads held-out speakers only")
+    }
+    let (prepared, skipped) = try await prepareCountClips(
+        inputs: inputs, speakers: speakersOf, mfa: try args.url("mfa"), selector: try .bundled(),
+        dictionary: try .bundled(), reduced: try .bundled(), pitch: Thresholds.current.pitch)
+    if !skipped.isEmpty { print("nucleus-count-held-out: skipped \(skipped.joined(separator: "; "))") }
+    let point = NucleusCountGrid.Point(
+        minProminenceDB: Thresholds.current.nucleus.minProminenceDB, minSeparationMs: Thresholds.current.nucleus.minSeparationMs,
+        regionDropDB: Thresholds.current.nucleus.regionDropDB, voicedWithinMs: Thresholds.current.nucleus.voicedWithinMs)
+    let m = NucleusCountGrid.metrics(point: point, clips: prepared.map(\.clip),
+                                     outcomes: countOutcomes(prepared, thresholds: .current))
+    let out = HeldOutDetection(
+        speakers: Set(prepared.map(\.clip.speaker)).count, clips: prepared.count, words: m.words,
+        countMatched: m.countMatched, assignedPeaks: m.assignedPeaks, peaksInsideVowel: m.peaksInsideVowel,
+        medianIoU: m.medianIoU)
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+    try encoder.encode(out).write(to: try args.url("out"))
+    print(String(format: "nucleus-count-held-out (never used to choose): count-match %d/%d (%.1f%%), vowel-inside %d/%d (%.1f%%), IoU %.3f",
+                 m.countMatched, m.words, m.countMatchRate * 100, m.peaksInsideVowel, m.assignedPeaks,
+                 m.vowelInsideShare * 100, m.medianIoU))
+    return 0
 }
 
 private func pct(_ value: Double) -> String { String(format: "%.1f%%", value * 100) }
@@ -256,4 +305,20 @@ func nucleusCountTuningLog(_ report: NucleusCountReport) -> String {
     for m in report.points { lines.append(row(m, chosen: report.chosen)) }
     lines.append("")
     return lines.joined(separator: "\n")
+}
+
+/// Spec 26 §5: `am-eval thresholds-json --spec25-nucleus --out <json>`: the head's thresholds with spec 25's nucleus
+/// values (3 dB, 70 ms, 6 dB, voiced frame only) and no ambiguity check (`ambiguityEdgeMs` 0), for
+/// `am-timestamps spec11-guard --thresholds … --context-counts-only` (spec 25's `.nucleus`, recomputed).
+func thresholdsJSON(_ args: Arguments) throws -> Int32 {
+    var thresholds = Thresholds.current
+    if args.flag("spec25-nucleus") {
+        let initial = NucleusCountGrid.initial
+        thresholds = initial.applied(to: thresholds)
+        thresholds.nucleus.ambiguityEdgeMs = 0
+    }
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+    try encoder.encode(thresholds).write(to: try args.url("out"))
+    return 0
 }

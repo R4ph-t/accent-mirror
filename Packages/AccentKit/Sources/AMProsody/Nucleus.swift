@@ -460,6 +460,8 @@ public enum NucleusAssignmentStability {
         peaks: [Double], words: [NucleusAssigner.Word], result: NucleusAssigner.Result, thresholds: Thresholds,
         verdict: (_ word: Int, _ nuclei: [Int]?, _ assignment: NucleusWordAssignment) -> Verdict
     ) -> Set<Int> {
+        // `ambiguityEdgeMs` 0 turns the check off (spec 25's behaviour, for the recomputed before column).
+        guard thresholds.nucleus.ambiguityEdgeMs > 0 else { return [] }
         let edge = thresholds.nucleus.ambiguityEdgeMs / 1000 + 1e-9
         let padding = thresholds.alignment.asrPaddingMs
         let base = result.nuclei

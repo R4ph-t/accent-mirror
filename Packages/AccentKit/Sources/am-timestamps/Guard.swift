@@ -66,6 +66,115 @@ extension AMTimestamps {
         var short: Int
     }
 
+    /// Spec 26 (`.nucleus`): per group, the inconclusive reasons on both sides, the confident subset (§6 a) and the
+    /// counts' sources; the §5 flip breakdown; and, on the synthetic set, the TTS-marker check.
+    struct GuardNucleus26: Codable, Equatable {
+        struct Group: Codable, Equatable {
+            var bucket: String
+            var words = 0, flips = 0
+            var oracleShort = 0, candidateShort = 0, oracleAmbiguous = 0, candidateAmbiguous = 0
+            var oracleLow = 0, candidateLow = 0
+            var confident = 0, confidentFlips = 0, confidentOracleInconclusive = 0, confidentCandidateInconclusive = 0
+            var oracleCountMatch = 0, reducedForm = 0, cmudictAlternate = 0
+        }
+        struct Markers: Codable, Equatable {
+            var words = 0
+            var startAbsMs: [Double] = [], endAbsMs: [Double] = []
+            var agreeWords = 0, agreeFlips = 0, restWords = 0, restFlips = 0
+        }
+        var groups: [Group] = []
+        /// Flips by transition: `feedback↔close`, `feedback↔feedback`, `close↔close`, `inconclusive:<reason>`.
+        var transitions: [String: Int] = [:]
+        /// Flips whose word's assigned nuclei differ under jitter, and the rest by what changed instead.
+        var nucleiMoved = 0, sameNuclei = 0
+        var sameNucleiBy: [String: Int] = [:]
+        var exposureChangedFlips = 0, exposureChangedWords = 0
+        var markers: Markers?
+
+        init?(_ list: [DiagnosticWord]) {
+            guard list.contains(where: { $0.oracleConfident != nil }) else { return nil }
+            groups = ["1", "2", "3", "4+"].enumerated().map { index, label in
+                var g = Group(bucket: label)
+                for w in list where index == 3 ? w.oracle.syllableCount >= 4 : w.oracle.syllableCount == index + 1 {
+                    g.words += 1
+                    if w.flipped { g.flips += 1 }
+                    switch w.oracleReason {
+                    case "nucleusShort": g.oracleShort += 1
+                    case "assignmentAmbiguous": g.oracleAmbiguous += 1
+                    case "lowConfidence": g.oracleLow += 1
+                    default: break
+                    }
+                    switch w.candidateReason {
+                    case "nucleusShort": g.candidateShort += 1
+                    case "assignmentAmbiguous": g.candidateAmbiguous += 1
+                    case "lowConfidence": g.candidateLow += 1
+                    default: break
+                    }
+                    if w.oracleConfident == true {
+                        g.confident += 1
+                        if w.flipped { g.confidentFlips += 1 }
+                        if w.oracle.inconclusive { g.confidentOracleInconclusive += 1 }
+                        if w.candidate.inconclusive { g.confidentCandidateInconclusive += 1 }
+                    }
+                    if w.oracleCountMatch == true { g.oracleCountMatch += 1 }
+                    if w.oracleCountSource == "reducedForm" { g.reducedForm += 1 }
+                    if w.oracleCountSource == "cmudictAlternate" { g.cmudictAlternate += 1 }
+                }
+                return g
+            }
+            for w in list {
+                if w.exposureChanged == true {
+                    exposureChangedWords += 1
+                    if w.flipped { exposureChangedFlips += 1 }
+                }
+                guard w.flipped else { continue }
+                transitions[Self.transition(w), default: 0] += 1
+                if w.nucleiMoved == true {
+                    nucleiMoved += 1
+                } else {
+                    sameNuclei += 1
+                    let why = w.exposureChanged == true ? "exposure" : w.availableChanged == true
+                        ? "P, s_w or c_w (word timing)" : "other"
+                    sameNucleiBy[why, default: 0] += 1
+                }
+            }
+            let marked = list.filter { $0.markerMinusMFAMs?.count == 2 }
+            if !marked.isEmpty {
+                var m = Markers()
+                m.words = marked.count
+                m.startAbsMs = marked.map { abs($0.markerMinusMFAMs![0]) }.sorted()
+                m.endAbsMs = marked.map { abs($0.markerMinusMFAMs![1]) }.sorted()
+                for w in marked {
+                    if abs(w.markerMinusMFAMs![0]) <= 20 && abs(w.markerMinusMFAMs![1]) <= 20 {
+                        m.agreeWords += 1
+                        if w.flipped { m.agreeFlips += 1 }
+                    } else {
+                        m.restWords += 1
+                        if w.flipped { m.restFlips += 1 }
+                    }
+                }
+                markers = m
+            }
+        }
+
+        /// A decided verdict is `close` when its longest and loudest syllable are the context primary, else
+        /// `feedback` (the gate's two cues standing in for spec 08's placement; spec 26 §5 breakdown only).
+        static func transition(_ w: DiagnosticWord) -> String {
+            if w.oracle.inconclusive || w.candidate.inconclusive {
+                let reason = (w.candidate.inconclusive ? w.candidateReason : w.oracleReason) ?? "lowConfidence"
+                return "inconclusive:" + reason
+            }
+            func close(_ v: WordVerdict) -> Bool {
+                w.contextPrimary != nil && v.longestSyllable == w.contextPrimary && v.loudestSyllable == w.contextPrimary
+            }
+            switch (close(w.oracle), close(w.candidate)) {
+            case (true, true): return "close↔close"
+            case (false, false): return "feedback↔feedback"
+            default: return "feedback↔close"
+            }
+        }
+    }
+
     struct GuardComparison: Encodable {
         var id: String
         var candidate: String
@@ -80,6 +189,7 @@ extension AMTimestamps {
         var inconclusiveSplit: GuardSplit?
         var nearEdge: GuardNearEdge?
         var nucleusOracle: [GuardNucleusBucket]?
+        var nucleus26: GuardNucleus26?
 
         static func notEvaluated(id: String, candidate: String, reason: String) -> GuardComparison {
             GuardComparison(id: id, candidate: candidate, status: "notEvaluated", reason: reason)
@@ -145,6 +255,7 @@ extension AMTimestamps {
                         short: group.count { $0.oracleNucleusShort == true })
                 }
             }
+            nucleus26 = GuardNucleus26(list)
             if split {
                 inconclusiveSplit = GuardSplit(
                     oracle: oracleInconclusive, candidate: candidateInconclusive,
@@ -155,7 +266,8 @@ extension AMTimestamps {
 
         enum CodingKeys: String, CodingKey {
             case id, candidate, status, reason, words, differing, oracleInconclusive, candidateInconclusive, parts,
-                 onlyCue, bySyllables, transitions, boundaryError, keptUnjittered, inconclusiveSplit, nearEdge, nucleusOracle
+                 onlyCue, bySyllables, transitions, boundaryError, keptUnjittered, inconclusiveSplit, nearEdge, nucleusOracle,
+                 nucleus26
         }
 
         func encode(to encoder: any Encoder) throws {
@@ -177,6 +289,7 @@ extension AMTimestamps {
             if id == "b2" { try c.encode(inconclusiveSplit, forKey: .inconclusiveSplit) }
             try c.encodeIfPresent(nearEdge, forKey: .nearEdge)
             try c.encodeIfPresent(nucleusOracle, forKey: .nucleusOracle)
+            try c.encodeIfPresent(nucleus26, forKey: .nucleus26)
         }
     }
 
@@ -288,7 +401,10 @@ extension AMTimestamps {
         guard options.optional("reference") != nil || options.optional("vctk-inputs") != nil else {
             throw ToolError.usage("spec11-guard needs --reference D (synthetic set) and/or --vctk-inputs F (VCTK set)")
         }
-        let harness = try DownstreamHarness(thresholds: thresholds)
+        var harness = try DownstreamHarness(thresholds: thresholds)
+        // Spec 26 §5: `--context-counts-only` reruns spec 25's `.nucleus` (N_w = the context count; pass spec 25's
+        // nucleus values and `ambiguityEdgeMs` 0 with `--thresholds`), for the recomputed before column.
+        harness.contextCountsOnly = options.flag("context-counts-only")
 
         var ctc: CTCAligner?
         var ctcModel: String?
@@ -376,7 +492,7 @@ extension AMTimestamps {
             }
             try await guardClip(clipID: phrase.clipID, transcript: phrase.transcript, samples: audio, oracle: phrase.words,
                                 heard: heard, control: rows.control ? control : nil, harness: harness, ctc: ctc,
-                                thresholds: thresholds, seed: seed, rows: rows, into: &run)
+                                thresholds: thresholds, seed: seed, rows: rows, markerCheck: mfaPhrase, into: &run)
         }
         var set = GuardSet(set: "synthetic", oracle: "tts-markers")
         set.comparisons = [rows.control
@@ -442,7 +558,7 @@ extension AMTimestamps {
     static func guardClip(clipID: String, transcript: String, samples: [Float], oracle: [BaselineWord],
                           heard: [WordTimestamp], control: [Int: ConfidentWord]?, harness: DownstreamHarness,
                           ctc: CTCAligner?, thresholds: Thresholds, seed: UInt64, rows: GuardRows,
-                          into run: inout GuardAccumulator) async throws {
+                          markerCheck: [BaselineWord]? = nil, into run: inout GuardAccumulator) async throws {
         let rate = TimestampRequest.sampleRate
         let duration = Double(samples.count) / rate
         // Spec 04's track, once per clip: `.nucleus` finds its nuclei from it, and in both modes it gives the
@@ -450,7 +566,8 @@ extension AMTimestamps {
         let pitch = try await PYINTracker(thresholds: thresholds.pitch).track(samples, sampleRate: rate)
         func diagnose(_ id: String, _ candidate: [Int: ConfidentWord]) throws -> DownstreamHarness.Diagnosed {
             let result = try harness.diagnose(transcript: transcript, samples: samples, sampleRate: rate, oracle: oracle,
-                                              candidate: candidate, recognised: heard, clipID: clipID, pitch: pitch)
+                                              candidate: candidate, recognised: heard, clipID: clipID, pitch: pitch,
+                                              markerCheck: id.hasPrefix("jitter") ? markerCheck : nil)
             run.words[id, default: []] += result.words
             return result
         }

@@ -12,8 +12,11 @@
 #     docs/agreement/reports/release-<configDigest8>.{json,md} (clean tree). Needs scripts/tune.sh first; measures
 #     the guard on held-out data with scripts/spec11-guard.sh. Runs under nice.
 #     needs the fetched corpus and its replayed timings: scripts/am-eval.sh record-timings --set l2-shared
-#   scripts/agreement.sh --suite nucleus-jitter [--summary <file>]   # spec 25 acceptance 1 (.span beside .nucleus);
-#     writes docs/agreement/reports/nucleus-jitter-<configDigest8>.{json,md}. Runs under nice (scripts/nucleus-jitter.sh)
+#   scripts/agreement.sh --suite nucleus-jitter [--summary <file>]   # spec 25/26 acceptance 1 (.span, spec 25's and
+#     spec 26's .nucleus); writes docs/agreement/reports/nucleus-jitter-<configDigest8>.{json,md}. Runs under nice
+#     (scripts/nucleus-jitter.sh)
+#   scripts/agreement.sh --suite nucleus-count [--tuning-log <entry.md>]   # spec 26 §1's grid, tuning speakers only;
+#     writes docs/agreement/reports/nucleus-count-<configDigest8>.{json,md} (scripts/nucleus-count.sh)
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
@@ -46,6 +49,7 @@ case "$suite" in
   positive) am_eval suite --suite positive --vctk "$cache/vctk/current" ${extra[@]+"${extra[@]}"} ;;
   l2-shared) am_eval suite --suite l2-shared ${extra[@]+"${extra[@]}"} ;;
   nucleus-jitter) "$root/scripts/nucleus-jitter.sh" ${extra[@]+"${extra[@]}"} ;;
+  nucleus-count) "$root/scripts/nucleus-count.sh" ${extra[@]+"${extra[@]}"} ;;
   release)
     mkdir -p "$cache/guard"
     GUARD_LABEL=shipped nice -n 10 "$root/scripts/spec11-guard.sh" held-out "$cache/guard/held-out-shipped.json"
@@ -61,5 +65,5 @@ case "$suite" in
     am_eval suite --suite l2-shared ${extra[@]+"${extra[@]}"} || status=1
     exit $status
     ;;
-  *) echo "agreement.sh: unknown suite $suite (sets, smoke, positive, l2-shared, release, nucleus-jitter, all)" >&2; exit 64 ;;
+  *) echo "agreement.sh: unknown suite $suite (sets, smoke, positive, l2-shared, release, nucleus-jitter, nucleus-count, all)" >&2; exit 64 ;;
 esac

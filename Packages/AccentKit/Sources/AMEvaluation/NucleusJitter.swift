@@ -26,7 +26,26 @@ public enum NucleusJitter {
         return [evaluation.flips(comparison, set: set, name: name)]
             + evaluation.groupFlips(comparison, set: set, name: name)
             + evaluation.groups(comparison, set: set, name: name)
-            + [budget(comparison, set: set, name: name, thresholds: thresholds)]
+            + [unjitteredBudget(comparison, set: set, name: name, thresholds: thresholds),
+               budget(comparison, set: set, name: name, thresholds: thresholds)]
+    }
+
+    /// Spec 26 §4 (CTO markup 4): the 10% budget must also hold on the unjittered oracle run — the compared words'
+    /// inconclusive share with the oracle boundaries themselves.
+    public static func unjitteredBudget(_ comparison: GuardRun.Comparison?, set: String, name: String,
+                                        thresholds: Thresholds = .current) -> GuardCheck {
+        let limit = thresholds.agreement.inconclusivePairsMax
+        guard let c = comparison, c.evaluated else {
+            return GuardCheck(name: "\(name), unjittered inconclusive budget", set: set, n: comparison?.words ?? 0,
+                              value: nil, limit: limit, status: .notEvaluated, interval: nil,
+                              detail: comparison?.reason ?? "not run")
+        }
+        let share = Double(c.oracleInconclusive) / Double(c.words)
+        return GuardCheck(
+            name: "\(name), unjittered inconclusive budget", set: set, n: c.words, value: share, limit: limit,
+            status: microunit(share) <= limit ? .met : .notMet,
+            interval: Statistics.wilson(successes: c.oracleInconclusive, n: c.words),
+            detail: String(format: "unjittered oracle %d/%d inconclusive", c.oracleInconclusive, c.words))
     }
 
     /// The 10% budget (`agreement.inconclusivePairsMax`) on the jittered run's inconclusive words, so acceptance 1
@@ -146,6 +165,15 @@ public struct NucleusJitterReport: Sendable, Hashable, Codable {
     public let outcome: String
     /// §6's scope-cut proposal, written only when acceptance 1 is not met.
     public let proposal: NucleusJitterProposal?
+    /// Spec 26: spec 25's committed `.nucleus` comparisons (report `nucleus-jitter-acb3910a`), by set: a before column.
+    public var spec25: [String: [GuardRun.Comparison]]? = nil
+    /// Spec 26 §5: spec 25's `.nucleus` recomputed by this harness (spec 25's values, N_w the context count, no
+    /// ambiguity), for the flip breakdown; by set.
+    public var spec25Recomputed: [String: [GuardRun.Comparison]]? = nil
+    /// Spec 26 §5: count-match and vowel-inside on held-out VCTK at the head's nucleus values (never used to choose).
+    public var heldOutDetection: HeldOutDetection? = nil
+    /// Spec 26 §6: the scope proposal (written only when acceptance 1 is not met).
+    public var scope: NucleusScopeProposal? = nil
 
     public init(generatedAt: String, identity: ReportIdentity, shippedMeasurement: String, nucleus: Thresholds.Nucleus,
                 seed: UInt64, asrModelID: String?, sets: [NucleusJitter.Set], thresholds: Thresholds = .current,
@@ -215,6 +243,46 @@ public struct NucleusJitterReport: Sendable, Hashable, Codable {
         if report.outcome != "MET" { out.append("outcome \(report.outcome)") }
         return out
     }
+}
+
+/// Spec 26 §5: detection on held-out VCTK at the head's values. Reported only, never used to choose.
+public struct HeldOutDetection: Sendable, Hashable, Codable {
+    public let speakers: Int
+    public let clips: Int
+    public let words: Int
+    public let countMatched: Int
+    public let assignedPeaks: Int
+    public let peaksInsideVowel: Int
+    public let medianIoU: Double
+
+    public init(speakers: Int, clips: Int, words: Int, countMatched: Int, assignedPeaks: Int, peaksInsideVowel: Int,
+                medianIoU: Double) {
+        self.speakers = speakers
+        self.clips = clips
+        self.words = words
+        self.countMatched = countMatched
+        self.assignedPeaks = assignedPeaks
+        self.peaksInsideVowel = peaksInsideVowel
+        self.medianIoU = medianIoU
+    }
+}
+
+/// Spec 26 §6: the scope proposal, at least two cut shapes with their numbers (for CTO to route to Raph via CPO).
+/// Nothing is cut in code.
+public struct NucleusScopeProposal: Sendable, Hashable, Codable {
+    public struct Shape: Sendable, Hashable, Codable {
+        public let name: String
+        public let lines: [String]
+
+        public init(name: String, lines: [String]) {
+            self.name = name
+            self.lines = lines
+        }
+    }
+
+    public let shapes: [Shape]
+
+    public init(shapes: [Shape]) { self.shapes = shapes }
 }
 
 /// §6: the scope-cut proposal's numbers (for CTO to route; nothing is cut in code).

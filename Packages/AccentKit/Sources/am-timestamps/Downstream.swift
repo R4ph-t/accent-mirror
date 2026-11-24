@@ -19,6 +19,8 @@ import Foundation
 struct DownstreamHarness {
     let selector: PronunciationSelector
     let segmenter: SyllableSegmenter
+    /// Spec 26 §5: N_w is the context count alone (spec 25's `.nucleus`), for the recomputed before column.
+    var contextCountsOnly = false
 
     init() throws {
         selector = try PronunciationSelector.bundled()

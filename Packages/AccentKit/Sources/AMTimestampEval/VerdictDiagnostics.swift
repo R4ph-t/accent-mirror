@@ -22,6 +22,26 @@ public struct DiagnosticWord: Codable, Sendable, Equatable {
     /// nucleus-short. Diagnostics only.
     public var oracleNucleusAvailable: Int?
     public var oracleNucleusShort: Bool?
+    /// Spec 26, `.nucleus` only. Why each side is inconclusive (`nucleusShort`, `assignmentAmbiguous`,
+    /// `lowConfidence`); nil when decided.
+    public var oracleReason: String?
+    public var candidateReason: String?
+    /// Spec 26 §6 (a), oracle side: P ∈ N_w, not nucleus-short, not assignment-ambiguous.
+    public var oracleConfident: Bool?
+    /// Spec 26 §1/§5, oracle side: P ∈ N_w and not nucleus-short (the count-match unit).
+    public var oracleCountMatch: Bool?
+    /// Spec 26 §2, oracle side: the count the DP chose came from `context`, `cmudictAlternate` or `reducedForm`.
+    public var oracleCountSource: String?
+    /// Spec 26 §5: the word's assigned nuclei (peak times) differ between the oracle and the candidate run.
+    public var nucleiMoved: Bool?
+    /// Spec 26 §5: the word's lengthening exposure differs between the two runs.
+    public var exposureChanged: Bool?
+    /// Spec 26 §5: P or s_w differs between the two runs (the comparable set changed around the word).
+    public var availableChanged: Bool?
+    /// Spec 26 §5: the context pronunciation's primary syllable (feedback ↔ close breakdown).
+    public var contextPrimary: Int?
+    /// Spec 26 §5, synthetic set: TTS-marker edge − MFA edge on the same audio, ms ([start, end]).
+    public var markerMinusMFAMs: [Double]?
 
     public init(clipID: String, word: String, oracle: WordVerdict, candidate: WordVerdict,
                 candidateUngated: WordVerdict? = nil, boundaryErrorMs: Double, gatedByConfidence: Bool = false,

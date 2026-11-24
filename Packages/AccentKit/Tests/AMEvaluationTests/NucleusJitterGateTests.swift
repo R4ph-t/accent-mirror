@@ -56,10 +56,20 @@ import AMCore
         #expect(!NucleusJitterReport.failures(passing, digest: String(repeating: "0", count: 64)).isEmpty)
     }
 
+    @Test("Spec 26 §4 (CTO markup 4): the 10% budget holds on the unjittered run too; over it there, it fails")
+    func unjitteredBudget() throws {
+        let passing = try Self.report(twoSyllableFlips: 0, of: 100)
+        #expect(passing.checks.contains { $0.name == "jitter ±40 ms, unjittered inconclusive budget" && $0.status == .met })
+        let high = try Self.report(twoSyllableFlips: 0, of: 100, oracleInconclusive: 200)
+        #expect(!high.met)
+        #expect(NucleusJitterReport.failures(high, digest: high.identity.configDigest)
+            .contains { $0.contains("unjittered inconclusive budget") })
+    }
+
     // MARK: - Helpers
 
     static func comparison(_ id: String, twoSyllableFlips: Int, of twoSyllableWords: Int, fourPlusWords: Int,
-                           fourPlusFlips: Int, candidateInconclusive: Int) -> GuardRun.Comparison {
+                           fourPlusFlips: Int, candidateInconclusive: Int, oracleInconclusive: Int = 24) -> GuardRun.Comparison {
         let buckets = [
             GuardRun.Bucket(bucket: "1", words: 1000, differing: 10, oracleInconclusive: 20, candidateInconclusive: 20),
             GuardRun.Bucket(bucket: "2", words: twoSyllableWords, differing: twoSyllableFlips, oracleInconclusive: 2,
@@ -71,17 +81,18 @@ import AMCore
         let words = buckets.reduce(0) { $0 + $1.words }
         return GuardRun.Comparison(
             id: id, candidate: id, status: "evaluated", reason: nil, words: words,
-            differing: buckets.reduce(0) { $0 + $1.differing }, oracleInconclusive: 24,
+            differing: buckets.reduce(0) { $0 + $1.differing }, oracleInconclusive: oracleInconclusive,
             candidateInconclusive: candidateInconclusive, parts: [:], onlyCue: [:], bySyllables: buckets,
             transitions: .init(decidedToDecided: 0, involvingInconclusive: 0), boundaryError: [], keptUnjittered: 0,
             inconclusiveSplit: nil)
     }
 
     static func report(twoSyllableFlips: Int, of twoSyllableWords: Int, fourPlusWords: Int = 40, fourPlusFlips: Int = 0,
-                       candidateInconclusive: Int = 24) throws -> NucleusJitterReport {
+                       candidateInconclusive: Int = 24, oracleInconclusive: Int = 24) throws -> NucleusJitterReport {
         let comparisons = ["jitter-20", "jitter-40", "jitter-80"].map {
             comparison($0, twoSyllableFlips: twoSyllableFlips, of: twoSyllableWords, fourPlusWords: fourPlusWords,
-                       fourPlusFlips: fourPlusFlips, candidateInconclusive: candidateInconclusive)
+                       fourPlusFlips: fourPlusFlips, candidateInconclusive: max(candidateInconclusive, oracleInconclusive),
+                       oracleInconclusive: oracleInconclusive)
         }
         let sets = NucleusJitter.requiredSets.map {
             NucleusJitter.Set(set: $0, oracle: "test", clips: 10, span: comparisons, nucleus: comparisons)

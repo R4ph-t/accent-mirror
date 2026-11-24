@@ -10,13 +10,13 @@ the number of feasible points, and why.
 
 ## Entries
 
-### 2026-11-24: spec 26 nucleus count grid (`nucleus.*`), report `nucleus-count-399dd645`
+### 2026-11-24: spec 26 nucleus count grid (`nucleus.*`), report `nucleus-count-69675122`
 
 - Commit `efb2b554143a`, configDigest before `399dd645`; data: VCTK tuning speakers only (24 speakers, 512 clips, 7047 comparable words); detection only.
 - §1a: REAL PYIN LAG (tracker unchanged; voicedWithinMs ∈ {0, 30, 60}).
 - Grid: minProminenceDB [1.5, 2.0, 2.5, 3.0, 4.0] × minSeparationMs [50.0, 60.0, 70.0, 90.0] × regionDropDB [3.0, 6.0, 9.0] × voicedWithinMs [0.0, 30.0, 60.0] = 180 points.
 - Reduced forms: `reduced-forms.json` SHA-256 `8cfdebb1ee56dade2a9a886885efee36d5f875e31c5a9a4c3f11e6a7c8059e46` (11 entries).
-- configDigest after: the frozen choice's (see the report of record `nucleus-count-<configDigest8>` written at the head).
+- configDigest after `69675122`. The choice was made on the run at `efb2b554143a` (before the choice, configDigest `399dd645`); the committed report of record `nucleus-count-69675122` re-runs the same grid at the head and gives the identical table (the grid sets all four keys at every point, so the frozen values don't enter it).
 - Feasible: 120/180. Chosen: prom 1.5 dB, sep 50 ms, drop 9 dB, voiced ±60 ms; count-match 43.8%, vowel-inside 91.1%, median IoU 0.429.
 
 | prom dB | sep ms | drop dB | voiced ±ms | count-match | vowel-inside | IoU | short | non-context | feasible |

@@ -204,10 +204,11 @@ final class ReferencedPhrases {
 
     static func build(
         phrases names: Set<String>, lists: VCTKReferenceLists, cache: URL, available: Set<VCTKClip>,
-        phrases text: PositivePhrases, timings: any WordTimestamper
+        phrases text: PositivePhrases, timings: any WordTimestamper, thresholds: Thresholds = .current
     ) async throws -> ReferencedPhrases {
         let out = ReferencedPhrases(
-            analyzer: Analyzer(speech: SpeechModelHost(ready: timings), configuration: try .shipped()), cache: cache)
+            analyzer: Analyzer(speech: SpeechModelHost(ready: timings), configuration: try .shipped(thresholds: thresholds)),
+            cache: cache)
         for name in names.sorted() {
             guard let input = try text.input(name) else { continue }
             var phrase = Phrase(input: input, list: lists.phrases[name] ?? [])
@@ -268,6 +269,9 @@ func referencedPairs(speakers: [String], available: Set<VCTKClip>, phrases: [Str
 /// The positive set's pairs through the analyzer: each pair's scoring and band coverage, and why any pair wasn't scored.
 struct PositiveRun {
     var outcomes: [PairOutcome] = []
+    /// Spec 26 §6 (a), `.nucleus` runs: per pair (`speaker_phrase`), your take's present words outside the confident
+    /// subset (nucleus-short, assignment-ambiguous, or P ∉ N_w).
+    var nonConfident: [String: Set<Int>] = [:]
     var band: [PairBandCoverage] = []
     /// Unscored pairs by reason.
     var unscored: [String: Int] = [:]
@@ -306,6 +310,15 @@ struct PositiveRun {
             }
             run.accounts.append(PairAccount(
                 speaker: pair.speaker, phrase: pair.phrase, reference: reference, skipped: skipped, lostReason: nil))
+            if let record = result.derived.first(where: { $0.level == .l1 }),
+               let l1 = DerivedCoding.value(L1Analysis.self, in: record, key: record.key),
+               l1.analysis.segmentation.measurement == .nucleus {
+                run.nonConfident["\(pair.speaker)_\(pair.phrase)"] = Set(l1.analysis.segmentation.words.compactMap { word in
+                    guard word.kind == .present, let a = word.nucleusAssignment else { return nil }
+                    let confident = !a.short && a.ambiguous != true && (a.allowed ?? [a.dictionaryCount]).contains(a.available)
+                    return confident ? nil : word.phraseWord.rawValue
+                })
+            }
             run.outcomes.append(PairOutcome(
                 speaker: pair.speaker, phrase: pair.phrase, phraseCluster: VCTK.sourcePrompt(of: pair.phrase),
                 decision: decision, applicability: l2.applicability, measures: l2.measures,

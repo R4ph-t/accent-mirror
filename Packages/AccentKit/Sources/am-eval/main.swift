@@ -553,7 +553,9 @@ struct PositiveResult {
 
 /// The VCTK positive set (specs 09, 10, 12; spec 11 §3a): every held-out take with a kept clip, scored by the
 /// analyzer against the first listed reference usable for every phrase word.
-func positiveResult(_ args: Arguments, root: URL, prefix: String = "positive") async throws -> PositiveResult? {
+func positiveResult(_ args: Arguments, root: URL, prefix: String = "positive", thresholds: Thresholds = .current)
+    async throws -> PositiveResult?
+{
     let manifest = try VCTKEvalSpeakersManifest.load(root.appendingPathComponent(Paths.evalSpeakers))
     let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.vctkCache)
     guard let cache = PositiveCache(cacheDir) else {
@@ -585,7 +587,8 @@ func positiveResult(_ args: Arguments, root: URL, prefix: String = "positive") a
         print("\(prefix): analysing \(pairs.count) held-out takes through the pipeline (spec 12) against the §3a reference lists, word timings replayed from \(timings.asrModelID)")
         let references = try await ReferencedPhrases.build(
             phrases: Set(pairs.map(\.phrase)), lists: lists, cache: cacheDir, available: Set(cache.kept),
-            phrases: try PositivePhrases(root: root, manifest: manifest, table: table), timings: timings)
+            phrases: try PositivePhrases(root: root, manifest: manifest, table: table), timings: timings,
+            thresholds: thresholds)
         run = try await PositiveRun.run(pairs: pairs, references: references)
         notes.append("pipeline: spec 12 Analyzer, word timings replayed from \(timings.asrModelID), pYIN pitch, spec 10 scoring; references: fixtures/vctk/reference-lists.json (§3a), first listed reference usable for every phrase word; natives (A(w), band) = the phrase's analysed references but the take's speaker")
         let served = Dictionary(grouping: run.accounts.compactMap(\.reference), by: { $0 }).mapValues(\.count)
@@ -749,6 +752,8 @@ do {
     case "starter-build": exit(try await starterBuild(args))
     case "nucleus-jitter": exit(try await nucleusJitter(args, root: try repositoryRoot()))
     case "nucleus-count": exit(try await nucleusCount(args, root: try repositoryRoot()))
+    case "thresholds-json": exit(try thresholdsJSON(args))
+    case "nucleus-count-held-out": exit(try await nucleusCountHeldOut(args, root: try repositoryRoot()))
     case "timestamp-check": exit(try await timestampCheck(args, root: try repositoryRoot()))
     default:
         usage()
