@@ -155,4 +155,13 @@ import Testing
             try await fixture.store().markComparable(take: fixture.ref(2))
         }
     }
+
+    @Test("a clip longer than one read buffer comes back whole (a single read stopped at 4096 frames)")
+    func longClipRoundTrips() async throws {
+        let folder = Folder()
+        let store = MyPhraseStore(root: folder.url, rebuilder: FakeRebuilder().rebuilder)
+        let clip = (0..<76_160).map { Float(sin(Double($0) * 0.031)) * 0.3 }
+        try await store.create(Self.phrase(1), clip: clip, reference: Self.record())
+        #expect(try store.clip(PhraseID("my-1")) == clip)
+    }
 }
