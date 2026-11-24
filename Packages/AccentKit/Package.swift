@@ -53,9 +53,15 @@ let package = Package(
         // only: the app target depends on AMPipeline alone and never links this or AMEvaluation.
         .executableTarget(
             name: "am-eval",
-            dependencies: [.target(name: "AMPipeline"), .target(name: "AMEvaluation")],
+            dependencies: [.target(name: "AMPipeline"), .target(name: "AMEvaluation"), .target(name: "AMSpike27")],
             path: "Sources/am-eval"
         ),
+        // Spec 27's offline feasibility spike: TD-PSOLA negatives, the word-stress classifier, the native envelope.
+        // Evaluation tooling only (am-eval links it); never a product, never linked into the app or AMPipeline.
+        .target(name: "AMSpike27",
+                dependencies: ["AMCore", "AMAlignment", "AMPitch", "AMProsody", "AMEvaluation", "AMTimestampEval"]),
+        .testTarget(name: "Spike27Tests",
+                    dependencies: ["AMCore", "AMAlignment", "AMPitch", "AMProsody", "AMEvaluation", "AMSpike27"]),
         // Local evaluation tooling (spec 03): never linked into the app, never run by CI.
         .target(name: "AMTimestampEval", dependencies: ["AMCore", "AMAlignment"]),
         .testTarget(name: "AMTimestampEvalTests", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),

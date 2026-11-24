@@ -752,6 +752,7 @@ do {
     case "starter-build": exit(try await starterBuild(args))
     case "nucleus-jitter": exit(try await nucleusJitter(args, root: try repositoryRoot()))
     case "nucleus-count": exit(try await nucleusCount(args, root: try repositoryRoot()))
+    case "spike27": exit(try await spike27(args, root: try repositoryRoot()))
     case "thresholds-json": exit(try thresholdsJSON(args))
     case "nucleus-count-held-out": exit(try await nucleusCountHeldOut(args, root: try repositoryRoot()))
     case "timestamp-check": exit(try await timestampCheck(args, root: try repositoryRoot()))
