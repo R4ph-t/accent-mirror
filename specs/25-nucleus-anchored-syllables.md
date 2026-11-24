@@ -228,4 +228,82 @@ Every step is run by the build agent and repeated by the reviewer; none needs Ra
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Hand build (Claude Code), branch `factory/25-nucleus-anchored`, 2026-11-24. **Acceptance 1: FAIL.** Per §5 the build
+stopped there: no aligner comparison, acceptances 2–4 not run, no parameter or threshold changed, `.nucleus` is not
+the default (`prominence.measurement` stays `0`, span), and §6's proposal is in
+`docs/agreement/reports/nucleus-jitter-<configDigest8>.md`.
+
+**What was built**
+- `AMProsody/Nucleus.swift`: `NucleusDetector` (samples + spec 04 track → `[Nucleus]`), `NucleusAssigner` (the
+  monotonic DP), `NucleusMeasurement` (d, e, p per syllable), `NucleusWordAssignment` (P, s_w, nucleus-short).
+  - Envelope: per 10 ms cell (spec 04's grid), a 25 ms Hann window centred on the cell, 512-point FFT, power in the
+    300–2,500 Hz bins scaled by Parseval to a mean square, in dBFS, then a centred 5-frame (50 ms) mean.
+  - Voicing: the cells the spec 04 `PitchTrack` marks voiced (pYIN probability ≥ 0.5, then spec 04's < 30 ms runs
+    dropped; bridged frames are not voiced). The peak frame itself must be voiced.
+  - Merging, until stable: any pair closer than 70 ms (keep the higher, the earlier on a tie), then the least
+    prominent candidate under 3 dB. Prominence and valleys use the take's ends where there is no neighbour. The
+    region stops before either valley frame.
+  - DP: minimises the number of nucleus-short words first, then the ms cost; at equal cost a word takes its nuclei
+    before a nucleus is skipped (ties go to the earlier word). A nucleus more than `alignment.asrPaddingMs` outside a
+    span can't go to that word. P counts the nuclei strictly between the nearest earlier and later words' assigned
+    nuclei (a short neighbour has none, so the search goes past it).
+- `SyllableSegmenter`: `.nucleus` keeps spec 07's spans as `range` (display) and replaces `duration`, `energyDBFS`
+  and the syllable confidence (min(c_w, s_w from P)); a nucleus-short word's syllables get confidence 0 (low), no
+  `nucleus`, and leave the comparable set (`ComparableSyllable.all`), so placement and contrast are unavailable. p
+  reads the nucleus region (`ProminenceFeatures`). `Input.pitch` carries the track; `.nucleus` without it throws.
+  New fields are optional and omitted in `.span`, so `.span` JSON keeps its shape.
+- Exposure is structural in both modes (markup 2): the last syllable of a word with nothing timed after it, or whose
+  gap to the next timed word's start is > `prominence.exposurePauseMs`. The smoke set's 53 items keep every placement
+  and verdict under it.
+- Pipeline: the analyzer, `StressPlacementDetector.analyse` and spec 11's tuner pass the take's pitch track into
+  segmentation (pitch now runs before segmentation in the two sequential paths). L0/L2 keys unchanged; L1 recomputes
+  through `algorithmVersion` 2.
+- Thresholds: `nucleus.*` (initial values) and `prominence.measurement` (Int-backed so the mirror holds a number:
+  0 span, 1 nucleus). `thresholdsVersion` 9, `algorithmVersion` 2, golden record (2, 9, 2) appended. Re-recorded for
+  the bump only: AMCore and scoring goldens (version fields), smoke detector goldens (L1 digests and versions),
+  `fixtures/pipeline/analysis-golden.json` (versions) and `Resources/Starter` via `scripts/build-starter.sh` (L1 keys
+  and the hashes over them).
+- Harness: `am-timestamps spec11-guard --measurement span|nucleus --rows control,b2,jitter` (spec 11's runner; one
+  pYIN track per clip), per-word near-edge flag (a detected nucleus peak within 40 ms of either unjittered oracle
+  edge) and oracle-side P and nucleus-short counts. A nucleus-short word's `WordVerdict` is inconclusive with no
+  longest or loudest syllable. `am-eval nucleus-jitter` applies the limits and writes the report;
+  `scripts/agreement.sh --suite nucleus-jitter` (→ `scripts/nucleus-jitter.sh`) runs both modes without re-running
+  MFA. `NucleusJitterGateTests` re-derives every check from the stored comparisons.
+
+**Acceptance 1 at ±40 ms** (seed 20261125; `.span` → `.nucleus`; full tables in the report)
+
+| Set | n | Pooled flips | 2-syll | 3-syll | 4+ | Oracle inconclusive | ±40 inconclusive |
+|---|---|---|---|---|---|---|---|
+| synthetic | 307 | 8.1% → 6.5% | 17.6% → 11.8% (n 51) | 33.3% → 13.3% (n 15) | 57.1% → 0% (n 7) | 5.2% → 26.7% | 8.5% → 28.3% |
+| VCTK held-out | 3,890 | 11.6% → 4.5% | 12.2% → 3.3% (n 639) | 17.8% → 3.3% (n 213) | 18.8% → 0.9% (n 117) | 9.3% → 57.6% | 17.7% → 60.6% |
+
+`.nucleus` misses ≤ 2% pooled on both sets and in the 2- and 3-syllable groups on VCTK and the 2-syllable group on
+synthetic, and blows the 10% budget on both sets. The `.span` column reproduces spec 11's 8.1% / 11.6%.
+
+**Why (diagnostics, reported):** nucleus-short words dominate. On VCTK 1,376 of 2,921 monosyllables, 306 of 639
+2-syllable, 167 of 213 3-syllable and 101 of 117 4+-syllable words are nucleus-short on the oracle boundaries (synthetic:
+45/234, 12/51, 6/15, 5/7). Checked by hand on held-out clips (no code change): the detector finds about half the
+syllables because the peak must be a pYIN-voiced frame, and pYIN's voicing starts about 60 ms after ACF's at vowel
+onsets, past the envelope peak (e.g. p238_001 "stella": envelope peak 1.53–1.57 s, pYIN voiced from 1.58 s, ACF from
+1.52 s), so the vowel has no voiced local maximum. That is §1 as written (spec 04's tracker, no new tracker). Near-edge
+(markup 3, VCTK, `.nucleus`): words with a nucleus peak within 40 ms of an oracle edge flip at 126/1,249 (10.1%), the
+rest at 48/2,641 (1.8%); synthetic 9/138 vs 11/169.
+
+**§6 proposal rows** (shipped config, `.span`; the cut applied after the fact to the suites' outputs): clean 1,400 L2
+FP 150 (10.71%) → 0 (only 19 of the 1,400 words keep a placement verdict); supplementary FP 188/1,868 (10.06%) → 0
+(29 keep one); L2 recall 5/134 (3.73%) → 0 (8 of the 134 keep a verdict); positive set (281 scored pairs)
+placement-diff 6 (2.14%) → 0, any-diff 94 (33.45%) → 92 (32.74%). The cut removes almost every placement verdict
+these sets have; the report gives the starter-phrase and group numbers.
+
+**Not run (stopped at acceptance 1, §5):** acceptances 2–4, `NucleusJitterGateTests` green on the head (it is red: the
+report says NOT MET), the MFA vowel-interval diagnostic and the inter-nucleus-interval column (Open question 4).
+
+**Spec gaps**
+- `thresholdsVersion`: the brief said 8 ("7 reserved for spec 11"), but main already holds 7 (spec 22) and 8 (spec
+  23). §4 says "the next free integer": 9. Spec 11's tuned config takes the next one after.
+- The 10% budget names no population for a jitter run; it's read on the compared words' jittered inconclusive share
+  (the strictest reading). The flips fail without it.
+- Near-edge: "the word has a nucleus peak within 40 ms of either edge" read as any detected nucleus (assigned or not).
+- P's neighbours are the nearest earlier and later words with assigned nuclei, skipping nucleus-short ones.
+- Voicing comes from the spec 04 track (after its 30 ms minimum run), the input §4 names, not raw per-frame
+  probabilities.
