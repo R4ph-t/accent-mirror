@@ -326,8 +326,11 @@ be Done.
   give the same numbers at every grid point: they are measured once on tuning data and once on held-out data, not
   per point. Because the tuning-data guard is NOT MET (b2 1,599/6,824 = 23.4% flips with an 8.3-point inconclusive
   rise; jitter ±40 ms 830/6,824 = 12.2%), no grid point can be feasible, whatever the L2 and VCTK constraints say.
-  This is the §4c FALLBACK. The search still reports the rule's choice without the guard, plus the closest points
-  by constraint violation, so CTO can see what the L2 constraints alone would have allowed.
+  This is the §4c FALLBACK. The search also reports the rule's choice without the guard and the closest points by
+  constraint violation. In the run, not one of the 634,238,748 points meets even the rule's own constraints:
+  any-diff stays at 140/476 (29%) and inconclusive at 207/476 (43%) everywhere, because the optional diffs and the
+  inconclusive outcome don't read the tuned keys either. The closest point gets shared FP from 159 to 75 of 1,705,
+  but recall falls from 5 to 2 of 134 (`docs/agreement/tuning-log.md`).
 - **References (§3a).** `fixtures/vctk/reference-lists.json` is generated once by `am-eval vctk-reference-lists`
   from the split manifest and the trimmed cache, before any scoring: bundled voices in order (p226 first for 015),
   then tuning speakers only until there are 3. A held-out speaker as a reference is a fatal error. A list shorter
