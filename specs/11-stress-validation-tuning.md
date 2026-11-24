@@ -18,7 +18,11 @@ report (`docs/agreement/reports/word-boundaries-diagnostics-2026-11-23.md`, on b
 of 2026-11-23 (relayed by Accent Mirror Lead): the b2 gate re-run, the jitter test, the anti-inconclusive guard and
 the pre-declared fallback (§4–§4c below). CTO's rulings of 2026-11-24 09:20 (relayed by Accent Mirror Lead): the
 ±40 ms jitter target joins the guard, small syllable groups are reported but not gated, the control is checked only
-on the final tuned thresholds, and the L2 false-flag split (§3).
+on the final tuned thresholds, and the L2 false-flag split (§3). CTO's rulings of 2026-11-24 12:53 (relayed by
+Accent Mirror Lead), after spec 12's positive report (#54, `positive-4fc683ef`) left contrast (100), weak length
+(100), nPVI (147) and final direction (99) under 150 pairs: add data, don't change the gate (§3a); the ±40 ms
+jitter condition holds pooled and per multi-syllable group (§4b); the low-confidence split writes the value it used
+(§3).
 
 ## Goal
 
@@ -65,9 +69,10 @@ anti-inconclusive guard; otherwise it records the pre-declared fallback for CTO.
 Run once each, on the shipped config, with reports under `docs/agreement/reports/<suite>-<configDigest8>.{json,md}`
 bound to `sourceTreeHash` and `configDigest` (§6.6):
 
-- **VCTK positive set** (held-out speakers, ≥ 150 headline pairs, through spec 12's pipeline): every spec 10 gate
-  (any-diff, placement-diff, inconclusive, evaluation coverage, tolerance rows, band coverage from spec 09) with n,
-  value, intervals, worst speaker and worst phrase.
+- **VCTK positive set** (held-out speakers, ≥ 150 headline pairs, through spec 12's pipeline, with the references
+  of §3a): every spec 10 gate (any-diff, placement-diff, inconclusive, evaluation coverage, tolerance rows, band
+  coverage from spec 09) with n, value, intervals, worst speaker and worst phrase, and next to each row's n: its
+  distinct reference speakers, its distinct prompts, and its pairs lost with the count per reason (§3a).
 - **L2 shared-detector FP** after suppression on the **clean 1,400 words / 90 speakers** (primary): point ≤ 2%, worst
   speaker ≤ 10% (the 74 speakers with ≥ 10 words), upper bound, adults and children separately. The 1,868-word set
   is reported as supplementary. Whisper-substituted words are counted and listed on their own line (they never
@@ -75,7 +80,9 @@ bound to `sourceTreeHash` and `configDigest` (§6.6):
 - **L2 false-flag split (reported, not gated; CTO, 2026-11-24).** The first release report splits the L2 false flags
   on the clean 1,400 into three groups, each with its count, its denominator and its rate (with Wilson interval), on
   both the initial and the tuned thresholds: **Whisper-substituted words**, **words with low ASR confidence** (Whisper word
-  confidence c_w below `Thresholds.confidence.levelMedium`, 0.45 today), and **clean matched words** (the rest). CTO's reason: spec 08's 93
+  confidence c_w below `Thresholds.confidence.levelMedium`, 0.45 today), and **clean matched words** (the rest).
+  The report writes the numeric cut it used (for example `lowAsrConfidenceBelow: 0.45`) next to the split, so a
+  later retune of `levelMedium` can't silently reclassify an old report. Reporting only; it never gates. CTO's reason: spec 08's 93
   substitutions on L2 may be a real share of today's 10.7%, and that would be an ASR fix, not a threshold fix. The
   gate's own number is unchanged by the split.
 - **Unintelligible words (157):** 0 placement diffs, every one inconclusive or unscored. One violation fails the
@@ -86,6 +93,39 @@ bound to `sourceTreeHash` and `configDigest` (§6.6):
   (reason)`, and fallback metrics are labelled.
 - **Synthetic set** (secondary): which-syllable accuracy ≥ 80% plus the §6.5 rule; controls ≤ 2% diffs.
 - **`referenceAnomaly` rate** per phrase; a phrase at ≥ 20% is listed for an override review.
+- The untuned figures in spec 12's report (47% inconclusive, 49% evaluation coverage) are judged on the tuned
+  config here, not before; they aren't a reason to change any gate.
+
+### 3a. Positive set: several native references, per-word fallback (CTO, 2026-11-24 12:53)
+
+Spec 12's positive report scored 219 of 274 headline pairs: all 55 lost pairs are prompts where the single headline
+reference p225's own Whisper words substitute a phrase word (005, 021-b, 022, 023-a, 023-c). CTO: add data, don't
+change the gate.
+
+- **No single main reference.** Each phrase gets an ordered list of **at least 3 native reference speakers**, taken
+  from the non-held-out side of the existing split: the bundled voices (p225, p226, p227, p233, p241, p252, p311,
+  p345) first, in that order (p226 first for 015, as today), then tuning speakers only if fewer than 3 bundled voices
+  have a usable take of the phrase. Nobody moves across the tuning / held-out line, `fixtures/vctk/eval-speakers.json`
+  doesn't change, held-out speakers are never a reference, and a speaker is never their own reference. The lists
+  are fixed in a committed manifest before any scoring and never chosen on results.
+- **Fallback per word, not per pair.** When the first reference's word is unusable, that word comes from the next
+  reference in the list that has it usable; the pair is dropped only when no reference has it. Phrase-level measures
+  (nPVI, band coverage, pitch range, final direction) use the first reference whose take is usable for every word
+  the measure needs. A pair is still one held-out speaker × one phrase and counts once, never once per reference.
+  The report lists which reference served each word.
+- **Transcript check.** Every reference take's Whisper words are checked against the phrase's known VCTK prompt
+  text (the shared-text `txt` files, after spec 06's normalisation) before use. Each excluded word gets a recorded
+  reason: `asrSubstitution`, `asrMissing`, `lowAsrConfidence`, `spanSanityFailed`, `trimRejected` (clip outside
+  2–6 s) or `noUsableReference` (every reference failed); a held-out take's own failures are recorded the same way.
+- **Per-row accounting.** Every positive row prints n (pairs), distinct reference speakers, distinct prompts, pairs
+  lost and the count per reason.
+- **Minimums never move.** A row still under 150 pairs after this stays NOT EVALUATED (never a pass), so
+  `AnalysisGateTests` fails, and the row goes to CTO with its accounting; dropping that metric's claim from v1 would
+  be a scope call for Raph through CPO. The 150 minimum, the gates and the tolerances are never lowered.
+- **Scope.** This changes code that specs 02 and 12 built: the positive-set pair builder and reference selection in
+  `AMEvaluation`, the eval manifest of references, and `am-eval suite --suite positive` / `release` output. Both
+  specs are Done and stay as written; the change is spec 11's. Tuning pairs (§2) use the same reference lists. Spec
+  15's bundled starter library (what the app ships) is not touched.
 
 ### 4. CTO's timing-sensitivity control (required, reported)
 
@@ -119,8 +159,10 @@ syllable words flipping far more than monosyllables (control 43.1% / 66.7% vs 3.
   (and the initial ones, for comparison).
 - Report the verdict flip rate against the unjittered oracle by syllable count (**1, 2, 3, 4+**), per set, with n and
   Wilson intervals, plus the inconclusive rise per bucket. **Pass condition (CTO, 2026-11-24): ≤ 2% flips at ±40 ms**
-  on the tuned thresholds, pooled over all syllable counts, on each set separately, printed as MET / NOT MET. It is
-  part of the guard (§4c). ±20 ms and ±80 ms are reported only. CTO's reason: b2's real median boundary error is
+  on the tuned thresholds, on each set separately (synthetic and VCTK), **both pooled over all syllable counts and
+  in each multi-syllable group (2, 3, 4+) with n ≥ 30 words**, printed as MET / NOT MET (CTO, 2026-11-24 12:53;
+  this replaces the pooled-only wording). A group with n < 30 is printed as `reported (n < 30)` and not gated. It
+  is part of the guard (§4c). ±20 ms and ±80 ms are reported only. CTO's reason: b2's real median boundary error is
   40–50 ms, so ±40 ms is the error the segmenter must tolerate. It measures how much syllable verdicts depend on
   exact word edges, whatever the aligner.
 
@@ -130,7 +172,8 @@ syllable words flipping far more than monosyllables (control 43.1% / 66.7% vs 3.
   1. the TTS-vs-MFA control (§4) is **≤ 2%**;
   2. the inconclusive rate stays inside the **≤ 10% budget** (`agreement.inconclusivePairsMax`);
   3. the b2 gate (§4a) meets **both** ≤ 2% verdict flips and ≤ 2 points of inconclusive rise;
-  4. the jitter test (§4b) is **≤ 2% flips at ±40 ms** on each set (CTO, 2026-11-24).
+  4. the jitter test (§4b) is **≤ 2% flips at ±40 ms** on each set, pooled and in every multi-syllable group with
+     n ≥ 30 (CTO, 2026-11-24).
 - **Gaming guard:** a point that gets to ≤ 2% flips by sending 2–3-syllable words to inconclusive doesn't count. In
   each syllable-count bucket (2 and 3 separately), the inconclusive rate may rise at most 2 points over the oracle
   (Open question 4). Each group prints its n (words) and the Wilson interval of its inconclusive rate under the
@@ -181,14 +224,16 @@ only when the analysis is proven on real voices.
   on every PR). It finds the repo root from `#filePath`, computes `configDigest` from `Thresholds` on the head
   (AMCore `Identity`), loads `release-<configDigest8>.json`, and fails unless:
   1. the report exists and its `configDigest` equals the computed one (a stale or hand-edited report fails);
-  2. every positive-set gate row reads PASS, none FAIL or NOT EVALUATED, and the rows named above are all present
-     (a missing row fails, so a dimension can't drop out silently);
+  2. every positive-set gate row reads PASS, none FAIL or NOT EVALUATED (a row under 150 pairs is NOT EVALUATED and
+     fails), and the rows named above are all present with their reference-speaker, prompt and lost-pair counts (a
+     missing row fails, so a dimension can't drop out silently);
   3. every negative-set (L2) gate row reads PASS;
-  4. `Spec 11 guard` reads MET, and the report's guard rows include all four conditions of §4c, the ±40 ms jitter
-     row among them, each MET (a missing condition fails);
+  4. `Spec 11 guard` reads MET, and the report's guard rows include all four conditions of §4c, each MET (a missing
+     condition fails). For the ±40 ms jitter that means, on each set, the pooled row and every multi-syllable group
+     row with n ≥ 30 present and MET; groups with n < 30 are skipped;
   5. every gated syllable group (n ≥ 30) meets its ≤ 2-point inconclusive rise; groups with n < 30 are skipped.
   Reported-only lines (synthetic set, end-to-end check ii, `referenceAnomaly`, 3-take stability, §4b at ±20 / ±80 ms,
-  the L2 false-flag split) are printed and not asserted.
+  the L2 false-flag split and its `lowAsrConfidenceBelow` value) are printed and not asserted.
 - **If the gates don't pass, CI stays red and the PR doesn't merge**, so this row isn't Done and 20 and 21 stay
   blocked. That includes FALLBACK (§4c) and spec 23 not being on main (§4a). The PR still commits the report and
   says it goes to CTO. Fix rounds may fix bugs in the pipeline or the harness, never a gate, a tolerance, a
