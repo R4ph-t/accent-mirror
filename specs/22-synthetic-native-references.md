@@ -1,6 +1,6 @@
 # 22: Synthetic native references (evaluation only)
 
-Status: Ready · Branch: – · Depends on: 02 (harness), 10 (verdict path) · Estimate: 4–6 h agent run + 1.5 h Raph
+Status: Done · Branch: factory/22-synthetic-native-references (#45) · Depends on: 02 (harness), 10 (verdict path) · Estimate: 4–6 h agent run + 1.5 h Raph
 review · Risk: high
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
