@@ -8,11 +8,10 @@ import AMAlignment
 import AMPitch
 import AMProsody
 import AMWarp
-import AMScoring
 import AMLibrary
 
 /// Identifies the `AMPipeline` module and the modules it may depend on.
 public enum AMPipelineModule {
     public static let name = "AMPipeline"
-    public static let dependencies: [String] = [AMCoreModule.name, AMCaptureModule.name, AMAlignmentModule.name, AMPitchModule.name, AMProsodyModule.name, AMWarpModule.name, AMScoringModule.name, AMLibraryModule.name]
+    public static let dependencies: [String] = [AMCoreModule.name, AMCaptureModule.name, AMAlignmentModule.name, AMPitchModule.name, AMProsodyModule.name, AMWarpModule.name, AMLibraryModule.name]
 }

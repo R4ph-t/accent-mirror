@@ -3,6 +3,7 @@
 // replayed fixture fills it in.
 
 import AMCore
+import AMPlacement
 import AMProsody
 import AMWarp
 import Foundation

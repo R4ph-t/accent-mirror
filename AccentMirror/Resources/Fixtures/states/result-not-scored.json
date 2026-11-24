@@ -1,0 +1,18 @@
+{
+  "name": "result-not-scored",
+  "summary": "Take 03 analysed with scoring off (spec 28): verdict notScored, no measures or stress lines.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-take03",
+  "analysis": {
+    "verdict": {
+      "notScored": {}
+    },
+    "timing": "good"
+  }
+}

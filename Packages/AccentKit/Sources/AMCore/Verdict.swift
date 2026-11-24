@@ -11,6 +11,8 @@ public enum Verdict: Sendable, Hashable, Codable {
     case noClearDifference([NeutralReason])
     /// Abstained: required evidence missing.
     case inconclusive([InconclusiveReason])
+    /// Scoring was off (spec 28): the take was analysed and drawn, never judged. JSON `{"notScored": {}}`.
+    case notScored
 
     enum NoClearDifferenceCodingKeys: String, CodingKey { case _0 = "reasons" }
     enum InconclusiveCodingKeys: String, CodingKey { case _0 = "reasons" }

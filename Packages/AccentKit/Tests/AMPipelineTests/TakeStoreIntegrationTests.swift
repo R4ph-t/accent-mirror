@@ -5,6 +5,9 @@
 import AMCore
 import AMLibrary
 import AMPipeline
+import AMPlacement
+import AMProsody
+import AMVerdicts
 import Foundation
 import Testing
 

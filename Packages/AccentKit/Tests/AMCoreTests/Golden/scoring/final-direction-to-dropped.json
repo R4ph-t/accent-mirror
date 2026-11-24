@@ -115,6 +115,7 @@
       "targetsHash" : "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
       "transcriptRevision" : 1
     },
+    "scoringMode" : "on",
     "takeAudioSHA256" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   },
   "measures" : {

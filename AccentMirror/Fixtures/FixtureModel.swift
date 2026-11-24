@@ -1,7 +1,7 @@
 import Foundation
 
 // Fixture schema for the UI shell (spec 19). Field names follow the plan v2 contract (verdict kinds `feedback`,
-// `close`, `noClearDifference`, `inconclusive`; take problems; operational errors; `MeasureState`;
+// `close`, `noClearDifference`, `inconclusive`, and spec 28's `notScored`; take problems; operational errors; `MeasureState`;
 // `AlignedWordPair`; `PersistenceStatus`). AMCore does not define these types yet (spec 01); when it does, the
 // fixtures and this decoding layer follow it instead of growing a parallel model. See `Fixtures/SCHEMA.md`.
 // UI-free on purpose: no SwiftUI here.
@@ -185,6 +185,9 @@ enum TakeProblem: String, Decodable, Sendable, CaseIterable {
     case noMicrophone, micDenied, noSpeech, tooShort, tooQuiet, clipped, wordsDontMatch
 }
 
+/// The verdict a fixture carries. Spec 28: the views never read it (show-don't-judge v1); it is decoded so the existing
+/// fixtures still load, and spec 29 retires the verdict fixtures. `{"notScored": {}}` (the contract's canonical form)
+/// and `{"kind": "notScored"}` both decode as `.notScored`; a missing verdict is `nil` on `Analysis`.
 struct Verdict: Decodable, Sendable {
     var kind: Kind
     var rows: [DiffRow]?
@@ -192,7 +195,21 @@ struct Verdict: Decodable, Sendable {
     var inconclusive: Inconclusive?
 
     enum Kind: String, Decodable, Sendable {
-        case feedback, close, noClearDifference, inconclusive
+        case feedback, close, noClearDifference, inconclusive, notScored
+    }
+
+    enum CodingKeys: String, CodingKey { case kind, rows, reasons, inconclusive, notScored }
+
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if !container.contains(.kind), container.contains(.notScored) {
+            kind = .notScored
+            return
+        }
+        kind = try container.decode(Kind.self, forKey: .kind)
+        rows = try container.decodeIfPresent([DiffRow].self, forKey: .rows)
+        reasons = try container.decodeIfPresent([NoClearDifferenceReason].self, forKey: .reasons)
+        inconclusive = try container.decodeIfPresent(Inconclusive.self, forKey: .inconclusive)
     }
 }
 

@@ -1,7 +1,7 @@
 // The shared-detector stages (spec 08 wiring for spec 02's §6.3 mode): L0 (voicing, pitch, replayed word timings),
 // L1 (alignment to the transcript, syllables with the given pronunciations), prominence over every syllable of the
 // present words, the lengthening discount, observed stress, confidence, then `placementDecision`, the same function
-// the app calls. Not run here: warp, DTW, band, pitch measures, contrast, weak length, ranking.
+// spec 10's scoring calls (AMScoring, through AMVerdicts). Not run here: warp, DTW, band, pitch measures, contrast, weak length, ranking.
 //
 // Suppression is counted at two points (§6.3): before (observed primary ∉ A(w)) and after Poor timing, low word
 // confidence, then the placement rule's own suppressions.
@@ -12,45 +12,6 @@ import AMCore
 import AMPitch
 import AMProsody
 import Foundation
-
-/// One take to decide placement on.
-public struct PlacementTake: Sendable {
-    public struct Word: Sendable, Hashable {
-        public let index: WordIndex
-        public let text: String
-        /// The pronunciation to segment with; its syllable count is the reference count.
-        public let pronunciation: Pronunciation
-        /// A(w); nil when the word gets no placement decision (not in the set, or `expectedAmbiguous`).
-        public let accepted: Set<Int>?
-
-        public init(index: WordIndex, text: String, pronunciation: Pronunciation, accepted: Set<Int>?) {
-            self.index = index
-            self.text = text
-            self.pronunciation = pronunciation
-            self.accepted = accepted
-        }
-    }
-
-    /// Mono samples.
-    public var samples: [Float]
-    public var sampleRate: Double
-    /// Every transcript word, in order.
-    public var words: [Word]
-    /// The recogniser's words (replayed in evaluation and CI; ASR never runs here).
-    public var heard: [WordTimestamp]
-    /// Identifies the L0 inputs (audio, ASR, pitch, voicing) for the L1 key.
-    public var l0Key: String
-
-    public init(
-        samples: [Float], sampleRate: Double = 16_000, words: [Word], heard: [WordTimestamp], l0Key: String
-    ) {
-        self.samples = samples
-        self.sampleRate = sampleRate
-        self.words = words
-        self.heard = heard
-        self.l0Key = l0Key
-    }
-}
 
 /// Why a raw mismatch was not flagged in the shared-detector mode.
 public enum DetectorSuppression: Sendable, Hashable, Codable {
@@ -75,6 +36,8 @@ public struct PlacementWordResult: Sendable, Hashable, Codable {
     public var flaggedAfterSuppression: Bool { flaggedBeforeSuppression && suppression == nil }
 }
 
+/// One take's prosody with each decided word's placement: the verdict side (evaluation, `AMVerdicts`). The shipped
+/// L1 stores only `TakeProsody` (spec 28).
 public struct PlacementAnalysis: Sendable, Hashable, Codable {
     public let segmentation: SyllableSegmentation
     /// One result per transcript word with an A(w), in transcript order.
@@ -83,13 +46,28 @@ public struct PlacementAnalysis: Sendable, Hashable, Codable {
     public let alignment: WordAlignment
     /// The take's pitch track (spec 04).
     public let pitch: PitchTrack
+
+    public init(segmentation: SyllableSegmentation, words: [PlacementWordResult], alignment: WordAlignment, pitch: PitchTrack) {
+        self.segmentation = segmentation
+        self.words = words
+        self.alignment = alignment
+        self.pitch = pitch
+    }
+
+    /// The prosody alone, as the shipped L1 stores it.
+    public var prosody: TakeProsody { TakeProsody(segmentation: segmentation, alignment: alignment, pitch: pitch) }
 }
 
+/// Spec 08's detector: the shipped stages (`TakeStages`), pitch, then observed stress and `placementDecision`.
+/// Verdict-only since spec 28: it lives in `AMPlacement`, which nothing on the shipped path links.
 public struct StressPlacementDetector: Sendable {
     public let voicing: any VoicingSource
     public let pitchTracker: any PitchTracker
     public let aligner: WordAligner
     public let thresholds: Thresholds
+
+    /// The alignment and segmentation stages this detector runs.
+    public var stages: TakeStages { TakeStages(voicing: voicing, aligner: aligner, thresholds: thresholds) }
 
     public init(
         voicing: any VoicingSource, pitchTracker: any PitchTracker, aligner: WordAligner,
@@ -115,50 +93,38 @@ public struct StressPlacementDetector: Sendable {
         return place(take, alignment: alignment, segmentation: segmentation, pitch: pitch)
     }
 
-    // The stages, one by one (spec 12's analyzer runs them separately so each failure names its stage and pitch can
-    // run alongside ASR). `analyse` is exactly these in order.
+    // The stages, one by one. `analyse` is exactly these in order.
 
-    /// Spec 06: the recogniser's words aligned to the transcript, with the summary the decision procedure reads.
-    public func align(_ take: PlacementTake) throws -> WordAlignmentResult {
-        let phrase = ExpectedPhrase(words: take.words.map { word in
-            ExpectedWord(
-                index: word.index, text: word.text, pronunciation: word.pronunciation, source: .override,
-                expectedAmbiguous: word.accepted == nil, isContent: true, isTarget: word.accepted != nil)
-        })
-        let heard = take.heard.sorted { ($0.start, $0.end) < ($1.start, $1.end) }.compactMap { word in
-            (try? TimeRange(start: word.start, end: max(word.start, word.end))).map { HeardWord(text: word.word, range: $0) }
-        }
-        return try aligner.align(phrase, heard: heard)
-    }
+    /// Spec 06: the recogniser's words aligned to the transcript (`TakeStages.align`).
+    public func align(_ take: PlacementTake) throws -> WordAlignmentResult { try stages.align(take) }
 
-    /// Spec 07: syllables of the aligned words. `voicing` defaults to the detector's own; the analyzer passes the
-    /// take's voicing decided once in L0.
+    /// Spec 07: syllables of the aligned words (`TakeStages.segment`).
     public func segment(
         _ take: PlacementTake, alignment: WordAlignment, voicing: (any VoicingSource)? = nil, transcriptRevision: Int = 0
     ) throws -> SyllableSegmentation {
-        var spans: [WordIndex: SyllableSegmenter.WordSpan] = [:]
-        for pair in alignment.pairs {
-            guard let word = pair.phraseWord, let range = pair.yourRange else { continue }
-            if case .inserted = pair { continue }
-            spans[word] = try SyllableSegmenter.WordSpan(
-                start: range.start, end: range.end, probability: Self.probability(of: range, in: take.heard))
-        }
-        let pronunciations = Dictionary(uniqueKeysWithValues: take.words.map { ($0.index, $0.pronunciation) })
-        return try SyllableSegmenter(voicing: voicing ?? self.voicing, thresholds: thresholds).segment(.init(
-            samples: take.samples, sampleRate: take.sampleRate, alignment: alignment, pronunciations: pronunciations,
-            spans: spans, l0Key: take.l0Key, transcriptRevision: transcriptRevision))
+        try stages.segment(take, alignment: alignment, voicing: voicing, transcriptRevision: transcriptRevision)
     }
 
     /// Spec 08: prominence over the present words' syllables, observed stress and each decided word's placement.
     public func place(
         _ take: PlacementTake, alignment: WordAlignment, segmentation: SyllableSegmentation, pitch: PitchTrack
     ) -> PlacementAnalysis {
+        Self.place(
+            words: take.words, prosody: TakeProsody(segmentation: segmentation, alignment: alignment, pitch: pitch),
+            thresholds: thresholds)
+    }
+
+    /// `place` on a stored prosody (an L1 record's `TakeProsody`): only the phrase words (with A(w)) are read.
+    public static func place(
+        words: [PlacementTake.Word], prosody: TakeProsody, thresholds: Thresholds = .current
+    ) -> PlacementAnalysis {
+        let segmentation = prosody.segmentation, alignment = prosody.alignment, pitch = prosody.pitch
         let prominence = TakeProminence(
             ComparableSyllable.all(in: segmentation, pitch: pitch, thresholds: thresholds.prominence),
             thresholds: thresholds.prominence)
         let segmented = Dictionary(segmentation.words.map { ($0.phraseWord, $0) }, uniquingKeysWith: { first, _ in first })
 
-        let results = take.words.compactMap { word -> PlacementWordResult? in
+        let results = words.compactMap { word -> PlacementWordResult? in
             guard let accepted = word.accepted else { return nil }
             guard let segmentedWord = segmented[word.index], segmentedWord.kind == .present else {
                 return PlacementWordResult(word: word.index, present: false, observed: nil, decision: nil, suppression: nil)
@@ -185,13 +151,5 @@ public struct StressPlacementDetector: Sendable {
                 word: word.index, present: true, observed: observed, decision: decision, suppression: suppression)
         }
         return PlacementAnalysis(segmentation: segmentation, words: results, alignment: alignment, pitch: pitch)
-    }
-
-    /// The lowest probability among the recognised words overlapping `range` (a recognised word the aligner split
-    /// over several phrase words lends its probability to each); 1 when none overlaps.
-    static func probability(of range: TimeRange, in heard: [WordTimestamp]) -> Double {
-        let overlapping = heard.filter { $0.start < range.end && $0.end > range.start }
-            + heard.filter { $0.start == range.start && $0.end == range.end }
-        return min(1, max(0, overlapping.map(\.probability).min() ?? 1))
     }
 }

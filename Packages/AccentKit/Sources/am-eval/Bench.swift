@@ -8,6 +8,8 @@ import AMCore
 import AMEvaluation
 import AMLibrary
 import AMPipeline
+import AMProsody
+import AMVerdicts
 import Foundation
 
 func bench(_ args: Arguments, root: URL) async throws -> Int32 {
@@ -67,7 +69,7 @@ func bench(_ args: Arguments, root: URL) async throws -> Int32 {
         let phrase = PhraseInput(id: PhraseID("bench-\(length.label)"), words: phraseWords)
         let take = TakeAudio(samples: you.samples, clipID: "bench-you-\(length.label)")
         // The reference side, analysed once (spec 15 ships these precomputed).
-        let builder = Analyzer(speech: host, configuration: try .shipped())
+        let builder = Analyzer(speech: host, configuration: try EvaluationConfig.configuration())
         var natives: [NativeRecording] = []
         for speaker in ["p288", "p360"] {
             let audio = TakeAudio(
@@ -86,11 +88,14 @@ func bench(_ args: Arguments, root: URL) async throws -> Int32 {
         var outcomes: [String: Int] = [:]
         for _ in 0..<runs {
             // A fresh analyzer each run (empty caches), the same warm model.
-            let analyzer = Analyzer(speech: host, configuration: try .shipped())
+            let analyzer = Analyzer(speech: host, configuration: try EvaluationConfig.configuration())
             let start = ContinuousClock.now
             let run = await analyzer.run(take: take, phrase: phrase, reference: reference, voice: RecordingID("p288"))
             stops.append((ContinuousClock.now - start).inSeconds)
             outcomes[outcomeName(run.response.outcome), default: 0] += 1
+            if case .analysed(let result) = run.response.outcome {
+                try EvaluationConfig.requireScored(.verdict(result.verdict), context: "bench \(length.label)")
+            }
             for (stage, seconds) in run.timings { stageTimes[stage, default: []].append(seconds) }
             let switchStart = ContinuousClock.now
             _ = await analyzer.run(take: take, phrase: phrase, reference: reference, voice: RecordingID("p360"))
@@ -124,7 +129,7 @@ func bench(_ args: Arguments, root: URL) async throws -> Int32 {
             // Cancel 100 ms into a request (inside ASR): the answer within about 300 ms, the model still loaded.
             var cancels: [Double] = []
             for _ in 0..<runs {
-                let analyzer = Analyzer(speech: host, configuration: try .shipped())
+                let analyzer = Analyzer(speech: host, configuration: try EvaluationConfig.configuration())
                 let task = Task(priority: .high) {
                     let response = await analyzer.analyse(
                         take: take, phrase: phrase, reference: reference, voice: RecordingID("p288"))
@@ -158,6 +163,8 @@ private func outcomeName(_ outcome: AnalysisOutcome) -> String {
         case .close: "close"
         case .noClearDifference: "noClearDifference"
         case .inconclusive: "inconclusive"
+        // Spec 28: never expected here (EvaluationConfig pins VerdictScorer); named so a regression is visible.
+        case .notScored: "notScored"
         }
     case .takeProblem(let problem): "takeProblem(\(problem.rawValue))"
     case .failed(let error): "failed(\(error))"

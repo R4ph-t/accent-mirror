@@ -38,11 +38,23 @@ public struct ApplicabilityTable: Sendable, Hashable, Codable {
         self.entries = entries
     }
 
+    /// No measure at all: a `.notScored` result (spec 28), which never reads applicability. Subscripting it traps.
+    public static let empty = ApplicabilityTable(unchecked: [:])
+
+    private init(unchecked entries: [MeasureKind: MeasureApplicability]) { self.entries = entries }
+
+    /// True for `empty`.
+    public var isEmpty: Bool { entries.isEmpty }
+
     public subscript(kind: MeasureKind) -> MeasureApplicability { entries[kind]! }
 
     public init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         let entries = try container.decode([MeasureKind: MeasureApplicability].self)
+        if entries.isEmpty {
+            self = .empty
+            return
+        }
         do {
             try self.init(entries)
         } catch {

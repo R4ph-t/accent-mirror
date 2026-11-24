@@ -8,6 +8,8 @@ import AMCore
 import AMEvaluation
 import AMLibrary
 import AMPipeline
+import AMProsody
+import AMVerdicts
 import Foundation
 import Synchronization
 
@@ -155,7 +157,7 @@ struct PositiveRun {
     static func run(
         pairs: [VCTKPair], cache: URL, available: Set<VCTKClip>, phrases: PositivePhrases, timings: FixtureTimestamper
     ) async throws -> PositiveRun {
-        let analyzer = Analyzer(speech: SpeechModelHost(ready: timings), configuration: try .shipped())
+        let analyzer = Analyzer(speech: SpeechModelHost(ready: timings), configuration: try EvaluationConfig.configuration())
         func take(speaker: String, phrase: String) throws -> TakeAudio {
             let url = vctkAudio(cache, speaker: speaker, phrase: phrase)
             let (samples, rate) = try AudioFiles.readMono(url)
@@ -215,6 +217,7 @@ struct PositiveRun {
                 }
                 continue
             }
+            try EvaluationConfig.requireScored(decision, context: "\(pair.speaker) \(pair.phrase)")
             run.outcomes.append(PairOutcome(
                 speaker: pair.speaker, phrase: pair.phrase, phraseCluster: pair.sourcePrompt, decision: decision,
                 applicability: l2.applicability, measures: l2.measures, modelValues: l2.modelValues,

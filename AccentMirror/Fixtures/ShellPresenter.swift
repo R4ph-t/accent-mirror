@@ -1,6 +1,8 @@
 import Foundation
 
 // What the shell shows for a contract state. Pure value types, no SwiftUI: the views only draw these.
+// Spec 28 (show-don't-judge v1): nothing here reads a verdict, a diff row, a stress line or a measure state. An analysed
+// take, scored legacy takes included, shows card 1 "YOUR TAKE" with no rows; spec 29 adds the v3 result row.
 
 struct DetailPresentation: Sendable {
     var banner: BannerPresentation?
@@ -247,59 +249,12 @@ enum ShellPresenter {
             ], infoLines: [])
         }
 
-        guard let analysis = fixture.analysis, let verdict = analysis.verdict else {
+        guard fixture.analysis != nil else {
             // An operational error with nothing analysed keeps the empty state.
             return card(LoadedFixture(fixture: with(fixture) { $0.phase = .empty }, phrase: loaded.phrase, take: nil))
         }
-
-        let measures = analysis.measures ?? []
-        var rows: [CardRow] = []
-        switch verdict.kind {
-        case .feedback:
-            rows = orderedRows(verdict.rows ?? []).map { row in
-                CardRow(icon: diffIcon(row), iconIsMistake: false, sentence: Copy.row(row), trailing: .play)
-            }
-        case .close:
-            rows = [CardRow(icon: "checkmark.circle", iconIsMistake: false, sentence: Copy.close(measures: measures), trailing: .none)]
-        case .noClearDifference:
-            rows = [CardRow(
-                icon: "equal.circle", iconIsMistake: false,
-                sentence: Copy.noClearDifference(verdict.reasons ?? []), trailing: .none
-            )]
-        case .inconclusive:
-            if let value = verdict.inconclusive {
-                rows = [CardRow(
-                    icon: "questionmark.circle", iconIsMistake: false, sentence: Copy.inconclusive(value),
-                    trailing: Copy.inconclusiveHasTryAgain(value) ? .button("Try Again") : .none
-                )]
-            }
-        }
-
-        var info: [Sentence] = []
-        if let quiet = Copy.quietLines(analysis.notes).first { info.append(quiet) }
-        if let placementOnly = Copy.placementOnlyLine(measures) { info.append(placementOnly) }
-        return CardPresentation(title: Copy.whatToChange, rows: rows, infoLines: info)
-    }
-
-    /// §10 order, rough timing first, at most 3 rows; too much contrast only fits when there is room.
-    static func orderedRows(_ rows: [DiffRow]) -> [DiffRow] {
-        let order = DiffRow.Kind.allCases
-        let sorted = rows.sorted { order.firstIndex(of: $0.kind)! < order.firstIndex(of: $1.kind)! }
-        return Array(sorted.prefix(3))
-    }
-
-    /// The final-direction icon follows the direction: arrow.up.right for "End higher", arrow.down.right for
-    /// "End lower" (Designer 12:19 c, round 3).
-    static func diffIcon(_ row: DiffRow) -> String {
-        switch row.kind {
-        case .roughTiming: "waveform.path.ecg"
-        case .placement: "arrow.left.arrow.right"
-        case .contrast: "chart.bar"
-        case .reduction: "arrow.left.and.right"
-        case .range: "arrow.up.and.down"
-        case .finalDirection: row.direction == "higher" ? "arrow.up.right" : "arrow.down.right"
-        case .tooMuchContrast: "chart.bar.fill"
-        }
+        // Spec 28: an analysed take is drawn, never judged. No rows, no sentence about stress or closeness.
+        return CardPresentation(title: Copy.yourTake, rows: [], infoLines: [])
     }
 
     static func takeProblemIcon(_ problem: TakeProblem) -> String {
@@ -415,10 +370,11 @@ enum ShellPresenter {
                     shape: takeProblemShape(problem),
                     caption: Copy.takeProblemCaption(problem)
                 )
-            } else if fixture.analysis?.verdict == nil {
+            } else if fixture.analysis == nil {
                 you = .placeholder
             } else {
-                let parts = yourClusters(take, allGrey: false, flagged: flaggedSyllables(fixture.analysis))
+                // Spec 28: no mistake marker (it named the syllable a placement row judged).
+                let parts = yourClusters(take, allGrey: false)
                 you = .bars(clusters: parts.clusters, slots: parts.slots, showsLabels: true)
             }
         }
@@ -434,46 +390,21 @@ enum ShellPresenter {
         }
     }
 
-    /// The mistake marker goes only on the syllable named after "not" in a placement row that card 1 shows:
-    /// your stress is outside the accepted set at high confidence (§8, §13 item 5). Every other verdict
-    /// (close, noClearDifference, inconclusive, feedback without that row) shows no marker.
-    static func flaggedSyllables(_ analysis: Analysis?) -> Set<FlaggedSyllable> {
-        guard let verdict = analysis?.verdict, verdict.kind == .feedback else { return [] }
-        return Set(orderedRows(verdict.rows ?? []).compactMap { row in
-            guard row.kind == .placement, let word = row.word, let heard = row.heardIndex else { return nil }
-            return FlaggedSyllable(word: word.lowercased(), index: heard)
-        })
-    }
-
     // MARK: Pitch
+
+    /// The manifest's `targets` for this phrase, normalised (spec 28: card 1 names no words, so these are the only
+    /// named targets).
+    static func namedTargetWords(_ loaded: LoadedFixture) -> Set<String> {
+        let manifest = loaded.fixture.manifest ?? .stub
+        let targets = manifest.packs.flatMap(\.phrases).first { $0.id == loaded.phrase.id }?.targets ?? []
+        return Set(targets.map(normalizedWord)).intersection(Set(loaded.phrase.words.map { normalizedWord($0.text) }))
+    }
 
     /// A target word under the pitch plot (Addendum r4 C6): one that carries a stressed native syllable (it has a
     /// Lime mark on the baseline), or one named in `named`. Its label always shows; the other words' labels give
     /// way first when the plot is narrow.
     static func isTargetWord(_ word: NativeWord, named: Set<String>) -> Bool {
         word.syllables.contains(where: \.stressed) || named.contains(normalizedWord(word.text))
-    }
-
-    /// The words card 1 names, normalised: a row's word (placement) or a whole word among its targets ("than" in
-    /// "ra, phy, der, than"; a syllable like HAR names no word on its own), the words an inconclusive sentence
-    /// names (targetWordsMissing), plus the starter manifest's `targets` for the phrase, which add to the set and
-    /// never replace it.
-    static func namedTargetWords(rows: [DiffRow], sentenceWords: [String], manifestTargets: [String],
-                                 phraseWords: [String]) -> Set<String> {
-        let words = Set(phraseWords.map(normalizedWord))
-        let fromRows = rows.flatMap { row in (row.word.map { [$0] } ?? []) + (row.targets ?? []) }
-        return Set((fromRows + sentenceWords + manifestTargets).map(normalizedWord)).intersection(words)
-    }
-
-    /// `namedTargetWords` for a fixture: the rows card 1 shows (feedback only), its inconclusive words, and the
-    /// manifest's targets for this phrase.
-    static func namedTargetWords(_ loaded: LoadedFixture) -> Set<String> {
-        let verdict = loaded.fixture.analysis?.verdict
-        let rows = verdict?.kind == .feedback ? orderedRows(verdict?.rows ?? []) : []
-        let manifest = loaded.fixture.manifest ?? .stub
-        let targets = manifest.packs.flatMap(\.phrases).first { $0.id == loaded.phrase.id }?.targets ?? []
-        return namedTargetWords(rows: rows, sentenceWords: verdict?.inconclusive?.words ?? [], manifestTargets: targets,
-                                phraseWords: loaded.phrase.words.map(\.text))
     }
 
     static func normalizedWord(_ text: String) -> String {
@@ -485,7 +416,7 @@ enum ShellPresenter {
         var you: [PitchSegment] = []
         var message: String?
         let showsYou = loaded.fixture.phase == .showingTake && loaded.take?.alignment == .aligned
-            && firstTakeProblem(loaded) == nil && loaded.fixture.analysis?.verdict != nil
+            && firstTakeProblem(loaded) == nil && loaded.fixture.analysis != nil
         if showsYou, let take = loaded.take {
             // A stretch shorter than 3 frames isn't drawn (§13.7).
             you = take.pitch.filter { $0.points.count >= 3 }
@@ -508,22 +439,10 @@ enum ShellPresenter {
 
     // MARK: Inspector (§14)
 
+    /// Spec 28: no measure states, no STRESS lines, no verdict reasons. Quiet notes and the take's save status only.
     static func inspector(_ loaded: LoadedFixture) -> [InspectorSection] {
         var sections: [InspectorSection] = []
         let analysis = loaded.fixture.analysis
-        if let measures = analysis?.measures, !measures.isEmpty {
-            sections.append(InspectorSection(
-                title: "MEASURES",
-                lines: measures.map { "\(Copy.measureName($0.measure)): \(Copy.measureValue($0))" }
-            ))
-        }
-        if let lines = analysis?.stress?.compactMap(Copy.stressLine), !lines.isEmpty {
-            sections.append(InspectorSection(title: "STRESS", lines: lines))
-        }
-        if analysis?.verdict?.kind == .noClearDifference, let reasons = analysis?.verdict?.reasons {
-            let ordered = NoClearDifferenceReason.allCases.filter(reasons.contains)
-            sections.append(InspectorSection(title: "NO CLEAR DIFFERENCE", lines: ordered.map(Copy.noClearDifferenceReasonName)))
-        }
         let quiet = Copy.quietLines(analysis?.notes).map(\.plain)
         if !quiet.isEmpty {
             sections.append(InspectorSection(title: "NOTES", lines: quiet))

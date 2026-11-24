@@ -5,6 +5,9 @@ import AMAlignment
 import AMCore
 import AMEvaluation
 import AMPipeline
+import AMPlacement
+import AMProsody
+import AMVerdicts
 import Foundation
 
 let smokeAttribution = "Word timings recognised from the smoke set's audio (fixtures/smoke/ATTRIBUTION.md): "

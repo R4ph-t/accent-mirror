@@ -28,13 +28,19 @@ public struct AnalysisResult: Sendable, Hashable, Codable {
     public let applicability: ApplicabilityTable
     public let verdict: Verdict
     public let identity: AnalysisIdentity
+    /// Comparable syllables ÷ the model's syllables (`TimeWarp.comparableCoverage`, spec 28). Nil for takes saved
+    /// before spec 28; omitted from JSON when nil.
+    public let comparableCoverage: Double?
+    /// Plain measures for you and the native range (spec 28 §4a): measurements, never a comparison. Nil for takes
+    /// saved before spec 28; omitted from JSON when nil.
+    public let describe: DescribedMeasures?
 
     public init(
         phraseID: PhraseID, takeID: TakeID, recordedAt: Date, model: SpeakerAnalysis, you: SpeakerAnalysis,
         modelAxis: TimeRange, alignment: WordAlignment, timeMap: PartialTimeMap, youPitchOnModel: [PitchSegment],
         nativeBand: [BandPoint], pitchAxis: ClosedRange<Double>, timing: TimingLevel, stress: [StressLine],
         measures: [MeasureKind: MeasureState<Double>], applicability: ApplicabilityTable, verdict: Verdict,
-        identity: AnalysisIdentity
+        identity: AnalysisIdentity, comparableCoverage: Double? = nil, describe: DescribedMeasures? = nil
     ) {
         self.phraseID = phraseID
         self.takeID = takeID
@@ -53,6 +59,8 @@ public struct AnalysisResult: Sendable, Hashable, Codable {
         self.applicability = applicability
         self.verdict = verdict
         self.identity = identity
+        self.comparableCoverage = comparableCoverage
+        self.describe = describe
     }
 }
 
@@ -80,11 +88,16 @@ public struct WordSpan: Sendable, Hashable, Codable {
     public let range: TimeRange
     /// Indices into the same speaker's `syllables`.
     public let syllables: [Int]
+    /// The context-resolved lexical pattern (spec 28 §4), one entry per syllable; nil when the word is
+    /// `expectedAmbiguous`, has no pattern, or the take was saved before spec 28. It is the dictionary's pattern for
+    /// this context, not what the speaker did: native acoustics follow it only 50–70% of the time (spike 27).
+    public let expectedStress: [SyllableStress]?
 
-    public init(text: String, range: TimeRange, syllables: [Int]) {
+    public init(text: String, range: TimeRange, syllables: [Int], expectedStress: [SyllableStress]? = nil) {
         self.text = text
         self.range = range
         self.syllables = syllables
+        self.expectedStress = expectedStress
     }
 }
 

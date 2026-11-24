@@ -6,6 +6,9 @@ import AMAlignment
 import AMCore
 import AMLibrary
 import AMPipeline
+import AMPlacement
+import AMProsody
+import AMVerdicts
 import Foundation
 import Testing
 
@@ -47,7 +50,15 @@ private let starterFolder = URL(fileURLWithPath: #filePath)
                     let record = try await references.analyse(source)
                     if record.key != recording.analysisKey { return "\(recording.id): recomputed key differs" }
                     if SHA256Digest.hex(of: record.bytes) != recording.analysisSHA256 {
-                        return "\(recording.id): recomputed analysis digest differs"
+                        // Spec 28: L1 no longer stores observed stress or placement decisions, so a record built
+                        // before it carries extra keys the shipped type ignores, and its bytes can't match until
+                        // Resources/Starter is rebuilt (a hand step for Raph; agents don't touch it). Until then the
+                        // check is value equality through the current type: every field the shipped L1 keeps.
+                        let bundled = try Data(contentsOf: starterFolder.appending(path: recording.analysis))
+                        let stored = DerivedCoding.native(in: DerivedRecord(level: .l1, key: record.key, bytes: bundled))
+                        if stored == nil || stored != DerivedCoding.native(in: record) {
+                            return "\(recording.id): recomputed analysis differs"
+                        }
                     }
                     return nil
                 }

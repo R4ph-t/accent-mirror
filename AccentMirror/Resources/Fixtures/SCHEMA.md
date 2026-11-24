@@ -39,7 +39,8 @@ time.
 | Field | Type | Meaning |
 |---|---|---|
 | `takeProblems` | string[]? | `noMicrophone`, `micDenied`, `noSpeech`, `tooShort`, `tooQuiet`, `clipped`, `wordsDontMatch`. Only the first in that order shows |
-| `verdict.kind` | `feedback` \| `close` \| `noClearDifference` \| `inconclusive` | |
+| `verdict` | object? | Optional (spec 28): a missing verdict is accepted. `{"notScored": {}}` (the contract's canonical form) or `{kind: notScored}` is a take analysed with scoring off. The views read no verdict since spec 28: any analysed take shows card 1 "YOUR TAKE" with no rows, scored or not; spec 29 retires the verdict fixtures |
+| `verdict.kind` | `feedback` \| `close` \| `noClearDifference` \| `inconclusive` \| `notScored` | |
 | `verdict.rows` | DiffRow[]? | feedback: `{kind: roughTiming \| placement \| contrast \| reduction \| range \| finalDirection \| tooMuchContrast, word?, syllables?, acceptedIndex?, heardIndex?, likeVoice?, targets?, direction?}`. Shown in §10 order, at most 3 |
 | `verdict.reasons` | string[]? | noClearDifference: `pitchShapeBelowClose`, `optionalMeasuresUnavailable`, `mediumConfidenceOnly`, `timingRough`, `nonTargetWordsIncomplete`, `insertionsPresent` |
 | `verdict.inconclusive` | object? | `{reason: targetWordsMissing \| timingUnreliable \| comparableCoverageLow \| requiredMeasureUnavailable \| noApplicableStressMeasure, words?, coverage?, cause?: lowConfidence}` |

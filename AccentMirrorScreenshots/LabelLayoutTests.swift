@@ -114,7 +114,7 @@ struct LabelLayoutTests {
     /// r5 D3: "than" has no rule of its own. It is a target word only in a take where a card-1 diff row or the
     /// card-1 sentence names it (the reduction row "ra, phy, than."); everywhere else it is an unstressed,
     /// non-target word label and hides first in a collision.
-    @MainActor @Test func thanIsATargetOnlyWhereCardOneNamesIt() throws {
+    @MainActor @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func thanIsATargetOnlyWhereCardOneNamesIt() throws {
         let library = try #require(FixtureLibrary(bundle: Bundle(for: ShellModel.self)))
         var named = 0, unnamed = 0
         for name in try library.allNames() {

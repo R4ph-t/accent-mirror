@@ -58,5 +58,12 @@ public enum Versions {
         GoldenDigest(
             algorithmVersion: 1, thresholdsVersion: 8, contractVersion: 2,
             digest: "a1d4f4fba2eee439147911db15acfee4ad8c0886bdf22155d3b98016ebc15a06"),
+        // Spec 28: `Verdict.notScored`, `AnalysisIdentity.scoringMode`, `AnalysisResult.comparableCoverage` and
+        // `.describe`, `WordSpan.expectedStress`; goldens `analysed-not-scored.json` and `analysed-legacy-scored.json`
+        // added, the others gain `"scoringMode": "on"` only. Additive (old JSON decodes), so per CTO no version moves:
+        // the one record that repeats a triple (GoldenDigestTests allows exactly this one).
+        GoldenDigest(
+            algorithmVersion: 1, thresholdsVersion: 8, contractVersion: 2,
+            digest: "8469e6740ea26dc61ea41f2e1c1cf18cef50e21f6676d5a7f85b803c66b9d0b2"),
     ]
 }

@@ -19,6 +19,7 @@
       "targetsHash" : "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
       "transcriptRevision" : 1
     },
+    "scoringMode" : "on",
     "takeAudioSHA256" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   },
   "outcome" : {
@@ -99,6 +100,7 @@
             "targetsHash" : "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
             "transcriptRevision" : 1
           },
+          "scoringMode" : "on",
           "takeAudioSHA256" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         },
         "measures" : {

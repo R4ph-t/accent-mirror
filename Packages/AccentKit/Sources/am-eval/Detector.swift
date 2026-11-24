@@ -7,7 +7,9 @@ import AMAlignment
 import AMCore
 import AMEvaluation
 import AMPipeline
+import AMPlacement
 import AMProsody
+import AMVerdicts
 import Foundation
 
 // MARK: - speechocean762 on disk

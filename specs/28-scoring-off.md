@@ -199,4 +199,80 @@ Ordered commits, each leaving `make test` green (CTO):
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Hand build (Claude Code, 2026-11-24, on Raph's "go merge / no ci / just yolo"). `make test-vm` and CI were skipped on
+Raph's instruction; the named tests ran on the host (`_cache-28/gate.sh`).
+
+**Where things live now**
+- `StressPlacementDetector.place` is in **`AMPlacement`**, file `Sources/AMPlacement/StressPlacementDetector.swift`:
+  `StressPlacementDetector.place(_:alignment:segmentation:pitch:)` (instance) and
+  `StressPlacementDetector.place(words:prosody:thresholds:)` (static, on a stored `TakeProsody`). The detector type,
+  `PlacementAnalysis`, `PlacementWordResult` and `DetectorSuppression` moved there from `AMPipeline`.
+- `placementDecision`, `PlacementDecision`, `PlacementSuppressionReason`: **`AMPlacement`**,
+  `Sources/AMPlacement/Placement.swift` (moved from `AMProsody/Placement.swift`, history kept).
+- `WordAcceptedSet`, `NativeReading`: `Sources/AMPlacement/AcceptedSet.swift`. `ObservedStress` and
+  `TakeProminence.observedStress(of:)` (an extension on the `AMProsody` type): `Sources/AMPlacement/ObservedStress.swift`.
+  No copy is left in `AMProsody` or `AMPipeline`; `TakeProminence` and `ComparableSyllable` stay in `AMProsody` (the
+  prominence display).
+- `AMVerdicts`: `PairScoring.input` / `PairScoring.score` (an extension of `AMPipeline`'s `PairScoring`),
+  `VerdictScorer`, `PlacementGolden` / `SmokeVerdict`, and `EvaluationConfig` (what am-eval builds every analyzer with).
+  It depends on `AMPipeline` because `VerdictScorer` conforms to `PairScorer`; `AMPipeline` doesn't depend on it.
+- The take-problem gate is **`decideTakeProblem(takeProblems:alignment:thresholds:)`** in `AMCore`
+  (`DecisionProcedure.swift`). `decide()` steps 1–2 now call it, so there is one copy. The analyzer runs it before
+  the scorer and never calls the scorer when it fires.
+- Shipped half of pair scoring: `PairScoring.warp` and `PairScoring.alignmentSummary` in `AMPipeline/PairWarp.swift`.
+  The scorer seam (`PairScorer`, `PairScorerInput`, `PairScore`, `NoOpScorer`) is in `AMPipeline/PairScorer.swift`.
+- The alignment and syllable stages (`TakeStages`, `PlacementTake`) and the new L1 type (`TakeProsody`: segmentation,
+  alignment, pitch) are in `AMProsody/TakeStages.swift`. `L1Analysis.analysis` is a `TakeProsody`.
+- Moved down from `AMScoring` (not copied): `PitchStatistics.range/percentile/slope/npvi` and `FinalWindow` in
+  `AMProsody/PitchStatistics.swift`; `PitchDirection` (with `init(slope:thresholds:)`) in `AMCore/DescribedMeasures.swift`,
+  because the contract's `describe` stores it. `AMScoring` calls them through one-line forwarders.
+
+**Descriptive measures (§4a), frame set.** One function, `ProsodyDescription.speaker(_:warp:thresholds:)`
+(`AMPipeline/Description.swift`), runs on you and on every native voice:
+- pitch range P10–P90: the speaker's pitch warped onto the **selected model's timeline** (`TimeWarp.pitchOnModel`), voiced
+  frames whose centre is in that warp's comparable model time. These are exactly the frames `AMScoring` reads for your
+  range. The selected voice goes through its own identity warp, and every other native through its warp onto the
+  selected voice (the band's warps);
+- final slope and ending direction: the speaker's final window on their **own** timeline over their present words
+  (`FinalWindow`), which is how `AMScoring` reads it for both you and the model;
+- length (first to last present word), syllables per second and nPVI: the speaker's own present words and comparable
+  syllables (nPVI is `AMScoring`'s rhythm over the same syllables).
+`DescribedMeasuresTests` checks you and each native against `Scorer.score` on the same pair and frames (exact equality),
+and checks that the native range covers every bundled voice.
+
+**Tests**: `ScoringOffTests`, `ShippedGraphTests` and `DescribedMeasuresTests` are in AMPipelineTests;
+`EvaluationPinTests` (am-eval `scoringMode == .on`) is in AMVerdictsTests; `InverseLookupTests` (§5) is in AMWarpTests;
+`TakeStoreGoldenTests` is in AMLibraryTests. The presenter tests are `NotScoredFixtureTests` and `PresenterSourceTests`
+(AccentMirrorTests, unhosted), plus `analysedTakeShowsYourTakeWithNoRows` and
+`inspectorShowsNoMeasureStatesStressLinesOrReasons` (ShellContractTests, app-hosted: compiled on the host, not run).
+`ShippedGraphTests` also reads `project.yml` (read only) and asserts that the app target `AccentMirror` links only the
+`AMPipeline` package product. That holds today, so the assertion is strict.
+
+**Deviations and spec gaps**
+- Golden digest: the change is additive and the CTO ruled no version bump, so the new `GoldenDigest` record repeats
+  (1, 8, 2). `GoldenDigestTests.recordsAreMonotonic` allows exactly that one repeated triple, and only as the last record.
+- The existing goldens (`Golden/*.json`, `Golden/scoring/*.json`) were re-recorded. The only change is the added
+  `"scoringMode": "on"` (21 lines). `fixtures/pipeline/analysis-golden.json` (spec 12) is now pinned to `VerdictScorer`.
+  It was re-recorded and checked identical to main once the added keys (`scoringMode`, `comparableCoverage`, `describe`,
+  `expectedStress`) are stripped.
+- Bundled starter analyses: L1 no longer stores decisions, so a recomputed record's bytes differ from the bundled
+  ones, and `Resources/Starter` is off limits. `BundledStarterTests` now falls back to value equality through the
+  current L1 type when the bytes differ. Hand follow-up: rebuild `Resources/Starter` and restore the byte check.
+- Take problems under `VerdictScorer`: the analyzer still returns `.takeProblem` without calling `score`. It asks the
+  scorer's evaluation-only `evaluationMeasures` hook for the measures to log in L2, as L2 did before, so the agreement
+  harness's tolerance rows don't move. `NoOpScorer` returns nil.
+- Imported phrases (spec 17): an out-of-vocabulary polysyllable's stress used to be measured from the clip through
+  observed stress, which is now outside the shipped graph. Such a word now stays ambiguous (`expectedStress == nil`).
+- `ApplicabilityTable.empty` is added for `.notScored`. It decodes from `{}`; subscripting it traps, and nothing on the
+  shipped path does.
+- Test placement: the smoke placement golden and pair-scoring natives tests stay in AMPipelineTests, which also links
+  `AMVerdicts` (test-only), because they share fixtures with the analyzer tests. AMScoringTests stay where they are.
+  The observed-stress, accepted-set and detector tests moved to AMPlacementTests; `ProminenceTests` moved whole, since
+  its prominence cases sit beside the observed-stress ones.
+- Presenter: the verdict copy and row helpers moved to `AccentMirror/Fixtures/VerdictSentences.swift` and
+  `VerdictPresentation.swift` (extensions, unused by views) so `Copy.swift` and `ShellPresenter.swift` reference no
+  verdict type while ShellContractTests still compile. Twelve ShellContractTests and one LabelLayoutTests test assert
+  verdict rows; they are `.disabled` with a spec-28 reason, for spec 29 to rewrite. The mistake marker is gone, and
+  card 1's info lines (quiet note, placement-only) are dropped; quiet notes stay in the inspector's NOTES.
+- Fixture states `result-not-scored` and `result-no-verdict` are added. The screenshot run will render them.
+- The module split is done, so the fallback wasn't needed.

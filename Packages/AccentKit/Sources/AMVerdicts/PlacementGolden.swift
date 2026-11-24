@@ -6,6 +6,8 @@ import AMAlignment
 import AMCapture
 import AMCore
 import AMPitch
+import AMPipeline
+import AMPlacement
 import AMProsody
 import Foundation
 
@@ -158,6 +160,8 @@ public struct SmokeVerdict: Sendable, Hashable, Codable {
             do {
                 let scoring = try PairScoring.score(
                     words: words, you: analysis, model: candidate.analysis, modelVoice: candidate.item.speaker)
+                // Spec 28: a smoke verdict is always scored; `.notScored` here would make the golden vacuous.
+                if scoring.decision == .verdict(.notScored) { throw NotScoredInEvaluation("smoke verdict \(item.item)") }
                 return SmokeVerdict(model: candidate.item.item, decision: scoring.decision)
             } catch PairScoring.Failure.modelIncomplete(let missing) {
                 skipped.append("\(candidate.item.item) misses word \(missing.map { String($0.rawValue) }.joined(separator: ","))")
