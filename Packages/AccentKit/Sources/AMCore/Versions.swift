@@ -5,9 +5,9 @@ import Foundation
 
 public enum Versions {
     /// Bump when an algorithm change can change any output for the same inputs.
-    public static let algorithmVersion = 1
+    public static let algorithmVersion = 2
     /// Bump when any value in `Thresholds` changes.
-    public static let thresholdsVersion = 8
+    public static let thresholdsVersion = 9
     /// Bump when a contract type's shape or JSON changes.
     public static let contractVersion = 2
 
@@ -58,5 +58,12 @@ public enum Versions {
         GoldenDigest(
             algorithmVersion: 1, thresholdsVersion: 8, contractVersion: 2,
             digest: "a1d4f4fba2eee439147911db15acfee4ad8c0886bdf22155d3b98016ebc15a06"),
+        // Spec 25: `nucleus.*` and `prominence.measurement` added (initial values, never tuned; measurement stays
+        // `.span` until acceptance 1 is MET), and the algorithm moves to 2: nucleus-anchored measurement and
+        // structural lengthening exposure in both modes. Only the version fields moved in the goldens. 9 is the next
+        // free integer (7 and 8 are held by specs 22 and 23).
+        GoldenDigest(
+            algorithmVersion: 2, thresholdsVersion: 9, contractVersion: 2,
+            digest: "fe67e40c43c73b88b8c0f73d97e7cb75bd606e812fae955ae8c0011c1d3d2e40"),
     ]
 }

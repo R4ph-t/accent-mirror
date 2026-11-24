@@ -116,7 +116,7 @@ thresholds table and "first v2" the first v2 (09:10), both carried over "as befo
 | Energy floor | `prominence.energyMinimumDBFS` | -60 | dBFS | §2 | 08 | e_i is floored here |
 | Pitch feature minimum | `prominence.pitchMinVoicedFrames` | 3 | voiced frames | §2 | 08 | Fewer: p_i missing |
 | Lengthening discount λ | `prominence.lengtheningLambda` | 1.6 | ratio | §2 | 08 | d_i − ln λ for exposed syllables |
-| Exposure pause | `prominence.exposurePauseMs` | 150 | ms | §2 | 07, 08 | Last syllable before a pause longer than this is exposed |
+| Exposure pause | `prominence.exposurePauseMs` | 150 | ms | §2 | 07, 08, 25 | Structural (spec 25 §3, both modes): the last syllable of a phrase-final word, or of a word whose gap to the next word's start is longer than this, is exposed |
 | τ_med, 2–4 syllables | `prominence.tauMedium.syllables2to4` | 0.25 | z | §2 | 08 | |
 | τ_med, 5–8 syllables | `prominence.tauMedium.syllables5to8` | 0.25 | z | §2 | 08 | |
 | τ_med, ≥ 9 syllables | `prominence.tauMedium.syllables9Plus` | 0.25 | z | §2 | 08 | |
@@ -124,6 +124,21 @@ thresholds table and "first v2" the first v2 (09:10), both carried over "as befo
 | τ_high, 5–8 syllables | `prominence.tauHigh.syllables5to8` | 0.5 | z | §2 | 08 | |
 | τ_high, ≥ 9 syllables | `prominence.tauHigh.syllables9Plus` | 0.5 | z | §2 | 08 | |
 | Secondary stress | `prominence.secondaryStressShare` | 0.75 | × primary prominence | v1 | 08 | Not next to the primary |
+| Syllable measurement | `prominence.measurement` | 0 | 0 = span, 1 = nucleus | spec 25 §4 | 25 | Where d, e and p are read: spec 07's slice of the word span, or a window around the vowel nucleus. `.nucleus` becomes the default only once spec 25's acceptance 1 is MET; `.span` stays for the comparison rows and is never offered in the app |
+
+## Nuclei (`Thresholds.nucleus`, spec 25)
+
+Initial values chosen before any data (spec 25 §1–§3). CTO markup 4: they stay fixed in spec 25, pass or fail; tuning
+them would be a later spec on the tuning pool only.
+
+| Name | Key | Value | Unit | Plan | Owner spec | Notes |
+|---|---|---|---|---|---|---|
+| Nucleus peak floor | `nucleus.minPeakDBFS` | -45 | dBFS | spec 25 §1 | 25 | Smoothed 300–2,500 Hz band envelope at the peak |
+| Nucleus prominence | `nucleus.minProminenceDB` | 3 | dB | spec 25 §1 | 25 | Above the higher of the two minima to the neighbouring candidates; the same value as `confidence.splitValleyMinDB` |
+| Nucleus separation | `nucleus.minSeparationMs` | 70 | ms | spec 25 §1 | 25 | Closer candidates are merged, keeping the higher |
+| Nucleus region drop | `nucleus.regionDropDB` | 6 | dB | spec 25 §1, Open question 4 | 25 | Region: contiguous voiced frames within this of the peak, never past a valley; d is its length |
+| Nucleus skip cost | `nucleus.skipCostMs` | 60 | ms | spec 25 §2 | 25 | Assignment cost of leaving a nucleus unassigned; a nucleus costs its distance outside the word span (0 inside), and can't go further out than `alignment.asrPaddingMs` |
+| Nucleus intensity window | `nucleus.windowMs` | 30 | ± ms | spec 25 §3 | 25 | e: full-band RMS around the peak, clamped to the region |
 
 ## Applicability
 

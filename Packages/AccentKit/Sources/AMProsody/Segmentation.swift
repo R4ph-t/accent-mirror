@@ -33,12 +33,19 @@ public struct SyllableSegmentation: Sendable, Hashable, Codable {
     /// Share of the take's syllables at medium confidence or above.
     public let timingShare: Double
     public let timing: TimingLevel
+    /// Where d, e and p were measured (spec 25); nil for spec 07's span measurement, so `.span` output is unchanged.
+    public let measurement: SyllableMeasurement?
+    /// The take's detected nuclei, in time order (`.nucleus` only). Syllables index into them.
+    public let nuclei: [Nucleus]?
 
-    public init(key: Key, words: [SegmentedWord], timingShare: Double, timing: TimingLevel) {
+    public init(key: Key, words: [SegmentedWord], timingShare: Double, timing: TimingLevel,
+                measurement: SyllableMeasurement? = nil, nuclei: [Nucleus]? = nil) {
         self.key = key
         self.words = words
         self.timingShare = timingShare
         self.timing = timing
+        self.measurement = measurement
+        self.nuclei = nuclei
     }
 
     /// Every syllable of the take, in time order.
@@ -70,11 +77,18 @@ public struct SegmentedWord: Sendable, Hashable, Codable {
     /// Nil for a substituted word, which is never split.
     public let split: SyllableSplit?
     public let syllables: [SegmentedSyllable]
+    /// `.nucleus` only: P, s_w from the nuclei, and whether the word is nucleus-short (no stress features). In that
+    /// mode the syllables' confidence is min(c_w, this s_w), and 0 when short.
+    public let nucleusAssignment: NucleusWordAssignment?
+
+    /// A nucleus-short word: fewer nuclei could be assigned than it has syllables. Its syllables carry no stress
+    /// features (placement and contrast unavailable, low confidence).
+    public var isNucleusShort: Bool { nucleusAssignment?.short == true }
 
     public init(
         phraseWord: WordIndex, kind: Kind, range: TimeRange, injected: SyllableSegmenter.WordSpan,
         searchWindow: TimeRange, spanSanity: Double, confidence: Double, split: SyllableSplit?,
-        syllables: [SegmentedSyllable]
+        syllables: [SegmentedSyllable], nucleusAssignment: NucleusWordAssignment? = nil
     ) {
         self.phraseWord = phraseWord
         self.kind = kind
@@ -85,6 +99,14 @@ public struct SegmentedWord: Sendable, Hashable, Codable {
         self.confidence = confidence
         self.split = split
         self.syllables = syllables
+        self.nucleusAssignment = nucleusAssignment
+    }
+
+    func with(syllables: [SegmentedSyllable], nucleusAssignment: NucleusWordAssignment? = nil) -> SegmentedWord {
+        SegmentedWord(
+            phraseWord: phraseWord, kind: kind, range: range, injected: injected, searchWindow: searchWindow,
+            spanSanity: spanSanity, confidence: confidence, split: split, syllables: syllables,
+            nucleusAssignment: nucleusAssignment ?? self.nucleusAssignment)
     }
 }
 
@@ -120,21 +142,26 @@ public struct SegmentedSyllable: Sendable, Hashable, Codable {
     public let phones: [String]
     /// The dictionary stress of the pronunciation used.
     public let stress: SyllableStress
+    /// The display span (spec 07). In `.nucleus` mode it is not a stress input.
     public let range: TimeRange
-    /// d, in seconds.
+    /// d, in seconds: the span's length, or the nucleus region's in `.nucleus` mode.
     public let duration: Double
-    /// e: RMS over the syllable in dBFS, floored at `prominence.energyMinimumDBFS`.
+    /// e: RMS in dBFS floored at `prominence.energyMinimumDBFS`, over the span, or around the nucleus peak in
+    /// `.nucleus` mode.
     public let energyDBFS: Double
-    /// The last syllable before the end of the take or before a pause longer than `prominence.exposurePauseMs`.
-    /// Spec 08 applies the discount.
+    /// The last syllable of a phrase-final word or of a word followed by a pause longer than
+    /// `prominence.exposurePauseMs` (spec 25 §3, structural). Spec 08 applies the discount.
     public let lengtheningExposed: Bool
     /// min(c_w, s_w).
     public let confidence: Double
     public let level: Confidence
+    /// `.nucleus` only: where d, e and p came from. Nil for a nucleus-short word's syllables and in `.span` mode.
+    public let nucleus: NucleusMeasurement?
 
     public init(
         phraseWord: WordIndex, indexInWord: Int, phones: [String], stress: SyllableStress, range: TimeRange,
-        duration: Double, energyDBFS: Double, lengtheningExposed: Bool, confidence: Double, level: Confidence
+        duration: Double, energyDBFS: Double, lengtheningExposed: Bool, confidence: Double, level: Confidence,
+        nucleus: NucleusMeasurement? = nil
     ) {
         self.phraseWord = phraseWord
         self.indexInWord = indexInWord
@@ -146,6 +173,14 @@ public struct SegmentedSyllable: Sendable, Hashable, Codable {
         self.lengtheningExposed = lengtheningExposed
         self.confidence = confidence
         self.level = level
+        self.nucleus = nucleus
+    }
+
+    func with(lengtheningExposed: Bool) -> SegmentedSyllable {
+        SegmentedSyllable(
+            phraseWord: phraseWord, indexInWord: indexInWord, phones: phones, stress: stress, range: range,
+            duration: duration, energyDBFS: energyDBFS, lengtheningExposed: lengtheningExposed, confidence: confidence,
+            level: level, nucleus: nucleus)
     }
 }
 

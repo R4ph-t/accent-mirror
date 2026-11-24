@@ -25,12 +25,13 @@ public struct ProminenceFeatures: Sendable, Hashable, Codable {
         self.lengtheningExposed = lengtheningExposed
     }
 
-    /// A segmented syllable's features, with p read from the speaker's pitch track.
+    /// A segmented syllable's features, with p read from the speaker's pitch track: over the syllable's span, or
+    /// over its nucleus region in `.nucleus` mode (spec 25 §3).
     public init(_ syllable: SegmentedSyllable, pitch: PitchTrack, thresholds: Thresholds.Prominence) {
         self.init(
             duration: syllable.duration, energyDBFS: syllable.energyDBFS,
             peakSemitones: pitch.peakSemitones(
-                in: syllable.range, minVoicedFrames: Int(thresholds.pitchMinVoicedFrames)),
+                in: syllable.nucleus?.region ?? syllable.range, minVoicedFrames: Int(thresholds.pitchMinVoicedFrames)),
             lengtheningExposed: syllable.lengtheningExposed)
     }
 }

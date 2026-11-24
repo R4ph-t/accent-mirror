@@ -146,8 +146,8 @@ func l2Takes(
                 let heard = try await timings.wordTimestamps(for: TimestampRequest(clipID: item.item, samples: []))
                 var take = try item.take(samples: mono16k, sampleRate: 16_000, heard: heard, asrModelID: timings.asrModelID)
                 let alignment = try base.align(take).alignment
-                let segmentation = try base.segment(take, alignment: alignment)
                 let pitch = try await base.pitchTracker.track(take.samples, sampleRate: take.sampleRate)
+                let segmentation = try base.segment(take, alignment: alignment, pitch: pitch)
                 take.samples = []
                 return L2Take(
                     set: set, utterance: utterance, speaker: members[0].speaker, take: take, alignment: alignment,

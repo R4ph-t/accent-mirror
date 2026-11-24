@@ -6,10 +6,15 @@
 // syllables at intensity-envelope minima inside the unpadded span, or proportionally to phone count when the valleys
 // can't give the dictionary count. Reported edges are the injected ones, never the padded ones, so a word's timing
 // is the union of its syllables. No DTW here (first v2 §5).
+//
+// Spec 25: with `prominence.measurement == .nucleus` the spans above stay for display only, and each syllable's d, e
+// and p come from its vowel nucleus (`NucleusDetector`, `NucleusAssigner`), which needs spec 04's pitch track. Exposure
+// is structural in both modes: the last syllable of a phrase-final word or of a word before a pause.
 
 import Accelerate
 import AMAlignment
 import AMCore
+import AMPitch
 import Foundation
 
 public struct SyllableSegmenter: Sendable {
@@ -58,11 +63,13 @@ public struct SyllableSegmenter: Sendable {
         public var spans: [WordIndex: WordSpan]
         public var l0Key: String
         public var transcriptRevision: Int
+        /// Spec 04's track of the take: its voicing finds the nuclei and its F0 gives p. Needed in `.nucleus` mode.
+        public var pitch: PitchTrack?
 
         public init(
             samples: [Float], sampleRate: Double = 16_000, alignment: WordAlignment,
             pronunciations: [WordIndex: Pronunciation], spans: [WordIndex: WordSpan], l0Key: String,
-            transcriptRevision: Int
+            transcriptRevision: Int, pitch: PitchTrack? = nil
         ) {
             self.samples = samples
             self.sampleRate = sampleRate
@@ -71,6 +78,7 @@ public struct SyllableSegmenter: Sendable {
             self.spans = spans
             self.l0Key = l0Key
             self.transcriptRevision = transcriptRevision
+            self.pitch = pitch
         }
     }
 
@@ -78,6 +86,8 @@ public struct SyllableSegmenter: Sendable {
         case invalidSampleRate(Double)
         case missingSpan(WordIndex)
         case missingPronunciation(WordIndex)
+        /// `.nucleus` mode needs the take's pitch track.
+        case missingPitchTrack
     }
 
     /// The shortest syllable a valley split may produce. Algorithm constant, not a threshold: it only keeps a
@@ -102,6 +112,8 @@ public struct SyllableSegmenter: Sendable {
 
     public func segment(_ input: Input) throws(Failure) -> SyllableSegmentation {
         guard input.sampleRate.isFinite, input.sampleRate > 0 else { throw .invalidSampleRate(input.sampleRate) }
+        let measurement = thresholds.prominence.measurement
+        if measurement == .nucleus && input.pitch == nil { throw .missingPitchTrack }
         let take = TakeSignal(samples: input.samples, sampleRate: input.sampleRate, voicing: voicing)
 
         // Every timed word on your timeline, for neighbours and pauses. Inserted words use their aligned range.
@@ -130,12 +142,21 @@ public struct SyllableSegmenter: Sendable {
                 phraseWord, span: span, previous: previous, next: next, pronunciation: pronunciation, take: take))
         }
 
-        words = markExposure(words, inserted: timed.filter { $0.word == nil })
+        var nuclei: [Nucleus]?
+        if measurement == .nucleus, let pitch = input.pitch {
+            let detected = NucleusDetector(thresholds: thresholds).detect(
+                samples: input.samples, sampleRate: input.sampleRate, pitch: pitch)
+            words = measureNuclei(words, nuclei: detected, take: take, pitch: pitch)
+            nuclei = detected
+        }
+        words = markExposure(words, timed: timed)
         let timing = Self.timing(of: words.flatMap(\.syllables).map(\.level), thresholds: thresholds.confidence)
         let key = SyllableSegmentation.Key(
             l0Key: input.l0Key, transcriptRevision: input.transcriptRevision,
             pronunciationHash: Self.pronunciationHash(input.pronunciations))
-        return SyllableSegmentation(key: key, words: words, timingShare: timing.share, timing: timing.level)
+        return SyllableSegmentation(
+            key: key, words: words, timingShare: timing.share, timing: timing.level,
+            measurement: measurement == .span ? nil : measurement, nuclei: nuclei)
     }
 
     /// SHA-256 of the canonical JSON of `[{word, arpabet}]`, sorted by word.
@@ -235,30 +256,61 @@ public struct SyllableSegmenter: Sendable {
         }
     }
 
-    // MARK: Exposure (§2)
+    // MARK: Nuclei (spec 25 §2–§3)
 
-    /// A syllable is exposed if it is the last before the end of the take or before a pause longer than
-    /// `prominence.exposurePauseMs` (to the next syllable, substituted word or inserted word).
-    private func markExposure(_ words: [SegmentedWord], inserted: [TimedWord]) -> [SegmentedWord] {
-        var starts = inserted.map(\.start) + words.filter { $0.kind == .substituted }.map(\.range.start)
-        starts += words.flatMap(\.syllables).map(\.range.start)
-        starts.sort()
-        let pause = thresholds.prominence.exposurePauseMs / 1000
-        return words.map { word in
-            let syllables = word.syllables.map { syllable in
-                // The next thing heard after this syllable ends (its own start excluded).
-                let next = starts.first { $0 >= syllable.range.end && $0 > syllable.range.start }
-                let exposed = next.map { $0 - syllable.range.end > pause } ?? true
+    /// Replaces each present word's d, e and confidence with its nuclei's, or marks it nucleus-short. The spans
+    /// (`range`) stay for display.
+    private func measureNuclei(_ words: [SegmentedWord], nuclei: [Nucleus], take: TakeSignal, pitch: PitchTrack)
+        -> [SegmentedWord]
+    {
+        // `words` are in your-time order; only present words with syllables take part. Substituted words get no
+        // nuclei, so theirs are skipped.
+        let present = words.indices.filter { words[$0].kind == .present && !words[$0].syllables.isEmpty }
+        let assignment = NucleusAssigner.assign(
+            nuclei.map(\.peakTime),
+            to: present.map {
+                NucleusAssigner.Word(
+                    start: words[$0].injected.start, end: words[$0].injected.end, syllables: words[$0].syllables.count)
+            },
+            thresholds: thresholds)
+        var out = words
+        for (position, index) in present.enumerated() {
+            let word = words[index]
+            let result = assignment.words[position]
+            let assigned = assignment.nuclei[position]
+            let syllableConfidence = assigned == nil ? 0 : min(word.confidence, result.confidence)
+            let syllables = word.syllables.enumerated().map { k, syllable in
+                let measured = assigned.map {
+                    NucleusMeasurement.measure($0[k], of: nuclei, take: take, pitch: pitch, thresholds: thresholds)
+                }
                 return SegmentedSyllable(
                     phraseWord: syllable.phraseWord, indexInWord: syllable.indexInWord, phones: syllable.phones,
-                    stress: syllable.stress, range: syllable.range, duration: syllable.duration,
-                    energyDBFS: syllable.energyDBFS, lengtheningExposed: exposed, confidence: syllable.confidence,
-                    level: syllable.level)
+                    stress: syllable.stress, range: syllable.range, duration: measured?.duration ?? syllable.duration,
+                    energyDBFS: measured?.energyDBFS ?? syllable.energyDBFS,
+                    lengtheningExposed: syllable.lengtheningExposed, confidence: syllableConfidence,
+                    level: Self.level(of: syllableConfidence, thresholds: thresholds.confidence), nucleus: measured)
             }
-            return SegmentedWord(
-                phraseWord: word.phraseWord, kind: word.kind, range: word.range, injected: word.injected,
-                searchWindow: word.searchWindow, spanSanity: word.spanSanity, confidence: word.confidence,
-                split: word.split, syllables: syllables)
+            out[index] = word.with(syllables: syllables, nucleusAssignment: result)
+        }
+        return out
+    }
+
+    // MARK: Exposure (spec 25 §3, CTO markup 2)
+
+    /// Structural, the same in `.span` and `.nucleus`: a syllable is exposed if it is the last syllable (by index) of
+    /// a word that is phrase-final (nothing timed after it) or followed by a pause longer than
+    /// `prominence.exposurePauseMs`, the pause being the gap from the word's end to the next timed word's start
+    /// (present, substituted or inserted). No syllable or nucleus edge is read.
+    private func markExposure(_ words: [SegmentedWord], timed: [TimedWord]) -> [SegmentedWord] {
+        let pause = thresholds.prominence.exposurePauseMs / 1000
+        return words.map { word in
+            guard let position = timed.firstIndex(where: { $0.word == word.phraseWord }) else { return word }
+            let next = timed[(position + 1)...].first
+            let exposed = next.map { $0.start - word.range.end > pause } ?? true
+            let last = word.syllables.count - 1
+            return word.with(syllables: word.syllables.map { syllable in
+                syllable.with(lengtheningExposed: exposed && syllable.indexInWord == last)
+            })
         }
     }
 

@@ -252,7 +252,7 @@ public actor Analyzer {
         let segmentation = try await stage(.segmentSyllables, &clock) {
             try detector.segment(
                 input, alignment: aligned.alignment, voicing: voicing,
-                transcriptRevision: phrase.transcriptRevision)
+                transcriptRevision: phrase.transcriptRevision, pitch: l0.pitch)
         }
         let analysis = try await stage(.measureStress, &clock) {
             detector.place(input, alignment: aligned.alignment, segmentation: segmentation, pitch: l0.pitch)

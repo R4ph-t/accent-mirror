@@ -16,6 +16,7 @@ public struct Thresholds: Sendable, Hashable, Codable {
     public var alignment = Alignment()
     public var confidence = ConfidenceLevels()
     public var prominence = Prominence()
+    public var nucleus = Nucleus()
     public var applicability = Applicability()
     public var finalDirection = FinalDirection()
     public var diffs = Diffs()
@@ -144,6 +145,28 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public var tauMedium = MarginBuckets(syllables2to4: 0.25, syllables5to8: 0.25, syllables9Plus: 0.25)
         public var tauHigh = MarginBuckets(syllables2to4: 0.5, syllables5to8: 0.5, syllables9Plus: 0.5)
         public var secondaryStressShare = 0.75
+        /// Where each syllable's d, e and p are measured (spec 25 §3–§4): `.span` reads spec 07's slice of the word
+        /// span, `.nucleus` a window around the syllable's vowel nucleus. `.span` stays for the comparison rows and
+        /// is never offered in the app.
+        public var measurement = SyllableMeasurement.span
+        public init() {}
+    }
+
+    /// Nucleus detection and assignment, spec 25 §1–§3. Initial values chosen before any data, never tuned on
+    /// held-out data (CTO markup 4: fixed in spec 25, pass or fail).
+    public struct Nucleus: Sendable, Hashable, Codable {
+        /// A candidate peak of the band-limited envelope must reach this level.
+        public var minPeakDBFS = -45.0
+        /// dB above the higher of the two minima separating a candidate from its neighbours (spec 07's 3 dB).
+        public var minProminenceDB = 3.0
+        /// Candidates closer than this are merged, keeping the higher.
+        public var minSeparationMs = 70.0
+        /// The nucleus region: contiguous voiced frames within this of the peak.
+        public var regionDropDB = 6.0
+        /// The assignment's cost of leaving a nucleus unassigned (an extra peak).
+        public var skipCostMs = 60.0
+        /// Intensity e is read over ± this around the peak, clamped to the nucleus region.
+        public var windowMs = 30.0
         public init() {}
     }
 
@@ -311,5 +334,25 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public var nonASRStagesMs = 500.0
         public var asrWarmMs = 900.0
         public init() {}
+    }
+}
+
+/// Where a syllable's stress features come from (spec 25). Raw values are what `docs/thresholds.md` mirrors.
+public enum SyllableMeasurement: Int, Sendable, Hashable, Codable, CaseIterable {
+    /// Spec 07's slice of the word span.
+    case span = 0
+    /// A window around the syllable's vowel nucleus, found from the take's envelope and voicing (spec 25).
+    case nucleus = 1
+
+    public var name: String {
+        switch self {
+        case .span: "span"
+        case .nucleus: "nucleus"
+        }
+    }
+
+    public init?(name: String) {
+        guard let match = Self.allCases.first(where: { $0.name == name }) else { return nil }
+        self = match
     }
 }

@@ -22,12 +22,13 @@ public struct ComparableSyllable: Sendable, Hashable, Codable {
     }
 
     /// Every syllable of the segmentation's `present` words, in time order: the comparable set when nothing else
-    /// restricts it (the shared-detector mode, §6.3).
+    /// restricts it (the shared-detector mode, §6.3). A nucleus-short word has no stress features and is left out
+    /// (spec 25 §2), so its placement and contrast are unavailable.
     public static func all(
         in segmentation: SyllableSegmentation, pitch: PitchTrack,
         thresholds: Thresholds.Prominence = Thresholds.current.prominence
     ) -> [ComparableSyllable] {
-        segmentation.words.filter { $0.kind == .present }.flatMap(\.syllables).map {
+        segmentation.words.filter { $0.kind == .present && !$0.isNucleusShort }.flatMap(\.syllables).map {
             ComparableSyllable(
                 word: $0.phraseWord, indexInWord: $0.indexInWord,
                 features: ProminenceFeatures($0, pitch: pitch, thresholds: thresholds), level: $0.level)

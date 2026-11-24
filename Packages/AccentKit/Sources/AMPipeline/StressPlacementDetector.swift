@@ -110,8 +110,8 @@ public struct StressPlacementDetector: Sendable {
 
     public func analyse(_ take: PlacementTake) async throws -> PlacementAnalysis {
         let alignment = try align(take).alignment
-        let segmentation = try segment(take, alignment: alignment)
         let pitch = try await pitchTracker.track(take.samples, sampleRate: take.sampleRate)
+        let segmentation = try segment(take, alignment: alignment, pitch: pitch)
         return place(take, alignment: alignment, segmentation: segmentation, pitch: pitch)
     }
 
@@ -132,9 +132,11 @@ public struct StressPlacementDetector: Sendable {
     }
 
     /// Spec 07: syllables of the aligned words. `voicing` defaults to the detector's own; the analyzer passes the
-    /// take's voicing decided once in L0.
+    /// take's voicing decided once in L0. `pitch` (spec 04's track) is needed when `prominence.measurement` is
+    /// `.nucleus` (spec 25): its voicing finds the nuclei.
     public func segment(
-        _ take: PlacementTake, alignment: WordAlignment, voicing: (any VoicingSource)? = nil, transcriptRevision: Int = 0
+        _ take: PlacementTake, alignment: WordAlignment, voicing: (any VoicingSource)? = nil, transcriptRevision: Int = 0,
+        pitch: PitchTrack? = nil
     ) throws -> SyllableSegmentation {
         var spans: [WordIndex: SyllableSegmenter.WordSpan] = [:]
         for pair in alignment.pairs {
@@ -146,7 +148,7 @@ public struct StressPlacementDetector: Sendable {
         let pronunciations = Dictionary(uniqueKeysWithValues: take.words.map { ($0.index, $0.pronunciation) })
         return try SyllableSegmenter(voicing: voicing ?? self.voicing, thresholds: thresholds).segment(.init(
             samples: take.samples, sampleRate: take.sampleRate, alignment: alignment, pronunciations: pronunciations,
-            spans: spans, l0Key: take.l0Key, transcriptRevision: transcriptRevision))
+            spans: spans, l0Key: take.l0Key, transcriptRevision: transcriptRevision, pitch: pitch))
     }
 
     /// Spec 08: prominence over the present words' syllables, observed stress and each decided word's placement.
