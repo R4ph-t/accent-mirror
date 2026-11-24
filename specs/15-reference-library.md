@@ -3,6 +3,14 @@
 Status: Done · Branch: – · Depends on: 06 (pronunciations, starter validator), 10 (verdict path), 12 (L0/L1 stages
 and cache identity) · Estimate: 4–6 h agent run + 1.5 h Raph review · Risk: high
 
+**Designer spec v3 note (2026-11-24, docs only; this spec stays Done).** Designer spec v3 (Notion "Accent Mirror v1:
+show, don't judge", https://app.notion.com/p/4220d0d4459281d39d67d6fdc5d50dfc) keeps r6 E7: each recording's
+`accent`, `region` and `gender` stay in the manifest, copied from `fixtures/vctk/eval-speakers.json` and never typed
+by hand, and feed spec 21's Model Voice pop-up ("{region} ({accent})", "p225 · F") and subtitle ("Native speaker from
+{region}, VCTK"). v3 drops only E7's STRESS-lines bullet, so the speaker ID no longer appears in a "you match p311"
+line. The per-recording analyses bundled here are also the source of the inspector's NATIVE RANGE across the phrase's
+native voices (spec 28 §4a). The 2 Compound Nouns phrases stay, and nothing is refilled.
+
 Risk: high. This spec adds `Resources/Starter/` (bundled third-party audio), edits `THIRD_PARTY_NOTICES.md` and adds a
 resource entry to `project.yml`, all risky paths. The PR waits for Raph's Merge OK. VCTK 0.92 is CC BY 4.0, already
 cleared for committing (AGENTS.md: committed audio is CC BY or CC0 only, with attribution).

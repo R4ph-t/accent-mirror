@@ -1,6 +1,6 @@
 # 21: Coordinator-wired UI: record, compare, play back
 
-Status: Ready · Branch: – · Depends on: 28 (scoring off; was 11, then 27; repointed 2026-11-24 after spike 27's NO-GO and Raph's v1
+Status: Ready · Branch: – · Depends on: 29 (v3 result screen, Designer spec v3), 28 (scoring off; was 11, then 27; repointed 2026-11-24 after spike 27's NO-GO and Raph's v1
 show-don't-judge decision), 12 (pipeline, coordinator), 13 (entitlement, mic string;
 by hand), 14 (live capture), 15 (starter library), 16 (take store), 20 (charts) · Estimate: 10–12 h agent run + 2 h
 Raph review · Risk: high
@@ -26,25 +26,33 @@ earlier text.
 and the F/M gender tag in E7's pop-up rows. They're built as Designer wrote them; if Raph overrules one in review, the
 agent changes that item only.
 
-**v1 show-don't-judge (re-scoped 2026-11-24).** Raph decided at 18:42 Europe/Paris (relayed by CPO) to ship v1 without
-stress or phrase verdicts; plan: Notion "Accent Mirror v1 show-don't-judge integration plan (2026-11-24)",
-https://app.notion.com/p/4220d0d4459281399adef9364a99bb69 (CTO approved). Spec 28 gates scoring out of the shipped app
-(`Verdict.notScored`). Where this spec's text below conflicts with this block, this block wins:
+**v1 show-don't-judge and Designer spec v3 (re-scoped 2026-11-24).** Raph decided at 18:42 Europe/Paris (relayed by CPO)
+to ship v1 without stress or phrase verdicts; plan https://app.notion.com/p/4220d0d4459281399adef9364a99bb69 (CTO
+approved). Designer spec v3 (Notion "Accent Mirror v1: show, don't judge", https://app.notion.com/p/4220d0d4459281d39d67d6fdc5d50dfc) wins over v2 and addenda r2–r6. Spec 28 gates scoring out of the shipped app (`Verdict.notScored`) and provides the descriptive
+measures and native range; spec 29 draws v3's screens from fixtures. This spec wires them to live data and audio.
+Where the text below conflicts with this block, this block wins:
 
-- **Analysed result:** the strip, the pitch card and the inspector (timing match, model recording attribution).
-  **No card 1 "WHAT TO CHANGE"** (no rows, no close / noClearDifference / inconclusive sentence, no placement-only
-  line), **no inspector measures and no STRESS lines**, until Designer's neutral-comparison spec lands. Card 1 still
-  shows the recording row, the level meter and take problems ("YOUR TAKE", Try Again).
-- **No diff-row play button** (there are no rows). Play Model, Play You and word clicks stay.
-- VoiceOver announces "Result ready" for an analysed take, not a card-1 sentence.
-- **The native band is display-only** and the strip's Lime follows spec 28 (native row: context-resolved expected
-  stress; your row: none). Nothing in copy or colour says outside the band means wrong.
-- The 2 Compound Nouns starter phrases stay in the library and show the overlay like every other phrase.
+- **Results (v3 §3.1, §4, §7):** an analysed take shows card 1 **"YOUR TAKE"** with v3's result row and **Play Both**,
+  plus at most one quiet line (low coverage, then rough timing, then inserted words, from the live result), the strip,
+  the pitch card with the earlier takes on by default, and the inspector's MEASURE / YOU / NATIVE RANGE table from
+  spec 28's `describe` (no marking; "—" with a reason). No WHAT TO CHANGE, no diff / close / noClearDifference /
+  inconclusive rows, no placement-only line, no STRESS lines, no diff icons. Card 1 keeps the recording row, the E5
+  level meter and take problems ("YOUR TAKE", Try Again) with v3 §5's copy. Problem priority: take problems in v2
+  §11.1 order, then the result; no verdict ranking; a missing target word is just a missing word.
+- **Playback (v3 §3.5):** Play Model (⌘L), Play You (⇧⌘L) and **Play Both (⌥⌘L**, Take ▸ Play Model, Then You; the
+  card-1 button): model phrase, 0.4 s pause, your take, with the playhead. Clicking a word or syllable label loops
+  model, 0.4 s, yours until Esc. Clicking a missing word plays the model only. There's no diff-row play button.
+- **VoiceOver** after a result: "Result ready. Your take is drawn over the model's."
+- **Voices (r6 E7 stays):** the Model Voice pop-up and subtitle use spec 15's per-recording `accent`, `region` and
+  `gender`; the inspector note counts the phrase's native voices ("across the {n} native voices"). The STRESS-lines
+  bullet of E7 is gone.
+- **Copy:** v3 §5 word for word, and none of v3's banned words (spec 29's test covers it).
+- The 2 Compound Nouns starter phrases stay and show the overlay like every other phrase.
 
 ## Goal
 
 The first build Raph can test: pick a starter phrase, listen to the native speaker, record a take, and see your take
-against the native recording (strip, pitch, inspector; no verdicts in v1), then play both back, switch voices and go
+against the native recording (strip, pitch, inspector; no verdicts in v1, Designer spec v3), then play both back, switch voices and go
 through earlier takes. Everything on device.
 
 ## Behaviour
@@ -184,12 +192,14 @@ None. Addendum r6 E5–E8 answered the switching, level and "+ NEW PHRASE" quest
 4. Press Space: macOS asks for the microphone (first time). Allow. Say the phrase, stop talking: recording ends after
    about 1.2 s and the result appears within about 2 s. While you talk, the level meter moves; clap close to the
    mic and "Too loud" shows. **pass/fail**
-5. The result shows your strip under the native one and your pitch line on the band, with no WHAT TO CHANGE card, no
-   stress sentence and no inspector measures or STRESS lines (v1 show-don't-judge). **taste call (Raph)**
-6. Play Model, Play You and a word click play the right audio with the playhead, the outlined
+5. The result shows card 1 "YOUR TAKE" with the result row and Play Both, your strip under the native one with
+   timing connectors, your pitch line on the native range with earlier takes behind it, and the inspector's
+   MEASURE / YOU / NATIVE RANGE table with nothing marked. No WHAT TO CHANGE, no stress sentence, no STRESS lines.
+   **taste call (Raph)**
+6. Play Model, Play You, Play Both (⌥⌘L: model, 0.4 s, you) and a word click play the right audio with the playhead, the outlined
    syllable and the "Playing …" header; a word click shows "Looping …" until Esc. **pass/fail**
-7. Record two more takes; the take menu shows TAKE 03, ⌘[ shows TAKE 02's result, hovering the pitch card shows the
-   earlier takes. Quit and relaunch: the takes are still there. **pass/fail**
+7. Record two more takes; the take menu shows TAKE 03, ⌘[ shows TAKE 02's result, the pitch card shows up to 3 earlier
+   takes, and ⇧⌘G hides them. Quit and relaunch: the takes are still there. **pass/fail**
 8. Switch Model Voice in the inspector (rows read "Southern England (English)  p225 · F"): the band stays drawn and
    re-times in one ease, and the subtitle reads "Native speaker from {region}, VCTK". **pass/fail**
 9. Whisper a take: the too-quiet row, You plays it, the menu reads LAST TRY · NOT SAVED, and it isn't in the menu

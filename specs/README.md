@@ -24,7 +24,8 @@ So:
   and merge #68").** Spike 27 came back NO-GO (CTO accepted; report `docs/agreement/reports/spike27-69675122.md`,
   docs PR #69). v1 overlays your pitch and timing on the native reference with no stress or phrase verdicts;
   scoring stays off until a model clears spec 27's gates (Milestone 2). Spec 28 gates the verdict paths out of the
-  shipped app, and 20 and 21 now depend on 28. The verdict gates of 11, 23, 25 and 26 are superseded: 11, 25 and 26
+  shipped app; spec 29 draws Designer spec v3's result screen (which wins over v2 and addenda r2–r6:
+  https://app.notion.com/p/4220d0d4459281d39d67d6fdc5d50dfc); 20 and 21 now depend on 28 and 29. The verdict gates of 11, 23, 25 and 26 are superseded: 11, 25 and 26
   read `Replaced by 28`, and their branches (`factory/11-…`, `factory/25-…`, `factory/26-…`) stay unmerged as
   history and data. Plan: Notion "Accent Mirror v1 show-don't-judge integration plan (2026-11-24)",
   https://app.notion.com/p/4220d0d4459281399adef9364a99bb69 (CTO approved). The bullets below are history.
@@ -71,7 +72,7 @@ So:
 | 15 | [Reference library: bundled starter phrases and native recordings](15-reference-library.md) | Done | 06, 10, 12 | 4–6 h | 1.5 h |
 | 16 | [Take store](16-take-store.md) | Done | 01, 12, 15 | 4–5 h | 1 h |
 | 14 | [Live microphone capture (macOS)](14-live-capture.md) | Done | 05 (the hand test needs spec 13) | 3–4 h | 1 h |
-| 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19, 28 (scoring off; was 27, repointed 2026-11-24 after spike 27's NO-GO and Raph's v1 show-don't-judge decision) | 6–8 h | 1.5 h |
+| 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19, 29, 28 (v3 result screen and scoring off; was 27, repointed 2026-11-24 after spike 27's NO-GO and Raph's v1 show-don't-judge decision) | 6–8 h | 1.5 h |
 | 13 | [Sandbox, microphone entitlement and usage string (by hand)](13-entitlements-mic-string.md) | Ready | 00 | – | 0.5 h |
-| 21 | [Coordinator-wired UI: record, compare, play back](21-coordinator-wired-ui.md) | Ready | 28 (scoring off; was 27, repointed 2026-11-24 after spike 27's NO-GO and Raph's v1 show-don't-judge decision), 12, 13, 14, 15, 16, 20 | 10–12 h | 2 h |
+| 21 | [Coordinator-wired UI: record, compare, play back](21-coordinator-wired-ui.md) | Ready | 29, 28 (v3 result screen and scoring off; was 27, repointed 2026-11-24 after spike 27's NO-GO and Raph's v1 show-don't-judge decision), 12, 13, 14, 15, 16, 20 | 10–12 h | 2 h |
 | 17 | [Clip import pipeline (no UI)](17-clip-import.md) | Done | 03, 06, 12, 15, 16 | 4–5 h | 1 h |
