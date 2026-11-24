@@ -136,5 +136,6 @@ extension ConfigIdentity {
     /// Spec 07's identity: AMCore's current versions, the voicing the pipeline wires (spec 05's `ACFVoicing`), and
     /// the explicit placeholder `none` for ASR (word boundaries are injected) and pitch (spec 08 adds peak F0).
     public static let syllableSegmentation = ConfigIdentity(
-        asrModelID: "none", pitchTrackerID: "none", voicingID: ACFVoicing.voicingID)
+        asrModelID: "none", pitchTrackerID: "none", voicingID: ACFVoicing.voicingID, aligner: "none",
+        alignerModelSHA256: "none")
 }

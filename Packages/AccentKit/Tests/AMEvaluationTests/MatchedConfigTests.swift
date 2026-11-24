@@ -28,7 +28,7 @@ import AMEvaluation
         let folds = SpeechOceanFolds(sets: sets, seed: 20_261_123)
         let runner = FoldRunner(folds: folds, vctkTuningSpeakers: try SyntheticVCTK.manifest().tuningSpeakers)
         let recorder = Recorder()
-        let identity = ConfigIdentity(asrModelID: "replayed", pitchTrackerID: "pyin-1", voicingID: "none")
+        let identity = ConfigIdentity(asrModelID: "replayed", pitchTrackerID: "pyin-1", voicingID: "none", aligner: "whisper", alignerModelSHA256: "none")
         let record = try await runner.run(
             train: { pool in
                 // A different config per fold, as a trained one would be.

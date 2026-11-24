@@ -42,7 +42,7 @@ import AMEvaluation
         ]
         let calls = Calls()
         let runner = SharedDetectorRunner(detector: Stub(calls: calls), corpus: Corpus(), dictionary: Dictionary0())
-        let config = try FoldConfig(identity: ConfigIdentity(asrModelID: "r", pitchTrackerID: "p", voicingID: "v"), thresholds: .current)
+        let config = try FoldConfig(identity: ConfigIdentity(asrModelID: "r", pitchTrackerID: "p", voicingID: "v", aligner: "whisper", alignerModelSHA256: "none"), thresholds: .current)
         let results = try await runner.run(words, config: config)
         #expect(results.excluded.map(\.index) == [4])
         #expect(results.comparable.count == 3)

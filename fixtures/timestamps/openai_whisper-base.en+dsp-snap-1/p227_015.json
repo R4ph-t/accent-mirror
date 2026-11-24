@@ -1,0 +1,123 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "129e36456261e2c295f190ef079c4cfa93d2a1ce0b3840608c0f98b6283e4fa2",
+  "clipID" : "p227_015",
+  "formatVersion" : 1,
+  "text" : "The Greeks used to imagine that it was a sign from the god to foretell war or heavy rain.",
+  "words" : [
+    {
+      "end" : 1.1400000000000001,
+      "probability" : 0.81,
+      "start" : 0.92,
+      "word" : " The"
+    },
+    {
+      "end" : 1.22,
+      "probability" : 0.99,
+      "start" : 1.1400000000000001,
+      "word" : " Greeks"
+    },
+    {
+      "end" : 1.78,
+      "probability" : 0.98,
+      "start" : 1.22,
+      "word" : " used"
+    },
+    {
+      "end" : 1.9,
+      "probability" : 0.99,
+      "start" : 1.78,
+      "word" : " to"
+    },
+    {
+      "end" : 2.17,
+      "probability" : 1,
+      "start" : 1.97,
+      "word" : " imagine"
+    },
+    {
+      "end" : 2.48,
+      "probability" : 0.97,
+      "start" : 2.17,
+      "word" : " that"
+    },
+    {
+      "end" : 2.68,
+      "probability" : 0.98,
+      "start" : 2.54,
+      "word" : " it"
+    },
+    {
+      "end" : 2.82,
+      "probability" : 0.99,
+      "start" : 2.73,
+      "word" : " was"
+    },
+    {
+      "end" : 2.96,
+      "probability" : 0.82,
+      "start" : 2.82,
+      "word" : " a"
+    },
+    {
+      "end" : 3.18,
+      "probability" : 1,
+      "start" : 2.96,
+      "word" : " sign"
+    },
+    {
+      "end" : 3.67,
+      "probability" : 0.96,
+      "start" : 3.18,
+      "word" : " from"
+    },
+    {
+      "end" : 3.84,
+      "probability" : 0.97,
+      "start" : 3.67,
+      "word" : " the"
+    },
+    {
+      "end" : 4.09,
+      "probability" : 0.62,
+      "start" : 3.84,
+      "word" : " god"
+    },
+    {
+      "end" : 4.24,
+      "probability" : 0.9,
+      "start" : 4.09,
+      "word" : " to"
+    },
+    {
+      "end" : 4.72,
+      "probability" : 0.7,
+      "start" : 4.24,
+      "word" : " foretell"
+    },
+    {
+      "end" : 5.1,
+      "probability" : 0.97,
+      "start" : 4.74,
+      "word" : " war"
+    },
+    {
+      "end" : 5.54,
+      "probability" : 0.91,
+      "start" : 5.1,
+      "word" : " or"
+    },
+    {
+      "end" : 5.76,
+      "probability" : 0.68,
+      "start" : 5.54,
+      "word" : " heavy"
+    },
+    {
+      "end" : 6.18,
+      "probability" : 0.59,
+      "start" : 5.82,
+      "word" : " rain."
+    }
+  ]
+}

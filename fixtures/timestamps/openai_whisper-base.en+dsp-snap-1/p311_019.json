@@ -1,0 +1,123 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "1ca6b3b146c95f16375f767f4b60b9cf8124ad5556cbfbc7f0b7f453794c27e0",
+  "clipID" : "p311_019",
+  "formatVersion" : 1,
+  "text" : "Since then, physicists have found that it is not reflection, but refraction by the raindrops which causes the rainbows.",
+  "words" : [
+    {
+      "end" : 1.07,
+      "probability" : 0.91,
+      "start" : 0.9,
+      "word" : " Since"
+    },
+    {
+      "end" : 1.46,
+      "probability" : 0.96,
+      "start" : 1.07,
+      "word" : " then,"
+    },
+    {
+      "end" : 1.68,
+      "probability" : 0.99,
+      "start" : 1.48,
+      "word" : " physicists"
+    },
+    {
+      "end" : 2.26,
+      "probability" : 0.99,
+      "start" : 1.68,
+      "word" : " have"
+    },
+    {
+      "end" : 2.62,
+      "probability" : 0.99,
+      "start" : 2.26,
+      "word" : " found"
+    },
+    {
+      "end" : 2.68,
+      "probability" : 0.95,
+      "start" : 2.62,
+      "word" : " that"
+    },
+    {
+      "end" : 2.9,
+      "probability" : 0.99,
+      "start" : 2.68,
+      "word" : " it"
+    },
+    {
+      "end" : 3.0500000000000003,
+      "probability" : 0.97,
+      "start" : 2.9,
+      "word" : " is"
+    },
+    {
+      "end" : 3.18,
+      "probability" : 0.98,
+      "start" : 3.0500000000000003,
+      "word" : " not"
+    },
+    {
+      "end" : 3.56,
+      "probability" : 0.85,
+      "start" : 3.18,
+      "word" : " reflection,"
+    },
+    {
+      "end" : 4.22,
+      "probability" : 0.75,
+      "start" : 3.81,
+      "word" : " but"
+    },
+    {
+      "end" : 4.48,
+      "probability" : 0.97,
+      "start" : 4.22,
+      "word" : " refraction"
+    },
+    {
+      "end" : 4.7700000000000005,
+      "probability" : 0.68,
+      "start" : 4.5600000000000005,
+      "word" : " by"
+    },
+    {
+      "end" : 5.08,
+      "probability" : 0.95,
+      "start" : 4.9,
+      "word" : " the"
+    },
+    {
+      "end" : 5.37,
+      "probability" : 0.71,
+      "start" : 5.08,
+      "word" : " raindrops"
+    },
+    {
+      "end" : 5.56,
+      "probability" : 0.47,
+      "start" : 5.37,
+      "word" : " which"
+    },
+    {
+      "end" : 5.92,
+      "probability" : 0.97,
+      "start" : 5.62,
+      "word" : " causes"
+    },
+    {
+      "end" : 6.22,
+      "probability" : 0.98,
+      "start" : 5.92,
+      "word" : " the"
+    },
+    {
+      "end" : 6.58,
+      "probability" : 0.99,
+      "start" : 6.3500000000000005,
+      "word" : " rainbows."
+    }
+  ]
+}

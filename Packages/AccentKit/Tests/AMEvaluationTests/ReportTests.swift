@@ -5,7 +5,7 @@ import AMEvaluation
 
 @Suite("Reports") struct ReportTests {
     static func identity(clean: Bool = true) throws -> ReportIdentity {
-        let config = ConfigIdentity(asrModelID: "replayed-word-timings", pitchTrackerID: "pyin-1", voicingID: "none")
+        let config = ConfigIdentity(asrModelID: "replayed-word-timings", pitchTrackerID: "pyin-1", voicingID: "none", aligner: "whisper", alignerModelSHA256: "none")
         return ReportIdentity(
             config: config, configDigest: try configDigest(config), corpusManifestHash: "c", labelHash: "l",
             splitManifestHash: "s", splitSeed: 20_261_123, sourceTreeHash: "t", evaluatedCommit: "abc", cleanTree: clean,

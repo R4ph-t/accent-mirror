@@ -115,8 +115,7 @@ enum Paths {
 /// The identity of the configuration the harness evaluates. ASR is replayed word timings (CI never runs ASR); the
 /// detector (spec 08) runs spec 05's voicing and spec 04's pYIN.
 func harnessConfig() -> ConfigIdentity {
-    ConfigIdentity(
-        asrModelID: "replayed-word-timings", pitchTrackerID: PYINTracker.trackerID, voicingID: ACFVoicing.voicingID)
+    ShippedConfig.identity(asrModelID: "replayed-word-timings")
 }
 
 func pinValue(_ root: URL, _ pin: String, _ key: String) -> String {

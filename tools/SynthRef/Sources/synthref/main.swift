@@ -8,6 +8,10 @@
 //     --elevenlabs-voice <id>             an ElevenLabs voice to verify (repeatable; used only with a key)
 //     --mac-voice <identifier>            limit the Mac fallback to these Premium voices (repeatable)
 //     --vctk <dir> --vctk-timings <dir> --speechocean <dir> --speechocean-timings <dir>
+//   synthref tts-reference --phrases <file> --voice <identifier> --out <dir>
+//                                         spec 23's reference sanity check: speak each phrase with SSML marks
+//                                         around every word; write an MFA corpus and markers.json. Exit 3 when
+//                                         the voice is missing (scripts/reference-check.sh)
 //
 // The ElevenLabs key is read only from ELEVENLABS_API_KEY in the environment and is never printed or written.
 
@@ -53,7 +57,24 @@ case "run":
         FileHandle.standardError.write(Data("synthref: \(error)\n".utf8))
         exit(1)
     }
+case "tts-reference":
+    guard let phrases = values("--phrases").first, let voice = values("--voice").first, let out = values("--out").first
+    else {
+        print("usage: synthref tts-reference --phrases <file> --voice <identifier> --out <dir>")
+        exit(64)
+    }
+    do {
+        let line = try await MarkedReference.write(
+            phrasesFile: URL(fileURLWithPath: phrases), voiceID: voice, out: URL(fileURLWithPath: out))
+        print("tts-reference: \(line)")
+    } catch MarkedReference.Failure.voiceMissing(let id) {
+        print("tts-reference: SKIPPED, voice \(id) is not installed on this Mac")
+        exit(3)
+    } catch {
+        FileHandle.standardError.write(Data("synthref: \(error)\n".utf8))
+        exit(1)
+    }
 default:
-    print("usage: synthref voices | synthref run [--offline] [--elevenlabs-voice <id>]... [--mac-voice <id>]...")
+    print("usage: synthref voices | synthref tts-reference --phrases <file> --voice <id> --out <dir> | synthref run [--offline] [--elevenlabs-voice <id>]... [--mac-voice <id>]...")
     exit(arguments.first == "help" ? 0 : 64)
 }

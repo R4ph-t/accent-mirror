@@ -1,0 +1,99 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "8ccae2bd0c7e1730945cfc672c247539ee1a47834531b3775507edcf5387c306",
+  "clipID" : "p311_004",
+  "formatVersion" : 1,
+  "text" : "We also need a small plastic snake and a big toy frog for the kids.",
+  "words" : [
+    {
+      "end" : 1.06,
+      "probability" : 0.93,
+      "start" : 0.84,
+      "word" : " We"
+    },
+    {
+      "end" : 1.22,
+      "probability" : 1,
+      "start" : 1.06,
+      "word" : " also"
+    },
+    {
+      "end" : 1.6500000000000001,
+      "probability" : 1,
+      "start" : 1.22,
+      "word" : " need"
+    },
+    {
+      "end" : 1.87,
+      "probability" : 0.99,
+      "start" : 1.6500000000000001,
+      "word" : " a"
+    },
+    {
+      "end" : 2.05,
+      "probability" : 1,
+      "start" : 1.87,
+      "word" : " small"
+    },
+    {
+      "end" : 2.43,
+      "probability" : 0.99,
+      "start" : 2.05,
+      "word" : " plastic"
+    },
+    {
+      "end" : 2.92,
+      "probability" : 0.99,
+      "start" : 2.43,
+      "word" : " snake"
+    },
+    {
+      "end" : 3.08,
+      "probability" : 0.9,
+      "start" : 2.92,
+      "word" : " and"
+    },
+    {
+      "end" : 3.18,
+      "probability" : 0.96,
+      "start" : 3.15,
+      "word" : " a"
+    },
+    {
+      "end" : 3.35,
+      "probability" : 0.97,
+      "start" : 3.3000000000000003,
+      "word" : " big"
+    },
+    {
+      "end" : 3.72,
+      "probability" : 0.96,
+      "start" : 3.35,
+      "word" : " toy"
+    },
+    {
+      "end" : 3.94,
+      "probability" : 0.96,
+      "start" : 3.72,
+      "word" : " frog"
+    },
+    {
+      "end" : 4.16,
+      "probability" : 0.99,
+      "start" : 3.94,
+      "word" : " for"
+    },
+    {
+      "end" : 4.28,
+      "probability" : 0.97,
+      "start" : 4.16,
+      "word" : " the"
+    },
+    {
+      "end" : 4.48,
+      "probability" : 1,
+      "start" : 4.28,
+      "word" : " kids."
+    }
+  ]
+}

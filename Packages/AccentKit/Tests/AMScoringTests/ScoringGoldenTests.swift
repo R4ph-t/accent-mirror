@@ -98,7 +98,7 @@ enum ScoringGolden {
                 recordingSHA256: String(repeating: "b", count: 64), transcriptRevision: 1,
                 pronunciationOverridesHash: String(repeating: "c", count: 64), targetsHash: String(repeating: "d", count: 64),
                 nativeSetHash: String(repeating: "e", count: 64)),
-            config: ConfigIdentity(asrModelID: "replayed-word-timings", pitchTrackerID: "pyin-1", voicingID: "acf-1"))
+            config: ConfigIdentity(asrModelID: "replayed-word-timings", pitchTrackerID: "pyin-1", voicingID: "acf-1", aligner: "whisper", alignerModelSHA256: "none"))
     }
 
     static func pretty(_ value: AnalysisResult) throws -> Data {

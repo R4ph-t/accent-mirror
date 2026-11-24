@@ -1,0 +1,6 @@
+# Pinned for scripts/fetch-ctc.sh's conversion venv only (spec 23 b2). Never used by the app or CI.
+coremltools==8.3.0
+numpy==1.26.4
+safetensors==0.4.5
+torch==2.5.0
+transformers==4.46.3

@@ -1,0 +1,120 @@
+{
+  "formatVersion": 1,
+  "model": "wav2vec2-base-960h",
+  "aligner": "ctc-w2v2b960-1",
+  "source": {
+    "repo": "https://huggingface.co/facebook/wav2vec2-base-960h",
+    "commit": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+    "license": "Apache-2.0",
+    "licenseEvidence": "README.md front matter `license: apache-2.0` at https://huggingface.co/facebook/wav2vec2-base-960h/raw/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/README.md; Hub API cardData.license apache-2.0 at that revision"
+  },
+  "upstream": [
+    {
+      "path": "upstream/config.json",
+      "size": 1596,
+      "sha256": "d3ec255c063d9f95057b553b19c20135b259875834a4fe9deb218a6be25b4cf3",
+      "url": "https://huggingface.co/facebook/wav2vec2-base-960h/resolve/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/config.json"
+    },
+    {
+      "path": "upstream/feature_extractor_config.json",
+      "size": 158,
+      "sha256": "d3de0c797bf9b65f90bc65c30cb7b303ebeda341f6fc80af33628c4b26b95632",
+      "url": "https://huggingface.co/facebook/wav2vec2-base-960h/resolve/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/feature_extractor_config.json"
+    },
+    {
+      "path": "upstream/model.safetensors",
+      "size": 377607901,
+      "sha256": "8aa76ab2243c81747a1f832954586bc566090c83a0ac167df6f31f0fa917d74a",
+      "url": "https://huggingface.co/facebook/wav2vec2-base-960h/resolve/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/model.safetensors"
+    },
+    {
+      "path": "upstream/preprocessor_config.json",
+      "size": 159,
+      "sha256": "b225d617c025463b9e157e06afea8b90dc7078fc70b013c533328423e0486b4a",
+      "url": "https://huggingface.co/facebook/wav2vec2-base-960h/resolve/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/preprocessor_config.json"
+    },
+    {
+      "path": "upstream/special_tokens_map.json",
+      "size": 85,
+      "sha256": "bb7068de1150661a10b55f9e4b12a0e77af8bf91f5e45e1b58afaf1d0e17f675",
+      "url": "https://huggingface.co/facebook/wav2vec2-base-960h/resolve/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/special_tokens_map.json"
+    },
+    {
+      "path": "upstream/tokenizer_config.json",
+      "size": 163,
+      "sha256": "dc790594f5bc351a4311c6624f40acd95850d4aaf2a5cb3c656c9b610720b608",
+      "url": "https://huggingface.co/facebook/wav2vec2-base-960h/resolve/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/tokenizer_config.json"
+    },
+    {
+      "path": "upstream/vocab.json",
+      "size": 291,
+      "sha256": "19727f8944fe6459fc3f240ae2c198395b740f6a029bd23e06656266b83bcf64",
+      "url": "https://huggingface.co/facebook/wav2vec2-base-960h/resolve/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/vocab.json"
+    }
+  ],
+  "conversion": {
+    "script": "tools/convert_ctc.py",
+    "requirements": "tools/ctc-requirements.txt",
+    "python": "3.12",
+    "precision": "float32 weights and compute (mlprogram, macOS 14)",
+    "minSamples": 4000,
+    "maxSamples": 320000
+  },
+  "package": "wav2vec2-base-960h.mlpackage",
+  "packageFiles": [
+    {
+      "path": "Data/com.apple.CoreML/model.mlmodel",
+      "size": 149439,
+      "sha256": "1da4e505ba803c98167abb128d0b11d189fa01223d51293612f195ef46d2dbcd"
+    },
+    {
+      "path": "Data/com.apple.CoreML/weights/weight.bin",
+      "size": 377595264,
+      "sha256": "5251e6a531c67a423db75d954e6c9a26a6b52cdea31c95cef89ec17b3f24d06a"
+    },
+    {
+      "path": "Manifest.json",
+      "size": 545,
+      "sha256": "2545fcd5c2446dc52368458330acf2a61f49c65dc3ba80b68d77b7d2d838f1dd"
+    }
+  ],
+  "packageSHA256": "9ae95d751153f85e2282590668e2ab1ffd4db3b1a10292ccdd3660b50f7ee4d8",
+  "vocabulary": [
+    "<pad>",
+    "<s>",
+    "</s>",
+    "<unk>",
+    "|",
+    "E",
+    "T",
+    "A",
+    "O",
+    "N",
+    "I",
+    "H",
+    "S",
+    "R",
+    "D",
+    "L",
+    "U",
+    "M",
+    "W",
+    "C",
+    "F",
+    "G",
+    "Y",
+    "P",
+    "B",
+    "V",
+    "K",
+    "'",
+    "X",
+    "J",
+    "Q",
+    "Z"
+  ],
+  "blank": "<pad>",
+  "wordSeparator": "|",
+  "samplesPerFrame": 320,
+  "sampleRate": 16000
+}
