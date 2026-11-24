@@ -2,7 +2,7 @@
 
 | Identity | Value |
 |---|---|
-| Generated | `2026-11-24T15:21:05Z` |
+| Generated | `2026-11-24T15:23:25Z` |
 | Release report | `yes` |
 | configDigest | `4fc683ef4fee3c0d5c2aa632f56b0e12cdc13e73c8f256d932ba48dc6b13bab6` |
 | ConfigIdentity | `algorithm 1, thresholds 8, contract 2, ASR replayed-word-timings, pitch pyin-1, voicing acf-1` |
@@ -10,8 +10,8 @@
 | Label hash | `11f6e133d91d53f45347d13319d997152573e0e2b179d7a508cd8aef81caa040` |
 | Split manifest hash | `cd021cf29163d619c8515e9e6b9eb5aa0d513435dce3bfcf47c5331a670d78d0` |
 | Split seed | `20261125` |
-| sourceTreeHash | `006733fbe28860e1a99ff0b5e477a7f98785500c8589f9dce5c02a4e38295d0c` |
-| Evaluated commit | `a99d7ac0bb9a5c0b03c42ea95d8047cd7068303c` |
+| sourceTreeHash | `d642e26c5e4b060ae4c4b9f4f1bf45513d32698e474872e9c6fce41c84c877fd` |
+| Evaluated commit | `aa480911372d5d75d6e16dc127d90395ac3f9133` |
 | Clean tree | `yes` |
 | Xcode | `Xcode 26.2` |
 | Swift | `Apple Swift version 6.2.3 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)` |
