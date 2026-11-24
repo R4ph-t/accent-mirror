@@ -110,7 +110,7 @@ depends on AMCore only. The importer, which needs ASR and the analyzer, is in `A
   `my-phrases/.staging/<id>/`, with phrase.json written last, then committed by one `renameExclusive`, as in spec 16.
   A re-run replaces reference.json and then phrase.json, each with spec 16's atomic replace. The store is the phrase's
   `ReferenceSet` (one native, `RecordingID("clip")`, voice `clip`) and rebuilds a reference keyed for other code
-  from clip.caf through an injected `MyPhraseRebuilder`, as `ReferenceLibrary` does. `listing`, `phrases()`, is newest
+  from clip.caf through an injected `MyPhraseRebuilder`, as `ReferenceLibrary` does. `phrases()` lists newest
   first. `MyPhrase.subtitle` is "My Phrases · From {file name}".
 - `AMLibrary/PhraseLibrary.swift`: one `ReferenceSet` over the starter `ReferenceLibrary` and My Phrases, with
   `packs` and `myPhraseList()` side by side.
