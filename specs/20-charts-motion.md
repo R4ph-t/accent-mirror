@@ -27,8 +27,9 @@ interaction on top. Where the text below conflicts with this block, this block w
   menu as a preview that shows that take as the only ghost (see "Earlier takes" below, rewritten for v3).
 - **No diff rows exist in v1**, so "Hover on a diff row", its hover box and the `row-hover` frame are out. Label hover
   and loop boxes (r6 E3) and the played-syllable outline (r6 E4) stay.
-- **Strip:** neutral bars in both rows; the 4 pt Lime dictionary-stress dot under native labels only (spec 29) is
-  static and never animates; recording bars keep A3 (Lime only on the playhead and label). The 1 pt timing
+- **Strip (v3.1 addendum V1–V3, end of the v3 page):** neutral `strip.bar` bars in both rows; the 4 pt Lime
+  dictionary-stress dot under native labels only (spec 29) is static and never animates; your labels stay lowercase
+  tertiary; **no Lime segments on the pitch baseline (V5)**; recording bars keep A3 (Lime only on the playhead and label). The 1 pt timing
   connectors (spec 29) re-time with the voice-switch ease, like the band.
 - **The native band ("Native range") is display-only:** no colour change, copy or motion implies outside the band is
   wrong; it re-times on a voice switch in one 150 ms ease as before.

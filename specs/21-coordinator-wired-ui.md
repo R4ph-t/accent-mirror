@@ -34,7 +34,7 @@ Where the text below conflicts with this block, this block wins:
 
 - **Results (v3 §3.1, §4, §7):** an analysed take shows card 1 **"YOUR TAKE"** with v3's result row and **Play Both**,
   plus at most one quiet line (low coverage, then rough timing, then inserted words, from the live result), the strip,
-  the pitch card with the earlier takes on by default, and the inspector's MEASURE / YOU / NATIVE RANGE table from
+  the pitch card with the earlier takes on by default, ALIGNMENT (Clear / Rough), and the inspector's MEASURE / YOU / NATIVE RANGE table from
   spec 28's `describe` (no marking; "—" with a reason). No WHAT TO CHANGE, no diff / close / noClearDifference /
   inconclusive rows, no placement-only line, no STRESS lines, no diff icons. Card 1 keeps the recording row, the E5
   level meter and take problems ("YOUR TAKE", Try Again) with v3 §5's copy. Problem priority: take problems in v2
@@ -46,7 +46,13 @@ Where the text below conflicts with this block, this block wins:
 - **Voices (r6 E7 stays):** the Model Voice pop-up and subtitle use spec 15's per-recording `accent`, `region` and
   `gender`; the inspector note counts the phrase's native voices ("across the {n} native voices"). The STRESS-lines
   bullet of E7 is gone.
-- **Copy:** v3 §5 word for word, and none of v3's banned words (spec 29's test covers it).
+- **Copy:** v3 §5 word for word, and none of v3's banned words, plus v3.1's target, should and outside (spec 29's test
+  covers it).
+- **Inspector ALIGNMENT** (renamed from TIMING MATCH, Designer v3.1) reads **Clear** or **Rough** from the live
+  timing level, with the note "how closely your syllables lined up" and no icon. Where the text below says "timing
+  match", read ALIGNMENT.
+- **The strip and pitch card follow the v3.1 addendum** (end of the v3 page): neutral bars in both rows, the Lime dot
+  under native labels only from context-resolved stress, no Lime baseline segments, and "Native range" display-only.
 - The 2 Compound Nouns starter phrases stay and show the overlay like every other phrase.
 
 ## Goal
