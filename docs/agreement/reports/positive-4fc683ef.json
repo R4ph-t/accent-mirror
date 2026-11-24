@@ -1,0 +1,874 @@
+{
+  "generatedAt" : "2026-11-24T11:17:10Z",
+  "identity" : {
+    "cleanTree" : true,
+    "config" : {
+      "algorithmVersion" : 1,
+      "aligner" : "whisper",
+      "alignerModelSHA256" : "none",
+      "asrModelID" : "replayed-word-timings",
+      "contractVersion" : 2,
+      "pitchTrackerID" : "pyin-1",
+      "thresholdsVersion" : 8,
+      "voicingID" : "acf-1"
+    },
+    "configDigest" : "4fc683ef4fee3c0d5c2aa632f56b0e12cdc13e73c8f256d932ba48dc6b13bab6",
+    "corpusManifestHash" : "a8a28ea55fef50217c9af1cfd720b3af0f0c83b4409b289326429f297fa53a32",
+    "evaluatedCommit" : "7a2faa13c488bacde27e07aaf7a1e7fee792726f",
+    "labelHash" : "5ff2368165c0608bab2a90776bf5f39ba31c7fbd5dbecda7f04498627dd1d850",
+    "macOSVersion" : "Version 26.3 (Build 25D125)",
+    "runnerImage" : "local",
+    "sourceTreeHash" : "567d7a21adf4395edafcf907184900f0c18d944da670268d33f4157a462b06b4",
+    "splitManifestHash" : "cd021cf29163d619c8515e9e6b9eb5aa0d513435dce3bfcf47c5331a670d78d0",
+    "splitSeed" : 20261125,
+    "swiftVersion" : "Apple Swift version 6.2.3 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)",
+    "syntheticReference" : "none",
+    "xcodeVersion" : "Xcode 26.2"
+  },
+  "limitations" : [
+    "The shipped config's L2 recall is never measured on unseen speakers; the only L2 recall number is the CV estimate of the tuning procedure."
+  ],
+  "metrics" : [
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.8,
+        "direction" : "atLeast",
+        "key" : "agreement.bandCoverageMedianMin"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 219,
+      "name" : "Band coverage, median over pairs (spec 09)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.5342465753424658,
+      "worstSpeaker" : {
+        "id" : "p323",
+        "n" : 13,
+        "value" : 0.24375
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.05,
+        "direction" : "atMost",
+        "key" : "agreement.anyDiffPairsMax"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.25293081346027074,
+          "upper" : 0.3746070763056339
+        },
+        {
+          "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+          "lower" : 0.17038661702390256,
+          "upper" : 0.4639845831747239
+        }
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 219,
+      "name" : "Any-diff pairs (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.3105022831050228,
+      "worstPhrase" : {
+        "id" : "004",
+        "n" : 15,
+        "value" : 0.8
+      },
+      "worstSpeaker" : {
+        "id" : "p270",
+        "n" : 15,
+        "value" : 0.4666666666666667
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.15,
+        "direction" : "atMost",
+        "key" : "agreement.anyDiffWorstSpeakerMax"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 219,
+      "name" : "Any-diff pairs, worst speaker (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.4666666666666667,
+      "worstPhrase" : {
+        "id" : "004",
+        "n" : 15,
+        "value" : 0.8
+      },
+      "worstSpeaker" : {
+        "id" : "p270",
+        "n" : 15,
+        "value" : 0.4666666666666667
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.3,
+        "direction" : "atMost",
+        "key" : "agreement.anyDiffWorstPhraseMax"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 219,
+      "name" : "Any-diff pairs, worst phrase (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.8,
+      "worstPhrase" : {
+        "id" : "004",
+        "n" : 15,
+        "value" : 0.8
+      },
+      "worstSpeaker" : {
+        "id" : "p270",
+        "n" : 15,
+        "value" : 0.4666666666666667
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.02,
+        "direction" : "atMost",
+        "key" : "agreement.placementDiffPairsMax"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.007125190697010394,
+          "upper" : 0.04601330015366281
+        },
+        {
+          "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+          "lower" : 0,
+          "upper" : 0.05555555555555555
+        }
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 219,
+      "name" : "Placement-diff pairs (spec 10)",
+      "status" : {
+        "pass" : {
+
+        }
+      },
+      "value" : 0.0182648401826484,
+      "worstPhrase" : {
+        "id" : "015",
+        "n" : 12,
+        "value" : 0.16666666666666666
+      },
+      "worstSpeaker" : {
+        "id" : "p238",
+        "n" : 13,
+        "value" : 0.07692307692307693
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.07,
+        "direction" : "atMost",
+        "key" : "agreement.placementDiffWorstSpeakerMax"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 219,
+      "name" : "Placement-diff pairs, worst speaker (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.07692307692307693,
+      "worstPhrase" : {
+        "id" : "015",
+        "n" : 12,
+        "value" : 0.16666666666666666
+      },
+      "worstSpeaker" : {
+        "id" : "p238",
+        "n" : 13,
+        "value" : 0.07692307692307693
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.1,
+        "direction" : "atMost",
+        "key" : "agreement.inconclusivePairsMax"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.4052972584345087,
+          "upper" : 0.5363653026131631
+        },
+        {
+          "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+          "lower" : 0.2638706140350877,
+          "upper" : 0.6784725238361149
+        }
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 219,
+      "name" : "Inconclusive pairs (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.4703196347031963,
+      "worstPhrase" : {
+        "id" : "002",
+        "n" : 16,
+        "value" : 1
+      },
+      "worstSpeaker" : {
+        "id" : "p336",
+        "n" : 13,
+        "value" : 0.6923076923076923
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.9,
+        "direction" : "atLeast",
+        "key" : "agreement.evaluationCoverageMin"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 203,
+      "name" : "Evaluation coverage (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.49261083743842365
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.9,
+        "direction" : "atLeast",
+        "key" : "agreement.contrastRatioWithinShareMin"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 100,
+      "name" : "Contrast ratio within tolerance (spec 10)",
+      "status" : {
+        "notEvaluated" : {
+          "minimum" : 150,
+          "n" : 100
+        }
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 15,
+        "direction" : "atMost",
+        "key" : "agreement.weakLengthMaxDeltaPoints"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 100,
+      "name" : "Weak length, largest |Δ| (spec 10)",
+      "status" : {
+        "notEvaluated" : {
+          "minimum" : 150,
+          "n" : 100
+        }
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 15,
+        "direction" : "atMost",
+        "key" : "agreement.npviMaxDelta"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 147,
+      "name" : "nPVI, largest |Δ| (spec 10)",
+      "status" : {
+        "notEvaluated" : {
+          "minimum" : 150,
+          "n" : 147
+        }
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.95,
+        "direction" : "atLeast",
+        "key" : "agreement.pitchRangeRatioShareMin"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.664938513303507,
+          "upper" : 0.7974785167624451
+        },
+        {
+          "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+          "lower" : 0.5442059948979592,
+          "upper" : 0.8961790283886445
+        }
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 167,
+      "name" : "Pitch range ratio at or above minimum (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.7365269461077845,
+      "worstPhrase" : {
+        "id" : "015",
+        "n" : 10,
+        "value" : 0.2
+      },
+      "worstSpeaker" : {
+        "id" : "p271",
+        "n" : 4,
+        "value" : 0
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.9,
+        "direction" : "atLeast",
+        "key" : "agreement.finalDirectionAgreementMin"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 99,
+      "name" : "Final direction agreement (spec 10)",
+      "status" : {
+        "notEvaluated" : {
+          "minimum" : 150,
+          "n" : 99
+        }
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.02,
+        "direction" : "atMost",
+        "key" : "agreement.placementDiffPairsMax"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 0,
+      "name" : "Positive-set placement false positives (synthetic references) (spec 22)",
+      "status" : {
+        "notEvaluated" : {
+          "minimum" : 150,
+          "n" : 0
+        }
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.2,
+        "direction" : "atMost",
+        "key" : "agreement.referenceAnomalyReviewShare"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 219,
+      "name" : "Reference anomaly rate, worst phrase (reported) (spec 10)",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 0,
+      "worstPhrase" : {
+        "id" : "002",
+        "n" : 16,
+        "value" : 0
+      }
+    }
+  ],
+  "notes" : [
+    "pipeline: spec 12 Analyzer, word timings replayed from openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631 (recorded once with am-eval record-timings --set positive), pYIN pitch, spec 10 scoring, natives = the phrase's bundled readers",
+    "evaluation coverage, stressPlacement: 1.000 of 203 applicable",
+    "evaluation coverage, contrast: 0.493 of 203 applicable",
+    "evaluation coverage, tooMuchContrast: 0.493 of 203 applicable",
+    "evaluation coverage, weakLength: 0.493 of 203 applicable",
+    "pairs measured: scoring 219, band coverage 219 of 274 headline pairs (feedback 68, inconclusive 103, noClearDifference 44, takeProblem(wordsDontMatch) 4); thresholds are initial and untuned",
+    "not scored: 8 failed at mapTime: reference p225 incomplete for 005",
+    "not scored: 13 failed at mapTime: reference p225 incomplete for 021-b",
+    "not scored: 4 failed at mapTime: reference p225 incomplete for 022",
+    "not scored: 15 failed at mapTime: reference p225 incomplete for 023-a",
+    "not scored: 15 failed at mapTime: reference p225 incomplete for 023-c"
+  ],
+  "positiveSet" : {
+    "evaluable" : {
+
+    }
+  },
+  "release" : false,
+  "suite" : "positive",
+  "summary" : {
+    "gated" : [
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.8,
+          "direction" : "atLeast",
+          "key" : "agreement.bandCoverageMedianMin"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 219,
+        "name" : "Band coverage, median over pairs (spec 09)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.5342465753424658,
+        "worstSpeaker" : {
+          "id" : "p323",
+          "n" : 13,
+          "value" : 0.24375
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.05,
+          "direction" : "atMost",
+          "key" : "agreement.anyDiffPairsMax"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.25293081346027074,
+            "upper" : 0.3746070763056339
+          },
+          {
+            "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+            "lower" : 0.17038661702390256,
+            "upper" : 0.4639845831747239
+          }
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 219,
+        "name" : "Any-diff pairs (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.3105022831050228,
+        "worstPhrase" : {
+          "id" : "004",
+          "n" : 15,
+          "value" : 0.8
+        },
+        "worstSpeaker" : {
+          "id" : "p270",
+          "n" : 15,
+          "value" : 0.4666666666666667
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.15,
+          "direction" : "atMost",
+          "key" : "agreement.anyDiffWorstSpeakerMax"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 219,
+        "name" : "Any-diff pairs, worst speaker (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.4666666666666667,
+        "worstPhrase" : {
+          "id" : "004",
+          "n" : 15,
+          "value" : 0.8
+        },
+        "worstSpeaker" : {
+          "id" : "p270",
+          "n" : 15,
+          "value" : 0.4666666666666667
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.3,
+          "direction" : "atMost",
+          "key" : "agreement.anyDiffWorstPhraseMax"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 219,
+        "name" : "Any-diff pairs, worst phrase (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.8,
+        "worstPhrase" : {
+          "id" : "004",
+          "n" : 15,
+          "value" : 0.8
+        },
+        "worstSpeaker" : {
+          "id" : "p270",
+          "n" : 15,
+          "value" : 0.4666666666666667
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.02,
+          "direction" : "atMost",
+          "key" : "agreement.placementDiffPairsMax"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.007125190697010394,
+            "upper" : 0.04601330015366281
+          },
+          {
+            "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+            "lower" : 0,
+            "upper" : 0.05555555555555555
+          }
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 219,
+        "name" : "Placement-diff pairs (spec 10)",
+        "status" : {
+          "pass" : {
+
+          }
+        },
+        "value" : 0.0182648401826484,
+        "worstPhrase" : {
+          "id" : "015",
+          "n" : 12,
+          "value" : 0.16666666666666666
+        },
+        "worstSpeaker" : {
+          "id" : "p238",
+          "n" : 13,
+          "value" : 0.07692307692307693
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.07,
+          "direction" : "atMost",
+          "key" : "agreement.placementDiffWorstSpeakerMax"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 219,
+        "name" : "Placement-diff pairs, worst speaker (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.07692307692307693,
+        "worstPhrase" : {
+          "id" : "015",
+          "n" : 12,
+          "value" : 0.16666666666666666
+        },
+        "worstSpeaker" : {
+          "id" : "p238",
+          "n" : 13,
+          "value" : 0.07692307692307693
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.1,
+          "direction" : "atMost",
+          "key" : "agreement.inconclusivePairsMax"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.4052972584345087,
+            "upper" : 0.5363653026131631
+          },
+          {
+            "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+            "lower" : 0.2638706140350877,
+            "upper" : 0.6784725238361149
+          }
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 219,
+        "name" : "Inconclusive pairs (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.4703196347031963,
+        "worstPhrase" : {
+          "id" : "002",
+          "n" : 16,
+          "value" : 1
+        },
+        "worstSpeaker" : {
+          "id" : "p336",
+          "n" : 13,
+          "value" : 0.6923076923076923
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.9,
+          "direction" : "atLeast",
+          "key" : "agreement.evaluationCoverageMin"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 203,
+        "name" : "Evaluation coverage (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.49261083743842365
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.9,
+          "direction" : "atLeast",
+          "key" : "agreement.contrastRatioWithinShareMin"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 100,
+        "name" : "Contrast ratio within tolerance (spec 10)",
+        "status" : {
+          "notEvaluated" : {
+            "minimum" : 150,
+            "n" : 100
+          }
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 15,
+          "direction" : "atMost",
+          "key" : "agreement.weakLengthMaxDeltaPoints"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 100,
+        "name" : "Weak length, largest |Δ| (spec 10)",
+        "status" : {
+          "notEvaluated" : {
+            "minimum" : 150,
+            "n" : 100
+          }
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 15,
+          "direction" : "atMost",
+          "key" : "agreement.npviMaxDelta"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 147,
+        "name" : "nPVI, largest |Δ| (spec 10)",
+        "status" : {
+          "notEvaluated" : {
+            "minimum" : 150,
+            "n" : 147
+          }
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.95,
+          "direction" : "atLeast",
+          "key" : "agreement.pitchRangeRatioShareMin"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.664938513303507,
+            "upper" : 0.7974785167624451
+          },
+          {
+            "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+            "lower" : 0.5442059948979592,
+            "upper" : 0.8961790283886445
+          }
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 167,
+        "name" : "Pitch range ratio at or above minimum (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.7365269461077845,
+        "worstPhrase" : {
+          "id" : "015",
+          "n" : 10,
+          "value" : 0.2
+        },
+        "worstSpeaker" : {
+          "id" : "p271",
+          "n" : 4,
+          "value" : 0
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.9,
+          "direction" : "atLeast",
+          "key" : "agreement.finalDirectionAgreementMin"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 99,
+        "name" : "Final direction agreement (spec 10)",
+        "status" : {
+          "notEvaluated" : {
+            "minimum" : 150,
+            "n" : 99
+          }
+        }
+      },
+      {
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.02,
+          "direction" : "atMost",
+          "key" : "agreement.placementDiffPairsMax"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 0,
+        "name" : "Positive-set placement false positives (synthetic references) (spec 22)",
+        "status" : {
+          "notEvaluated" : {
+            "minimum" : 150,
+            "n" : 0
+          }
+        }
+      }
+    ],
+    "positiveSet" : {
+      "evaluable" : {
+
+      }
+    }
+  },
+  "summaryLines" : [
+    "Negative set: NOT EVALUATED",
+    "Positive set: EVALUABLE",
+    "Release gate: NOT MET"
+  ]
+}

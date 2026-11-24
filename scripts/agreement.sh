@@ -5,7 +5,8 @@
 #   scripts/agreement.sh                          # every suite
 #   scripts/agreement.sh --suite sets             # recount the §6.3 sets (fetched corpus, else the label fixture)
 #   scripts/agreement.sh --suite smoke            # smoke set: manifest, size cap, load time, placement goldens (never a rate gate)
-#   scripts/agreement.sh --suite positive         # VCTK pair counts (metrics from spec 10)
+#   scripts/agreement.sh --suite positive [--write-report]   # VCTK pairs through the pipeline (spec 12), every spec 09/10 gate
+#     needs the trimmed VCTK cache and its replayed timings: scripts/am-eval.sh record-timings --set positive
 #   scripts/agreement.sh --suite l2-shared [--write-report] [--release]   # shared-detector mode, reported (gate: spec 11)
 #     needs the fetched corpus and its replayed timings: scripts/am-eval.sh record-timings --set l2-shared
 set -euo pipefail
@@ -36,7 +37,7 @@ run_sets() {
 case "$suite" in
   sets) run_sets ;;
   smoke) am_eval suite --suite smoke && am_eval smoke-detector ;;
-  positive) am_eval suite --suite positive --vctk "$cache/vctk/current" ;;
+  positive) am_eval suite --suite positive --vctk "$cache/vctk/current" ${extra[@]+"${extra[@]}"} ;;
   l2-shared) am_eval suite --suite l2-shared ${extra[@]+"${extra[@]}"} ;;
   all)
     status=0

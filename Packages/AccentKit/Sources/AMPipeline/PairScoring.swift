@@ -22,24 +22,18 @@ public enum PairScoring {
         words: [PlacementTake.Word], you: PlacementAnalysis, model: PlacementAnalysis, modelVoice: String,
         natives: [WordIndex: [NativeReading]] = [:], thresholds: Thresholds = .current
     ) throws -> Scoring {
-        let modelWords = Dictionary(
-            model.segmentation.words.filter { $0.kind == .present }.map { ($0.phraseWord, $0) },
-            uniquingKeysWith: { a, _ in a })
-        let incomplete = words.map(\.index).filter { modelWords[$0] == nil }
-        guard incomplete.isEmpty else { throw Failure.modelIncomplete(incomplete) }
+        try Scorer.score(
+            input(words: words, you: you, model: model, modelVoice: modelVoice, natives: natives, thresholds: thresholds),
+            thresholds: thresholds)
+    }
 
-        let confidence = thresholds.confidence
-        func timed(_ word: SegmentedWord) -> TimedWord {
-            let levels = word.syllables.map(\.level)
-            let timing = levels.isEmpty
-                ? (SyllableSegmenter.level(of: word.confidence, thresholds: confidence) >= .medium ? .good : .poor)
-                : SyllableSegmenter.timing(of: levels, thresholds: confidence).level
-            return TimedWord(range: word.range, syllables: word.syllables.map(\.range), timing: timing)
-        }
-        let yourWords = Dictionary(you.segmentation.words.map { ($0.phraseWord, timed($0)) }, uniquingKeysWith: { a, _ in a })
-        let warp = try TimeWarp(
-            alignment: you.alignment, model: words.map { timed(modelWords[$0.index]!) }, you: yourWords,
-            timing: you.segmentation.timing)
+    /// What `score` scores: the words with A(w), both takes' L1 data and your take warped onto the model (spec 09).
+    /// The analyzer (spec 12) keeps the warp for the time map and the band.
+    public static func input(
+        words: [PlacementTake.Word], you: PlacementAnalysis, model: PlacementAnalysis, modelVoice: String,
+        natives: [WordIndex: [NativeReading]] = [:], thresholds: Thresholds = .current
+    ) throws -> ScoringInput {
+        let warp = try warp(you: you, model: model, words: words, thresholds: thresholds)
 
         let scoringWords = words.map { word -> ScoringWord in
             // A polysyllable with no A(w) is `expectedAmbiguous`; a monosyllable has nothing to decide but still
@@ -71,11 +65,34 @@ public enum PairScoring {
             incompleteTargetWords: targets.filter { !present.contains($0) },
             incompleteNonTargetWords: words.map(\.index).filter { !present.contains($0) && !targets.contains($0) })
 
-        return try Scorer.score(
-            ScoringInput(
-                words: scoringWords, modelVoice: modelVoice, model: take(model), you: take(you),
-                alignment: you.alignment, alignmentSummary: summary, warp: warp,
-                hopSeconds: you.pitch.hopSeconds),
-            thresholds: thresholds)
+        return ScoringInput(
+            words: scoringWords, modelVoice: modelVoice, model: take(model), you: take(you),
+            alignment: you.alignment, alignmentSummary: summary, warp: warp, hopSeconds: you.pitch.hopSeconds)
+    }
+
+    /// `you` on `model`'s timeline (spec 09), both analysed from `words`. Throws `modelIncomplete` when the model
+    /// misses or substitutes a phrase word. The analyzer (spec 12) also warps each other native reader onto the
+    /// selected voice with it, for the band.
+    public static func warp(
+        you: PlacementAnalysis, model: PlacementAnalysis, words: [PlacementTake.Word], thresholds: Thresholds = .current
+    ) throws -> TimeWarp {
+        let modelWords = Dictionary(
+            model.segmentation.words.filter { $0.kind == .present }.map { ($0.phraseWord, $0) },
+            uniquingKeysWith: { a, _ in a })
+        let incomplete = words.map(\.index).filter { modelWords[$0] == nil }
+        guard incomplete.isEmpty else { throw Failure.modelIncomplete(incomplete) }
+
+        let confidence = thresholds.confidence
+        func timed(_ word: SegmentedWord) -> TimedWord {
+            let levels = word.syllables.map(\.level)
+            let timing = levels.isEmpty
+                ? (SyllableSegmenter.level(of: word.confidence, thresholds: confidence) >= .medium ? .good : .poor)
+                : SyllableSegmenter.timing(of: levels, thresholds: confidence).level
+            return TimedWord(range: word.range, syllables: word.syllables.map(\.range), timing: timing)
+        }
+        let yourWords = Dictionary(you.segmentation.words.map { ($0.phraseWord, timed($0)) }, uniquingKeysWith: { a, _ in a })
+        return try TimeWarp(
+            alignment: you.alignment, model: words.map { timed(modelWords[$0.index]!) }, you: yourWords,
+            timing: you.segmentation.timing)
     }
 }

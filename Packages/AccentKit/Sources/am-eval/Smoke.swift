@@ -31,6 +31,18 @@ func recordTimingsCommand(_ args: Arguments, root: URL) async throws -> Int32 {
         out = args.value("out").map(URL.init(fileURLWithPath:))
             ?? root.appendingPathComponent("\(Paths.smokeDetector)/timestamps")
         attribution = smokeAttribution
+    case "positive":
+        let root = root
+        let manifest = try VCTKEvalSpeakersManifest.load(root.appendingPathComponent(Paths.evalSpeakers))
+        let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.vctkCache)
+        guard let cache = PositiveCache(cacheDir) else {
+            throw CLIError.failed("no trimmed VCTK cache at \(cacheDir.path) (scripts/fetch-vctk-eval.sh)")
+        }
+        clips = cache.timingClips(manifest: manifest).map {
+            ("\($0.speaker)_\($0.phrase)", vctkAudio(cacheDir, speaker: $0.speaker, phrase: $0.phrase))
+        }
+        out = args.value("out").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.vctkTimings)
+        attribution = vctkAttribution
     case "l2-shared":
         let corpusDir = args.value("corpus").map(URL.init(fileURLWithPath:))
             ?? root.appendingPathComponent(Paths.so762Cache)
@@ -42,7 +54,7 @@ func recordTimingsCommand(_ args: Arguments, root: URL) async throws -> Int32 {
         out = args.value("out").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.so762Timings)
         attribution = "speechocean762 (OpenSLR 101, SpeechOcean), CC BY 4.0; local evaluation cache, never committed"
     case let other:
-        throw CLIError.usage("record-timings --set smoke|l2-shared (got \(other))")
+        throw CLIError.usage("record-timings --set smoke|l2-shared|positive (got \(other))")
     }
     print("record-timings: \(clips.count) clips with \(model) → \(out.path)")
     let replay = try await recordTimings(
@@ -94,14 +106,8 @@ func buildSmokeInputs(root: URL, corpusDir: URL) throws -> PlacementFixtureFile 
             }
             // A bundled-voice phrase: the starter rule (overrides only, no tagger), so stress-shift words are
             // expectedAmbiguous and get no decision.
-            let phrase = selector.expectedPhrase(for: PhraseText(
-                text: clip.words.map(\.word).joined(separator: " "), origin: .starter))
-            for word in phrase.words {
-                let phones = word.pronunciation?.arpabet ?? fallbackPhones(word.text, dictionary: dictionary)
-                let pattern = word.expectedPattern ?? []
-                let accepted = pattern.count >= 2 ? pattern.firstIndex(of: .primary).map { [$0] } : nil
-                words.append(.init(id: nil, index: word.index.rawValue, text: word.text, phones: phones, accepted: accepted))
-            }
+            words = starterPhraseWords(
+                clip.words.map(\.word).joined(separator: " "), selector: selector, dictionary: dictionary)
         }
         items.append(PlacementFixtureItem(
             item: smokeClipID(file), corpus: file.corpus, speaker: file.speaker, audio: file.path,

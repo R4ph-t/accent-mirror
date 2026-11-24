@@ -110,6 +110,8 @@ enum Paths {
     static let so762Cache = "eval-cache/speechocean762/current"
     static let so762Timings = "eval-cache/speechocean762-timings"
     static let whisperModel = "openai_whisper-base.en"
+    static let vctkCache = "eval-cache/vctk/current"
+    static let vctkTimings = "eval-cache/vctk-timings"
 }
 
 /// The identity of the configuration the harness evaluates. ASR is replayed word timings (CI never runs ASR); the
@@ -525,40 +527,42 @@ func l2Shared(_ args: Arguments, root: URL) async throws -> Int32 {
     return 0
 }
 
-/// The VCTK positive set: pair counts from the trimmed cache, then every positive-set gate (specs 09 and 10).
-func positive(_ args: Arguments, root: URL) throws -> Int32 {
+/// The VCTK positive set: pair counts from the trimmed cache, then every positive-set gate (specs 09 and 10), each
+/// held-out pair analysed by the pipeline (spec 12) over replayed word timings.
+func positive(_ args: Arguments, root: URL) async throws -> Int32 {
     let manifest = try VCTKEvalSpeakersManifest.load(root.appendingPathComponent(Paths.evalSpeakers))
-    let cache = args.value("vctk").map(URL.init(fileURLWithPath:))
-        ?? root.appendingPathComponent("eval-cache/vctk/current")
-    guard let data = try? Data(contentsOf: cache.appendingPathComponent("trim-report.json")),
-        let report = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-        let kept = report["kept"] as? [String]
-    else {
+    let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.vctkCache)
+    guard let cache = PositiveCache(cacheDir) else {
         print("positive: NOT EVALUATED (no trimmed VCTK cache: run scripts/fetch-vctk-eval.sh)")
         return 0
     }
     let table = try VCTKSubPhraseTable.load(root.appendingPathComponent(Paths.subPhrases))
-    let clips = kept.compactMap { name -> VCTKClip? in
-        let parts = name.split(separator: "_")
-        return parts.count == 2 ? VCTKClip(speaker: String(parts[0]), phrase: String(parts[1])) : nil
-    }
-    // A cache trimmed before spec 24 has no `stage`: every rejection in it is the trim's.
-    let rejected = ((report["rejected"] as? [[String: String]]) ?? []).map { r in
-        r["stage"] == nil ? r.merging(["stage": "trim"]) { $1 } : r
-    }
-    let counts = PositiveSetCounts(manifest: manifest, table: table, kept: clips, rejected: rejected)
+    let counts = PositiveSetCounts(manifest: manifest, table: table, kept: cache.kept, rejected: cache.rejected)
     for line in counts.lines { print("positive: \(line)") }
     let pairs = counts.pairs
     let status = pairs.status()
     print("positive: \(status.text)")
+
     // Every positive-set gate goes through the one consumer (PositiveSetGates.line), and none can read PASS while the
-    // set is NOT EVALUATED. Band coverage (spec 09) and spec 10's gates are wired: their per-pair values need each
-    // held-out take's word timings, syllables and pitch, which the pipeline (spec 12) produces. Until then no pair is
-    // measured, and each line is NOT EVALUATED (n below the minimum), never a pass.
-    let bandPairs: [PairBandCoverage] = []
-    let scoredPairs: [PairOutcome] = []
-    var measured = PositiveGates.measured(scoredPairs)
-    measured[BandCoverageGate.dependent().name] = BandCoverageGate.measured(bandPairs)
+    // set is NOT EVALUATED. Each held-out pair is analysed by the Analyzer (spec 12): replayed word timings, real
+    // pitch, real scoring, against the phrase's bundled native readers.
+    let timingsDir = args.value("timings").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.vctkTimings)
+    var notes: [String] = []
+    var run = PositiveRun()
+    if FileManager.default.fileExists(atPath: timingsDir.appendingPathComponent(ReplayManifest.fileName).path) {
+        let timings = try FixtureTimestamper(directory: timingsDir)
+        print("positive: analysing \(pairs.headline.count) headline pairs through the pipeline (spec 12), word timings replayed from \(timings.asrModelID)")
+        run = try await PositiveRun.run(
+            pairs: pairs.headline, cache: cacheDir, available: Set(cache.kept),
+            phrases: try PositivePhrases(root: root, manifest: manifest, table: table), timings: timings)
+        notes.append("pipeline: spec 12 Analyzer, word timings replayed from \(timings.asrModelID) (recorded once with am-eval record-timings --set positive), pYIN pitch, spec 10 scoring, natives = the phrase's bundled readers")
+    } else {
+        let reason = "no recorded word timings at \(timingsDir.path) (am-eval record-timings --set positive)"
+        print("positive: pairs not analysed: \(reason)")
+        notes.append(reason)
+    }
+    var measured = PositiveGates.measured(run.outcomes)
+    measured[BandCoverageGate.dependent().name] = BandCoverageGate.measured(run.band)
     let lines = PositiveSetGates.lines(positiveSet: status, measured: measured, pairs: pairs.headline.count)
     func describe(_ m: MetricResult) -> String {
         let value = m.value.map { String(format: "%.3f", $0) } ?? "–"
@@ -570,18 +574,58 @@ func positive(_ args: Arguments, root: URL) throws -> Int32 {
         return "\(m.name): n \(m.n), value \(value),\(gate), interval \(interval.isEmpty ? "–" : interval), worst speaker \(worstSpeaker), worst phrase \(worstPhrase): \(m.status.text)"
     }
     for m in lines { print("positive: \(describe(m))") }
-    for row in PositiveGates.coverageByMeasure(scoredPairs) {
-        print("positive: evaluation coverage, \(row.measure.rawValue): \(String(format: "%.3f", row.coverage)) of \(row.applicable) applicable")
+    for row in PositiveGates.coverageByMeasure(run.outcomes) {
+        let line = "evaluation coverage, \(row.measure.rawValue): \(String(format: "%.3f", row.coverage)) of \(row.applicable) applicable"
+        print("positive: \(line)")
+        notes.append(line)
     }
-    let anomaly = PositiveGates.referenceAnomaly(scoredPairs, positiveSet: status)
+    let anomaly = PositiveGates.referenceAnomaly(run.outcomes, positiveSet: status)
     print("positive: \(describe(anomaly.line)) (reported, not a release gate)")
     if !anomaly.reviewPhrases.isEmpty {
         print("positive: override review (referenceAnomaly ≥ 20%): \(anomaly.reviewPhrases.joined(separator: ", "))")
+        notes.append("override review (referenceAnomaly ≥ 20%): \(anomaly.reviewPhrases.joined(separator: ", "))")
     }
-    print("positive: pairs measured: band coverage \(bandPairs.count), scoring \(scoredPairs.count) (held-out takes are analysed by the pipeline, spec 12); thresholds are initial and untuned")
-    for line in ReleaseSummary(negativeSet: nil, positiveSet: status, gated: lines).lines { print(line) }
+    let decisions = Dictionary(grouping: run.outcomes) { outcome -> String in
+        switch outcome.decision {
+        case .takeProblem(let problem): "takeProblem(\(problem.rawValue))"
+        case .verdict(.feedback): "feedback"
+        case .verdict(.close): "close"
+        case .verdict(.noClearDifference): "noClearDifference"
+        case .verdict(.inconclusive): "inconclusive"
+        }
+    }.mapValues(\.count).sorted { $0.key < $1.key }.map { "\($0.key) \($0.value)" }.joined(separator: ", ")
+    let measuredLine = "pairs measured: scoring \(run.outcomes.count), band coverage \(run.band.count) of \(pairs.headline.count) headline pairs (\(decisions.isEmpty ? "none" : decisions)); thresholds are initial and untuned"
+    print("positive: \(measuredLine)")
+    notes.append(measuredLine)
+    for (reason, count) in run.unscored.sorted(by: { $0.key < $1.key }) {
+        print("positive: not scored: \(count) \(reason)")
+        notes.append("not scored: \(count) \(reason)")
+    }
+    if run.noBandCoverage > 0 {
+        print("positive: scored with no band coverage (no comparable voiced frame): \(run.noBandCoverage)")
+        notes.append("scored with no band coverage (no comparable voiced frame): \(run.noBandCoverage)")
+    }
+    for (reason, count) in run.nativeFailures.sorted(by: { $0.key < $1.key }) {
+        print("positive: native reader not analysed: \(count) \(reason)")
+        notes.append("native reader not analysed: \(count) \(reason)")
+    }
+    let summary = ReleaseSummary(negativeSet: nil, positiveSet: status, gated: lines)
+    for line in summary.lines { print(line) }
     // The detector exists (spec 08); the VCTK CV estimate is a positive-set number, so it waits on the set itself.
     print("VCTK CV estimate, not shipped (6 folds over the \(manifest.tuningSpeakers.count) tuning speakers): \(status.isEvaluable ? "NOT EVALUATED (the fold-tuned run is spec 11)" : "NOT EVALUATED (blocked on spec 24: positive set NOT EVALUATED)")")
+    if args.flag("write-report") {
+        let split = try JSONDecoder().decode(
+            VCTKSplitManifest.self, from: Data(contentsOf: root.appendingPathComponent(Paths.vctkSplit)))
+        let identity = try reportIdentity(
+            root: root, corpusManifestHash: manifest.corpusManifestHash,
+            labelHash: try sha256(of: root.appendingPathComponent(Paths.evalSpeakers)), splitPath: Paths.vctkSplit,
+            splitSeed: split.foldSeed)
+        let report = AgreementReport(
+            suite: "positive", generatedAt: Date(), release: args.flag("release"), identity: identity,
+            metrics: lines + [anomaly.line], summary: summary, notes: notes)
+        let written = try ReportWriter.write(report, to: ReportWriter.directory(repositoryRoot: root))
+        print("wrote \(written.json.path) and .md")
+    }
     return 0
 }
 
@@ -605,8 +649,9 @@ func usage() {
           smoke-build --selection <json> --so762 <dir> --vctk <dir> --out <dir>
           suite --suite smoke|l2-shared|positive [--write-report] [--release]
           tune
-          record-timings --set smoke|l2-shared [--corpus <so762 dir>] [--model-dir <dir>] [--out <dir>]
+          record-timings --set smoke|l2-shared|positive [--corpus <so762 dir>] [--vctk <dir>] [--model-dir <dir>] [--out <dir>]
                                                            run WhisperKit once and save replayable word timings (local only)
+          bench [--runs <n>] [--model-dir <dir>]           spec 12 latency: L_stop, L_speech, L2 recompute (real WhisperKit, local only)
           smoke-detector [--build-inputs --corpus <so762 dir>] [--record]
                                                            check (or record) the smoke set's L1 digests and placements
         """)
@@ -628,12 +673,13 @@ do {
         switch try args.required("suite") {
         case "smoke": exit(try smoke(root: root))
         case "l2-shared": exit(try await l2Shared(args, root: root))
-        case "positive": exit(try positive(args, root: root))
+        case "positive": exit(try await positive(args, root: root))
         case let other: throw CLIError.usage("unknown suite \(other)")
         }
     case "tune": exit(tune(args, root: try repositoryRoot()))
     case "record-timings": exit(try await recordTimingsCommand(args, root: try repositoryRoot()))
     case "smoke-detector": exit(try await smokeDetector(args, root: try repositoryRoot()))
+    case "bench": exit(try await bench(args, root: try repositoryRoot()))
     default:
         usage()
         exit(args.command == "help" ? 0 : 64)

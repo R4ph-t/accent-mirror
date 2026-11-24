@@ -75,7 +75,7 @@ public struct PlacementWordResult: Sendable, Hashable, Codable {
     public var flaggedAfterSuppression: Bool { flaggedBeforeSuppression && suppression == nil }
 }
 
-public struct PlacementAnalysis: Sendable, Hashable {
+public struct PlacementAnalysis: Sendable, Hashable, Codable {
     public let segmentation: SyllableSegmentation
     /// One result per transcript word with an A(w), in transcript order.
     public let words: [PlacementWordResult]
@@ -109,6 +109,17 @@ public struct StressPlacementDetector: Sendable {
     }
 
     public func analyse(_ take: PlacementTake) async throws -> PlacementAnalysis {
+        let alignment = try align(take).alignment
+        let segmentation = try segment(take, alignment: alignment)
+        let pitch = try await pitchTracker.track(take.samples, sampleRate: take.sampleRate)
+        return place(take, alignment: alignment, segmentation: segmentation, pitch: pitch)
+    }
+
+    // The stages, one by one (spec 12's analyzer runs them separately so each failure names its stage and pitch can
+    // run alongside ASR). `analyse` is exactly these in order.
+
+    /// Spec 06: the recogniser's words aligned to the transcript, with the summary the decision procedure reads.
+    public func align(_ take: PlacementTake) throws -> WordAlignmentResult {
         let phrase = ExpectedPhrase(words: take.words.map { word in
             ExpectedWord(
                 index: word.index, text: word.text, pronunciation: word.pronunciation, source: .override,
@@ -117,8 +128,14 @@ public struct StressPlacementDetector: Sendable {
         let heard = take.heard.sorted { ($0.start, $0.end) < ($1.start, $1.end) }.compactMap { word in
             (try? TimeRange(start: word.start, end: max(word.start, word.end))).map { HeardWord(text: word.word, range: $0) }
         }
-        let alignment = try aligner.align(phrase, heard: heard).alignment
+        return try aligner.align(phrase, heard: heard)
+    }
 
+    /// Spec 07: syllables of the aligned words. `voicing` defaults to the detector's own; the analyzer passes the
+    /// take's voicing decided once in L0.
+    public func segment(
+        _ take: PlacementTake, alignment: WordAlignment, voicing: (any VoicingSource)? = nil, transcriptRevision: Int = 0
+    ) throws -> SyllableSegmentation {
         var spans: [WordIndex: SyllableSegmenter.WordSpan] = [:]
         for pair in alignment.pairs {
             guard let word = pair.phraseWord, let range = pair.yourRange else { continue }
@@ -127,11 +144,15 @@ public struct StressPlacementDetector: Sendable {
                 start: range.start, end: range.end, probability: Self.probability(of: range, in: take.heard))
         }
         let pronunciations = Dictionary(uniqueKeysWithValues: take.words.map { ($0.index, $0.pronunciation) })
-        let segmentation = try SyllableSegmenter(voicing: voicing, thresholds: thresholds).segment(.init(
+        return try SyllableSegmenter(voicing: voicing ?? self.voicing, thresholds: thresholds).segment(.init(
             samples: take.samples, sampleRate: take.sampleRate, alignment: alignment, pronunciations: pronunciations,
-            spans: spans, l0Key: take.l0Key, transcriptRevision: 0))
+            spans: spans, l0Key: take.l0Key, transcriptRevision: transcriptRevision))
+    }
 
-        let pitch = try await pitchTracker.track(take.samples, sampleRate: take.sampleRate)
+    /// Spec 08: prominence over the present words' syllables, observed stress and each decided word's placement.
+    public func place(
+        _ take: PlacementTake, alignment: WordAlignment, segmentation: SyllableSegmentation, pitch: PitchTrack
+    ) -> PlacementAnalysis {
         let prominence = TakeProminence(
             ComparableSyllable.all(in: segmentation, pitch: pitch, thresholds: thresholds.prominence),
             thresholds: thresholds.prominence)
