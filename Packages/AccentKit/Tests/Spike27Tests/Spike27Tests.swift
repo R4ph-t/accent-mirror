@@ -250,4 +250,27 @@ struct Spike27Tests {
         #expect(ROC.auc(positives: [0.5], negatives: [0.5]) == 0.5)
         #expect(SpikeStats.wilson(0, 0).upper == 1)
     }
+
+    @Test("arm C: vowel-letter groups and the CTC letter alignment")
+    func armC() {
+        func groups(_ w: String) -> Int { ArmC.vowelGroups(Array(w)).count }
+        #expect(groups("physical") == 3)
+        #expect(groups("station") == 2)
+        #expect(groups("rainbow") == 2)
+        #expect(groups("imagine") == 3)
+        #expect(groups("explanation") == 4)
+        // Classes: 0 blank, 1 separator, 2 "A", 3 "B"; "A" at frames 0–1, the separator at 2–3, "B" at 4–5.
+        let best: [Int] = [2, 2, 1, 1, 3, 3]
+        var logProbs = [Float](repeating: log(0.01), count: 6 * 4)
+        for (t, c) in best.enumerated() { logProbs[t * 4 + c] = log(0.97) }
+        let spans = ArmC.align(logProbs: logProbs, frames: 6, classes: 4, words: [[2], [3]], letters: [["A"], ["B"]],
+                               blank: 0, separator: 1)
+        #expect(spans == [ArmC.LetterSpan(word: 0, letter: "A", first: 0, last: 1),
+                          ArmC.LetterSpan(word: 1, letter: "B", first: 4, last: 5)])
+        let nuclei = [nucleus(0.10, prominence: 5), nucleus(0.30, prominence: 5)]
+        #expect(ArmC.select(nuclei, groupCentres: [0.12, 0.27], syllables: 2) == [0, 1])
+        #expect(ArmC.select(nuclei, groupCentres: [0.12], syllables: 2) == nil)
+        #expect(ArmC.select(nuclei, groupCentres: [0.12, 0.13], syllables: 2) == nil)
+        #expect(ArmC.select(nuclei, groupCentres: [0.12, 0.45], syllables: 2) == nil)
+    }
 }

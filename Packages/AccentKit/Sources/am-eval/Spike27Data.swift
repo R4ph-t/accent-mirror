@@ -15,6 +15,8 @@ struct SpikeClip: Codable, Sendable {
     /// The prompt: the starter id ("vctk-005") for VCTK texts and bundled voices, the utterance id for L2.
     let phrase: String
     let audio: String
+    /// The prompt text (arm C aligns its letters).
+    var text: String?
     var measured: MeasuredAudio
     /// BoundarySource raw value → the take's words in time order.
     var words: [String: [TimedWord]]
@@ -151,6 +153,7 @@ private struct PrepareItem: Sendable {
     let population: Population
     let phrase: String
     let audio: String
+    var text: String? = nil
     let words: @Sendable (SpikeEnvironment) throws -> [String: [TimedWord]]
 }
 
@@ -180,7 +183,7 @@ enum SpikeData {
                 let timing = timings.appendingPathComponent("\(input.clipID).json")
                 let phrase = vctkPhrase(input.clipID)
                 return PrepareItem(id: input.clipID, speaker: speaker, population: population, phrase: phrase,
-                                   audio: input.audio) { env in
+                                   audio: input.audio, text: input.transcript) { env in
                     let expected = env.expected(input.transcript)
                     var words: [String: [TimedWord]] = [:]
                     if FileManager.default.fileExists(atPath: mfa.path) {
@@ -207,10 +210,18 @@ enum SpikeData {
                 guard let clip = byClip[phrase.clipID] else { return nil }
                 let audio = env.reference.appendingPathComponent("corpus/tts/\(phrase.clipID).wav").path
                 let phraseID = "vctk-" + phrase.clipID.replacingOccurrences(of: "tts_", with: "")
-                return PrepareItem(id: phrase.clipID, speaker: "tts", population: .tts, phrase: phraseID, audio: audio) { env in
-                    [BoundarySource.oracle.rawValue: env.timedWords(
-                        phrase: env.expected(phrase.transcript), phraseID: phraseID,
+                let timing = env.cache.appendingPathComponent("tts-timings/\(phrase.clipID).json")
+                return PrepareItem(id: phrase.clipID, speaker: "tts", population: .tts, phrase: phraseID, audio: audio,
+                                   text: phrase.transcript) { env in
+                    let expected = env.expected(phrase.transcript)
+                    var words = [BoundarySource.oracle.rawValue: env.timedWords(
+                        phrase: expected, phraseID: phraseID,
                         tokens: clip.words.map { (WordText.fold($0.word), $0.start, $0.end) }, fillSubstitutions: false)]
+                    // Runtime: Whisper word times recorded by `am-eval record-timings --set tts-references` (if present).
+                    if let file = try? JSONDecoder().decode(TimingFile.self, from: Data(contentsOf: timing)) {
+                        words[BoundarySource.runtime.rawValue] = env.knownTextWords(phrase: expected, phraseID: phraseID, timing: file)
+                    }
+                    return words
                 }
             }
         case .bundled:
@@ -226,7 +237,8 @@ enum SpikeData {
             return manifest.phrases.flatMap { phrase in
                 phrase.recordings.map { recording in
                     PrepareItem(id: "\(phrase.id)/\(recording.speaker)", speaker: recording.speaker, population: .bundled,
-                                phrase: phrase.id, audio: starter.appendingPathComponent(recording.audio).path) { env in
+                                phrase: phrase.id, audio: starter.appendingPathComponent(recording.audio).path,
+                                text: phrase.text) { env in
                         var overrides: [WordIndex: Pronunciation] = [:]
                         for (key, arpabet) in phrase.pronunciations {
                             if let i = Int(key), let p = try? Pronunciation(arpabet: arpabet) { overrides[WordIndex(i)] = p }
@@ -282,7 +294,7 @@ enum SpikeData {
             let audio = dir.appendingPathComponent("WAVE/SPEAKER\(speaker)/\(utterance).WAV").path
             let wordTags = tags[utterance]!.mapValues { $0.joined(separator: ",") }
             return PrepareItem(id: utterance, speaker: speaker, population: .speechocean762, phrase: utterance,
-                               audio: audio) { env in
+                               audio: audio, text: prompt) { env in
                 let file = try JSONDecoder().decode(TimingFile.self, from: Data(contentsOf: timing))
                 let expected = env.expected(prompt)
                 var words: [String: [TimedWord]] = [:]
@@ -341,7 +353,8 @@ enum SpikeData {
                     let measured = try await FrontEnd.measure(samples)
                     let words = try item.words(env)
                     return (index, SpikeClip(id: item.id, speaker: item.speaker, population: item.population,
-                                             phrase: item.phrase, audio: item.audio, measured: measured, words: words))
+                                             phrase: item.phrase, audio: item.audio, text: item.text, measured: measured,
+                                             words: words))
                 }
             }
             for _ in 0..<max(1, env.jobs) { add() }

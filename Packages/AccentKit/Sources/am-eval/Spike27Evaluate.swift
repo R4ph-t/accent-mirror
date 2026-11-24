@@ -183,13 +183,13 @@ func spike27Evaluate(_ env: SpikeEnvironment, args: Arguments) async throws -> I
                 grouping: native.compactMap { if case .abstain(let r) = $0.verdict { r.rawValue } else { nil } }, by: { $0 }).mapValues(\.count)
             out.gates += SpikeEvaluate.jitter(heldOut, source: source, arm: arm, classifier: classifier, tau: tau, seed: seed,
                                               population: "vctk-held-out")
-            if source == .oracle {
+            if tts.contains(where: { $0.words(source) != nil }) {
                 out.gates += SpikeEvaluate.jitter(tts, source: source, arm: arm, classifier: classifier, tau: tau, seed: seed,
                                                   population: "synthetic (TTS)")
             } else {
                 out.gates.append(SpikeEvaluate.notEvaluated(
                     "gate 3 jitter ±40 ms (pooled)", arm: arm, source: source, population: "synthetic (TTS)",
-                    why: "no Whisper word times for the TTS references in the caches (ASR is never run by this spike)"))
+                    why: "no Whisper word times for the TTS references (am-eval record-timings --set tts-references)"))
             }
             // Coverage on the starter words across the bundled voices (runtime only: no MFA for them).
             if source == .runtime {
@@ -230,12 +230,16 @@ func spike27Evaluate(_ env: SpikeEnvironment, args: Arguments) async throws -> I
             let clean = SpikeEvaluate.outcomes(l2, source: source, arm: arm, classifier: classifier, tau: tau, where: tagged("clean")).map(\.1)
             out.gates.append(SpikeEvaluate.falseFlags(clean, arm: arm, source: source, population: "l2-clean-1400"))
             let cleanDecided = clean.filter { !$0.verdict.isAbstain }
+            let cleanD = cleanDecided.count { $0.verdict.isFlag }, cleanB1 = cleanDecided.count { $0.b1Flag == true }
+            let cleanB2 = cleanDecided.count { $0.b2Flag == true }
+            func precision(_ tp: Int, _ fp: Int) -> String { tp + fp == 0 ? "–" : String(format: "%.1f%%", 100 * Double(tp) / Double(tp + fp)) }
             out.gates.append(GateLine(
                 gate: "B1/B2 flag rate, same words", arm: arm.rawValue, source: label, population: "l2-clean-1400",
-                n: cleanDecided.count, count: cleanDecided.count { $0.b1Flag == true }, value: cleanDecided.isEmpty ? nil
-                    : Double(cleanDecided.count { $0.b1Flag == true }) / Double(cleanDecided.count), lower: nil, upper: nil,
-                limit: "precision context", status: .reported,
-                detail: "B1 \(cleanDecided.count { $0.b1Flag == true }), B2 \(cleanDecided.count { $0.b2Flag == true }), detector \(cleanDecided.count { $0.verdict.isFlag }) of \(cleanDecided.count) non-abstained"))
+                n: cleanDecided.count, count: cleanB1, value: cleanDecided.isEmpty ? nil : Double(cleanB1) / Double(cleanDecided.count),
+                lower: nil, upper: nil, limit: "precision context", status: .reported,
+                detail: "flags on the non-abstained clean words: detector \(cleanD), B1 \(cleanB1), B2 \(cleanB2) of \(cleanDecided.count); "
+                    + "precision (134 as positives, clean 1,400 as negatives): detector \(precision(detector, cleanD)), "
+                    + "B1 \(precision(b1, cleanB1)), B2 \(precision(b2, cleanB2))"))
             let soCorrect = SpikeEvaluate.outcomes(l2, source: source, arm: arm, classifier: classifier, tau: tau, where: tagged("so762:correct")).map(\.1)
             out.gates.append(SpikeEvaluate.falseFlags(soCorrect, arm: arm, source: source, population: "speechocean762 correctly stressed"))
             let soWrong = SpikeEvaluate.outcomes(l2, source: source, arm: arm, classifier: classifier, tau: tau, where: tagged("so762:misplaced")).map(\.1)
@@ -270,6 +274,50 @@ func spike27Evaluate(_ env: SpikeEnvironment, args: Arguments) async throws -> I
                                  precision5: precision(0.05), precision10: precision(0.10), operating: abs(t - tau) < 1e-9))
         }
         out.pr[arm.rawValue] = curve
+    }
+
+    // §3a: arm C, report-only, with arm B's frozen classifier and τ.
+    let armB = training.arms.first { $0.arm == .b }!
+    let cSource = "b2 CTC (known text)"
+    if let heldOutC = try await SpikeArmC.positions(heldOut, name: "vctk-held-out", env: env),
+       let l2C = try await SpikeArmC.positions(l2, name: "l2", env: env),
+       let bundledC = try await SpikeArmC.positions(bundled, name: "bundled", env: env) {
+        func gate(_ line: GateLine) -> GateLine {
+            GateLine(gate: line.gate, arm: "C", source: cSource, population: line.population, n: line.n, count: line.count,
+                     value: line.value, lower: line.lower, upper: line.upper, limit: line.limit, status: line.status,
+                     detail: line.detail)
+        }
+        let native = SpikeArmC.outcomes(heldOut, positions: heldOutC, classifier: armB.classifier, tau: armB.tau)
+        out.gates.append(gate(SpikeEvaluate.falseFlags(native, arm: .b, source: .runtime, population: "vctk-held-out")))
+        out.gates.append(gate(SpikeEvaluate.coverage(native, arm: .b, source: .runtime, population: "vctk-held-out candidate words")))
+        let starter = SpikeArmC.outcomes(bundled, positions: bundledC, classifier: armB.classifier, tau: armB.tau)
+        out.gates.append(gate(SpikeEvaluate.coverage(starter, arm: .b, source: .runtime, population: "starter words × bundled voices")))
+        let recall = SpikeArmC.outcomes(l2, positions: l2C, classifier: armB.classifier, tau: armB.tau, where: tagged("134"))
+        let detector = recall.count { $0.verdict.isFlag }, b1 = recall.count { $0.b1Flag == true }, b2 = recall.count { $0.b2Flag == true }
+        let dOnly = recall.count { $0.verdict.isFlag && $0.b1Flag != true }, bOnly = recall.count { !$0.verdict.isFlag && $0.b1Flag == true }
+        let both = recall.count { $0.verdict.isFlag && $0.b1Flag == true }
+        let p = Statistics.mcnemarExact(b: dOnly, c: bOnly)
+        out.mcnemar.append(McNemarRow(arm: "C", source: cSource, population: "l2-134", n: recallTotal, detector: detector, b1: b1,
+                                      b2: b2, detectorOnly: dOnly, b1Only: bOnly, both: both,
+                                      neither: recallTotal - dOnly - bOnly - both, p: p, covered: recall.count { !$0.verdict.isAbstain }))
+        let w = SpikeStats.wilson(detector, recallTotal)
+        out.gates.append(GateLine(
+            gate: "gate 2 L2 recall vs B1 (McNemar)", arm: "C", source: cSource, population: "l2-134", n: recallTotal,
+            count: detector, value: Double(detector) / Double(recallTotal), lower: w.lower, upper: w.upper,
+            limit: "beats B1 with exact McNemar p < 0.05", status: detector > b1 && p < 0.05 ? .met : .notMet,
+            detail: String(format: "B1 %d/134, B2 %d/134; discordant detector-only %d, B1-only %d, p = %.4g", b1, b2, dOnly, bOnly, p)))
+        out.gates.append(gate(SpikeEvaluate.coverage(recall, arm: .b, source: .runtime, population: "l2-134", total: recallTotal)))
+        let clean = SpikeArmC.outcomes(l2, positions: l2C, classifier: armB.classifier, tau: armB.tau, where: tagged("clean"))
+        out.gates.append(gate(SpikeEvaluate.falseFlags(clean, arm: .b, source: .runtime, population: "l2-clean-1400")))
+        let soCorrect = SpikeArmC.outcomes(l2, positions: l2C, classifier: armB.classifier, tau: armB.tau, where: tagged("so762:correct"))
+        out.gates.append(gate(SpikeEvaluate.falseFlags(soCorrect, arm: .b, source: .runtime, population: "speechocean762 correctly stressed")))
+        out.gates.append(GateLine(gate: "gate 3 jitter ±40 ms", arm: "C", source: cSource, population: "–", n: 0, count: 0,
+                                  value: nil, lower: nil, upper: nil, limit: "", status: .notEvaluated,
+                                  detail: "arm C reads no word boundary, so the ±40 ms word-boundary jitter can't move it; not a pass"))
+    } else {
+        out.gates.append(GateLine(gate: "arm C (report-only)", arm: "C", source: cSource, population: "–", n: 0, count: 0,
+                                  value: nil, lower: nil, upper: nil, limit: "", status: .notEvaluated,
+                                  detail: "b2's CTC model isn't in MODELS_CACHE (wav2vec2-base-960h)"))
     }
 
     // §2: phrase verdicts on held-out VCTK, per prompt, against the frozen envelopes.

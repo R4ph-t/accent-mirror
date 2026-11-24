@@ -75,7 +75,13 @@ public enum TakeScoring {
                              thresholds: Thresholds = .current) -> [WordOutcome] {
         let selection = select(take, words: words, arm: arm, source: source, classifier: classifier, tau: tau,
                                thresholds: thresholds)
-        return selection.keys.sorted().map { j in
+        return score(take, words: words, selection: selection, classifier: classifier, tau: tau)
+    }
+
+    /// Outcomes for a given selection (word position → its nuclei or the abstention), e.g. arm C's.
+    public static func score(_ take: MeasuredAudio, words: [TimedWord], selection: [Int: Result<[Int], AbstentionError>],
+                             classifier: StressClassifier, tau: Double) -> [WordOutcome] {
+        selection.keys.sorted().map { j in
             let w = words[j]
             let target = w.target!
             switch selection[j]! {

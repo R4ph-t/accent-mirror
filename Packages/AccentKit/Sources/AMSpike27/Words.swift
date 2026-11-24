@@ -111,6 +111,8 @@ public enum Abstention: String, Sendable, Hashable, Codable, CaseIterable {
     case ambiguous = "assignment-ambiguous"
     case tooFewNuclei = "too-few-nuclei"
     case noSpan = "no-span"
+    /// Arm C: vowel-letter groups ≠ N, a group with no nucleus within reach, or two groups on one nucleus.
+    case vowelPositions = "vowel-positions"
 }
 
 public enum ArmSelection {

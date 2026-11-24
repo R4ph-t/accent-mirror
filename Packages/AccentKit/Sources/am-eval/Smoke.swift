@@ -79,8 +79,16 @@ func recordTimingsCommand(_ args: Arguments, root: URL) async throws -> Int32 {
         clips = Set(words.map(\.utterance)).sorted().map { ($0, corpus.audioURL(utterance: $0)) }
         out = args.value("out").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.so762Timings)
         attribution = "speechocean762 (OpenSLR 101, SpeechOcean), CC BY 4.0; local evaluation cache, never committed"
+    case "tts-references":
+        // Spec 27: Whisper word times for the spec 22 TTS references (the synthetic set's runtime boundaries).
+        let reference = URL(fileURLWithPath: try args.required("reference"))
+        let folder = reference.appendingPathComponent("corpus/tts")
+        let files = try FileManager.default.contentsOfDirectory(atPath: folder.path).filter { $0.hasSuffix(".wav") }.sorted()
+        clips = files.map { (String($0.dropLast(4)), folder.appendingPathComponent($0)) }
+        out = URL(fileURLWithPath: try args.required("out"))
+        attribution = "TTS references (spec 22), synthesised from CC BY 4.0 VCTK texts; local evaluation cache, never committed"
     case let other:
-        throw CLIError.usage("record-timings --set smoke|l2-shared|l2-tuning|positive|vctk-tuning (got \(other))")
+        throw CLIError.usage("record-timings --set smoke|l2-shared|l2-tuning|positive|vctk-tuning|tts-references (got \(other))")
     }
     // --append keeps an existing recording directory's clips and records only the missing ones (spec 11).
     var kept: [ReplayManifest.Entry] = []

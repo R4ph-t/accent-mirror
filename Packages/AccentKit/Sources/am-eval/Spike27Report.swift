@@ -250,11 +250,17 @@ func spike27Markdown(_ r: Spike27Report, acceptance: String) -> String {
     L.append("")
     L.append("Oracle = MFA word boundaries (spec 07's pinned MFA); runtime = Whisper base.en word times (known prompt text through spec 03's aligner; for L2 also Whisper's own transcript). GO is judged on the runtime source.")
     L.append("")
-    for arm in ["A", "B"] {
-        for source in ["oracle", "runtime", "runtime (known text)", "asr", "runtime (ASR transcript)", "–"] {
+    for arm in ["A", "B", "C", "–"] {
+        if arm == "C" {
+            L.append("### Arm C (report-only, lit amendment 5): b2 character CTC vowel positions under the known prompt, arm B's frozen classifier and τ")
+            L.append("")
+            L.append("Arm C is never part of the GO decision; if it passes alone, that means a follow-up spec.")
+            L.append("")
+        }
+        for source in ["oracle", "runtime", "runtime (known text)", "asr", "runtime (ASR transcript)", "b2 CTC (known text)"] {
             let lines = e.gates.filter { $0.arm == arm && $0.source == source }
             guard !lines.isEmpty else { continue }
-            L.append("### Arm \(arm), \(source)")
+            L.append(arm == "–" ? "### Phrase metrics, \(source)" : "### Arm \(arm), \(source)")
             L.append("")
             L.append("| gate | population | n | count | value | Wilson 95% | limit | status | detail |")
             L.append("|---|---|---|---|---|---|---|---|---|")

@@ -53,7 +53,9 @@ let package = Package(
         // only: the app target depends on AMPipeline alone and never links this or AMEvaluation.
         .executableTarget(
             name: "am-eval",
-            dependencies: [.target(name: "AMPipeline"), .target(name: "AMEvaluation"), .target(name: "AMSpike27")],
+            dependencies: [.target(name: "AMPipeline"), .target(name: "AMEvaluation"), .target(name: "AMSpike27"),
+                           // Spec 27's arm C (report-only): b2's character CTC. Evaluation tooling, never shipped.
+                           .target(name: "AMAlignmentCTC")],
             path: "Sources/am-eval"
         ),
         // Spec 27's offline feasibility spike: TD-PSOLA negatives, the word-stress classifier, the native envelope.

@@ -188,8 +188,9 @@ public actor CTCAligner: WordBoundaryRefiner {
         return zip(refined, confidences).map { ConfidentWord(word: $0, confidence: $1) }
     }
 
-    /// Per-frame log-softmax of the model's logits, row-major `frames × classes`.
-    func logProbabilities(_ samples: [Float]) async throws -> (values: [Float], frames: Int, classes: Int) {
+    /// Per-frame log-softmax of the model's logits, row-major `frames × classes`. Public for spec 27's arm C
+    /// (character positions, report-only, evaluation tooling).
+    public func logProbabilities(_ samples: [Float]) async throws -> (values: [Float], frames: Int, classes: Int) {
         var audio = CTCForcedAlignment.normalised(samples)
         if audio.count < manifest.conversion.minSamples {
             audio += [Float](repeating: 0, count: manifest.conversion.minSamples - audio.count)
