@@ -1,0 +1,7 @@
+{
+  "description" : "Spec 27 §2: prompts whose final direction is verdicted. Fixed from tuning-side native takes (bundled voices and VCTK tuning speakers, runtime word times) before any evaluation run.",
+  "prompts" : [
+
+  ],
+  "rule" : ">= 80% of the tuning-side native takes share one final-direction class (rise \/ fall \/ level, ±5 st\/s)"
+}
