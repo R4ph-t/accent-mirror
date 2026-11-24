@@ -1,7 +1,7 @@
 # Nucleus count grid (spec 26 §1): nucleus-count-69675122
 
-- Generated: 2026-11-24T15:46:14Z; commit `86c0b8fcf12630f9f51b6b06db5a59de29b2b15b`
-- configDigest `69675122c0665f107ef1062509ab426e586ebdfd7e53d08b9a9a404f20baa676`, sourceTreeHash `5000fc378936541ecf6bedde30c501f856f164b96aeec784cc5b3fa17479c45d`
+- Generated: 2026-11-24T15:52:18Z; commit `190a34d63c325d3d3058269c7667e92fa9af035d`
+- configDigest `69675122c0665f107ef1062509ab426e586ebdfd7e53d08b9a9a404f20baa676`, sourceTreeHash `cb4d586ee66ab181d701840bf6591bb39c110a5c61647fbdffac14202a683d2e`
 - Data: VCTK **tuning** speakers only (24: p232, p245, p246, p248, p251, p256, p261, p283, p284, p285, p288, p298, p303, p305, p317, p326, p333, p334, p347, p351, p360, p363, p374, p376), 512 clips, 7047 comparable words (MFA word boundaries, present words with ≥ 1 syllable). Detection only: no verdict, flip, gate or held-out number is read.
 - §1a timestamp check: REAL PYIN LAG (tracker unchanged; voicedWithinMs ∈ {0, 30, 60})
 - Reduced forms: 11 entries, SHA-256 `8cfdebb1ee56dade2a9a886885efee36d5f875e31c5a9a4c3f11e6a7c8059e46` (frozen before this run)

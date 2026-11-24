@@ -8,7 +8,7 @@
   "clips" : 512,
   "comparableWords" : 7047,
   "feasible" : 120,
-  "generatedAt" : "2026-11-24T15:46:14Z",
+  "generatedAt" : "2026-11-24T15:52:18Z",
   "identity" : {
     "cleanTree" : true,
     "config" : {
@@ -23,11 +23,11 @@
     },
     "configDigest" : "69675122c0665f107ef1062509ab426e586ebdfd7e53d08b9a9a404f20baa676",
     "corpusManifestHash" : "",
-    "evaluatedCommit" : "86c0b8fcf12630f9f51b6b06db5a59de29b2b15b",
+    "evaluatedCommit" : "190a34d63c325d3d3058269c7667e92fa9af035d",
     "labelHash" : "",
     "macOSVersion" : "Version 26.3 (Build 25D125)",
     "runnerImage" : "local",
-    "sourceTreeHash" : "5000fc378936541ecf6bedde30c501f856f164b96aeec784cc5b3fa17479c45d",
+    "sourceTreeHash" : "cb4d586ee66ab181d701840bf6591bb39c110a5c61647fbdffac14202a683d2e",
     "splitManifestHash" : "cd021cf29163d619c8515e9e6b9eb5aa0d513435dce3bfcf47c5331a670d78d0",
     "splitSeed" : 20261125,
     "swiftVersion" : "Apple Swift version 6.2.3 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)",
