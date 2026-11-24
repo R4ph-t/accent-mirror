@@ -1,6 +1,6 @@
 # 23: Word-boundary refinement
 
-Status: In review · Branch: – · Depends on: 03 (WhisperKit word timings, the unpadded bar and its eval), 04 (pYIN),
+Status: Done (measurement-only; b2 not shipped) · Branch: – · Depends on: 03 (WhisperKit word timings, the unpadded bar and its eval), 04 (pYIN),
 07 (the segmenter the downstream gate runs) ·
 Estimate: 6–8 h agent run + 1.5 h Raph review · Risk: high
 
