@@ -25,7 +25,7 @@ struct ShellContractTests {
         for name in names { _ = try library.load(name) }
     }
 
-    @Test func primaryStates() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func primaryStates() throws {
         #expect(try sentences("empty") == ["Listen to the model, then press Space to record your take."])
         #expect(try sentences("recording") == ["Recording. Press Space when you\u{2019}re done."])
         #expect(try sentences("result-feedback") == [
@@ -47,7 +47,7 @@ struct ShellContractTests {
         #expect(toolbar.subtitle == .recording(elapsed: "0:02"))
     }
 
-    @Test func closeNamesOnlyEvaluatedDimensions() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func closeNamesOnlyEvaluatedDimensions() throws {
         #expect(try sentences("close-all") == ["Close to the model. Stress, rhythm and pitch shape all match."])
         #expect(try sentences("close-stress-rhythm") == ["Close to the model. Stress and rhythm match."])
         #expect(try sentences("close-placement-only") == ["Close to the model. Stress is in the right place."])
@@ -56,7 +56,7 @@ struct ShellContractTests {
         ])
     }
 
-    @Test func onlyTheMostSpecificQuietLineShows() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func onlyTheMostSpecificQuietLineShows() throws {
         #expect(try card("feedback-quiet-priority").infoLines.map(\.plain) == [
             "You added \u{201C}so\u{201D}. It's left out of the comparison.",
         ])
@@ -66,13 +66,13 @@ struct ShellContractTests {
         #expect(notes?.lines.count == 3)
     }
 
-    @Test func roughTimingComesFirstAndRowsCapAtThree() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func roughTimingComesFirstAndRowsCapAtThree() throws {
         let rows = try sentences("rough-timing-first")
         #expect(rows.count == 3)
         #expect(rows.first == "The timing match for this take is rough, so syllable lengths may be off.")
     }
 
-    @Test func inconclusiveAndNoClearDifferenceCopy() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func inconclusiveAndNoClearDifferenceCopy() throws {
         #expect(try sentences("inc-comparableCoverageLow") == [
             "Only part of your take lined up with the model (about 55%). Say the whole phrase in one go.",
         ])
@@ -92,7 +92,7 @@ struct ShellContractTests {
             "Something went wrong inside Accent Mirror while measuring stress. This isn't about your take.")
     }
 
-    @Test func placementNamesTheNearestVoiceAndNeverSaysWrong() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func placementNamesTheNearestVoiceAndNeverSaysWrong() throws {
         #expect(try sentences("stress-like-p311").first == "Stress TOG, not PHO: phoTOGraphy, like p311 says it.")
         for name in try library.allNames() {
             let text = try card(name).rows.map(\.sentence.plain).joined(separator: " ")
@@ -118,7 +118,7 @@ struct ShellContractTests {
 
     /// §8, §13 item 5: the marker shows only with a placement row (stress outside the accepted set at high
     /// confidence), and only on the syllable named after "not". Checked on every fixture.
-    @Test func mistakeMarkerOnlyWithAPlacementRow() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func mistakeMarkerOnlyWithAPlacementRow() throws {
         for name in try library.allNames() {
             let loaded = try library.load(name)
             let marked = markedSyllables(loaded)
@@ -153,7 +153,7 @@ struct ShellContractTests {
     }
 
     /// Fix 2: every noClearDifference result has its equal.circle row first; quiet lines sit under it.
-    @Test func noClearDifferenceAlwaysHasItsRow() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func noClearDifferenceAlwaysHasItsRow() throws {
         for name in try library.allNames() where name.hasPrefix("ncd-") {
             let card = try card(name)
             #expect(card.rows.count == 1, "\(name)")
@@ -235,7 +235,7 @@ struct ShellContractTests {
 
     /// B3 (§10): in a card-1 sentence the mistake is only bold caps in mistake blue. The sentence carries no
     /// triangle or underline glyph; those belong to strip labels (`ClusterLabel.Style.mistake`).
-    @Test func cardSentenceMistakeIsCapsOnly() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func cardSentenceMistakeIsCapsOnly() throws {
         let row = try card("result-feedback").rows.first { $0.sentence.contains { $0.role == .mistake } }
         let mistakes = row?.sentence.filter { $0.role == .mistake }.map(\.text)
         #expect(mistakes == ["PHO"])
@@ -478,7 +478,7 @@ struct ShellContractTests {
 
     /// Row order: too much contrast comes last whatever order the result lists the rows in
     /// (`feedback-too-much-contrast-last`), and drops out when three rows come before it.
-    @Test func tooMuchContrastComesLastAndOnlyWithRoom() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func tooMuchContrastComesLastAndOnlyWithRoom() throws {
         let rows = try card("feedback-too-much-contrast-last").rows.map(\.sentence.plain)
         #expect(rows.count == 2)
         #expect(rows.first?.hasPrefix("Keep the small syllables short and light") == true)
@@ -511,7 +511,7 @@ struct ShellContractTests {
 
     // MARK: Round 3, 12:19 batch c: final-direction icons
 
-    @Test func finalDirectionIconFollowsTheDirection() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func finalDirectionIconFollowsTheDirection() throws {
         let higher = try card("rows-final-direction-higher").rows.first { $0.sentence.plain.hasPrefix("End higher") }
         #expect(higher?.icon == "arrow.up.right")
         let lower = try card("rows-final-direction-lower").rows.first { $0.sentence.plain.hasPrefix("End lower") }
@@ -557,7 +557,7 @@ struct ShellContractTests {
     }
 
     /// The ncd fixtures follow the same rule end to end.
-    @Test func noClearDifferenceFixturesUseTheirReasonSentence() throws {
+    @Test(.disabled("Spec 28: card 1 shows no rows and no verdict copy (show-don't-judge v1); spec 29 rewrites this for v3")) func noClearDifferenceFixturesUseTheirReasonSentence() throws {
         #expect(try sentences("ncd-pitchShapeBelowClose") == [Self.ncdSentences[.pitchShapeBelowClose]!])
         #expect(try sentences("ncd-optionalMeasuresUnavailable") == [Self.ncdSentences[.optionalMeasuresUnavailable]!])
         #expect(try sentences("ncd-mediumConfidenceOnly") == [Self.ncdSentences[.mediumConfidenceOnly]!])
@@ -640,5 +640,33 @@ struct ShellContractTests {
         #expect(!p.showsGrain && !p.showsPitchTexture && p.hairlineIsThick)
         #expect(p.textTertiary == Palette.light.textSecondary)
         #expect(!Palette.resolve(.dark, increaseContrast: false, reduceTransparency: true).showsGrain)
+    }
+
+    // MARK: - Spec 28: show-don't-judge v1
+
+    @Test(arguments: ["result-not-scored", "result-no-verdict", "result-feedback", "close-all", "ncd-timingRough",
+                      "inc-timingUnreliable", "rows-range"])
+    func analysedTakeShowsYourTakeWithNoRows(_ name: String) throws {
+        let loaded = try library.load(name)
+        let card = ShellPresenter.card(loaded)
+        #expect(card.title == "YOUR TAKE", "\(name)")
+        #expect(card.rows.isEmpty, "\(name)")
+        #expect(card.infoLines.isEmpty, "\(name)")
+        // The strip and pitch card are still drawn.
+        guard case .bars(let clusters, _, let labels) = ShellPresenter.strip(loaded).you else {
+            Issue.record("\(name): no bars")
+            return
+        }
+        #expect(!clusters.isEmpty && labels)
+        #expect(!clusters.contains { $0.label?.style == .mistake }, "\(name): no mistake marker")
+        #expect(!ShellPresenter.pitch(loaded).you.isEmpty, "\(name): your pitch is drawn")
+    }
+
+    @Test(arguments: ["result-not-scored", "result-feedback", "inspector-open", "ncd-pitchShapeBelowClose",
+                      "stress-differs-but-accepted"])
+    func inspectorShowsNoMeasureStatesStressLinesOrReasons(_ name: String) throws {
+        let titles = ShellPresenter.inspector(try library.load(name)).map(\.title)
+        #expect(!titles.contains("MEASURES") && !titles.contains("STRESS") && !titles.contains("NO CLEAR DIFFERENCE"),
+                "\(name): \(titles)")
     }
 }

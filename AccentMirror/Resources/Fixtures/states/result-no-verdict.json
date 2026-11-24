@@ -1,0 +1,15 @@
+{
+  "name": "result-no-verdict",
+  "summary": "Take 03 analysed, with no verdict at all (spec 28: the schema accepts a missing verdict).",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-take03",
+  "analysis": {
+    "timing": "good"
+  }
+}

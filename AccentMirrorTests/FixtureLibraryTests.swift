@@ -29,3 +29,52 @@ struct FixtureLibraryTests {
         }
     }
 }
+
+/// Spec 28: the fixture schema accepts `{"notScored": {}}` and a missing verdict, and the existing verdict fixtures
+/// still decode.
+struct NotScoredFixtureTests {
+    private let library = FixtureLibrary(root: URL(filePath: #filePath)
+        .deletingLastPathComponent()
+        .deletingLastPathComponent()
+        .appending(path: "AccentMirror/Resources/Fixtures", directoryHint: .isDirectory))
+
+    @Test func notScoredVerdictDecodes() throws {
+        let loaded = try library.load("result-not-scored")
+        #expect(loaded.fixture.analysis?.verdict?.kind == .notScored)
+    }
+
+    @Test func missingVerdictDecodes() throws {
+        let loaded = try library.load("result-no-verdict")
+        #expect(loaded.fixture.analysis != nil)
+        #expect(loaded.fixture.analysis?.verdict == nil)
+    }
+
+    @Test func kindNotScoredDecodes() throws {
+        let verdict = try JSONDecoder().decode(Verdict.self, from: Data(#"{"kind": "notScored"}"#.utf8))
+        #expect(verdict.kind == .notScored)
+    }
+
+    @Test(arguments: ["result-feedback", "close-all", "ncd-timingRough", "inc-timingUnreliable"])
+    func legacyVerdictFixturesStillDecode(_ name: String) throws {
+        #expect(try library.load(name).fixture.analysis?.verdict != nil)
+    }
+}
+
+/// Spec 28: the presenter and the copy read no verdict. Reads the two source files (found from #filePath); no app host.
+struct PresenterSourceTests {
+    private let fixtures = URL(filePath: #filePath)
+        .deletingLastPathComponent()
+        .deletingLastPathComponent()
+        .appending(path: "AccentMirror/Fixtures", directoryHint: .isDirectory)
+
+    @Test(arguments: ["ShellPresenter.swift", "Copy.swift"])
+    func noVerdictTypes(_ file: String) throws {
+        let text = try String(contentsOf: fixtures.appending(path: file), encoding: .utf8)
+        #expect(text.contains("enum"), "the scan must read the file")
+        for name in ["Verdict", "DiffRow", "StressLine", "MeasureState", "NoClearDifferenceReason", "Inconclusive"] {
+            #expect(text.firstMatch(of: try Regex("\\b\(name)\\b")) == nil, "\(file) references \(name)")
+        }
+        #expect(!text.contains(".verdict"), "\(file) reads .verdict")
+        #expect(!text.contains(".stress?") && !text.contains("analysis?.measures"), "\(file) reads stress lines or measures")
+    }
+}
