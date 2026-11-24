@@ -161,19 +161,43 @@ struct WordBoundaryRefinerTests {
         #expect(WhisperOnly().id == "whisper" && snap.id == "dsp-snap-1")
     }
 
-    @Test("a cancel 100 ms into a call returns CancellationError within about 300 ms")
+    @Test("a cancel 100 ms into a call returns CancellationError within about 300 ms", .timeLimit(.minutes(1)))
     func cancellation() async throws {
         // Two minutes of speech-like audio, so the call is still running 100 ms in.
         let samples = Take.make(Array(repeating: [(0.4, true), (0.2, false)], count: 200).flatMap { $0 })
         let words = (0..<200).map { Take.word("w", Double($0) * 0.6, Double($0) * 0.6 + 0.3) }
         let refiner = snap
-        let task = Task { try await refiner.refine(words, samples: samples, sampleRate: Take.sampleRate) }
-        try await Task.sleep(for: .milliseconds(100))
         let clock = ContinuousClock()
-        let cancelledAt = clock.now
-        task.cancel()
-        let result = await task.result
-        let elapsed = cancelledAt.duration(to: clock.now)
+        // Each time is taken where it happens: the start and the return inside the call's task, the cancel on a
+        // GCD thread 100 ms after the start. Swift Testing runs suites in parallel, and on a loaded CI runner the
+        // cooperative pool can't resume this test for seconds, so a `Task.sleep` here overran the whole call
+        // (main CI, run 45363553021) and the cancel landed after the result.
+        let started = DispatchSemaphore(value: 0)
+        let task = Task { () -> (Result<[WordTimestamp], any Error>, ContinuousClock.Instant) in
+            started.signal()
+            do {
+                let refined = try await refiner.refine(words, samples: samples, sampleRate: Take.sampleRate)
+                return (.success(refined), clock.now)
+            } catch {
+                return (.failure(error), clock.now)
+            }
+        }
+        let cancelledAt: ContinuousClock.Instant? = await withCheckedContinuation { continuation in
+            DispatchQueue.global().async {
+                guard started.wait(timeout: .now() + 30) == .success else { return continuation.resume(returning: nil) }
+                Thread.sleep(forTimeInterval: 0.1)
+                let now = clock.now
+                task.cancel()
+                continuation.resume(returning: now)
+            }
+        }
+        guard let cancelledAt else {
+            task.cancel()
+            Issue.record("the call never started")
+            return
+        }
+        let (result, returnedAt) = await task.value
+        let elapsed = cancelledAt.duration(to: returnedAt)
         if case .failure(let error) = result {
             #expect(error is CancellationError)
         } else {
