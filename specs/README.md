@@ -54,7 +54,7 @@ So:
 | 11 | [Stress validation and threshold tuning](11-stress-validation-tuning.md) | Ready | 02, 10, 12, 22, 23 (b2 harness for the guard; #27 merges as measurement-only) | 9–12 h | 2.5 h |
 | 25 | [Nucleus-anchored syllable measurement (spec 11's FALLBACK; hand build)](25-nucleus-anchored-syllables.md) | Ready | 07, 08, 12, 23 (spec 11's harness and FALLBACK report) | 6–8 h | 1.5 h |
 | 26 | [Nucleus count and edge-robust assignment (stacks on 25; hand build)](26-nucleus-count-assignment.md) | Ready | 07, 08, 12, 23, 25 (stacked on branch factory/25-nucleus-anchored) | 6–8 h | 1.5 h |
-| 27 | [Word-stress classifier and native envelope: offline feasibility spike, GO/NO-GO (CTO decision 2026-11-24; Draft until CTO approves)](27-stress-classifier-feasibility-spike.md) | Draft | 02, 06, 10, 22, 24, 25 (front end, branch factory/25-nucleus-anchored), 26 (detection grid, branch factory/26-nucleus-count-assignment) | 10 h (time box) | 1.5 h |
+| 27 | [Word-stress classifier and native envelope: offline feasibility spike, GO/NO-GO (CTO approved with markups; on hold for the literature review)](27-stress-classifier-feasibility-spike.md) | Draft | 02, 06, 10, 22, 24, 25 (front end, branch factory/25-nucleus-anchored), 26 (detection grid, branch factory/26-nucleus-count-assignment) | 10 h (time box) | 1.5 h |
 | 15 | [Reference library: bundled starter phrases and native recordings](15-reference-library.md) | Done | 06, 10, 12 | 4–6 h | 1.5 h |
 | 16 | [Take store](16-take-store.md) | Done | 01, 12, 15 | 4–5 h | 1 h |
 | 14 | [Live microphone capture (macOS)](14-live-capture.md) | Done | 05 (the hand test needs spec 13) | 3–4 h | 1 h |
