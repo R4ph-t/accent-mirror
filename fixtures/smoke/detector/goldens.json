@@ -1,11 +1,11 @@
 {
-  "algorithmVersion" : 1,
+  "algorithmVersion" : 2,
   "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
   "formatVersion" : 1,
   "items" : [
     {
       "item" : "speechocean762-000360343",
-      "l1Digest" : "daedc7fadb839c448f2e7a37d98b34b2ebdf2be2faba342a016243ccd943d632",
+      "l1Digest" : "ad7b8802eb04b9d65f0bfd20247491c831a281ba40049ff22cba3400390d5588",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -49,7 +49,7 @@
     },
     {
       "item" : "speechocean762-000540058",
-      "l1Digest" : "fb1a9839ab07adecf88b79f97eec192d440fac65983c200f44b00bca96f8d892",
+      "l1Digest" : "793d59185041458227a97283135f4d3ecf6197f46438cb74b188560439bccd47",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -83,7 +83,7 @@
     },
     {
       "item" : "speechocean762-001450171",
-      "l1Digest" : "a9b681597146be338c738ac67c6aef6ec90988215f33d49d69621b671cee5aed",
+      "l1Digest" : "2c7cfd5d72eed68ecff23e1d360936b8c0e0763b1c646b7b75e63b1c89840453",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -106,7 +106,7 @@
     },
     {
       "item" : "speechocean762-004820329",
-      "l1Digest" : "09857360da824cdaf28ea1c5cbf819771316e15b191a7f771f62ea81c4165476",
+      "l1Digest" : "033da34b8b453092e56dd8b11d58f647f1ad523d43bcc51baf38f91b09ccd359",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -141,7 +141,7 @@
     },
     {
       "item" : "speechocean762-004820378",
-      "l1Digest" : "3792ae729f7f970560c425274a0bfaaf210de5fa305c569f1bab97765f01ab2b",
+      "l1Digest" : "cad9990b95579f3f213f48943bccc6e21bfbcddccbfdb06446e0fa842e0899f2",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -186,7 +186,7 @@
     },
     {
       "item" : "speechocean762-008130346",
-      "l1Digest" : "943b6dfe3b335d008e02058bece4a79975dd4d7e9a5c281dcc8ff0c93ac50c51",
+      "l1Digest" : "0fd8dc5157112b070edd309936644eca4fa607998d1bd71dde457326ebf2cf6f",
       "words" : [
         {
           "flaggedAfterSuppression" : true,
@@ -210,7 +210,7 @@
     },
     {
       "item" : "speechocean762-009600335",
-      "l1Digest" : "f93127ebc6a3909740600a88f5fa9e357b067459c34b3d21200d4c169779c7cd",
+      "l1Digest" : "1ff8322aa2d6343e432358ecdda88b247728e29d3a7fc670a837772c78c1f2b4",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -226,7 +226,7 @@
     },
     {
       "item" : "speechocean762-010120265",
-      "l1Digest" : "7113686825065b2e647807db03df4716f1144c073ffeb5612ac7eec3416c7890",
+      "l1Digest" : "77cdcda2dcd18a59b4f1e36a9b8f2516171267c30a49bdd6e370393b397d649d",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -257,7 +257,7 @@
     },
     {
       "item" : "speechocean762-010330103",
-      "l1Digest" : "f4b55490afcf0ff7cf2c9d0d48e90a91db00eb1a2af4402b6df331c7be1c6142",
+      "l1Digest" : "7a0897b3287704231225309211d3259153658256921d45204b9888df6f1c74e1",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -291,7 +291,7 @@
     },
     {
       "item" : "speechocean762-010640280",
-      "l1Digest" : "e0b81bc0104dfe9b8f55cb5d1d30248aa6aabfe5aa4cc8b7b9ca7e0de1db1eca",
+      "l1Digest" : "958792cd830b3b716a3023604691f2a99316e70ee0171c2d960584c3b68f6a49",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -304,7 +304,7 @@
     },
     {
       "item" : "speechocean762-013090076",
-      "l1Digest" : "3eee9de846aa4506b546691c39827be07bd21634a64a9ae01ac11faa52daf9d1",
+      "l1Digest" : "0118dfa95ff7b2be84e2bc7249265bfc8fb45e855aca563449eb30066fbb0b5d",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -339,7 +339,7 @@
     },
     {
       "item" : "speechocean762-013620106",
-      "l1Digest" : "31ec291aeb426f681875c36dd3a5c7d28545ea96345f17b285ae53777fb1716e",
+      "l1Digest" : "5553d86835ac4aa0dbe73cfbb6d2cd8121c8296a36643115abd520b0e423fa78",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -352,7 +352,7 @@
     },
     {
       "item" : "speechocean762-014070304",
-      "l1Digest" : "a44caa55c6f67808f86eb87dc5afc3e4d370f6f756b05819b7b38e347d1ee88d",
+      "l1Digest" : "5151b85e4786a1b3160fe05a9347a50b7619726b88ad16975156e73564cc3d7d",
       "words" : [
         {
           "flaggedAfterSuppression" : true,
@@ -367,7 +367,7 @@
     },
     {
       "item" : "speechocean762-014190062",
-      "l1Digest" : "8b6af60d380d7a712963280c9c6dd1f9c7e3360279d849e2e58d7a83fb747b4b",
+      "l1Digest" : "43143f545b0f00e9d4e716b299cbf41852009affd4b52465f07af10fadac0337",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -380,7 +380,7 @@
     },
     {
       "item" : "speechocean762-014190073",
-      "l1Digest" : "f08653956f55b62a50d26a1f64c969b5bd8c2c39e342a8b6d342b1c8041ebc6c",
+      "l1Digest" : "5207fe1cabbc1e7507f6bd05c15c4427e1473d09daeaac7a56a052e22818e129",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -393,7 +393,7 @@
     },
     {
       "item" : "speechocean762-014350127",
-      "l1Digest" : "0d961c5bc8002d17401a6ec8e005ad83edcddd7475bb2d81b3b0791a43ea711b",
+      "l1Digest" : "dbc248b8b61e82fa06152d98121cdbb3c845c7ffe0f2af2977345d3fcc5a92b4",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -413,7 +413,7 @@
     },
     {
       "item" : "speechocean762-020590077",
-      "l1Digest" : "74d00be683ed67c5c782da60f422beff4c6151a03de768b67a60c0baff80355e",
+      "l1Digest" : "ac6f385dc2fbe920ec1a270b7ca7885b4ec52bb1d49750a95354359cfe1d4169",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -467,7 +467,7 @@
     },
     {
       "item" : "speechocean762-020610174",
-      "l1Digest" : "95c9e83e068c56866d074378d1441bb019f7c82976fc6e39e2ef0d0a7d6363f8",
+      "l1Digest" : "ec0d852b66f475675591c563deae9adffa080b944aa93583722d5a23f37d4338",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -491,7 +491,7 @@
     },
     {
       "item" : "speechocean762-020890003",
-      "l1Digest" : "a55dbb9317b85174dca56f993062a6d07e505d28c591a6dd39f9768c7989c506",
+      "l1Digest" : "d4d310c28cc95e9921679bc23c02f1c448c411ab7c2a5b6845fcc797063c5127",
       "words" : [
         {
           "flaggedAfterSuppression" : true,
@@ -535,7 +535,7 @@
     },
     {
       "item" : "speechocean762-022360321",
-      "l1Digest" : "c9d22c9746e7ac9d9e9ab1378d72679d8b7d193b1302bf7b849c73851d694472",
+      "l1Digest" : "75c769f66f00cbd7c4bf4b0393426788e625e1fe730d8be9c980a6fea513455f",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -577,7 +577,7 @@
     },
     {
       "item" : "speechocean762-022420086",
-      "l1Digest" : "bcbc0aad805373bb39c39a79f42efb4d257394a04fd8c46e5f118f7d31ee74c5",
+      "l1Digest" : "775a0661b00bb7ed6ceb1015dcdc98a181fde61ad7c0b66bb2bb47bf46e5d421",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -621,7 +621,7 @@
     },
     {
       "item" : "speechocean762-022440073",
-      "l1Digest" : "ee1c8e34fae9b72d153b44a60c0f441499454c164e0fdb049cde018fbc9ca199",
+      "l1Digest" : "8077308617e4309834e8136a9b8d75474e7ba701d493ab6261b62874939b2f9f",
       "words" : [
         {
           "flaggedAfterSuppression" : true,
@@ -664,7 +664,7 @@
     },
     {
       "item" : "speechocean762-023800160",
-      "l1Digest" : "10d39c2bec4dc62702274b3a54a7362279e0591480e38005a13f4a0cf6d2f372",
+      "l1Digest" : "931f75dd142f227820f86558e8a45944915ead94cfdad6c5e89421f58e2a8404",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -698,7 +698,7 @@
     },
     {
       "item" : "speechocean762-023800330",
-      "l1Digest" : "e5bc478f3d4ff8df52b947f090126bfe11b116bd40ec79ecee710f7c2cb63e25",
+      "l1Digest" : "1744d77fe3c0586d494ae92f8b99870344556daefca5d089bf394dba21407ec2",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -713,7 +713,7 @@
     },
     {
       "item" : "speechocean762-024020142",
-      "l1Digest" : "95bfc514f14b9406d65ab33da788ed5a29229f6bf29b10ca9df5ad4c130b7713",
+      "l1Digest" : "e8ba811fabc3f51ff68b09aaeae8d6c84805be1e8aea611dc6e967dd93c40bc7",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -756,7 +756,7 @@
     },
     {
       "item" : "speechocean762-024020175",
-      "l1Digest" : "c44bffd27758c70e73a095184da53e5bebc2d506e0846baadd44b532dfcceb8c",
+      "l1Digest" : "cfb3d6994a69a0eae1e568ed978a845b918c56619ca699d6edb06624d5bbf9b8",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -789,7 +789,7 @@
     },
     {
       "item" : "speechocean762-024020328",
-      "l1Digest" : "d8c61eb7eef1a9e99167a66cba60bec6d223a5170e51c6fabd126e6406c08109",
+      "l1Digest" : "3660f31e430f4a8209374e6a77261af41a46c8e09cd53b5a8b42e2b164bd2683",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -830,7 +830,7 @@
     },
     {
       "item" : "speechocean762-024270127",
-      "l1Digest" : "6a50691ec8874e68ecd07e9bfbf0d44d43b0cf08aaab34c5b00acb89a06c7085",
+      "l1Digest" : "68a57f130502fcbe55044f2a6ecafae3973455a35350479b0bb5d66c7b3b87eb",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -865,7 +865,7 @@
     },
     {
       "item" : "speechocean762-024300099",
-      "l1Digest" : "ae433a501bc8fb72e0b0ef154a39a5fc8b74a75ca02fcbeafcb02199ff58a9bb",
+      "l1Digest" : "6798ee20455048fb0fb7a716d1c791a9c6b87130cc398934c62322ee102f9c2e",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -881,7 +881,7 @@
     },
     {
       "item" : "speechocean762-024500151",
-      "l1Digest" : "ba24823594f596ea2a49eead005dfe8407bf5453d43d4c6aa1d527677272a27c",
+      "l1Digest" : "a6e903973393b54f9d6c42b169a8e3af8fa223b921c6ac34238988ae49586a1a",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -915,7 +915,7 @@
     },
     {
       "item" : "speechocean762-027990156",
-      "l1Digest" : "82d5a4be2d0020b138ae0cd4e292c5c10acf2f84b3ed90999d8f42b3b9797240",
+      "l1Digest" : "89933e10be213bd143e88ede1780cb45fadcbef49f63bedff80ab06b6ffa980c",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -959,7 +959,7 @@
     },
     {
       "item" : "speechocean762-030230092",
-      "l1Digest" : "565d74d78f97d775258279b47594eaf2626cf91fe3215c0f5925091c8d576eb6",
+      "l1Digest" : "91920c31afa52d155328955acd731dbf35acdd54509930d3b8729c30ef0fdf6c",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -985,7 +985,7 @@
     },
     {
       "item" : "speechocean762-040050107",
-      "l1Digest" : "08ac3117a2988eb6906fe647959635612754bd91d9b6b0f34167b013333792af",
+      "l1Digest" : "412efb199b144b46d7551baffd91d49a608a5ec8623a3ee91dd6215c8e1b142f",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1020,7 +1020,7 @@
     },
     {
       "item" : "speechocean762-054180022",
-      "l1Digest" : "469ce59757bacfa80496e4bcdb14d74f88a986330d8b282d0edda82bc3607714",
+      "l1Digest" : "ae80e02304fa370d23a8079cff7c8ccc592b1b4fa6a3d5c3f0f0b5d27b960e14",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1053,7 +1053,7 @@
     },
     {
       "item" : "speechocean762-054180087",
-      "l1Digest" : "240b47598456f01a0b7160ee673e1a3ea4c89b09fbb62e908dcaf1d63c291ff8",
+      "l1Digest" : "d26c019c274579d29e8eaaa02b5a07f4a6154b4a2eb0ed513a4b64735b09a6ea",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1097,7 +1097,7 @@
     },
     {
       "item" : "speechocean762-055510122",
-      "l1Digest" : "9675b714fc31b64e9c1084f1e10597320d50e1ba7192184889c09ec0e74d2fc4",
+      "l1Digest" : "fbd87da7e31a8b16e23d0f62637a556157e886bca42db41e126b86bc36897f23",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1141,7 +1141,7 @@
     },
     {
       "item" : "speechocean762-060100037",
-      "l1Digest" : "a492c5219edce723228a088310965abf0468d87f3c311e8bad477d1203b0d94e",
+      "l1Digest" : "55cfee302ba3500371e9fa937a4256a885960a03e0522f8b6edd1c92d0a9af45",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1157,7 +1157,7 @@
     },
     {
       "item" : "speechocean762-061210174",
-      "l1Digest" : "a521fdab5313b28ee71dc50a945676cce9ee8542168a48f5270399b6c30af9e5",
+      "l1Digest" : "91648dc6ec645e91addb693cd20b0e625ec4f9d7fea6ac17f92590a5530bbf84",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1192,7 +1192,7 @@
     },
     {
       "item" : "speechocean762-080020017",
-      "l1Digest" : "1d848c20cb2193cde40f945ed19253c378f0672d025df338df73cbe580fbcb8f",
+      "l1Digest" : "f1a4534d4f1a986c74b13040eeccbaf4fcf2d7f86e4fc98a832e6f2ddceaf310",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1205,7 +1205,7 @@
     },
     {
       "item" : "speechocean762-085850170",
-      "l1Digest" : "44ee55d4e57da58da1774dff72b4842968ba9e06e5b2dfdc1e753dda1a1d748b",
+      "l1Digest" : "a7390a30bc46fa3b9a5863c2ce6b5e9b29a3536a19373db191af5b6c7077a2f8",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1241,7 +1241,7 @@
     },
     {
       "item" : "speechocean762-095560008",
-      "l1Digest" : "0679a604d11c156b11c001f5fc001563c50d2927bcd5c14ca943385503c43b57",
+      "l1Digest" : "f49c5fc872592fd230b7271b6ec7fd52f0ad27ce1ab365b4d2dcc1e2f3bc1659",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1254,7 +1254,7 @@
     },
     {
       "item" : "speechocean762-095560051",
-      "l1Digest" : "c54b27f6d87d9296d2f31e0337633508022f75358b15c597d04667011d206d7e",
+      "l1Digest" : "ac94b7fca5d89f48bd80f1723cc366fe5c10295cd8c920c095b8df05480923de",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1298,7 +1298,7 @@
     },
     {
       "item" : "speechocean762-096000002",
-      "l1Digest" : "0f4f68b4765aa00e4c8318ef3bb4fdd7e4ba612785a7ebcbf61b359c5fe5f68f",
+      "l1Digest" : "cdce147e48c32812b1fb24902a928e043eacc3c72658b923c8495ef9f3b9db01",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1323,7 +1323,7 @@
     },
     {
       "item" : "speechocean762-096060001",
-      "l1Digest" : "5013936d0d2d63be6a96e1fb99446c6873274f09a52805db5d1fa8a4d6b3fc3c",
+      "l1Digest" : "832e314a3454abae6588e9804ad5d19403830ee08cae439ee359ff2ca499ff6c",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1336,7 +1336,7 @@
     },
     {
       "item" : "speechocean762-096160010",
-      "l1Digest" : "04b361f4f65a76850b7f0bd77eb91129000ecbddb796f051cc2b086d3f73182d",
+      "l1Digest" : "fca43a27341d8b611a40c27bb42346c1426db5a491d7955f54d92e040ab59027",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1349,7 +1349,7 @@
     },
     {
       "item" : "speechocean762-096190009",
-      "l1Digest" : "3f3e86ea5768a9f88a6f850321c5e3ade6e808e629d8dff0057f2a29a5f233fc",
+      "l1Digest" : "03529ec60484715eff2c8b697207eee1be2497fbfe6be05e3cc01e1e7487ad9e",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1362,7 +1362,7 @@
     },
     {
       "item" : "speechocean762-096430009",
-      "l1Digest" : "86ef1b5c5f3fcbb0d9a2cddce7607ed6f0fea910d46c40e06676b042200b04f1",
+      "l1Digest" : "d2dc0d82387515603cac67a61293e836b586930ce32ae17aef8f30fd5bb3f384",
       "words" : [
         {
           "flaggedAfterSuppression" : false,
@@ -1375,7 +1375,7 @@
     },
     {
       "item" : "vctk-p245_002",
-      "l1Digest" : "ded17f9c8b0ebd39e4fe7b2c97eec23adc0421ad069aa843fd6729f3e3ad01d3",
+      "l1Digest" : "3f516b25da6cd38853df2ae552f1c43ebb106ddc736bfe740a5ef8893a004850",
       "verdict" : {
         "decision" : {
           "verdict" : {
@@ -1400,7 +1400,7 @@
     },
     {
       "item" : "vctk-p245_018",
-      "l1Digest" : "5a24e7776a08cd6ba237022527698a113272154080a6f65bc5822aa5e7169f5e",
+      "l1Digest" : "249dab724d68445802d166a183e5291989224eeb92c1da3583503ad595fe427f",
       "verdict" : {
         "decision" : {
           "verdict" : {
@@ -1468,7 +1468,7 @@
     },
     {
       "item" : "vctk-p288_002",
-      "l1Digest" : "f1b82ff0c73c138a7a22d3981bc54307086f0499fa1836263b928088b682979d",
+      "l1Digest" : "cb6d02ad04fce1619a7fb1a5e01076e265aac87a318ea3ecb42fdbda182812d3",
       "verdict" : {
         "decision" : {
           "verdict" : {
@@ -1493,7 +1493,7 @@
     },
     {
       "item" : "vctk-p288_018",
-      "l1Digest" : "be7eb8470303f5371f12243d88c5f7a02bac3bf75b5f5ac9e11a21a65fa01b12",
+      "l1Digest" : "aca0787b64caf07b233390ae6e6497808e7fde77bf297b18c4ec8c022aec6978",
       "verdict" : {
         "decision" : {
           "verdict" : {
@@ -1554,7 +1554,7 @@
     },
     {
       "item" : "vctk-p360_002",
-      "l1Digest" : "856071f276c181c068252d1de773d6aa5d3307fea84a0a13caae2888490e127b",
+      "l1Digest" : "18c358c14cf9623846cdfac5ed94128b415b9f0d5fe6a3fb6d4f83bd5160c2d7",
       "verdict" : {
         "decision" : {
           "verdict" : {
@@ -1579,7 +1579,7 @@
     },
     {
       "item" : "vctk-p360_018",
-      "l1Digest" : "4c3704e9567703fb620f42ca55ee1bd6e7b5b4da14697f9f4670c5703fbe54fa",
+      "l1Digest" : "e082cbb7369a8baf213aec8b62bc640fcf5568f08ba233221c178240199f57bf",
       "verdict" : {
         "decision" : {
           "verdict" : {
@@ -1648,5 +1648,5 @@
       ]
     }
   ],
-  "thresholdsVersion" : 8
+  "thresholdsVersion" : 9
 }
