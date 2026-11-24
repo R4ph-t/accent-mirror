@@ -50,7 +50,7 @@ So:
 | 09 | [Partial time map and native band](09-partial-time-map-band.md) | Done | 02, 04, 07 | 3–4 h | 1 h |
 | 10 | [Measures, verdict and diffs](10-measures-verdict-diffs.md) | Done | 02, 08, 09 | 4–5 h | 1.5 h |
 | 22 | [Synthetic native references (evaluation only)](22-synthetic-native-references.md) | Done | 02, 10 | 4–6 h | 1.5 h |
-| 12 | [Analysis pipeline and coordinator](12-analysis-coordinator.md) | Ready | 03, 05, 10 | 6–8 h | 1.5 h |
+| 12 | [Analysis pipeline and coordinator](12-analysis-coordinator.md) | Done | 03, 05, 10 | 6–8 h | 1.5 h |
 | 11 | [Stress validation and threshold tuning](11-stress-validation-tuning.md) | Ready | 02, 10, 12, 22, 23 (b2 harness for the guard; #27 merges as measurement-only) | 9–12 h | 2.5 h |
 | 15 | [Reference library: bundled starter phrases and native recordings](15-reference-library.md) | Ready | 06, 10, 12 | 4–6 h | 1.5 h |
 | 16 | [Take store](16-take-store.md) | Ready | 01, 12, 15 | 4–5 h | 1 h |
