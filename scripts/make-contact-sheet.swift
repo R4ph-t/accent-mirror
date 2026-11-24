@@ -40,7 +40,10 @@ for (index, file) in names.enumerated() {
     let top = gap + CGFloat(row) * (tile.height + caption + gap)
     let y = size.height - top - tile.height
     if let image = NSImage(contentsOf: dir.appendingPathComponent(file)) {
-        image.draw(in: NSRect(x: x, y: y, width: tile.width, height: tile.height))
+        // Aspect-fit, top-left: a narrow fixture's frame (960 × 732 pt) isn't stretched to the 3:2 tile.
+        let fit = min(tile.width / image.size.width, tile.height / image.size.height)
+        let drawn = CGSize(width: image.size.width * fit, height: image.size.height * fit)
+        image.draw(in: NSRect(x: x, y: y + tile.height - drawn.height, width: drawn.width, height: drawn.height))
     }
     let label = String(file.dropLast(suffix.count)) as NSString
     label.draw(at: NSPoint(x: x, y: y - caption + 7), withAttributes: [.font: font, .foregroundColor: ink])

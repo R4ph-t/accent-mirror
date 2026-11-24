@@ -12,8 +12,13 @@ struct ShellView: View {
             detail: { DetailPane(model: model) },
             inspector: { InspectorPane(model: model) }
         )
+        // The 960 × 680 minimum is the whole window, title bar included (spec 18; Addendum r4 C8). The app's
+        // window takes its minimum from this frame (`.windowResizability(.contentMinSize)`), and SwiftUI measures
+        // it below the 52 pt title bar, so the height leaves the title bar out: asking for 680 here held windows
+        // at 732 pt (fixes round 5b).
+        .frame(minWidth: Metrics.minimumWindow.width,
+               minHeight: Metrics.minimumWindow.height - Metrics.toolbarHeight)
         .ignoresSafeArea()
-        .frame(minWidth: Metrics.minimumWindow.width, minHeight: Metrics.minimumWindow.height)
         .background(WindowChromeConfigurator())
     }
 }

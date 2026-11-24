@@ -2,7 +2,7 @@
 
 Status: Done · Branch: factory/18-19-ui-shell (PR #4), fixes on factory/18-19-fixes · Depends on: 00 (project skeleton) · Estimate: 3–5 h agent run + 1 h Raph review
 
-Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)", including Addendum 2026-11-23 (r2) and Addendum 2026-11-23 (r3); r3 wins over r2 and spec v2 wherever they differ). Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px).
+Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)", including Addendum 2026-11-23 (r2), Addendum 2026-11-23 (r3), Addendum 2026-11-23 (r4, C1–C9) and Addendum 2026-11-23 (r5, D1–D3); r5 wins over r4, r3, r2 and spec v2, r4 over r3, r2 and spec v2, and r3 over r2 and spec v2, wherever they differ). Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px).
 
 ## Goal
 
@@ -104,6 +104,8 @@ From the right: the inspector toggle, the take menu, You, Record, Model.
 - **Record:** 104 wide, the Lime button gradient with onLime text and a filled dot. The recording appearance (Stop with a filled square, same Lime, plus "● RECORDING 0:02" in lime.text Geist Mono) is styled here; live capture waits for a later spec.
 - **Take menu:** "TAKE 03" in Geist Mono with a chevron, or "TAKES" when there are none. Unsaved-attempt labelling is spec 19.
 - **Title block:** the phrase in Funnel Display 16 / 600, with a subtitle in Geist 12 secondary: "{pack} · Native speaker {voice}, VCTK" for starter phrases and "My Phrases · From {file name}" for clips. The Photography fixture uses "My Phrases · From demo-talk.m4a".
+- **Narrow windows (Addendum r4 C7, r5 D1):** first the title gives up its extra width, down to 160 pt, before any control compacts; the subtitle truncates first, then the title, and the full title is in the tooltip and read by VoiceOver. At the default 1200 pt window with the inspector open nothing compacts: the take menu keeps "TAKE 03" and the title truncates. Only when a 160 pt title no longer fits do the controls compact, in this order: (1) the take menu becomes its chevron, with "Takes" or "Take 03" as tooltip and VoiceOver label; (2) Record becomes its dot, 40 pt wide, still in the Lime button, with "Record (Space)" as tooltip and VoiceOver label (the Stop square while recording); (3) Model and You drop the play triangle and keep their words, with 8 pt side padding. Model and You never become icon-only. Only after all three steps may the title go down to 154 pt (960 pt with the inspector open). The gaps between controls never shrink.
+- **Minimum window (Addendum r4 C8):** 960 × 680 pt, with the inspector open too.
 
 ### App target
 
@@ -178,4 +180,17 @@ If `NavigationSplitView` fights solid chrome on macOS 26, use the AppKit split-v
   `row.hover` tint at 13 / 400, primary. The focus ring is 2 pt, radius 6. The Reduce Motion hook drops the hover fade.
 - **Commands.** View ▸ Hide Sidebar (⌃⌘S) replaces the system sidebar command. There is no sidebar button in the
   chrome and no number-key shortcuts.
-
+- **Fixes round 5 (2026-11-23).** The toolbar title kept 160 pt with round 5's compaction order, which round 5b
+  replaced.
+- **Fixes round 5b (2026-11-23).** Toolbar per Addendum r4 C7: `ToolbarCompaction.decide` is the pure decision, and
+  `ToolbarView` measures the controls and draws the chosen level. At 960 pt with the inspector open the controls
+  need 6 pt more than there is (414 pt for 408), so the title gets 154 pt; see spec 19's round 5b note. Minimum
+  window per C8: 960 × 680 pt for the whole window, title bar included. The window takes its minimum from
+  `ShellView`'s minimum frame (`.windowResizability(.contentMinSize)`), which SwiftUI measures below the 52 pt
+  title bar, so that frame asks for 960 × 628; asking for 680 there held windows at 732 pt.
+- **Fixes round 6 (2026-11-24).** Toolbar per Addendum r5 D1, which replaces round 5b's order: the title gives up
+  its extra width down to 160 pt before any control compacts, so at 1200 pt with the inspector open the take menu
+  keeps "TAKE 03" (round 5b collapsed it to its chevron there). The steps follow in C7 order, each one only when a
+  160 pt title no longer fits; after all three the title may go to 154 pt, which is exactly what 960 pt with the
+  inspector open leaves (408 − 238 − 16). `ToolbarCompaction.decide` no longer takes the title's natural width.
+  The title block carries the full title as its tooltip; see spec 19's round 6 note.

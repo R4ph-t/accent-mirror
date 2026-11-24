@@ -303,17 +303,148 @@ struct ShellContractTests {
             #expect(try changedBars(name).isEmpty, "\(name)")
             #expect(try pitchChanged(name), "\(name)")
         }
-        // Bars only, and only stressed ones (no small-syllable change, which would be a reduction row).
+        // Bars only. Contrast changes only the named stressed bars; too much contrast also lowers their
+        // unstressed neighbours (r4 C4) and brings the small syllables it doesn't name to native's relative height
+        // (r5 D2), never anything else.
         #expect(try changedBars("rows-contrast") == ["har", "looks"])
-        #expect(try changedBars("rows-too-much-contrast").isSubset(of: stressed))
+        #expect(try changedBars("rows-too-much-contrast")
+            .isSubset(of: stressed.union(["is", "der", "it", "pho", "ra", "phy", "than"])))
         for name in ["rows-contrast", "rows-too-much-contrast"] { #expect(try !pitchChanged(name), "\(name)") }
         let weak = prominences(try #require(try library.load("rows-contrast").take))
         let strong = prominences(try #require(try library.load("rows-too-much-contrast").take))
         for word in ["har", "looks"] {
             #expect(weak[word]! < prominences(close)[word]!)
             #expect(strong[word]! > prominences(close)[word]!)
-            #expect(strong[word]! > strong["tog"]!)
         }
+    }
+
+    /// r4 C1: the native question rise dips low at the start of LOOKS, then rises in a curve that gets steeper
+    /// (concave up) through the last 60% or so of the word, ends near the TOG peak at 85–90% of the plot height,
+    /// flattens slightly at the very end and stays inside the plot. No straight ramp, no kink before LOOKS.
+    private func questionRiseHasTheR4Shape(_ loaded: LoadedFixture) throws {
+        let band = loaded.phrase.band.flatMap(\.points)
+        let range = loaded.phrase.rangeSemitones
+        let looks = try #require(loaded.phrase.words.last)
+        let inLooks = band.filter { $0.t >= looks.start }
+        let dip = try #require(inLooks.min { $0.st < $1.st })
+        // The dip sits in the first quarter of LOOKS and is the lowest point since HARDER's peak.
+        #expect(dip.t <= looks.start + 0.25 * (looks.end - looks.start))
+        #expect(band.filter { $0.t > 0.6 }.allSatisfy { $0.st >= dip.st })
+        // Ends at 85–90% of the plot height (bottom −range, top +range), near the TOG peak, inside the plot.
+        let height = { (st: Double) in (st + range) / (2 * range) }
+        let end = try #require(band.last)
+        #expect((0.85...0.90).contains(height(end.st)))
+        let tog = try #require(band.filter { $0.t < 0.3 }.max { $0.st < $1.st })
+        #expect(abs(height(end.st) - height(tog.st)) < 0.08)
+        #expect(band.allSatisfy { abs($0.st) + $0.half < range })
+        // Concave up from the dip until the last span, which flattens.
+        let rise = band.filter { $0.t >= dip.t }
+        let slopes = zip(rise, rise.dropFirst()).map { ($1.st - $0.st) / ($1.t - $0.t) }
+        #expect(slopes.count >= 5)
+        let climbing = slopes.dropLast(2)
+        #expect(zip(climbing, climbing.dropFirst()).allSatisfy { $1 >= $0 }, "concave up: \(slopes)")
+        #expect(slopes.last! < slopes[slopes.count - 2] && slopes.last! > 0, "flattens at the end")
+        #expect(slopes.max()! > 3 * slopes.first { $0 > 0 }!, "a curve, not a straight ramp")
+        // From HARDER's last point down to the dip the descent only eases: no kink before LOOKS.
+        let fall = band.filter { $0.t >= 0.585 && $0.t <= dip.t }
+        let fallSlopes = zip(fall, fall.dropFirst()).map { ($1.st - $0.st) / ($1.t - $0.t) }
+        #expect(fallSlopes.allSatisfy { $0 < 0 })
+        #expect(zip(fallSlopes, fallSlopes.dropFirst()).allSatisfy { $1 >= $0 }, "no kink: \(fallSlopes)")
+    }
+
+    /// The unstressed neighbours of the syllables a too-much-contrast row names that are lighter in your take than
+    /// the row's 2× rule allows next to native (r4 C4): the strip's "light neighbours".
+    private func lightNeighbours(_ loaded: LoadedFixture) throws -> Set<String> {
+        guard let row = loaded.fixture.analysis?.verdict?.rows?.first(where: { $0.kind == .tooMuchContrast }),
+              let take = loaded.take
+        else { return [] }
+        let native = loaded.phrase.words.flatMap(\.syllables)
+        let mine = take.words.flatMap(\.syllables)
+        guard native.count == mine.count else { return [] }
+        let named = Set((row.targets ?? []).map { $0.lowercased() })
+        var neighbours: Set<String> = []
+        for index in mine.indices where named.contains(mine[index].text.lowercased()) {
+            for other in [index - 1, index + 1] where mine.indices.contains(other) && !native[other].stressed {
+                let nativeRatio = native[other].prominence / native[index].prominence
+                let mineRatio = mine[other].prominence / mine[index].prominence
+                if mineRatio <= nativeRatio / 2 + 1e-9 { neighbours.insert(mine[other].text.lowercased()) }
+            }
+        }
+        return neighbours
+    }
+
+    /// r4 C4 and r5 D2: the too-much-contrast strip shows more contrast than the model, and nothing else.
+    /// - Named syllables stand at full height.
+    /// - Each unstressed neighbour of a named syllable is at most half as tall relative to it as the native's
+    ///   neighbour is to the native's (the row's 2× rule): a light neighbour.
+    /// - Every other syllable keeps native's relative height (±10%; TOG to 1%), except one a reduction row in the
+    ///   same take names, which may be heavier (`feedback-too-much-contrast-last`: ra, phy and than; pho is not
+    ///   named, so it stays at native's height).
+    @Test(arguments: ["rows-too-much-contrast", "feedback-too-much-contrast-last"])
+    func tooMuchContrastStripShowsMoreContrast(_ name: String) throws {
+        let loaded = try library.load(name)
+        let native = loaded.phrase.words.flatMap(\.syllables).map { (text: $0.text.lowercased(), prominence: $0.prominence) }
+        let mine = try #require(loaded.take).words.flatMap(\.syllables).map { (text: $0.text.lowercased(), prominence: $0.prominence) }
+        #expect(native.map(\.text) == mine.map(\.text))
+        let rows = loaded.fixture.analysis?.verdict?.rows ?? []
+        let row = try #require(rows.first { $0.kind == .tooMuchContrast })
+        let named = Set((row.targets ?? []).map { $0.lowercased() })
+        let reductionNamed = Set(rows.filter { $0.kind == .reduction }.flatMap { $0.targets ?? [] }.map { $0.lowercased() })
+        let nativeMax = native.map(\.prominence).max()!, mineMax = mine.map(\.prominence).max()!
+        let stressed = Set(loaded.phrase.words.flatMap(\.syllables).filter(\.stressed).map { $0.text.lowercased() })
+        var neighbours: Set<String> = []
+        for (index, syllable) in mine.enumerated() where named.contains(syllable.text) {
+            for other in [index - 1, index + 1] where mine.indices.contains(other) && !stressed.contains(mine[other].text) {
+                neighbours.insert(mine[other].text)
+                let nativeRatio = native[other].prominence / native[index].prominence
+                let mineRatio = mine[other].prominence / mine[index].prominence
+                #expect(mineRatio <= nativeRatio / 2 + 1e-9, "\(mine[other].text) next to \(syllable.text)")
+            }
+        }
+        #expect(neighbours == ["is", "der", "it"])
+        #expect(try lightNeighbours(loaded) == neighbours)
+        for (index, syllable) in mine.enumerated() {
+            let nativeRelative = native[index].prominence / nativeMax
+            let mineRelative = syllable.prominence / mineMax
+            if named.contains(syllable.text) {
+                #expect(syllable.prominence == mineMax, "\(syllable.text) at full height")
+            } else if neighbours.contains(syllable.text) {
+                continue
+            } else if stressed.contains(syllable.text) {
+                #expect(abs(mineRelative - nativeRelative) < 0.01, "\(syllable.text) keeps native's relative height")
+            } else if reductionNamed.contains(syllable.text) {
+                #expect(mineRelative >= nativeRelative, "\(syllable.text) is named by the reduction row: never lighter")
+            } else {
+                #expect(abs(mineRelative / nativeRelative - 1) <= 0.10,
+                        "\(syllable.text) isn't named: native's relative height (\(mineRelative) vs \(nativeRelative))")
+            }
+        }
+        if name == "rows-too-much-contrast" {
+            #expect(reductionNamed.isEmpty)
+        } else {
+            #expect(reductionNamed == ["ra", "phy", "than"])
+            let pho = try #require(mine.firstIndex { $0.text == "pho" })
+            #expect(abs((mine[pho].prominence / mineMax) / (native[pho].prominence / nativeMax) - 1) <= 0.10)
+        }
+    }
+
+    /// r5 D2: a syllable that is a light neighbour in a too-much-contrast row is never named in a reduction row,
+    /// in any fixture. `feedback-too-much-contrast-last` reads "ra, phy, than." with no "der".
+    @Test func lightNeighboursAreNeverNamedAsTooHeavy() throws {
+        var checked = 0
+        for name in try library.allNames() {
+            let loaded = try library.load(name)
+            let light = try lightNeighbours(loaded)
+            guard !light.isEmpty else { continue }
+            checked += 1
+            let reduction = (loaded.fixture.analysis?.verdict?.rows ?? []).filter { $0.kind == .reduction }
+            let reductionNamed = Set(reduction.flatMap { $0.targets ?? [] }.map { $0.lowercased() })
+            #expect(reductionNamed.isDisjoint(with: light), "\(name): \(reductionNamed.intersection(light))")
+        }
+        #expect(checked >= 2)
+        let rows = try sentences("feedback-too-much-contrast-last")
+        #expect(rows.first == "Keep the small syllables short and light: ra, phy, than.")
+        #expect(!rows.joined().contains("der"))
     }
 
     /// Round 4, Designer answer 1: "End higher" sits on a question whose native really rises at the end, and
@@ -323,8 +454,8 @@ struct ShellContractTests {
         let higher = try library.load("rows-final-direction-higher")
         #expect(higher.phrase.text == "Is photography harder than it looks?")
         #expect(higher.fixture.sidebar?.selectedPhraseID == higher.phrase.id)
-        #expect(ending(higher.phrase.band.flatMap(\.points).map(\.st)) > 3)
         #expect(ending(pitch(try #require(higher.take))) < -3)
+        try questionRiseHasTheR4Shape(higher)
         let words = try #require(higher.take).words.compactMap(\.expected)
         #expect(words == higher.phrase.words.map { $0.text.lowercased().trimmingCharacters(in: .punctuationCharacters) })
 

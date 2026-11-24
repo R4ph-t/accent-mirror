@@ -257,32 +257,96 @@ private struct MissingSlots: View {
 
 // MARK: - Labels
 
+/// One row's labels: a syllable label centred under each cluster, and the struck-through expected word over each
+/// missing slot. When they don't all fit with 4 pt between them, `LabelLayout` hides unstressed syllables first;
+/// stressed syllables and the mistake marker always show. A hidden label keeps a tooltip over its syllable, and the
+/// row's accessibility label reads every label (fixes round 5).
 private struct ClusterLabels: View {
     @Environment(\.palette) private var palette
     var clusters: [StripCluster]
     var slots: [MissingSlot]
 
+    private enum Content {
+        case syllable(ClusterLabel, tooltip: String?)
+        case missing(String)
+    }
+
+    private struct Entry {
+        var content: Content
+        var center: CGFloat
+        /// Width of the syllable's own span: a hidden label's tooltip area never reaches past it.
+        var span: CGFloat
+        var width: CGFloat
+        var priority: LabelLayout.Priority
+        var spoken: String
+        var tooltip: String
+    }
+
     var body: some View {
         GeometryReader { proxy in
-            ForEach(Array(clusters.enumerated()), id: \.offset) { _, cluster in
-                if let label = cluster.label {
-                    LabelView(label: label)
-                        .fixedSize()
-                        .help(cluster.tooltip ?? "")
-                        .position(x: CGFloat((cluster.start + cluster.end) / 2) * proxy.size.width, y: proxy.size.height / 2)
+            let entries = entries(width: proxy.size.width)
+            let shown = LabelLayout.visibility(entries.map {
+                LabelLayout.Item(center: $0.center, width: $0.width, priority: $0.priority)
+            })
+            ForEach(Array(entries.enumerated()), id: \.offset) { index, entry in
+                if shown[index] {
+                    label(entry).position(x: entry.center, y: proxy.size.height / 2)
+                } else {
+                    Color.clear
+                        .frame(width: max(8, min(entry.width, entry.span)), height: proxy.size.height)
+                        .contentShape(Rectangle())
+                        .help(entry.tooltip)
+                        .position(x: entry.center, y: proxy.size.height / 2)
                 }
             }
-            ForEach(Array(slots.enumerated()), id: \.offset) { _, slot in
-                // The expected word, struck through, in tertiary: only for missing words.
-                Text(slot.expected)
-                    .typeRole(.small)
-                    .strikethrough(true, color: palette.textTertiary)
-                    .foregroundStyle(palette.textTertiary)
-                    .fixedSize()
-                    .help(Copy.missingTooltip)
-                    .position(x: CGFloat(slot.position) * proxy.size.width, y: proxy.size.height / 2)
-            }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Copy.labelLine(entries(width: 0).map(\.spoken)))
+    }
+
+    @ViewBuilder private func label(_ entry: Entry) -> some View {
+        switch entry.content {
+        case .syllable(let label, let tooltip):
+            LabelView(label: label)
+                .fixedSize()
+                .help(tooltip ?? "")
+        case .missing(let expected):
+            // The expected word, struck through, in tertiary: only for missing words.
+            Text(expected)
+                .typeRole(.small)
+                .strikethrough(true, color: palette.textTertiary)
+                .foregroundStyle(palette.textTertiary)
+                .fixedSize()
+                .help(Copy.missingTooltip)
+        }
+    }
+
+    /// Clusters and missing slots in timeline order, with their measured widths and priorities.
+    private func entries(width: CGFloat) -> [Entry] {
+        let syllables: [Entry] = clusters.compactMap { cluster in
+            guard let label = cluster.label else { return nil }
+            return Entry(
+                content: .syllable(label, tooltip: cluster.tooltip),
+                center: CGFloat((cluster.start + cluster.end) / 2) * width,
+                span: CGFloat(cluster.end - cluster.start) * width,
+                width: LabelView.width(label),
+                priority: LabelLayout.syllablePriority(label.style, stressedBar: cluster.fill == .stressed),
+                spoken: label.style == .mistake ? Copy.mistakeLabelAccessibility(label.text) : label.text,
+                tooltip: Copy.hiddenLabelTooltip(label.text, note: cluster.tooltip)
+            )
+        }
+        let missing: [Entry] = slots.map { slot in
+            Entry(
+                content: .missing(slot.expected),
+                center: CGFloat(slot.position) * width,
+                span: 24,
+                width: TextMeasure.width(slot.expected, role: .small),
+                priority: LabelLayout.missingWordPriority,
+                spoken: Copy.hiddenLabelTooltip(slot.expected, note: Copy.missingTooltip),
+                tooltip: Copy.hiddenLabelTooltip(slot.expected, note: Copy.missingTooltip)
+            )
+        }
+        return (syllables + missing).sorted { $0.center < $1.center }
     }
 }
 
@@ -319,9 +383,22 @@ private struct LabelView: View {
             }
             .foregroundStyle(palette.mistake)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("\(label.text), stressed differently from the model")
+            .accessibilityLabel(Copy.mistakeLabelAccessibility(label.text))
         }
     }
+
+    /// The label's drawn width, for `LabelLayout`: the mistake marker adds its 8 pt triangle and 4 pt spacing.
+    static func width(_ label: ClusterLabel) -> CGFloat {
+        switch label.style {
+        case .caps: TextMeasure.width(label.text, role: .smallBold)
+        case .lower: TextMeasure.width(label.text, role: .small)
+        case .heard: TextMeasure.width(label.text, role: .small, italic: true)
+        case .mistake: TextMeasure.width(label.text, role: .smallBold) + mistakeGlyphWidth + 4
+        }
+    }
+
+    /// The bold 8 pt `triangle.fill` symbol is about 9 pt wide.
+    static let mistakeGlyphWidth: CGFloat = 9
 }
 
 private struct DottedUnderline: View {

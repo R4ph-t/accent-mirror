@@ -17,6 +17,8 @@ struct PitchCard: View {
             GeometryReader { proxy in
                 PitchPlot(pitch: pitch, size: proxy.size)
             }
+            // The plot (top to baseline) never gets shorter than 120 pt (r4 C8); the word labels sit below it.
+            .frame(minHeight: Metrics.pitchPlotMinHeight + PlotFrame.wordLabelHeight)
         }
         .padding(.horizontal, Metrics.outer)
         .padding(.top, Metrics.outer)
@@ -39,13 +41,53 @@ struct PitchCard: View {
     }
 }
 
+/// The native words under the baseline. When they don't all fit with 4 pt between them, `LabelLayout` hides
+/// non-target words first; target words always show. A hidden word keeps a tooltip over its span, and the line's
+/// accessibility label reads every word (fixes round 5).
+private struct WordLabels: View {
+    @Environment(\.palette) private var palette
+    var words: [(text: String, start: Double, end: Double, isTarget: Bool)]
+    var frame: PlotFrame
+
+    var body: some View {
+        let y = frame.baselineY + 13
+        let widths = words.map { TextMeasure.width($0.text, role: .small) }
+        let centers = words.map { frame.x(($0.start + $0.end) / 2) }
+        let shown = LabelLayout.visibility(words.indices.map {
+            LabelLayout.Item(center: centers[$0], width: widths[$0], priority: LabelLayout.wordPriority(isTarget: words[$0].isTarget))
+        })
+        ZStack(alignment: .topLeading) {
+            ForEach(Array(words.enumerated()), id: \.offset) { index, word in
+                if shown[index] {
+                    Text(word.text)
+                        .typeRole(.small)
+                        .foregroundStyle(palette.textSecondary)
+                        .fixedSize()
+                        .position(x: centers[index], y: y)
+                } else {
+                    Color.clear
+                        .frame(width: max(8, min(widths[index], frame.x(word.end) - frame.x(word.start))), height: 20)
+                        .contentShape(Rectangle())
+                        .help(Copy.hiddenLabelTooltip(word.text, note: nil))
+                        .position(x: centers[index], y: y)
+                }
+            }
+        }
+        .frame(width: frame.size.width, height: frame.size.height, alignment: .topLeading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Copy.labelLine(words.map(\.text)))
+    }
+}
+
 /// Geometry of the plot area inside the card's content box.
 private struct PlotFrame {
     let size: CGSize
     var plotX: CGFloat { Metrics.rowLabelWidth }
     var plotWidth: CGFloat { size.width - Metrics.rowLabelWidth - Metrics.inner - Metrics.endLabelWidth }
+    /// Room under the baseline for the word labels.
+    static let wordLabelHeight: CGFloat = 22
     /// The baseline sits 22 pt above the bottom: word labels go under it.
-    var baselineY: CGFloat { size.height - 22 }
+    var baselineY: CGFloat { size.height - Self.wordLabelHeight }
     var top: CGFloat { 0 }
     var midY: CGFloat { (top + baselineY) / 2 }
     var halfHeight: CGFloat { (baselineY - top) / 2 }
@@ -78,13 +120,7 @@ private struct PitchPlot: View {
                 .frame(width: Metrics.rowLabelWidth - 8, alignment: .trailing)
                 .position(x: (Metrics.rowLabelWidth - 8) / 2, y: frame.baselineY - 9)
 
-            ForEach(Array(pitch.words.enumerated()), id: \.offset) { _, word in
-                Text(word.text)
-                    .typeRole(.small)
-                    .foregroundStyle(palette.textSecondary)
-                    .fixedSize()
-                    .position(x: frame.x((word.start + word.end) / 2), y: frame.baselineY + 13)
-            }
+            WordLabels(words: pitch.words, frame: frame)
 
             let ends = endLabelPositions(frame: frame)
             if let y = ends.native {

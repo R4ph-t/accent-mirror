@@ -20,6 +20,8 @@ enum Metrics {
     static let sidebarRowHeight: CGFloat = 32
     /// "No pitch to show for this take" sits with its baseline this far above the bottom of the pitch plot.
     static let noPitchBaselineInset: CGFloat = 8
+    /// The pitch plot (top to baseline) shrinks no further than this on a short window (Addendum r4 C8).
+    static let pitchPlotMinHeight: CGFloat = 120
 }
 
 /// A solid token surface with the grain composited on it (under its text, never over it).

@@ -6,6 +6,9 @@ struct LibraryManifest: Codable, Equatable, Sendable {
     struct Phrase: Codable, Equatable, Sendable, Identifiable {
         var id: String
         var text: String
+        /// The phrase's target words, when the starter manifest names them (spec v2). They add to the pitch
+        /// plot's target words (stressed and named words), never replace them (Addendum r4 C6).
+        var targets: [String]? = nil
     }
 
     struct Pack: Codable, Equatable, Sendable, Identifiable {

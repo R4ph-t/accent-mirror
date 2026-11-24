@@ -20,7 +20,7 @@ enum WindowChrome {
         }
         window.toolbarStyle = .unified
         window.isOpaque = true
-        window.contentMinSize = Metrics.minimumWindow
+        // The 960 × 680 window minimum comes from `ShellView`'s minimum frame (see there), not from here.
     }
 }
 
