@@ -1,0 +1,57 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "b8595f5fdfd04a06bb7ab2c595539e9c344000d11eb96055809975ee0aa5ba51",
+  "clipID" : "p225_010",
+  "formatVersion" : 1,
+  "text" : "People look, but no one ever finds it.",
+  "words" : [
+    {
+      "end" : 0.28,
+      "probability" : 0.72,
+      "start" : 0.18,
+      "word" : " People"
+    },
+    {
+      "end" : 0.64,
+      "probability" : 0.98,
+      "start" : 0.28,
+      "word" : " look,"
+    },
+    {
+      "end" : 1.12,
+      "probability" : 0.99,
+      "start" : 0.95,
+      "word" : " but"
+    },
+    {
+      "end" : 1.26,
+      "probability" : 0.99,
+      "start" : 1.12,
+      "word" : " no"
+    },
+    {
+      "end" : 1.38,
+      "probability" : 0.98,
+      "start" : 1.26,
+      "word" : " one"
+    },
+    {
+      "end" : 1.54,
+      "probability" : 0.98,
+      "start" : 1.38,
+      "word" : " ever"
+    },
+    {
+      "end" : 1.8,
+      "probability" : 1,
+      "start" : 1.54,
+      "word" : " finds"
+    },
+    {
+      "end" : 2.06,
+      "probability" : 1,
+      "start" : 1.8,
+      "word" : " it."
+    }
+  ]
+}

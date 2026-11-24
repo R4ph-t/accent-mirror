@@ -29,6 +29,11 @@ extension SyllableSegmenterTests {
 
         @Test("reported word boundaries stay within 10 ms of the injected TTS markers",
               .enabled(if: voiceInstalled, "no English voice: \(voiceIdentifier) is not installed"),
+              // Off on GitHub Actions only: synthesis waits for a free cooperative-pool thread and times out under
+              // the runner's parallel load (red on #58, #59 and main, Nov 24). The 10 ms gate is unchanged and still
+              // runs locally and in `make test-vm`; a deterministic version is on branch fix/ci-flakes-cancel-tts.
+              .disabled(if: ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true",
+                        "flaky on the CI runner (TTS capture times out under load); runs locally"),
               arguments: phrases.indices)
         func markerGate(phrase: Int) async throws {
             let (text, arpabet) = Self.phrases[phrase]

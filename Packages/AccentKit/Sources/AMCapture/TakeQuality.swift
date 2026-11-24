@@ -21,6 +21,8 @@ public struct TakeAnalysis: Sendable {
     public let floorSettled: Bool
     /// One voicing decision per 10 ms frame.
     public let voiced: [Bool]
+    /// The kept speech segments, `[start, end)` in seconds from the start of the take (spec 17's importer shows them).
+    public let speechRegions: [Range<Double>]
     private let capture: Thresholds.Capture
 
     public init(
@@ -41,6 +43,7 @@ public struct TakeAnalysis: Sendable {
         let kept = detector.segments.filter { !$0.retracted }
         let speechFrames = kept.flatMap { detector.features[$0.start..<$0.end] }
         onsets = kept.map(detector.onset(of:))
+        speechRegions = kept.map { Double($0.start) * detector.frameSeconds..<Double($0.end) * detector.frameSeconds }
         speechSeconds = Double(speechFrames.count) * detector.frameSeconds
         voiced = detector.voicedFrames
         voicedSeconds = Double(voiced.filter { $0 }.count) * detector.frameSeconds

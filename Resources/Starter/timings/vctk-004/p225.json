@@ -1,0 +1,99 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "0875e34bab13ed81acdc19c374221aceb26af8f0226e031ab4dd450a2e854ad8",
+  "clipID" : "p225_004",
+  "formatVersion" : 1,
+  "text" : "We also need a small plastic snake and a big toy frog for the kids.",
+  "words" : [
+    {
+      "end" : 1,
+      "probability" : 0.93,
+      "start" : 0.92,
+      "word" : " We"
+    },
+    {
+      "end" : 1.14,
+      "probability" : 0.99,
+      "start" : 1,
+      "word" : " also"
+    },
+    {
+      "end" : 1.36,
+      "probability" : 1,
+      "start" : 1.14,
+      "word" : " need"
+    },
+    {
+      "end" : 1.48,
+      "probability" : 1,
+      "start" : 1.36,
+      "word" : " a"
+    },
+    {
+      "end" : 1.64,
+      "probability" : 0.99,
+      "start" : 1.48,
+      "word" : " small"
+    },
+    {
+      "end" : 1.86,
+      "probability" : 1,
+      "start" : 1.64,
+      "word" : " plastic"
+    },
+    {
+      "end" : 2.28,
+      "probability" : 0.99,
+      "start" : 1.86,
+      "word" : " snake"
+    },
+    {
+      "end" : 2.6,
+      "probability" : 0.92,
+      "start" : 2.28,
+      "word" : " and"
+    },
+    {
+      "end" : 2.68,
+      "probability" : 0.96,
+      "start" : 2.6,
+      "word" : " a"
+    },
+    {
+      "end" : 2.82,
+      "probability" : 0.99,
+      "start" : 2.68,
+      "word" : " big"
+    },
+    {
+      "end" : 3.04,
+      "probability" : 0.93,
+      "start" : 2.82,
+      "word" : " toy"
+    },
+    {
+      "end" : 3.26,
+      "probability" : 0.98,
+      "start" : 3.04,
+      "word" : " frog"
+    },
+    {
+      "end" : 3.52,
+      "probability" : 0.99,
+      "start" : 3.26,
+      "word" : " for"
+    },
+    {
+      "end" : 3.6,
+      "probability" : 0.98,
+      "start" : 3.52,
+      "word" : " the"
+    },
+    {
+      "end" : 3.8,
+      "probability" : 1,
+      "start" : 3.6,
+      "word" : " kids."
+    }
+  ]
+}

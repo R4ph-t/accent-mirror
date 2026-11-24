@@ -1,0 +1,75 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "e3d371609c4e9991cb5df604e9de96f2b5e1350ffea508a7f3875affb5da3044",
+  "clipID" : "p252_012",
+  "formatVersion" : 1,
+  "text" : "Throughout the centuries people have explained the rainbow in various ways.",
+  "words" : [
+    {
+      "end" : 0.42,
+      "probability" : 0.85,
+      "start" : 0.16,
+      "word" : " Throughout"
+    },
+    {
+      "end" : 0.58,
+      "probability" : 0.97,
+      "start" : 0.42,
+      "word" : " the"
+    },
+    {
+      "end" : 0.88,
+      "probability" : 1,
+      "start" : 0.58,
+      "word" : " centuries"
+    },
+    {
+      "end" : 1.28,
+      "probability" : 0.72,
+      "start" : 0.88,
+      "word" : " people"
+    },
+    {
+      "end" : 1.62,
+      "probability" : 0.99,
+      "start" : 1.28,
+      "word" : " have"
+    },
+    {
+      "end" : 2,
+      "probability" : 0.97,
+      "start" : 1.62,
+      "word" : " explained"
+    },
+    {
+      "end" : 2.24,
+      "probability" : 0.98,
+      "start" : 2,
+      "word" : " the"
+    },
+    {
+      "end" : 2.4,
+      "probability" : 0.8,
+      "start" : 2.24,
+      "word" : " rainbow"
+    },
+    {
+      "end" : 2.72,
+      "probability" : 0.97,
+      "start" : 2.4,
+      "word" : " in"
+    },
+    {
+      "end" : 2.98,
+      "probability" : 1,
+      "start" : 2.72,
+      "word" : " various"
+    },
+    {
+      "end" : 3.3,
+      "probability" : 0.99,
+      "start" : 2.98,
+      "word" : " ways."
+    }
+  ]
+}

@@ -709,6 +709,8 @@ func usage() {
                                                            spec 11: the guard's VCTK clips, MFA input corpus and inputs JSON
           record-timings --set smoke|l2-shared|l2-tuning|positive|vctk-tuning [--corpus <so762 dir>] [--vctk <dir>] [--model-dir <dir>] [--out <dir>] [--append]
                                                            run WhisperKit once and save replayable word timings (local only)
+          starter-build --phrases <json> --eval-speakers <json> --raw <dir> --timings <dir> --out <dir>
+                                                           build Resources/Starter (spec 15; scripts/build-starter.sh)
           bench [--runs <n>] [--model-dir <dir>]           spec 12 latency: L_stop, L_speech, L2 recompute (real WhisperKit, local only)
           smoke-detector [--build-inputs --corpus <so762 dir>] [--record]
                                                            check (or record) the smoke set's L1 digests and placements
@@ -742,6 +744,7 @@ do {
     case "record-timings": exit(try await recordTimingsCommand(args, root: try repositoryRoot()))
     case "smoke-detector": exit(try await smokeDetector(args, root: try repositoryRoot()))
     case "bench": exit(try await bench(args, root: try repositoryRoot()))
+    case "starter-build": exit(try await starterBuild(args))
     default:
         usage()
         exit(args.command == "help" ? 0 : 64)
