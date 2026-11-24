@@ -4,7 +4,7 @@ Status: Ready · Branch: – · Depends on: 10, 12, 15, 16, 19 (all Done; spike 
 
 Risk: high. This changes the analysis contract (`Verdict`, `AnalysisIdentity`), persisted takes, the package graph and the presenter. It merges only after CTO's review and Raph's Merge OK (review verdict `hold`). It must not touch `Thresholds.swift`, `project.yml`, entitlements, `Resources/Models/`, `Resources/Starter/` or the agreement corpus.
 
-CTO reviewed fd70e76 on 2026-11-24 with 6 must-fixes (all folded in here) and a `must-fix` verdict.
+CTO reviewed fd70e76 on 2026-11-24 with 6 must-fixes (2–6 approved on 63073cf). A re-review of 63073cf found that must-fix 1, as first written, created a module cycle (`AMScoring` uses the moved symbols; `AMVerdicts` depending on `AMScoring` would cycle). The layout below (new leaf module `AMPlacement`) is the fix, folded in here.
 
 Source: Designer spec v3 (Notion "Accent Mirror v1: show, don't judge", https://app.notion.com/p/4220d0d4459281d39d67d6fdc5d50dfc), §7 ("AccentKit may still compute verdicts for evaluation, but the presenter drops them") and §4 (inspector measures with the native range); v3 wins over v2 and addenda r2–r6. This spec is the engine and contract side only. The v3 UI (card 1 YOUR TAKE and Play Both, strip, inspector, earlier takes, connectors, legends, fixtures, the banned-word test) is spec 29. Raph's decision at 18:42 Europe/Paris on 2026-11-24, relayed by CPO: "Yes, ship v1 as show-don't-judge, and merge #68". The plan "Accent Mirror v1 show-don't-judge integration plan (2026-11-24)" (Notion Bot Docs, https://app.notion.com/p/4220d0d4459281399adef9364a99bb69), which CTO approved with 8 changes (all folded in here). CTO decision record "Accent Mirror: stress and prosody reformulation" (https://app.notion.com/p/4220d0d445928128b258faf2852259c1). Spike 27 report `docs/agreement/reports/spike27-69675122.md` (NO-GO: on natives, the dictionary-stressed syllable is the longest, loudest or highest only 50–70% of the time).
 
@@ -54,20 +54,23 @@ v1 shows the learner's pitch and timing against the native reference and never j
 - `PlacementGolden`;
 - `ResultAssembly`'s use of `Scoring`.
 
-**After this spec:**
-- **`AMPipeline` no longer depends on `AMScoring`.** Remove `"AMScoring"` from its entry in `Package.swift`'s `modules` and from `AMPipelineModule.dependencies`.
+**Why not move those symbols into `AMVerdicts`:** `AMScoring` already imports and calls them. `ScoringInput.accepted` is a `WordAcceptedSet`, and `StressMeasures` holds `ObservedStress`, `PlacementDecision` and `PlacementSuppressionReason` and calls `placementDecision` (`StressMeasures.swift:20, 32–84`). Putting the symbols in `AMVerdicts` while `AMVerdicts` depends on `AMScoring` is a module cycle (CTO re-review of 63073cf).
+
+**After this spec (CTO layout):**
+- **New leaf module `AMPlacement`.** It holds `WordAcceptedSet`, `ObservedStress`, `TakeProminence.observedStress(of:)` (as a method or extension on `AMPlacement`, not left on `AMProsody`), `PlacementDecision`, `PlacementSuppressionReason`, `placementDecision`, and `StressPlacementDetector.place`. Don't leave a copy of any of these in `AMProsody` or `AMPipeline`. `AMPlacement` depends only on already-shipped modules (`AMCore`, `AMProsody`, `AMAlignment`, `AMPitch` as needed); it does not depend on `AMScoring`, `AMVerdicts` or `AMPipeline`.
+- **`AMScoring` and `AMVerdicts` both depend on `AMPlacement`.** `AMScoring` keeps `Scorer`, `StressMeasures`, `ScoringInput` and the other scoring types, now importing the placement symbols from `AMPlacement` instead of `AMProsody`. `AMVerdicts` holds `PairScoring.score` / `PairScoring.input`, `PlacementGolden`, and `struct VerdictScorer: PairScorer`. `AMVerdicts` may depend on `AMScoring` and `AMPlacement`; there is no cycle.
+- **Nothing on the shipped path depends on `AMPlacement`, `AMScoring` or `AMVerdicts`.** The app still links only the `AMPipeline` product (`project.yml` doesn't change). Remove `"AMScoring"` from `AMPipeline`'s entry in `Package.swift`'s `modules` and from `AMPipelineModule.dependencies`. Do not add `AMPlacement` or `AMVerdicts` there.
 - **What stays in `AMPipeline` (and in `AMProsody` as a shipped dependency):**
   - L0/L1: voicing, pitch, word timings, alignment, syllables with share and prominence **display**;
-  - the time map, the warp of your pitch onto model time (`warp.pitchOnModel`), `warp.timing`, and the native band;
-  - the context-resolved expected stress (§4).
-  - Types `AMPipeline` needs from `AMScoring` move down: the warp and band inputs out of `ScoringInput`. Move them to `AMPipeline` or `AMWarp`; don't duplicate them.
-- **New module `AMVerdicts`**, depending on `AMPipeline` and `AMScoring`. It holds:
-  - `PairScoring.score` and `Scorer`;
-  - **`StressPlacementDetector.place` in full**;
-  - the `AMProsody` symbols listed above: `placementDecision`, `PlacementDecision`, `PlacementSuppressionReason`, `WordAcceptedSet`, `TakeProminence.observedStress(of:)` and `ObservedStress`. Move the files or the symbols; don't leave a copy in `AMProsody`;
-  - `PlacementGolden`;
-  - `struct VerdictScorer: PairScorer`, the real scorer.
-  - It's a product for evaluation (`am-eval`, `AMEvaluation`'s runners) and tests. **The app target doesn't link it**, and `project.yml` doesn't change.
+  - the time map, `PairScoring.warp` (already in `AMPipeline`), the warp of your pitch onto model time (`warp.pitchOnModel`), `warp.timing`, and the native band;
+  - the context-resolved expected stress (§4);
+  - the take-problem gate (§1a) and `NoOpScorer`.
+- **What moves down from `AMScoring` into `AMPipeline` (or `AMWarp` / `AMProsody`), because the shipped path still needs it after `youPitchOnModel` and `timing` come from `TimeWarp`:**
+  Checked against main (`AMScoring/` and its uses in `AMPipeline/`):
+  - `PitchDirection` and `PitchDirection.init(slope:thresholds:)` (`PitchMeasures.swift:12–20`) and `FinalWindow` (`PitchMeasures.swift:22–`), for §4a ending direction;
+  - the pure measure helpers §4a reuses: P10–P90 (`PitchMeasures.range` / `percentile`), least-squares slope (`PitchMeasures.slope`), and nPVI (`StressMeasures.npvi`, today at `StressMeasures.swift:230`).
+  - Don't copy them; `AMScoring` keeps calling the moved symbols.
+  - **Does not move down** (verdict-only, stays in `AMScoring` / `AMVerdicts`): `Scorer`, `Scoring`, `TriggeredDiff`, `ScoringInput`, `ScoringWord`, `ScoringTake`, `WordPlacement`, `ScoringSuppression`, `StressMeasures` placement/contrast helpers, and `PairScoring.input` / `PairScoring.score` (they build `ScoringInput` and call `Scorer`). After the split, `ResultAssembly` no longer takes a `Scoring` value; it reads `warp.pitchOnModel`, `warp.timing`, `describe` and `comparableCoverage` from `AMPipeline`.
 - **L1 stores no decision.** Remove `decision`, `suppression` and `observed` from the type stored in `L1Analysis` (today `PlacementWordResult` on `PlacementAnalysis`). L1 keeps alignment, segmentation, pitch and prominence display. Old L1 records still decode, because unknown keys are ignored; add a test that a pre-change L1 JSON with those keys decodes and the fields are gone on the new type.
 - **In `AMPipeline`:**
   - `protocol PairScorer: Sendable { func score(_ input: PairScorerInput, thresholds: Thresholds) throws -> PairScore }` takes the inputs and returns verdict, measures, applicability and stress lines. It also exposes `var mode: ScoringMode`.
@@ -77,7 +80,7 @@ v1 shows the learner's pitch and timing against the native reference and never j
   - `Analyzer.Configuration` takes a `scorer`, defaulting to `ShippedConfig.scorer`, and writes `scorer.mode` into `AnalysisIdentity.scoringMode`.
 - **Evaluation is pinned to `VerdictScorer`.** `am-eval`, every `AMEvaluation` runner and the `PlacementGolden` smoke tests pass `VerdictScorer()` explicitly and **fail on a `.notScored` result**. A test asserts `am-eval`'s analyzer has `scoringMode == .on`. Otherwise the harness would quietly report zero flags.
 - **Milestone 2** turns scoring back on by having the app link `AMVerdicts` and pass `VerdictScorer()`. That one-line `project.yml` change is a risky path, so it waits for Raph's Merge OK.
-- **Existing tests** of `Scorer`, `placementDecision`, `StressPlacementDetector`, PairScoring natives and smoke placement goldens move to an `AMVerdictsTests` target and keep passing unchanged.
+- **Existing tests** of `placementDecision`, `observedStress` and `StressPlacementDetector.place` move to an `AMPlacementTests` target (or `AMVerdictsTests` if they go through `place` and scoring together). Tests of `Scorer`, PairScoring natives and smoke placement goldens move to `AMVerdictsTests`. They keep passing unchanged.
 - **Fallback:** if the split turns out to cost more than one day of agent time, stop at the one-day checkpoint in Build order step 3, ship what is already green, and say so explicitly in Implementation notes ("module split not done: <reason, measured cost>") and in the PR body. The fallback still needs CTO's OK in review: a grep-only guard is not clean until this section's symbols are out of the shipped graph.
 
 ### 3. The presenter ignores verdicts (app, minimal)
@@ -143,9 +146,9 @@ The inverse lookup already exists: `TimeWarp.toYou` and `TimeWarp.toModel` (`AMW
   - `comparableCoverage` is non-nil and equals `TimeWarp.comparableCoverage` for that pair;
   - there are no `DiffRow`s anywhere in the encoded result.
 - **`ShippedGraphTests`:**
-  - checks `AMPipeline`'s **transitive** closure (every module it links, directly or through `AMProsody`, `AMWarp`, `AMCore` and the rest), not just its direct dependencies, and fails if `AMScoring` or `AMVerdicts` appears;
+  - checks `AMPipeline`'s **transitive** closure (every module it links, directly or through `AMProsody`, `AMWarp`, `AMCore` and the rest), not just its direct dependencies, and fails if `AMPlacement`, `AMScoring` or `AMVerdicts` appears;
   - scans every `.swift` file under `Packages/AccentKit/Sources/AMPipeline/` and `AccentMirror/` (found from `#filePath`) and fails on `placementDecision(` or `observedStress(`;
-  - the same scan of `AccentMirror/` fails on `import AMScoring` or `import AMVerdicts`.
+  - the same scan of `AccentMirror/` fails on `import AMPlacement`, `import AMScoring` or `import AMVerdicts`.
   - It's a Swift test, not a Makefile change.
 - **Presenter tests:** on `.notScored` and on a legacy scored take, the analysed state has card 1 "YOUR TAKE" with no rows. A source scan finds no reference to `Verdict`, `DiffRow` or `StressLine` in `ShellPresenter.swift` and `Copy.swift`.
 - **The take store** (spec 16) reads the legacy golden and the new one from disk.
@@ -179,8 +182,8 @@ The inverse lookup already exists: `TimeWarp.toYou` and `TimeWarp.toModel` (`AMW
 
 ## How to test (Raph)
 
-1. `make review PR=<n>`, then `make check` and `make test-vm`. Everything passes, including `ScoringOffTests` (no `.measured` stress, overlay equals a `VerdictScorer` run, `comparableCoverage` present), `ShippedGraphTests` (transitive closure; no `placementDecision(` / `observedStress(` under `AMPipeline` or `AccentMirror/`), the two new goldens, the take-problem gate tests, the `am-eval` `scoringMode == .on` test and the descriptive-measure tests. **pass/fail**
-2. `rg -n 'import AM(Scoring|Verdicts)' AccentMirror` prints nothing. `rg -n 'placementDecision\(|observedStress\(' Packages/AccentKit/Sources/AMPipeline AccentMirror` prints nothing. `rg -n '"AMScoring"' Packages/AccentKit/Package.swift` shows it only in the `AMVerdicts` and `AMScoring` entries. **pass/fail**
+1. `make review PR=<n>`, then `make check` and `make test-vm`. Everything passes, including `ScoringOffTests` (no `.measured` stress, overlay equals a `VerdictScorer` run, `comparableCoverage` present), `ShippedGraphTests` (transitive closure forbids `AMPlacement`, `AMScoring` and `AMVerdicts`; no `placementDecision(` / `observedStress(` under `AMPipeline` or `AccentMirror/`), the two new goldens, the take-problem gate tests, the `am-eval` `scoringMode == .on` test and the descriptive-measure tests. **pass/fail**
+2. `rg -n 'import AM(Placement|Scoring|Verdicts)' AccentMirror` prints nothing. `rg -n 'placementDecision\(|observedStress\(' Packages/AccentKit/Sources/AMPipeline AccentMirror` prints nothing. `rg -n '"AMScoring"' Packages/AccentKit/Package.swift` shows it only in the `AMScoring` and `AMVerdicts` entries, and `"AMPlacement"` only in `AMPlacement`, `AMScoring` and `AMVerdicts`. **pass/fail**
 3. Launch the app and open a few fixture results, both scored and not scored. Card 1 reads "YOUR TAKE" with no rows. There's no sentence about stress or closeness, and no STRESS lines or measure states in the inspector. The strip and pitch card are drawn. **pass/fail**
 4. Open a take saved before this build, from the take store or a copied take folder. It opens without an error and shows the same unjudged screen. **pass/fail**
 
