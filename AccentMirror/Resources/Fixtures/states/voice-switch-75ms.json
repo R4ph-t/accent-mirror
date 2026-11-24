@@ -1,0 +1,19 @@
+{
+  "name": "voice-switch-75ms",
+  "summary": "p226's L2 arrived 75 ms ago, halfway through the 150 ms ease: the band, your line, the native row and the connectors sit between the p225 and p226 timelines. The band is drawn.",
+  "phrase": "photography-p225",
+  "phase": "showingTake",
+  "savedTakes": [3, 2, 1],
+  "take": "photography-take03",
+  "analysis": {
+    "verdict": {"notScored": {}},
+    "timing": "good",
+    "comparableCoverage": 0.96,
+    "describe": {
+      "you": {"lengthSeconds": {"value": 2.4}, "syllablesPerSecond": {"value": 4.2}, "pitchRangeSemitones": {"value": 4}, "rhythmNPVI": {"value": 38}, "endingDirection": "rise"},
+      "native": {"voices": 8, "lengthSeconds": {"min": 1.9, "max": 2.3, "count": 8}, "syllablesPerSecond": {"min": 4.3, "max": 5.1, "count": 8}, "pitchRangeSemitones": {"min": 6, "max": 9, "count": 8}, "rhythmNPVI": {"min": 52, "max": 61, "count": 8}, "endingDirections": {"fall": 5, "rise": 3}}
+    }
+  },
+  "modelRecording": {"voice": "p225", "region": "Southern England", "attribution": "VCTK 0.92 · CC BY 4.0", "voices": ["p225", "p226", "p227", "p228"]},
+  "chart": {"clockMs": 75, "voiceSwitch": {"phrase": "photography-p226", "take": "photography-take03-p226", "voice": "p226", "stage": "easing"}}
+}

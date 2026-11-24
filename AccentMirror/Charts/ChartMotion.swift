@@ -149,7 +149,8 @@ struct EnvelopeBins: Equatable, Sendable {
         }
         guard envelope.rms.count > consumed else { return }
         for index in consumed..<envelope.rms.count {
-            let bin = Int((Double(index) * RecordingEnvelope.hop + 1e-9) / secondsPerBin)
+            // The small nudge keeps a sample that lands exactly on a bin edge in the later bin despite rounding.
+            let bin = Int(Double(index) * RecordingEnvelope.hop / secondsPerBin + 1e-6)
             while heights.count <= bin { heights.append(0) }
             heights[bin] = max(heights[bin], min(1, max(0, envelope.rms[index])))
         }
