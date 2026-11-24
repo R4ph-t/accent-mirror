@@ -1,6 +1,6 @@
 # 28: Scoring off, show-don't-judge v1 (verdict paths gated out of the shipped app)
 
-Status: Ready · Branch: – · Depends on: 10, 12, 15, 16, 19 (all Done; spike 27's NO-GO is the reason, report in docs PR #69) · Estimate: 6–8 h agent run + 2 h Raph review · Risk: high
+Status: Done · Branch: factory/28-scoring-off (PR #73) · Depends on: 10, 12, 15, 16, 19 (all Done; spike 27's NO-GO is the reason, report in docs PR #69) · Estimate: 6–8 h agent run + 2 h Raph review · Risk: high
 
 Risk: high. This changes the analysis contract (`Verdict`, `AnalysisIdentity`), persisted takes, the package graph and the presenter. It merges only after CTO's review and Raph's Merge OK (review verdict `hold`). It must not touch `Thresholds.swift`, `project.yml`, entitlements, `Resources/Models/`, `Resources/Starter/` or the agreement corpus.
 
