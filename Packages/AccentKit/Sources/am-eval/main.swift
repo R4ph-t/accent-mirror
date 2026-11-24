@@ -114,7 +114,7 @@ enum Paths {
     static let whisperModel = "openai_whisper-base.en"
     static let vctkCache = "eval-cache/vctk/current"
     static let vctkTimings = "eval-cache/vctk-timings"
-    /// Spec 11: the VCTK tuning speakers' replayed word timings (spec 22's synthref reads the same folder).
+    /// Spec 11: the VCTK tuning speakers' replayed word timings (spec 22's reference tool reads it too).
     static let vctkTuningTimings = "eval-cache/vctk-tuning-timings"
 }
 
