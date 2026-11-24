@@ -1,20 +1,22 @@
 # 25: Nucleus-anchored syllable measurement (spec 11's FALLBACK)
 
-Status: Draft · Branch: – · Depends on: 07 (segmenter, syllable counts), 08 (prominence), 12 (pipeline, caches), 23
+Status: Ready · Branch: factory/25-nucleus-anchored (hand build) · Depends on: 07 (segmenter, syllable counts), 08 (prominence), 12 (pipeline, caches), 23
 (`DownstreamHarness`, b2, oracle sets) (also spec 11's FALLBACK report and harness: see Open question 1) · Estimate:
 6–8 h agent run + 1.5 h Raph review · Risk: high
 
 Risk: high. This spec adds keys to `Packages/AccentKit/Sources/AMCore/Thresholds.swift` (a risky path) and bumps
-`thresholdsVersion` and `algorithmVersion`. **Draft, not Ready: CTO approves this spec before the factory or a hand
-build picks it up.**
+`thresholdsVersion` and `algorithmVersion`. CTO approved this spec on 2026-11-24 at 15:04 Europe/Paris with four
+markups (folded in below). **The implementation PR goes to CTO for an engine and threshold review before it merges**,
+whatever the review verdict line says.
 
 Source: CTO's ruling on spec 11 (2026-11-24 14:59 Europe/Paris, relayed by Accent Mirror Lead): the ±40 ms jitter
 row (8.1% synthetic, 11.6% VCTK, on oracle boundaries, so independent of the aligner) and the 13.7% TTS-vs-MFA
 control show the verdict stage is too sensitive to word boundaries, so no word-boundary aligner can pass ≤ 2% at
 ±40 ms. The answer is spec 11 §4c's pre-declared FALLBACK, "nucleus-anchored syllable segmentation". CTO's earlier
 reasoning (spec 11 §4c, verbatim there): multi-syllable splits come from the word edges, so boundary error moves
-duration and intensity between syllables, which margins alone can't fix. Spec 23's diagnostics (CTO's figures): 2–3-syllable
-words at 55–88% of flips, monosyllables at 6–10%.
+duration and intensity between syllables, which margins alone can't fix. Spec 23's diagnostics (CTO's figures) give each
+group's **own** flip rate: 2-syllable words 69% (synthetic) / 55% (VCTK), 3-syllable words 87% / 88%, monosyllables
+6.4% / 9.6%. These are per-group rates, not shares of all flips.
 
 ## Goal
 
@@ -56,8 +58,10 @@ it.
   only as soft anchors: a ±40 ms edge move changes the assignment only for a peak within about 40 ms of a boundary.
 - The k-th assigned nucleus of a word is its k-th syllable's nucleus. `substituted` words get no nuclei (as in spec
   07), and their nuclei are skipped.
-- **Count mismatch.** Raw candidates in the word's padded window P vs N_w: when P = N_w the split confidence is
-  `splitExact` (0.9); otherwise 0.9 − 0.3·|P − N_w| (spec 07's rule). When fewer than N_w nuclei can be assigned, the
+- **Count mismatch (CTO markup 1).** P is counted from the DP assignment, not from raw candidates in the padded
+  window: P is the number of nuclei between the previous word's last assigned nucleus and the next word's first
+  assigned nucleus (exclusive), i.e. the nuclei the word could take. When P = N_w the split confidence is `splitExact`
+  (0.9); otherwise 0.9 − 0.3·|P − N_w| (spec 07's rule, unchanged). When fewer than N_w nuclei can be assigned, the
   word is **nucleus-short**: no stress features, `.unavailable(.lowConfidence)` for placement and contrast (Open
   question 2), counted on its own report line. There is no proportional fallback, since that would bring the word-edge
   dependence back.
@@ -66,8 +70,13 @@ it.
 
 Per syllable, from its nucleus only:
 
-- **Duration d:** the nucleus region's length (§1), in seconds. For a lengthening-exposed syllable (spec 07's rule,
-  judged from the nucleus region's end), spec 08's ln(λ) discount applies unchanged.
+- **Duration d:** the nucleus region's length (§1), in seconds. Spec 08's ln(λ) discount applies unchanged to a
+  lengthening-exposed syllable.
+- **Lengthening exposure (CTO markup 2), structural and the same for `.span` and `.nucleus`:** a syllable is exposed
+  if it is the last syllable (by index) of a word that is phrase-final, or of a word followed by a pause longer than
+  spec 07's gap threshold (`prominence.exposurePauseMs`, 150 ms), with the pause taken from word timing (the gap to
+  the next word's start). That threshold is the only input. The nucleus region's end is never compared to a word
+  edge. For `.span` this replaces spec 07's syllable-end test with the same structural rule, so both modes agree.
 - **Intensity e:** mean RMS in dBFS (full band, as spec 07 today) over a fixed window of ±`nucleus.windowMs` (initial
   30 ms) around the peak, clamped to the nucleus region; floored at −60 dBFS.
 - **f0 p:** peak F0 in semitones relative to the speaker's median (spec 04) over the voiced frames of the nucleus
@@ -104,9 +113,13 @@ Per syllable, from its nucleus only:
    each set, pooled and in every multi-syllable group (2, 3, 4+) with n ≥ 30**; groups with n < 30 are reported
    only; ±20 and ±80 ms reported only. Also the per-group inconclusive rise (≤ 2 points for 2- and 3-syllable groups
    with n ≥ 30) and the 10% inconclusive budget, so it can't pass by going inconclusive. Run on the thresholds on main
-   (Open question 3), with the `.span` column next to it (today 8.1% / 11.6%).
-   **If this fails, stop:** no aligner comparison and no tuning. The report and the PR say FAIL, `.nucleus` doesn't
-   become the default, and the build writes the scope-cut proposal (§6) for CTO.
+   (Open question 3), with the `.span` column next to it (today 8.1% / 11.6%). **Parameters stay fixed at their
+   initial values (CTO markup 4).** Diagnostic line (CTO markup 3, reported): at ±40 ms, flips whose word has a
+   nucleus peak within 40 ms of either unjittered edge, against flips whose word has none, with counts and rates of
+   each group of words.
+   **If this fails, stop:** no aligner comparison, and no parameter changes of any kind in this spec, not even on the
+   tuning pool (CTO markup 4). The report and the PR say FAIL, `.nucleus` doesn't become the default, and the build
+   writes the scope-cut proposal (§6) for CTO. A tuning pass would be a later spec.
 2. **Timing-sensitivity control** (spec 11 §4): TTS markers vs MFA on the synthetic set, ≤ 2% verdict changes and
    ≤ 2 points of inconclusive rise.
 3. **Aligner comparison:** spec 23's b2 vs oracle and Whisper vs oracle through `DownstreamHarness`, both sets, spec
@@ -125,8 +138,9 @@ Per syllable, from its nucleus only:
 
 The build commits `docs/agreement/reports/nucleus-jitter-<configDigest8>.md` with a section "Proposal: no per-word
 stress-placement verdicts on 2–3-syllable words", giving, for `.span` and `.nucleus`:
-- the ±40 ms flips pooled and per group (1, 2, 3, 4+) with n and Wilson intervals, and what the pooled rate would be
-  without 2–3-syllable placement verdicts;
+- at ±40 ms, per group (1, 2, 3, 4+) and per set: the group's **own flip rate** (flips ÷ the group's words, with n and
+  Wilson interval) **and its share of the pooled flips** (the group's flips ÷ all flips), plus the pooled rate and
+  what the pooled rate would be without 2–3-syllable placement verdicts;
 - what the cut removes: the share of placement-applicable words, the starter phrases and target words affected
   (spec 15), and the L2 stress-wrong words among the 134 that are 2–3 syllables (the recall the claim would lose);
 - the positive-set placement and any-diff rows and the L2 FP with and without the cut.
@@ -134,8 +148,8 @@ It's a proposal with numbers. Nothing is cut in code, and the route (CTO, then R
 
 ## Defaults
 
-- All nucleus parameters are fixed initial values set before any run. If CTO wants them tuned, that is spec 11's
-  fixed-grid procedure on the tuning pool only, in a later spec.
+- All nucleus parameters are fixed initial values set before any run and stay fixed in this spec, pass or fail
+  (CTO markup 4). Tuning them would be a later spec (spec 11's fixed-grid procedure, tuning pool only).
 - The run is local on the Mac, by the build itself (spec 11 §7's rule: no hand runs); PR CI runs the unit tests,
   the goldens and `NucleusJitterGateTests`.
 
@@ -170,18 +184,22 @@ It's a proposal with numbers. Nothing is cut in code, and the route (CTO, then R
 
 ## Open question (built with the default)
 
-1. **Dependency on spec 11.** Spec 11 is Done only when its §7 gate passes, which now needs this spec, so "depends on
+CTO accepted defaults 1–5 on 2026-11-24 at 15:04 Europe/Paris.
+
+
+1. **Dependency on spec 11.** Accepted. Spec 11 is Done only when its §7 gate passes, which now needs this spec, so "depends on
    11 Done" would deadlock. Default: this spec depends on 07, 08, 12 and 23 (Done) and uses spec 11's harness and
    FALLBACK report from main or from spec 11's branch. Spec 11 reaches Done afterwards, through its own gate, re-run
    with `.nucleus`.
-2. **Nucleus-short words.** Default: placement and contrast are unavailable (low confidence), with no fallback split.
+2. **Nucleus-short words.** Accepted: placement and contrast are unavailable (low confidence), with no fallback split.
    The alternative (proportional split) brings back the edge dependence.
-3. **Thresholds for acceptance 1.** Default: main's thresholds (spec 11's FALLBACK left them unchanged). Retuning
-   margins on nucleus features before acceptance 1 is not allowed here.
-4. **Duration measure.** Default: the −6 dB voiced nucleus region. The alternative, the inter-nucleus interval, is
+3. **Thresholds for acceptance 1.** Accepted: main's thresholds (spec 11's FALLBACK left them unchanged), with the
+   nucleus parameters at their initial values. No retuning of anything in this spec.
+4. **Duration measure.** Accepted: the −6 dB voiced nucleus region. The alternative, the inter-nucleus interval, is
    printed as a diagnostic column only.
-5. **Merge rule for this spec.** Default: it merges when acceptance 1 and 2 are MET (`NucleusJitterGateTests` green).
-   Acceptances 3–4 are reported here and gated by spec 11's `AnalysisGateTests` when spec 11 re-runs.
+5. **Merge rule for this spec.** Accepted: it merges when acceptances 1 and 2 are MET (`NucleusJitterGateTests`
+   green), CI is green and CTO's engine and threshold review passes. Acceptances 3–4 are reported here and gated by
+   spec 11's `AnalysisGateTests` when spec 11 re-runs.
 
 ## How to test (Raph)
 
@@ -195,6 +213,10 @@ Every step is run by the build agent and repeated by the reviewer; none needs Ra
      40 ms of an edge;
    - the DP gives each word N_w consecutive nuclei, skips an extra peak, and marks a word with one peak too few as
      nucleus-short;
+   - **edge invariance (CTO markup 3):** on the pulse train, with every peak more than 50 ms from any word edge,
+     moving every edge by ±40 ms gives bit-identical d, e, p, split confidence and exposure for every syllable;
+   - P comes from the DP assignment (the nuclei between neighbours' assigned nuclei), and exposure is the same in
+     `.span` and `.nucleus` mode for a phrase-final word and a word before a 200 ms pause;
    - `.span` mode reproduces spec 08's worked examples to 2 decimals (unchanged path).
 3. `scripts/agreement.sh --suite nucleus-jitter` prints acceptance 1 per set: pooled and per group at ±20 / ±40 / ±80
    ms with n and Wilson intervals, `.span` next to `.nucleus`, the inconclusive rise per group and the budget, and
