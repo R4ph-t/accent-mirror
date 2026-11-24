@@ -1,0 +1,2240 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "checks" : [
+    {
+      "detail" : "20 of 307 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.04256476977304971,
+        "upper" : 0.09847645100562269
+      },
+      "limit" : 0.02,
+      "n" : 307,
+      "name" : "jitter ±40 ms",
+      "set" : "synthetic",
+      "status" : "NOT MET",
+      "value" : 0.06514657980456026
+    },
+    {
+      "detail" : "6 of 51 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.05505073677918175,
+        "upper" : 0.23380844314322463
+      },
+      "limit" : 0.02,
+      "n" : 51,
+      "name" : "jitter ±40 ms, 2-syllable flips",
+      "set" : "synthetic",
+      "status" : "NOT MET",
+      "value" : 0.11764705882352941
+    },
+    {
+      "detail" : "2 of 15 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.03736125910306537,
+        "upper" : 0.37881982832322364
+      },
+      "limit" : 0.02,
+      "n" : 15,
+      "name" : "jitter ±40 ms, 3-syllable flips",
+      "set" : "synthetic",
+      "status" : "reported (n < 30)",
+      "value" : 0.13333333333333333
+    },
+    {
+      "detail" : "0 of 7 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 5.551115123125783e-17,
+        "upper" : 0.35433043506668743
+      },
+      "limit" : 0.02,
+      "n" : 7,
+      "name" : "jitter ±40 ms, 4+-syllable flips",
+      "set" : "synthetic",
+      "status" : "reported (n < 30)",
+      "value" : 0
+    },
+    {
+      "detail" : "oracle 55/234 [0.185, 0.293], candidate 59/234 [0.201, 0.311]; flips 12/234",
+      "n" : 234,
+      "name" : "jitter ±40 ms, 1-syllable inconclusive rise",
+      "set" : "synthetic",
+      "status" : "REPORTED",
+      "value" : 0.017094
+    },
+    {
+      "detail" : "oracle 14/51 [0.171, 0.409], candidate 16/51 [0.203, 0.450]; flips 6/51",
+      "limit" : 0.02,
+      "n" : 51,
+      "name" : "jitter ±40 ms, 2-syllable inconclusive rise",
+      "set" : "synthetic",
+      "status" : "NOT MET",
+      "value" : 0.039216
+    },
+    {
+      "detail" : "oracle 7/15 [0.248, 0.699], candidate 6/15 [0.198, 0.643]; flips 2/15",
+      "limit" : 0.02,
+      "n" : 15,
+      "name" : "jitter ±40 ms, 3-syllable inconclusive rise",
+      "set" : "synthetic",
+      "status" : "reported (n < 30)",
+      "value" : -0.066667
+    },
+    {
+      "detail" : "oracle 6/7 [0.487, 0.974], candidate 6/7 [0.487, 0.974]; flips 0/7",
+      "n" : 7,
+      "name" : "jitter ±40 ms, 4+-syllable inconclusive rise",
+      "set" : "synthetic",
+      "status" : "REPORTED",
+      "value" : 0
+    },
+    {
+      "detail" : "jittered 87/307 inconclusive (oracle 82/307, 26.7%)",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.23589616108545508,
+        "upper" : 0.3362329863436214
+      },
+      "limit" : 0.1,
+      "n" : 307,
+      "name" : "jitter ±40 ms, inconclusive budget",
+      "set" : "synthetic",
+      "status" : "NOT MET",
+      "value" : 0.28338762214983715
+    },
+    {
+      "detail" : "174 of 3890 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.03867105795963419,
+        "upper" : 0.05168738691841033
+      },
+      "limit" : 0.02,
+      "n" : 3890,
+      "name" : "jitter ±40 ms",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.04473007712082262
+    },
+    {
+      "detail" : "21 of 639 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.02159388345048164,
+        "upper" : 0.04971679228718972
+      },
+      "limit" : 0.02,
+      "n" : 639,
+      "name" : "jitter ±40 ms, 2-syllable flips",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.03286384976525822
+    },
+    {
+      "detail" : "7 of 213 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.016008716980555837,
+        "upper" : 0.06627010053767163
+      },
+      "limit" : 0.02,
+      "n" : 213,
+      "name" : "jitter ±40 ms, 3-syllable flips",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.03286384976525822
+    },
+    {
+      "detail" : "1 of 117 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.0015103535737964364,
+        "upper" : 0.046829503274189374
+      },
+      "limit" : 0.02,
+      "n" : 117,
+      "name" : "jitter ±40 ms, 4+-syllable flips",
+      "set" : "vctk-held-out",
+      "status" : "MET",
+      "value" : 0.008547008547008548
+    },
+    {
+      "detail" : "oracle 1585/2921 [0.525, 0.561], candidate 1682/2921 [0.558, 0.594]; flips 145/2921",
+      "n" : 2921,
+      "name" : "jitter ±40 ms, 1-syllable inconclusive rise",
+      "set" : "vctk-held-out",
+      "status" : "REPORTED",
+      "value" : 0.033208
+    },
+    {
+      "detail" : "oracle 376/639 [0.550, 0.626], candidate 391/639 [0.574, 0.649]; flips 21/639",
+      "limit" : 0.02,
+      "n" : 639,
+      "name" : "jitter ±40 ms, 2-syllable inconclusive rise",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.023474
+    },
+    {
+      "detail" : "oracle 172/213 [0.749, 0.855], candidate 175/213 [0.765, 0.867]; flips 7/213",
+      "limit" : 0.02,
+      "n" : 213,
+      "name" : "jitter ±40 ms, 3-syllable inconclusive rise",
+      "set" : "vctk-held-out",
+      "status" : "MET",
+      "value" : 0.014085
+    },
+    {
+      "detail" : "oracle 109/117 [0.871, 0.965], candidate 110/117 [0.882, 0.971]; flips 1/117",
+      "n" : 117,
+      "name" : "jitter ±40 ms, 4+-syllable inconclusive rise",
+      "set" : "vctk-held-out",
+      "status" : "REPORTED",
+      "value" : 0.008547
+    },
+    {
+      "detail" : "jittered 2358/3890 inconclusive (oracle 2242/3890, 57.6%)",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.5907180211649631,
+        "upper" : 0.6214118276579436
+      },
+      "limit" : 0.1,
+      "n" : 3890,
+      "name" : "jitter ±40 ms, inconclusive budget",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.6061696658097686
+    }
+  ],
+  "generatedAt" : "2026-11-24T14:53:13Z",
+  "identity" : {
+    "cleanTree" : true,
+    "config" : {
+      "algorithmVersion" : 2,
+      "aligner" : "whisper",
+      "alignerModelSHA256" : "none",
+      "asrModelID" : "replayed-word-timings",
+      "contractVersion" : 2,
+      "pitchTrackerID" : "pyin-1",
+      "thresholdsVersion" : 9,
+      "voicingID" : "acf-1"
+    },
+    "configDigest" : "acb3910a026c031276cc8414c71b36f077ae4f45f611c472228c2ac96d452d4c",
+    "corpusManifestHash" : "",
+    "evaluatedCommit" : "32ede8ec65e4f7e1777fbb3de08d03fe66c1a159",
+    "labelHash" : "",
+    "macOSVersion" : "Version 26.3 (Build 25D125)",
+    "runnerImage" : "local",
+    "sourceTreeHash" : "56dee1cfb428630aa09cc46ab0806431882ae4f720e6d4c22861b463897f3779",
+    "splitManifestHash" : "cd021cf29163d619c8515e9e6b9eb5aa0d513435dce3bfcf47c5331a670d78d0",
+    "splitSeed" : 20261125,
+    "swiftVersion" : "Apple Swift version 6.2.3 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)",
+    "syntheticReference" : "none",
+    "xcodeVersion" : "Xcode 26.2"
+  },
+  "nucleus" : {
+    "minPeakDBFS" : -45,
+    "minProminenceDB" : 3,
+    "minSeparationMs" : 70,
+    "regionDropDB" : 6,
+    "skipCostMs" : 60,
+    "windowMs" : 30
+  },
+  "outcome" : "NOT MET",
+  "proposal" : {
+    "groups" : [
+      {
+        "flips" : 7,
+        "group" : "1",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.014564666864974578,
+          "upper" : 0.060449415663608425
+        },
+        "measurement" : "span",
+        "rate" : 0.029914529914529916,
+        "set" : "synthetic",
+        "shareOfPooledFlips" : 0.28,
+        "words" : 234
+      },
+      {
+        "flips" : 9,
+        "group" : "2",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.09572403469126317,
+          "upper" : 0.3025414252430807
+        },
+        "measurement" : "span",
+        "rate" : 0.17647058823529413,
+        "set" : "synthetic",
+        "shareOfPooledFlips" : 0.36,
+        "words" : 51
+      },
+      {
+        "flips" : 5,
+        "group" : "3",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.1517632443971473,
+          "upper" : 0.5828645226148023
+        },
+        "measurement" : "span",
+        "rate" : 0.3333333333333333,
+        "set" : "synthetic",
+        "shareOfPooledFlips" : 0.2,
+        "words" : 15
+      },
+      {
+        "flips" : 4,
+        "group" : "4+",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.2504583645276572,
+          "upper" : 0.8417801447485302
+        },
+        "measurement" : "span",
+        "rate" : 0.5714285714285714,
+        "set" : "synthetic",
+        "shareOfPooledFlips" : 0.16,
+        "words" : 7
+      },
+      {
+        "flips" : 12,
+        "group" : "1",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.02957563796010175,
+          "upper" : 0.08748325899900021
+        },
+        "measurement" : "nucleus",
+        "rate" : 0.05128205128205128,
+        "set" : "synthetic",
+        "shareOfPooledFlips" : 0.6,
+        "words" : 234
+      },
+      {
+        "flips" : 6,
+        "group" : "2",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.05505073677918175,
+          "upper" : 0.23380844314322463
+        },
+        "measurement" : "nucleus",
+        "rate" : 0.11764705882352941,
+        "set" : "synthetic",
+        "shareOfPooledFlips" : 0.3,
+        "words" : 51
+      },
+      {
+        "flips" : 2,
+        "group" : "3",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.03736125910306537,
+          "upper" : 0.37881982832322364
+        },
+        "measurement" : "nucleus",
+        "rate" : 0.13333333333333333,
+        "set" : "synthetic",
+        "shareOfPooledFlips" : 0.1,
+        "words" : 15
+      },
+      {
+        "flips" : 0,
+        "group" : "4+",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 5.551115123125783e-17,
+          "upper" : 0.35433043506668743
+        },
+        "measurement" : "nucleus",
+        "rate" : 0,
+        "set" : "synthetic",
+        "shareOfPooledFlips" : 0,
+        "words" : 7
+      },
+      {
+        "flips" : 315,
+        "group" : "1",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.09710197154626271,
+          "upper" : 0.11960770921580538
+        },
+        "measurement" : "span",
+        "rate" : 0.10783978089695309,
+        "set" : "vctk-held-out",
+        "shareOfPooledFlips" : 0.695364238410596,
+        "words" : 2921
+      },
+      {
+        "flips" : 78,
+        "group" : "2",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.09891755987099343,
+          "upper" : 0.1497307757760673
+        },
+        "measurement" : "span",
+        "rate" : 0.12206572769953052,
+        "set" : "vctk-held-out",
+        "shareOfPooledFlips" : 0.17218543046357615,
+        "words" : 639
+      },
+      {
+        "flips" : 38,
+        "group" : "3",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.13282599792141822,
+          "upper" : 0.23537600207856754
+        },
+        "measurement" : "span",
+        "rate" : 0.1784037558685446,
+        "set" : "vctk-held-out",
+        "shareOfPooledFlips" : 0.08388520971302428,
+        "words" : 213
+      },
+      {
+        "flips" : 22,
+        "group" : "4+",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.12758198294157508,
+          "upper" : 0.2683207087967116
+        },
+        "measurement" : "span",
+        "rate" : 0.18803418803418803,
+        "set" : "vctk-held-out",
+        "shareOfPooledFlips" : 0.04856512141280353,
+        "words" : 117
+      },
+      {
+        "flips" : 145,
+        "group" : "1",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.042338310401919925,
+          "upper" : 0.05812575336281214
+        },
+        "measurement" : "nucleus",
+        "rate" : 0.04964053406367682,
+        "set" : "vctk-held-out",
+        "shareOfPooledFlips" : 0.8333333333333334,
+        "words" : 2921
+      },
+      {
+        "flips" : 21,
+        "group" : "2",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.02159388345048164,
+          "upper" : 0.04971679228718972
+        },
+        "measurement" : "nucleus",
+        "rate" : 0.03286384976525822,
+        "set" : "vctk-held-out",
+        "shareOfPooledFlips" : 0.1206896551724138,
+        "words" : 639
+      },
+      {
+        "flips" : 7,
+        "group" : "3",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.016008716980555837,
+          "upper" : 0.06627010053767163
+        },
+        "measurement" : "nucleus",
+        "rate" : 0.03286384976525822,
+        "set" : "vctk-held-out",
+        "shareOfPooledFlips" : 0.040229885057471264,
+        "words" : 213
+      },
+      {
+        "flips" : 1,
+        "group" : "4+",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.0015103535737964364,
+          "upper" : 0.046829503274189374
+        },
+        "measurement" : "nucleus",
+        "rate" : 0.008547008547008548,
+        "set" : "vctk-held-out",
+        "shareOfPooledFlips" : 0.005747126436781609,
+        "words" : 117
+      }
+    ],
+    "pooled" : [
+      {
+        "flips" : 25,
+        "flipsWithoutCut" : 11,
+        "measurement" : "span",
+        "rate" : 0.08143322475570032,
+        "rateWithoutCut" : 0.04564315352697095,
+        "set" : "synthetic",
+        "words" : 307,
+        "wordsWithoutCut" : 241
+      },
+      {
+        "flips" : 20,
+        "flipsWithoutCut" : 12,
+        "measurement" : "nucleus",
+        "rate" : 0.06514657980456026,
+        "rateWithoutCut" : 0.04979253112033195,
+        "set" : "synthetic",
+        "words" : 307,
+        "wordsWithoutCut" : 241
+      },
+      {
+        "flips" : 453,
+        "flipsWithoutCut" : 337,
+        "measurement" : "span",
+        "rate" : 0.11645244215938304,
+        "rateWithoutCut" : 0.1109282422646478,
+        "set" : "vctk-held-out",
+        "words" : 3890,
+        "wordsWithoutCut" : 3038
+      },
+      {
+        "flips" : 174,
+        "flipsWithoutCut" : 146,
+        "measurement" : "nucleus",
+        "rate" : 0.04473007712082262,
+        "rateWithoutCut" : 0.04805793285055958,
+        "set" : "vctk-held-out",
+        "words" : 3890,
+        "wordsWithoutCut" : 3038
+      }
+    ],
+    "removes" : [
+      "Starter phrases (spec 15, 20 phrases): 67 of 74 placement-applicable words (≥ 2 syllables) have 2–3 syllables (90.5%); 19 phrases affected.",
+      "Affected starter phrases and words (word, syllables): 003 (maybe 2, brother 2); 004 (also 2, plastic 2); 005 (into 2, Wednesday 2, station. 2); 006 (sunlight 2, raindrops 2, prism 2, rainbow. 2); 007 (rainbow 2, division 3, into 2, many 2, beautiful 3, colors. 2); 008 (above, 2, beyond 2, horizon. 3); 009 (according 3, legend, 2, boiling 2); 010 (People 2, ever 2); 011 (something 2, beyond 2, looking 2, rainbow. 2); 012 (Throughout 2, centuries 3, people 2, explained 2, rainbow 2, various 3); 013 (accepted 3, miracle 3, without 2, physical 3); 014 (Hebrews 2, token 2); 015 (imagine 3, foretell 2, heavy 2); 016 (Norsemen 2, considered 3, rainbow 2, over 2); 017 (Others 2, explain 2); 018 (rainbow 2, reflection 3); 019 (physicists 3, reflection, 3, raindrops 2, causes 2, rainbows. 2); 020 (Many 2, ideas 3, about 2, rainbow 2); 024 (very 2, common 2, showing 2, mainly 2, yellow, 2, little 2).",
+      "L2 recall set (speechocean762 stress-wrong, intelligible, polysyllabic): 126 of 134 words have 2–3 syllables (94.0%): the recall the claim would lose."
+    ],
+    "rows" : [
+      "Shipped config acb3910a (`.span` measurement, thresholds on main); the cut drops every placement flag and placement row on a word with 2–3 dictionary syllables, after the fact.",
+      "L2 false positives, clean 1,400, after suppression: without the cut 150/1400 (10.71%, Wilson [9.20, 12.44]); with the cut 0/1400 (0.00%, Wilson [0.00, 0.27]) over all 1400 words, 0/19 (0.00%, Wilson [0.00, 16.82]) over the 19 words that keep a placement verdict",
+      "L2 false positives, supplementary, after suppression: without the cut 188/1868 (10.06%, Wilson [8.78, 11.51]); with the cut 0/1868 (0.00%, Wilson [0.00, 0.21]) over all 1868 words, 0/29 (0.00%, Wilson [0.00, 11.70]) over the 29 words that keep a placement verdict",
+      "L2 recall (stress-wrong words), after suppression: without the cut 5/134 (3.73%, Wilson [1.60, 8.44]); with the cut 0/134 (0.00%, Wilson [0.00, 2.79]) over all 134 words, 0/8 (0.00%, Wilson [0.00, 32.44]) over the 8 words that keep a placement verdict",
+      "Positive set (EVALUABLE), placement-diff pairs: without the cut 6/281 (2.14%, Wilson [0.98, 4.58]); with the cut 0/281 (0.00%, Wilson [0.00, 1.35])",
+      "Positive set, any-diff pairs: without the cut 94/281 (33.45%, Wilson [28.19, 39.16]); with the cut 92/281 (32.74%, Wilson [27.52, 38.43]) (rows removed only; the verdict's other rows are not re-ranked, so a row hidden behind the 3-row cap is not surfaced)"
+    ]
+  },
+  "reported" : [
+    {
+      "detail" : "19 of 307 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.03997548821746451,
+        "upper" : 0.09463158440224663
+      },
+      "n" : 307,
+      "name" : "jitter ±20 ms",
+      "set" : "synthetic",
+      "status" : "REPORTED",
+      "value" : 0.06188925081433225
+    },
+    {
+      "detail" : "29 of 307 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.06657693587353138,
+        "upper" : 0.1323716183357923
+      },
+      "n" : 307,
+      "name" : "jitter ±80 ms",
+      "set" : "synthetic",
+      "status" : "REPORTED",
+      "value" : 0.09446254071661238
+    },
+    {
+      "detail" : "93 of 3890 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.019556088507944373,
+        "upper" : 0.02919819715785938
+      },
+      "n" : 3890,
+      "name" : "jitter ±20 ms",
+      "set" : "vctk-held-out",
+      "status" : "REPORTED",
+      "value" : 0.02390745501285347
+    },
+    {
+      "detail" : "256 of 3890 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.05843842103603017,
+        "upper" : 0.07403781464946799
+      },
+      "n" : 3890,
+      "name" : "jitter ±80 ms",
+      "set" : "vctk-held-out",
+      "status" : "REPORTED",
+      "value" : 0.06580976863753213
+    }
+  ],
+  "seed" : 20261125,
+  "sets" : [
+    {
+      "clips" : 20,
+      "nucleus" : [
+        {
+          "boundaryError" : [
+
+          ],
+          "bySyllables" : [
+
+          ],
+          "candidate" : "mfa-on-tts",
+          "candidateInconclusive" : 0,
+          "differing" : 0,
+          "id" : "control",
+          "keptUnjittered" : 0,
+          "onlyCue" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 0,
+          "parts" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "reason" : "not run (--rows)",
+          "status" : "notEvaluated",
+          "transitions" : {
+            "decidedToDecided" : 0,
+            "involvingInconclusive" : 0
+          },
+          "words" : 0
+        },
+        {
+          "boundaryError" : [
+
+          ],
+          "bySyllables" : [
+
+          ],
+          "candidate" : "ctc-w2v2b960-1",
+          "candidateInconclusive" : 0,
+          "differing" : 0,
+          "id" : "b2",
+          "keptUnjittered" : 0,
+          "onlyCue" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 0,
+          "parts" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "reason" : "not run (--rows)",
+          "status" : "notEvaluated",
+          "transitions" : {
+            "decidedToDecided" : 0,
+            "involvingInconclusive" : 0
+          },
+          "words" : 0
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 18,
+              "words" : 297
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 1,
+              "words" : 10
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 57,
+              "differing" : 11,
+              "oracleInconclusive" : 55,
+              "words" : 234
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 15,
+              "differing" : 7,
+              "oracleInconclusive" : 14,
+              "words" : 51
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 7,
+              "differing" : 1,
+              "oracleInconclusive" : 7,
+              "words" : 15
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 6,
+              "differing" : 0,
+              "oracleInconclusive" : 6,
+              "words" : 7
+            }
+          ],
+          "candidate" : "oracle ±20 ms",
+          "candidateInconclusive" : 85,
+          "differing" : 19,
+          "id" : "jitter-20",
+          "keptUnjittered" : 0,
+          "nearEdge" : {
+            "farFlips" : 9,
+            "farWords" : 169,
+            "nearFlips" : 10,
+            "nearWords" : 138
+          },
+          "nucleusOracle" : [
+            {
+              "bucket" : "1",
+              "countMatch" : 169,
+              "short" : 45,
+              "words" : 234
+            },
+            {
+              "bucket" : "2",
+              "countMatch" : 36,
+              "short" : 12,
+              "words" : 51
+            },
+            {
+              "bucket" : "3",
+              "countMatch" : 7,
+              "short" : 6,
+              "words" : 15
+            },
+            {
+              "bucket" : "4+",
+              "countMatch" : 1,
+              "short" : 5,
+              "words" : 7
+            }
+          ],
+          "onlyCue" : {
+            "inconclusive" : 4,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 82,
+          "parts" : {
+            "inconclusive" : 17,
+            "longestSyllable" : 15,
+            "loudestSyllable" : 15,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 1,
+            "involvingInconclusive" : 18
+          },
+          "words" : 307
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 7,
+              "words" : 165
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 13,
+              "words" : 142
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 59,
+              "differing" : 12,
+              "oracleInconclusive" : 55,
+              "words" : 234
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 16,
+              "differing" : 6,
+              "oracleInconclusive" : 14,
+              "words" : 51
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 6,
+              "differing" : 2,
+              "oracleInconclusive" : 7,
+              "words" : 15
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 6,
+              "differing" : 0,
+              "oracleInconclusive" : 6,
+              "words" : 7
+            }
+          ],
+          "candidate" : "oracle ±40 ms",
+          "candidateInconclusive" : 87,
+          "differing" : 20,
+          "id" : "jitter-40",
+          "keptUnjittered" : 5,
+          "nearEdge" : {
+            "farFlips" : 11,
+            "farWords" : 169,
+            "nearFlips" : 9,
+            "nearWords" : 138
+          },
+          "nucleusOracle" : [
+            {
+              "bucket" : "1",
+              "countMatch" : 169,
+              "short" : 45,
+              "words" : 234
+            },
+            {
+              "bucket" : "2",
+              "countMatch" : 36,
+              "short" : 12,
+              "words" : 51
+            },
+            {
+              "bucket" : "3",
+              "countMatch" : 7,
+              "short" : 6,
+              "words" : 15
+            },
+            {
+              "bucket" : "4+",
+              "countMatch" : 1,
+              "short" : 5,
+              "words" : 7
+            }
+          ],
+          "onlyCue" : {
+            "inconclusive" : 6,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 82,
+          "parts" : {
+            "inconclusive" : 17,
+            "longestSyllable" : 14,
+            "loudestSyllable" : 14,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 1,
+            "involvingInconclusive" : 19
+          },
+          "words" : 307
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 7,
+              "words" : 124
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 7,
+              "words" : 52
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 15,
+              "words" : 131
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 66,
+              "differing" : 20,
+              "oracleInconclusive" : 55,
+              "words" : 234
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 15,
+              "differing" : 6,
+              "oracleInconclusive" : 14,
+              "words" : 51
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 8,
+              "differing" : 3,
+              "oracleInconclusive" : 7,
+              "words" : 15
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 6,
+              "differing" : 0,
+              "oracleInconclusive" : 6,
+              "words" : 7
+            }
+          ],
+          "candidate" : "oracle ±80 ms",
+          "candidateInconclusive" : 95,
+          "differing" : 29,
+          "id" : "jitter-80",
+          "keptUnjittered" : 9,
+          "nearEdge" : {
+            "farFlips" : 14,
+            "farWords" : 169,
+            "nearFlips" : 15,
+            "nearWords" : 138
+          },
+          "nucleusOracle" : [
+            {
+              "bucket" : "1",
+              "countMatch" : 169,
+              "short" : 45,
+              "words" : 234
+            },
+            {
+              "bucket" : "2",
+              "countMatch" : 36,
+              "short" : 12,
+              "words" : 51
+            },
+            {
+              "bucket" : "3",
+              "countMatch" : 7,
+              "short" : 6,
+              "words" : 15
+            },
+            {
+              "bucket" : "4+",
+              "countMatch" : 1,
+              "short" : 5,
+              "words" : 7
+            }
+          ],
+          "onlyCue" : {
+            "inconclusive" : 13,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 82,
+          "parts" : {
+            "inconclusive" : 25,
+            "longestSyllable" : 16,
+            "loudestSyllable" : 16,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 2,
+            "involvingInconclusive" : 27
+          },
+          "words" : 307
+        }
+      ],
+      "oracle" : "tts-markers",
+      "set" : "synthetic",
+      "span" : [
+        {
+          "boundaryError" : [
+
+          ],
+          "bySyllables" : [
+
+          ],
+          "candidate" : "mfa-on-tts",
+          "candidateInconclusive" : 0,
+          "differing" : 0,
+          "id" : "control",
+          "keptUnjittered" : 0,
+          "onlyCue" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 0,
+          "parts" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "reason" : "not run (--rows)",
+          "status" : "notEvaluated",
+          "transitions" : {
+            "decidedToDecided" : 0,
+            "involvingInconclusive" : 0
+          },
+          "words" : 0
+        },
+        {
+          "boundaryError" : [
+
+          ],
+          "bySyllables" : [
+
+          ],
+          "candidate" : "ctc-w2v2b960-1",
+          "candidateInconclusive" : 0,
+          "differing" : 0,
+          "id" : "b2",
+          "keptUnjittered" : 0,
+          "onlyCue" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 0,
+          "parts" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "reason" : "not run (--rows)",
+          "status" : "notEvaluated",
+          "transitions" : {
+            "decidedToDecided" : 0,
+            "involvingInconclusive" : 0
+          },
+          "words" : 0
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 11,
+              "words" : 297
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 0,
+              "words" : 10
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 12,
+              "differing" : 5,
+              "oracleInconclusive" : 9,
+              "words" : 234
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 2,
+              "differing" : 2,
+              "oracleInconclusive" : 2,
+              "words" : 51
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 1,
+              "differing" : 2,
+              "oracleInconclusive" : 1,
+              "words" : 15
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 4,
+              "differing" : 2,
+              "oracleInconclusive" : 4,
+              "words" : 7
+            }
+          ],
+          "candidate" : "oracle ±20 ms",
+          "candidateInconclusive" : 19,
+          "differing" : 11,
+          "id" : "jitter-20",
+          "keptUnjittered" : 0,
+          "nearEdge" : {
+            "farFlips" : 6,
+            "farWords" : 169,
+            "nearFlips" : 5,
+            "nearWords" : 138
+          },
+          "onlyCue" : {
+            "inconclusive" : 5,
+            "longestSyllable" : 4,
+            "loudestSyllable" : 2,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 16,
+          "parts" : {
+            "inconclusive" : 5,
+            "longestSyllable" : 4,
+            "loudestSyllable" : 2,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 4,
+            "involvingInconclusive" : 7
+          },
+          "words" : 307
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 5,
+              "words" : 165
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 20,
+              "words" : 142
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 16,
+              "differing" : 7,
+              "oracleInconclusive" : 9,
+              "words" : 234
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 4,
+              "differing" : 9,
+              "oracleInconclusive" : 2,
+              "words" : 51
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 1,
+              "differing" : 5,
+              "oracleInconclusive" : 1,
+              "words" : 15
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 5,
+              "differing" : 4,
+              "oracleInconclusive" : 4,
+              "words" : 7
+            }
+          ],
+          "candidate" : "oracle ±40 ms",
+          "candidateInconclusive" : 26,
+          "differing" : 25,
+          "id" : "jitter-40",
+          "keptUnjittered" : 5,
+          "nearEdge" : {
+            "farFlips" : 16,
+            "farWords" : 169,
+            "nearFlips" : 9,
+            "nearWords" : 138
+          },
+          "onlyCue" : {
+            "inconclusive" : 8,
+            "longestSyllable" : 6,
+            "loudestSyllable" : 8,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 16,
+          "parts" : {
+            "inconclusive" : 10,
+            "longestSyllable" : 9,
+            "loudestSyllable" : 10,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 13,
+            "involvingInconclusive" : 12
+          },
+          "words" : 307
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 1,
+              "words" : 124
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 8,
+              "words" : 52
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 29,
+              "words" : 131
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 27,
+              "differing" : 20,
+              "oracleInconclusive" : 9,
+              "words" : 234
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 2,
+              "differing" : 11,
+              "oracleInconclusive" : 2,
+              "words" : 51
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 2,
+              "differing" : 6,
+              "oracleInconclusive" : 1,
+              "words" : 15
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 4,
+              "differing" : 1,
+              "oracleInconclusive" : 4,
+              "words" : 7
+            }
+          ],
+          "candidate" : "oracle ±80 ms",
+          "candidateInconclusive" : 35,
+          "differing" : 38,
+          "id" : "jitter-80",
+          "keptUnjittered" : 9,
+          "nearEdge" : {
+            "farFlips" : 17,
+            "farWords" : 169,
+            "nearFlips" : 21,
+            "nearWords" : 138
+          },
+          "onlyCue" : {
+            "inconclusive" : 21,
+            "longestSyllable" : 8,
+            "loudestSyllable" : 6,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 16,
+          "parts" : {
+            "inconclusive" : 21,
+            "longestSyllable" : 11,
+            "loudestSyllable" : 9,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 15,
+            "involvingInconclusive" : 23
+          },
+          "words" : 307
+        }
+      ]
+    },
+    {
+      "clips" : 299,
+      "nucleus" : [
+        {
+          "boundaryError" : [
+
+          ],
+          "bySyllables" : [
+
+          ],
+          "candidate" : "ctc-w2v2b960-1",
+          "candidateInconclusive" : 0,
+          "differing" : 0,
+          "id" : "b2",
+          "keptUnjittered" : 0,
+          "onlyCue" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 0,
+          "parts" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "reason" : "not run (--rows)",
+          "status" : "notEvaluated",
+          "transitions" : {
+            "decidedToDecided" : 0,
+            "involvingInconclusive" : 0
+          },
+          "words" : 0
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 93,
+              "words" : 3890
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 1645,
+              "differing" : 74,
+              "oracleInconclusive" : 1585,
+              "words" : 2921
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 377,
+              "differing" : 16,
+              "oracleInconclusive" : 376,
+              "words" : 639
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 173,
+              "differing" : 3,
+              "oracleInconclusive" : 172,
+              "words" : 213
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 109,
+              "differing" : 0,
+              "oracleInconclusive" : 109,
+              "words" : 117
+            }
+          ],
+          "candidate" : "oracle ±20 ms",
+          "candidateInconclusive" : 2304,
+          "differing" : 93,
+          "id" : "jitter-20",
+          "keptUnjittered" : 45,
+          "nearEdge" : {
+            "farFlips" : 33,
+            "farWords" : 2641,
+            "nearFlips" : 60,
+            "nearWords" : 1249
+          },
+          "nucleusOracle" : [
+            {
+              "bucket" : "1",
+              "countMatch" : 1374,
+              "short" : 1376,
+              "words" : 2921
+            },
+            {
+              "bucket" : "2",
+              "countMatch" : 263,
+              "short" : 306,
+              "words" : 639
+            },
+            {
+              "bucket" : "3",
+              "countMatch" : 54,
+              "short" : 167,
+              "words" : 213
+            },
+            {
+              "bucket" : "4+",
+              "countMatch" : 27,
+              "short" : 101,
+              "words" : 117
+            }
+          ],
+          "onlyCue" : {
+            "inconclusive" : 57,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 2242,
+          "parts" : {
+            "inconclusive" : 84,
+            "longestSyllable" : 36,
+            "loudestSyllable" : 36,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 0,
+            "involvingInconclusive" : 93
+          },
+          "words" : 3890
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 48,
+              "words" : 2043
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 126,
+              "words" : 1847
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 1682,
+              "differing" : 145,
+              "oracleInconclusive" : 1585,
+              "words" : 2921
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 391,
+              "differing" : 21,
+              "oracleInconclusive" : 376,
+              "words" : 639
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 175,
+              "differing" : 7,
+              "oracleInconclusive" : 172,
+              "words" : 213
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 110,
+              "differing" : 1,
+              "oracleInconclusive" : 109,
+              "words" : 117
+            }
+          ],
+          "candidate" : "oracle ±40 ms",
+          "candidateInconclusive" : 2358,
+          "differing" : 174,
+          "id" : "jitter-40",
+          "keptUnjittered" : 117,
+          "nearEdge" : {
+            "farFlips" : 48,
+            "farWords" : 2641,
+            "nearFlips" : 126,
+            "nearWords" : 1249
+          },
+          "nucleusOracle" : [
+            {
+              "bucket" : "1",
+              "countMatch" : 1374,
+              "short" : 1376,
+              "words" : 2921
+            },
+            {
+              "bucket" : "2",
+              "countMatch" : 263,
+              "short" : 306,
+              "words" : 639
+            },
+            {
+              "bucket" : "3",
+              "countMatch" : 54,
+              "short" : 167,
+              "words" : 213
+            },
+            {
+              "bucket" : "4+",
+              "countMatch" : 27,
+              "short" : 101,
+              "words" : 117
+            }
+          ],
+          "onlyCue" : {
+            "inconclusive" : 108,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 2242,
+          "parts" : {
+            "inconclusive" : 154,
+            "longestSyllable" : 66,
+            "loudestSyllable" : 66,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 1,
+            "involvingInconclusive" : 173
+          },
+          "words" : 3890
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 41,
+              "words" : 1557
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 61,
+              "words" : 703
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 154,
+              "words" : 1630
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 1724,
+              "differing" : 209,
+              "oracleInconclusive" : 1585,
+              "words" : 2921
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 397,
+              "differing" : 37,
+              "oracleInconclusive" : 376,
+              "words" : 639
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 179,
+              "differing" : 9,
+              "oracleInconclusive" : 172,
+              "words" : 213
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 110,
+              "differing" : 1,
+              "oracleInconclusive" : 109,
+              "words" : 117
+            }
+          ],
+          "candidate" : "oracle ±80 ms",
+          "candidateInconclusive" : 2410,
+          "differing" : 256,
+          "id" : "jitter-80",
+          "keptUnjittered" : 314,
+          "nearEdge" : {
+            "farFlips" : 87,
+            "farWords" : 2641,
+            "nearFlips" : 169,
+            "nearWords" : 1249
+          },
+          "nucleusOracle" : [
+            {
+              "bucket" : "1",
+              "countMatch" : 1374,
+              "short" : 1376,
+              "words" : 2921
+            },
+            {
+              "bucket" : "2",
+              "countMatch" : 263,
+              "short" : 306,
+              "words" : 639
+            },
+            {
+              "bucket" : "3",
+              "countMatch" : 54,
+              "short" : 167,
+              "words" : 213
+            },
+            {
+              "bucket" : "4+",
+              "countMatch" : 27,
+              "short" : 101,
+              "words" : 117
+            }
+          ],
+          "onlyCue" : {
+            "inconclusive" : 158,
+            "longestSyllable" : 1,
+            "loudestSyllable" : 1,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 2242,
+          "parts" : {
+            "inconclusive" : 220,
+            "longestSyllable" : 97,
+            "loudestSyllable" : 97,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 3,
+            "involvingInconclusive" : 253
+          },
+          "words" : 3890
+        }
+      ],
+      "oracle" : "mfa",
+      "set" : "vctk-held-out",
+      "span" : [
+        {
+          "boundaryError" : [
+
+          ],
+          "bySyllables" : [
+
+          ],
+          "candidate" : "ctc-w2v2b960-1",
+          "candidateInconclusive" : 0,
+          "differing" : 0,
+          "id" : "b2",
+          "keptUnjittered" : 0,
+          "onlyCue" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 0,
+          "parts" : {
+            "inconclusive" : 0,
+            "longestSyllable" : 0,
+            "loudestSyllable" : 0,
+            "syllableCount" : 0
+          },
+          "reason" : "not run (--rows)",
+          "status" : "notEvaluated",
+          "transitions" : {
+            "decidedToDecided" : 0,
+            "involvingInconclusive" : 0
+          },
+          "words" : 0
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 225,
+              "words" : 3890
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 403,
+              "differing" : 166,
+              "oracleInconclusive" : 243,
+              "words" : 2921
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 46,
+              "differing" : 31,
+              "oracleInconclusive" : 44,
+              "words" : 639
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 34,
+              "differing" : 17,
+              "oracleInconclusive" : 33,
+              "words" : 213
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 40,
+              "differing" : 11,
+              "oracleInconclusive" : 40,
+              "words" : 117
+            }
+          ],
+          "candidate" : "oracle ±20 ms",
+          "candidateInconclusive" : 523,
+          "differing" : 225,
+          "id" : "jitter-20",
+          "keptUnjittered" : 45,
+          "nearEdge" : {
+            "farFlips" : 140,
+            "farWords" : 2641,
+            "nearFlips" : 85,
+            "nearWords" : 1249
+          },
+          "onlyCue" : {
+            "inconclusive" : 169,
+            "longestSyllable" : 29,
+            "loudestSyllable" : 13,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 360,
+          "parts" : {
+            "inconclusive" : 169,
+            "longestSyllable" : 43,
+            "loudestSyllable" : 27,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 34,
+            "involvingInconclusive" : 191
+          },
+          "words" : 3890
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 97,
+              "words" : 2043
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 356,
+              "words" : 1847
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 548,
+              "differing" : 315,
+              "oracleInconclusive" : 243,
+              "words" : 2921
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 56,
+              "differing" : 78,
+              "oracleInconclusive" : 44,
+              "words" : 639
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 39,
+              "differing" : 38,
+              "oracleInconclusive" : 33,
+              "words" : 213
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 44,
+              "differing" : 22,
+              "oracleInconclusive" : 40,
+              "words" : 117
+            }
+          ],
+          "candidate" : "oracle ±40 ms",
+          "candidateInconclusive" : 687,
+          "differing" : 453,
+          "id" : "jitter-40",
+          "keptUnjittered" : 117,
+          "nearEdge" : {
+            "farFlips" : 286,
+            "farWords" : 2641,
+            "nearFlips" : 167,
+            "nearWords" : 1249
+          },
+          "onlyCue" : {
+            "inconclusive" : 329,
+            "longestSyllable" : 44,
+            "loudestSyllable" : 50,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 360,
+          "parts" : {
+            "inconclusive" : 341,
+            "longestSyllable" : 71,
+            "loudestSyllable" : 74,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 82,
+            "involvingInconclusive" : 371
+          },
+          "words" : 3890
+        },
+        {
+          "boundaryError" : [
+            {
+              "bin" : "0–20 ms",
+              "differing" : 43,
+              "words" : 1557
+            },
+            {
+              "bin" : "20–40 ms",
+              "differing" : 141,
+              "words" : 703
+            },
+            {
+              "bin" : "40–80 ms",
+              "differing" : 434,
+              "words" : 1630
+            },
+            {
+              "bin" : "80–160 ms",
+              "differing" : 0,
+              "words" : 0
+            },
+            {
+              "bin" : ">160 ms",
+              "differing" : 0,
+              "words" : 0
+            }
+          ],
+          "bySyllables" : [
+            {
+              "bucket" : "1",
+              "candidateInconclusive" : 580,
+              "differing" : 361,
+              "oracleInconclusive" : 243,
+              "words" : 2921
+            },
+            {
+              "bucket" : "2",
+              "candidateInconclusive" : 81,
+              "differing" : 157,
+              "oracleInconclusive" : 44,
+              "words" : 639
+            },
+            {
+              "bucket" : "3",
+              "candidateInconclusive" : 52,
+              "differing" : 62,
+              "oracleInconclusive" : 33,
+              "words" : 213
+            },
+            {
+              "bucket" : "4+",
+              "candidateInconclusive" : 46,
+              "differing" : 38,
+              "oracleInconclusive" : 40,
+              "words" : 117
+            }
+          ],
+          "candidate" : "oracle ±80 ms",
+          "candidateInconclusive" : 759,
+          "differing" : 618,
+          "id" : "jitter-80",
+          "keptUnjittered" : 314,
+          "nearEdge" : {
+            "farFlips" : 397,
+            "farWords" : 2641,
+            "nearFlips" : 221,
+            "nearWords" : 1249
+          },
+          "onlyCue" : {
+            "inconclusive" : 394,
+            "longestSyllable" : 92,
+            "loudestSyllable" : 53,
+            "syllableCount" : 0
+          },
+          "oracleInconclusive" : 360,
+          "parts" : {
+            "inconclusive" : 431,
+            "longestSyllable" : 157,
+            "loudestSyllable" : 122,
+            "syllableCount" : 0
+          },
+          "status" : "evaluated",
+          "transitions" : {
+            "decidedToDecided" : 149,
+            "involvingInconclusive" : 469
+          },
+          "words" : 3890
+        }
+      ]
+    }
+  ],
+  "shippedMeasurement" : "span",
+  "spanChecks" : [
+    {
+      "detail" : "25 of 307 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.055764807109640546,
+        "upper" : 0.1174471544638381
+      },
+      "limit" : 0.02,
+      "n" : 307,
+      "name" : "jitter ±40 ms",
+      "set" : "synthetic",
+      "status" : "NOT MET",
+      "value" : 0.08143322475570032
+    },
+    {
+      "detail" : "9 of 51 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.09572403469126317,
+        "upper" : 0.3025414252430807
+      },
+      "limit" : 0.02,
+      "n" : 51,
+      "name" : "jitter ±40 ms, 2-syllable flips",
+      "set" : "synthetic",
+      "status" : "NOT MET",
+      "value" : 0.17647058823529413
+    },
+    {
+      "detail" : "5 of 15 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.1517632443971473,
+        "upper" : 0.5828645226148023
+      },
+      "limit" : 0.02,
+      "n" : 15,
+      "name" : "jitter ±40 ms, 3-syllable flips",
+      "set" : "synthetic",
+      "status" : "reported (n < 30)",
+      "value" : 0.3333333333333333
+    },
+    {
+      "detail" : "4 of 7 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.2504583645276572,
+        "upper" : 0.8417801447485302
+      },
+      "limit" : 0.02,
+      "n" : 7,
+      "name" : "jitter ±40 ms, 4+-syllable flips",
+      "set" : "synthetic",
+      "status" : "reported (n < 30)",
+      "value" : 0.5714285714285714
+    },
+    {
+      "detail" : "oracle 9/234 [0.020, 0.071], candidate 16/234 [0.043, 0.108]; flips 7/234",
+      "n" : 234,
+      "name" : "jitter ±40 ms, 1-syllable inconclusive rise",
+      "set" : "synthetic",
+      "status" : "REPORTED",
+      "value" : 0.029915
+    },
+    {
+      "detail" : "oracle 2/51 [0.011, 0.132], candidate 4/51 [0.031, 0.185]; flips 9/51",
+      "limit" : 0.02,
+      "n" : 51,
+      "name" : "jitter ±40 ms, 2-syllable inconclusive rise",
+      "set" : "synthetic",
+      "status" : "NOT MET",
+      "value" : 0.039216
+    },
+    {
+      "detail" : "oracle 1/15 [0.012, 0.298], candidate 1/15 [0.012, 0.298]; flips 5/15",
+      "limit" : 0.02,
+      "n" : 15,
+      "name" : "jitter ±40 ms, 3-syllable inconclusive rise",
+      "set" : "synthetic",
+      "status" : "reported (n < 30)",
+      "value" : 0
+    },
+    {
+      "detail" : "oracle 4/7 [0.250, 0.842], candidate 5/7 [0.359, 0.918]; flips 4/7",
+      "n" : 7,
+      "name" : "jitter ±40 ms, 4+-syllable inconclusive rise",
+      "set" : "synthetic",
+      "status" : "REPORTED",
+      "value" : 0.142857
+    },
+    {
+      "detail" : "jittered 26/307 inconclusive (oracle 16/307, 5.2%)",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.05844900875410845,
+        "upper" : 0.12119710097833146
+      },
+      "limit" : 0.1,
+      "n" : 307,
+      "name" : "jitter ±40 ms, inconclusive budget",
+      "set" : "synthetic",
+      "status" : "MET",
+      "value" : 0.08469055374592833
+    },
+    {
+      "detail" : "453 of 3890 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.10674865342328335,
+        "upper" : 0.12691300651914605
+      },
+      "limit" : 0.02,
+      "n" : 3890,
+      "name" : "jitter ±40 ms",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.11645244215938304
+    },
+    {
+      "detail" : "78 of 639 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.09891755987099343,
+        "upper" : 0.1497307757760673
+      },
+      "limit" : 0.02,
+      "n" : 639,
+      "name" : "jitter ±40 ms, 2-syllable flips",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.12206572769953052
+    },
+    {
+      "detail" : "38 of 213 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.13282599792141822,
+        "upper" : 0.23537600207856754
+      },
+      "limit" : 0.02,
+      "n" : 213,
+      "name" : "jitter ±40 ms, 3-syllable flips",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.1784037558685446
+    },
+    {
+      "detail" : "22 of 117 words",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.12758198294157508,
+        "upper" : 0.2683207087967116
+      },
+      "limit" : 0.02,
+      "n" : 117,
+      "name" : "jitter ±40 ms, 4+-syllable flips",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.18803418803418803
+    },
+    {
+      "detail" : "oracle 243/2921 [0.074, 0.094], candidate 548/2921 [0.174, 0.202]; flips 315/2921",
+      "n" : 2921,
+      "name" : "jitter ±40 ms, 1-syllable inconclusive rise",
+      "set" : "vctk-held-out",
+      "status" : "REPORTED",
+      "value" : 0.104416
+    },
+    {
+      "detail" : "oracle 44/639 [0.052, 0.091], candidate 56/639 [0.068, 0.112]; flips 78/639",
+      "limit" : 0.02,
+      "n" : 639,
+      "name" : "jitter ±40 ms, 2-syllable inconclusive rise",
+      "set" : "vctk-held-out",
+      "status" : "MET",
+      "value" : 0.018779
+    },
+    {
+      "detail" : "oracle 33/213 [0.112, 0.210], candidate 39/213 [0.137, 0.240]; flips 38/213",
+      "limit" : 0.02,
+      "n" : 213,
+      "name" : "jitter ±40 ms, 3-syllable inconclusive rise",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.028169
+    },
+    {
+      "detail" : "oracle 40/117 [0.262, 0.432], candidate 44/117 [0.294, 0.466]; flips 22/117",
+      "n" : 117,
+      "name" : "jitter ±40 ms, 4+-syllable inconclusive rise",
+      "set" : "vctk-held-out",
+      "status" : "REPORTED",
+      "value" : 0.034188
+    },
+    {
+      "detail" : "jittered 687/3890 inconclusive (oracle 360/3890, 9.3%)",
+      "interval" : {
+        "label" : "descriptive (ignores clustering)",
+        "lower" : 0.16494397778779318,
+        "upper" : 0.18890747543444286
+      },
+      "limit" : 0.1,
+      "n" : 3890,
+      "name" : "jitter ±40 ms, inconclusive budget",
+      "set" : "vctk-held-out",
+      "status" : "NOT MET",
+      "value" : 0.17660668380462724
+    }
+  ],
+  "suite" : "nucleus-jitter"
+}
