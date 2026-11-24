@@ -59,4 +59,4 @@ So:
 | 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19, 11 (analysis gate) | 6–8 h | 1.5 h |
 | 13 | [Sandbox, microphone entitlement and usage string (by hand)](13-entitlements-mic-string.md) | Ready | 00 | – | 0.5 h |
 | 21 | [Coordinator-wired UI: record, compare, play back](21-coordinator-wired-ui.md) | Ready | 11 (analysis gate), 12, 13, 14, 15, 16, 20 | 10–12 h | 2 h |
-| 17 | [Clip import pipeline (no UI)](17-clip-import.md) | Ready | 03, 06, 12, 15, 16 | 4–5 h | 1 h |
+| 17 | [Clip import pipeline (no UI)](17-clip-import.md) | Done | 03, 06, 12, 15, 16 | 4–5 h | 1 h |
