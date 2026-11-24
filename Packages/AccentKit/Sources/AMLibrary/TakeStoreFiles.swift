@@ -96,9 +96,16 @@ enum TakeFiles {
         guard let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: count) else {
             throw CocoaError(.fileReadCorruptFile)
         }
-        try file.read(into: buffer)
-        guard let channel = buffer.floatChannelData?[0] else { throw CocoaError(.fileReadCorruptFile) }
-        return Array(UnsafeBufferPointer(start: channel, count: Int(buffer.frameLength)))
+        // One `read(into:)` stops at a 4096-frame boundary, so read until the whole file is in.
+        var samples: [Float] = []
+        samples.reserveCapacity(Int(count))
+        while file.framePosition < file.length {
+            try file.read(into: buffer, frameCount: AVAudioFrameCount(file.length - file.framePosition))
+            guard buffer.frameLength > 0, let channel = buffer.floatChannelData?[0] else { break }
+            samples += UnsafeBufferPointer(start: channel, count: Int(buffer.frameLength))
+        }
+        guard samples.count == Int(count) else { throw CocoaError(.fileReadCorruptFile) }
+        return samples
     }
 
     // MARK: Durability

@@ -507,6 +507,18 @@ public actor TakeStore: TakePersisting {
         }
     }
 
+    /// Clears the unalignable mark (a later transcript re-run realigned the take).
+    public func markComparable(take: TakeRef) throws(TakeStoreError) {
+        guard var manifest = readManifest(take) else { throw .notFound(take) }
+        guard manifest.unalignableReason != nil else { return }
+        manifest.unalignableReason = nil
+        do {
+            try writeManifest(manifest, ref: take)
+        } catch {
+            throw .storage(TakeFiles.storageError(error))
+        }
+    }
+
     // MARK: Derived records
 
     private func storedComparison(
