@@ -1,6 +1,6 @@
 # 14: Live microphone capture (macOS)
 
-Status: Ready · Branch: – · Depends on: 05 (endpointer, take quality, voicing; spec 13's entitlement is needed only
+Status: Done · Branch: – · Depends on: 05 (endpointer, take quality, voicing; spec 13's entitlement is needed only
 for the hand test) · Estimate: 3–4 h agent run + 1 h Raph review · Risk: high
 
 Risk: high. The capture code lives in `Packages/AccentKit/Sources/AMCapture/Live/`, a risky path, so the PR waits for

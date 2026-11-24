@@ -54,7 +54,7 @@ So:
 | 11 | [Stress validation and threshold tuning](11-stress-validation-tuning.md) | Ready | 02, 10, 12, 22 (spec 23's b2 gate re-run) | 9–12 h | 2.5 h |
 | 15 | [Reference library: bundled starter phrases and native recordings](15-reference-library.md) | Ready | 06, 10, 12 | 4–6 h | 1.5 h |
 | 16 | [Take store](16-take-store.md) | Ready | 01, 12, 15 | 4–5 h | 1 h |
-| 14 | [Live microphone capture (macOS)](14-live-capture.md) | Ready | 05 (the hand test needs spec 13) | 3–4 h | 1 h |
+| 14 | [Live microphone capture (macOS)](14-live-capture.md) | Done | 05 (the hand test needs spec 13) | 3–4 h | 1 h |
 | 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19, 11 (analysis gate) | 6–8 h | 1.5 h |
 | 13 | [Sandbox, microphone entitlement and usage string (by hand)](13-entitlements-mic-string.md) | Ready | 00 | – | 0.5 h |
 | 21 | [Coordinator-wired UI: record, compare, play back](21-coordinator-wired-ui.md) | Ready | 11 (analysis gate), 12, 13, 14, 15, 16, 20 | 10–12 h | 2 h |
