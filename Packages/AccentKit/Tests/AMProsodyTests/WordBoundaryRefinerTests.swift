@@ -161,17 +161,33 @@ struct WordBoundaryRefinerTests {
         #expect(WhisperOnly().id == "whisper" && snap.id == "dsp-snap-1")
     }
 
-    @Test("a cancel 100 ms into a call returns CancellationError within about 300 ms", .timeLimit(.minutes(1)))
+    @Test("a cancel 100 ms into a call returns CancellationError within about 300 ms", .timeLimit(.minutes(2)))
     func cancellation() async throws {
-        // Two minutes of speech-like audio, so the call is still running 100 ms in.
-        let samples = Take.make(Array(repeating: [(0.4, true), (0.2, false)], count: 200).flatMap { $0 })
-        let words = (0..<200).map { Take.word("w", Double($0) * 0.6, Double($0) * 0.6 + 0.3) }
+        // Two minutes of speech-like audio, so the call is normally still running 100 ms in. On a loaded CI runner the
+        // cancel can still land after the call has returned (PR #52's CI, run 45371814540). That attempt proves
+        // nothing either way, so it is retried with twice the audio, up to three times. A result that comes back
+        // after the cancel landed is a failure.
+        var minutes = 2
+        for _ in 0..<3 {
+            switch try await cancelOnce(seconds: Double(minutes) * 60) {
+            case .conclusive: return
+            case .cancelLandedAfterReturn: minutes *= 2
+            }
+        }
+        Issue.record("in three attempts the cancel never landed while the call was running")
+    }
+
+    private enum CancelAttempt { case conclusive, cancelLandedAfterReturn }
+
+    /// One call on `seconds` of speech-like audio, cancelled 100 ms after its task starts. Each time is taken where it
+    /// happens: the start and the return inside the call's task, the cancel on a high-QoS GCD thread. So neither a
+    /// busy cooperative pool (Swift Testing runs suites in parallel) nor a starved default-QoS thread moves them.
+    private func cancelOnce(seconds: Double) async throws -> CancelAttempt {
+        let count = Int(seconds / 0.6)
+        let samples = Take.make(Array(repeating: [(0.4, true), (0.2, false)], count: count).flatMap { $0 })
+        let words = (0..<count).map { Take.word("w", Double($0) * 0.6, Double($0) * 0.6 + 0.3) }
         let refiner = snap
         let clock = ContinuousClock()
-        // Each time is taken where it happens: the start and the return inside the call's task, the cancel on a
-        // GCD thread 100 ms after the start. Swift Testing runs suites in parallel, and on a loaded CI runner the
-        // cooperative pool can't resume this test for seconds, so a `Task.sleep` here overran the whole call
-        // (main CI, run 45363553021) and the cancel landed after the result.
         let started = DispatchSemaphore(value: 0)
         let task = Task { () -> (Result<[WordTimestamp], any Error>, ContinuousClock.Instant) in
             started.signal()
@@ -183,7 +199,7 @@ struct WordBoundaryRefinerTests {
             }
         }
         let cancelledAt: ContinuousClock.Instant? = await withCheckedContinuation { continuation in
-            DispatchQueue.global().async {
+            DispatchQueue.global(qos: .userInteractive).async {
                 guard started.wait(timeout: .now() + 30) == .success else { return continuation.resume(returning: nil) }
                 Thread.sleep(forTimeInterval: 0.1)
                 let now = clock.now
@@ -194,16 +210,18 @@ struct WordBoundaryRefinerTests {
         guard let cancelledAt else {
             task.cancel()
             Issue.record("the call never started")
-            return
+            return .conclusive
         }
         let (result, returnedAt) = await task.value
-        let elapsed = cancelledAt.duration(to: returnedAt)
         if case .failure(let error) = result {
             #expect(error is CancellationError)
-        } else {
-            Issue.record("the call finished with a result instead of CancellationError")
+            let elapsed = cancelledAt.duration(to: returnedAt)
+            #expect(elapsed <= .milliseconds(300), "returned \(elapsed) after the cancel")
+            return .conclusive
         }
-        #expect(elapsed <= .milliseconds(300), "returned \(elapsed) after the cancel")
+        if returnedAt <= cancelledAt { return .cancelLandedAfterReturn }
+        Issue.record("the call returned a result \(cancelledAt.duration(to: returnedAt)) after the cancel")
+        return .conclusive
     }
 
     @Test("ConfigIdentity with a different aligner gives a different configDigest")
