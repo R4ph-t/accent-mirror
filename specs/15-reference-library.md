@@ -107,4 +107,57 @@ with no ASR on the reference and no network.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Built 2026-11-24 by hand through Claude Code (branch `factory/15-reference-library`, from main at 52d035d).
+
+**What's built**
+
+- `fixtures/starter/phrases.json`: CPO's table from the Notion page, transcribed once (packs in order, the 20 prompts'
+  text, every target's ARPAbet override). The builder reads it and never changes it.
+- `scripts/build-starter.sh` → `am-eval starter-build`: checks each raw clip against `fixtures/vctk/eval-speakers.json`,
+  applies spec 02's `TrimRule` at the source rate (the same call `vctk-trim` makes), writes mono 16-bit FLAC at 48 kHz,
+  shifts the recorded WhisperKit words (`fixtures/timestamps/openai_whisper-base.en`) by the trim start, and builds each
+  analysis through `StarterReferences.analyse`, the same code the app's rebuild and the CI check run. Two runs are
+  byte-identical.
+- Result: **14 phrases kept** (002, 004, 005, 006, 007, 009, 010, 012, 013, 014, 015, 017, 018, 020), **6 dropped**
+  (p225 over 6 s: 003 6.44 s, 008 6.87 s, 011 6.07 s, 016 6.00 s, 019 6.90 s, 024 6.38 s), **101 recordings**, 23 MB
+  (FLAC stays at 48 kHz). Voices left out: trim over 6 s p226_005, p227_005, p233_005, p345_005, p227_006, p227_015;
+  not in VCTK 0.92 p227_007, p233_010, p241_015, p241_020. Packs: Stress Shifts 012, 013, 017, 007, 015, 020, 018,
+  014; Noun and Verb Pairs (none); Compound Nouns 006, 005; Weak Forms 002, 004, 009, 010, 014, 018, 005.
+- `AMLibrary`: `StarterManifest` (decode, `problems()`, `fileProblems(in:)`, `load(from:)`), `ReferenceLibrary`
+  (an actor implementing `ReferenceSet`: current cache file, else bundled record, else rebuild into `Caches/`; never
+  writes the bundle), `ReferenceRebuilder` (the closures `AMPipeline` injects), and `ReferenceSet.loadNatives`, the
+  rebuild-once policy (a recording that fails after its one rebuild is `referenceCacheCorrupt`).
+- `AMPipeline`: `StarterReferences` (each phrase as a `PhraseInput` through spec 06's validator and selector with CPO's
+  overrides; the expected L1 key; the rebuild from bundled FLAC + timings) and `ReferenceLibrary.bundled(folder:caches:
+  configuration:)` for spec 21. `Analyzer`'s natives loop now calls `loadNatives`; its behaviour is unchanged.
+- Tests: `AMLibraryTests` (bundled manifest and files, packs and attribution, validation errors, zero-phrase pack,
+  stale identity → `Caches/` with a read-only bundle, corrupt cache → one rebuild, corrupt twice →
+  `referenceCacheCorrupt`); `AMPipelineTests/BundledStarterTests` (validator on every phrase; every bundled analysis
+  recomputed and compared by key and SHA-256, which is the `make check` guard; one take analysed against the bundled
+  library with no rebuild and no cache write).
+
+**Spec gaps (built least-committal)**
+
+1. **Bundled word timings.** The Files list has no timings folder, but the rebuild reads "bundled word timings", so they
+   ship as `timings/<phraseID>/<speaker>.json` (spec 03's `RecordedTimestamps`, shifted, clamped into the clip,
+   rounded to 1 µs). 404 KB.
+2. **Analysis file and key.** `analysis/<phraseID>/<speaker>.json` holds the encoded `NativeAnalysis` bytes (L0 + L1,
+   with their keys inside); the record's key is `analysisKey` in the manifest, next to `analysisSHA256`. Cache files
+   are `DerivedRecord` JSON.
+3. **"Unknown pack" error.** Phrases don't name packs in this format, so it is read as a pack listing a phrase the
+   manifest doesn't define (`unknownPhrase(pack:phrase:)`), plus `phraseInNoPack`.
+4. **IDs.** Phrase `vctk-<prompt>`, recording `<speaker>_<prompt>` (the harness's IDs). `ReferenceIdentity`:
+   transcript revision 0, overrides and targets hashed as canonical JSON, native-set hash as `NativeBand`'s.
+5. **Targets = CPO's overrides.** CPO gives an override for every target (spec 06), so `targets` is the overrides'
+   indices. On 005, "train station (18–19)" makes both words targets (T R EY1 N, S T EY1 SH AH0 N); CPO's "plus and,
+   will, her, at, the" has no indices, so those are not targets. 010 "but" has no ARPAbet on CPO's page and CMUdict has
+   one form, so it gets B AH1 T (as CPO did for from, at, would). 024 "or" ER0 (024 is dropped anyway).
+6. **005 in Weak Forms** is appended last: CPO says to file it there but gives no position.
+7. **Source URL** per recording is the DataShare landing page from `fixtures/corpora/vctk.pin.json`; the DOI is in
+   `ATTRIBUTION.md` and `THIRD_PARTY_NOTICES.md`.
+8. **16 kHz resampler.** The app can't link `AMEvaluation`, so `StarterReferences.resample` is a copy of
+   `AudioFiles.resample` (same filter).
+9. **Load-time hashing.** `StarterManifest.load` checks every file's SHA-256 by default (about 23 MB); spec 21 may pass
+   `checkFiles: false` at launch if that is too slow in the app.
+10. **Rebuild-once loop location.** Moved from `Analyzer` into `AMLibrary` (`loadNatives`) so the policy is tested in
+    `AMLibraryTests` as How to test 4 asks.

@@ -325,37 +325,19 @@ public actor Analyzer {
     }
 
     /// The phrase's natives, decoded. A corrupt record (or one built for another phrase pronunciation or algorithm)
-    /// triggers one silent rebuild of that recording; only a second failure is reported.
+    /// triggers one silent rebuild of that recording; only a second failure is reported (`loadNatives`).
     private func natives(_ reference: any ReferenceSet, phrase: PhraseInput) async throws -> [LoadedNative] {
-        var rebuilt: Set<RecordingID> = []
-        while true {
-            try Task.checkCancellation()
-            var corrupt: RecordingID?
-            var loaded: [LoadedNative] = []
-            do {
-                for recording in try await reference.natives(phrase: phrase.id) {
-                    guard let native = DerivedCoding.native(in: recording.analysis),
-                        native.l1.key.l0.takeAudioSHA256 == recording.audioSHA256,
-                        native.l1.key.pronunciationHash == phrase.pronunciationHash,
-                        native.l1.key.algorithmVersion == Versions.algorithmVersion
-                    else {
-                        corrupt = recording.id
-                        break
-                    }
-                    loaded.append(LoadedNative(recording: recording, analysis: native))
-                }
-            } catch .cacheCorrupt(let recording) {
-                corrupt = recording
-            } catch .notFound {
-                throw OperationalFailure(.inferenceFailed(stage: .mapTime))
+        do {
+            return try await reference.loadNatives(phrase: phrase.id) { recording -> LoadedNative? in
+                guard let native = DerivedCoding.native(in: recording.analysis),
+                    native.l1.key.l0.takeAudioSHA256 == recording.audioSHA256,
+                    native.l1.key.pronunciationHash == phrase.pronunciationHash,
+                    native.l1.key.algorithmVersion == Versions.algorithmVersion
+                else { return nil }
+                return LoadedNative(recording: recording, analysis: native)
             }
-            guard let corrupt else { return loaded }
-            guard rebuilt.insert(corrupt).inserted else { throw OperationalFailure(.referenceCacheCorrupt(corrupt)) }
-            do {
-                try await reference.rebuild(corrupt, phrase: phrase.id)
-            } catch {
-                throw OperationalFailure(.referenceCacheCorrupt(corrupt))
-            }
+        } catch let error as ReferenceLoadError {
+            throw OperationalFailure(error.operational)
         }
     }
 
