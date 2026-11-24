@@ -35,6 +35,7 @@ struct SpikeEnvironment {
     let targets: TargetRule
     let aligner: WordAligner
     let jobs: Int
+    let families: [ModelFamily]
 
     init(_ args: Arguments, root: URL) throws {
         self.root = root
@@ -52,6 +53,9 @@ struct SpikeEnvironment {
             root.appendingPathComponent("docs/agreement/spike27/heteronyms.json")))
         aligner = try .bundled()
         jobs = Int(args.value("jobs") ?? "3") ?? 3
+        families = (args.value("families") ?? "logistic,trees").split(separator: ",").map {
+            $0 == "trees" ? ModelFamily.trees : ModelFamily.logistic
+        }
         try FileManager.default.createDirectory(at: work, withIntermediateDirectories: true)
     }
 

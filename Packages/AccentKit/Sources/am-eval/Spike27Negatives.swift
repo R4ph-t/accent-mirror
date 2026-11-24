@@ -24,6 +24,9 @@ struct SpikeNegative: Codable, Sendable {
     let measured: MeasuredAudio
     /// The take's oracle words carried through the time map.
     let words: [TimedWord]
+    /// Reported control: the negative swapped back by a second PSOLA pass (original prosody, two passes of PSOLA
+    /// artefacts in the swapped regions), re-measured; its words are the original oracle words.
+    let roundTrip: MeasuredAudio
 }
 
 struct SpikeIdentity: Codable, Sendable {
@@ -110,13 +113,29 @@ enum SpikeNegatives {
             if regions.contains(where: { $0.durationFactor < 0.5 || $0.durationFactor > 2 }) { extreme += 1 }
             let measured = try await FrontEnd.measure(output.samples)
             let moved = words.map { $0.moved(start: output.timeMap.forward($0.start), end: output.timeMap.forward($0.end)) }
+            let back = try await roundTrip(output, regions: regions)
             negatives.append(SpikeNegative(
                 id: "\(clip.id)#\(word.index)", clip: clip.id, speaker: clip.speaker, population: clip.population,
                 word: word.index, target: target, swapped: u, syllables: word.syllables, measured: stripped(measured),
-                words: moved))
+                words: moved, roundTrip: stripped(back)))
         }
         return Work(identity: SpikeIdentity(clip: clip.id, measured: stripped(identityMeasured)), negatives: negatives,
                     dropped: dropped, sourceWords: sources, extreme: extreme)
+    }
+
+    /// The negative swapped back: each region, at its place on the negative's timeline, gets the inverse duration
+    /// factor, gain and shift, through a fresh analysis of the negative (its own pYIN marks).
+    static func roundTrip(_ output: PSOLA.Output, regions: [PSOLA.Region]) async throws -> MeasuredAudio {
+        let samples = output.samples
+        let track = try await PYINTracker(thresholds: Thresholds.current.pitch).track(samples, sampleRate: FrontEnd.sampleRate)
+        let marks = PSOLA.analysisMarks(samples, track: track, sampleRate: FrontEnd.sampleRate)
+        let inverse = regions.map {
+            PSOLA.Region(start: output.timeMap.forward($0.start), end: output.timeMap.forward($0.end),
+                         durationFactor: 1 / $0.durationFactor, gainDB: -$0.gainDB, shiftProfile: $0.shiftProfile.map { -$0 })
+        }
+        let back = PSOLA.process(samples, marks: marks, regions: inverse, sampleRate: FrontEnd.sampleRate)
+        return FrontEnd.measure(back.samples, track: try await PYINTracker(thresholds: Thresholds.current.pitch)
+            .track(back.samples, sampleRate: FrontEnd.sampleRate))
     }
 
     /// The audio of one negative, its source and its identity pass (for listen/).

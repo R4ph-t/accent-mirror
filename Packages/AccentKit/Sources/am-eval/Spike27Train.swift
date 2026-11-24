@@ -41,6 +41,7 @@ struct CVPoint: Codable, Sendable {
 }
 
 struct VariantResult: Codable, Sendable {
+    let family: ModelFamily
     let variant: Variant
     let points: [CVPoint]
     /// The frozen τ: the smallest grid τ meeting the bar; nil when none does.
@@ -59,6 +60,7 @@ struct ArmTraining: Codable, Sendable {
     let positiveAbstained: [String: Int]
     let negativeAbstained: [String: Int]
     let variants: [VariantResult]
+    let chosenFamily: ModelFamily
     let chosenVariant: Variant
     let variantRule: String
     let tau: Double
@@ -66,6 +68,13 @@ struct ArmTraining: Codable, Sendable {
     let jitterTuning: FlipCount
     let artefactAUC: Double?
     let artefactRows: Int
+    /// Reported control beyond CTO markup 4: round-trip (swap, swap back) vs raw on the negatives' words.
+    let roundTripAUC: Double?
+    let roundTripRows: Int
+    /// Tuning-side diagnostic on raw natives (oracle words): how often the dictionary-stressed syllable is the argmax
+    /// of each raw measure among the word's nuclei, beside the first-syllable prior.
+    let signalCheck: [String: Double]
+    let signalWords: Int
     let classifier: StressClassifier
     var passesTuning: Bool { tauMeetsBar && jitterTuning.rate <= 0.02 + 1e-12 }
 }
@@ -143,11 +152,11 @@ enum SpikeTrain {
     }
 
     /// The out-of-fold outcomes of every take at every τ.
-    static func cv(_ takes: [TrainingTake], arm: Arm, variant: Variant, folds: Int) -> [CVPoint] {
+    static func cv(_ takes: [TrainingTake], arm: Arm, variant: Variant, family: ModelFamily, folds: Int) -> [CVPoint] {
         var counts = [(p: Int, f: Int, n: Int, nf: Int, na: Int)](repeating: (0, 0, 0, 0, 0), count: tauGrid.count)
         for fold in 0..<folds {
             let train = takes.filter { $0.fold != fold }
-            let classifier = StressClassifier.fit(trainingRows(train, arm: arm).words, variant: variant)
+            let classifier = StressClassifier.fit(trainingRows(train, arm: arm).words, variant: variant, family: family)
             for take in takes where take.fold == fold {
                 for (t, tau) in tauGrid.enumerated() {
                     let outcomes = TakeScoring.score(take.measured, words: take.words, arm: arm, source: .oracle,
@@ -170,28 +179,46 @@ enum SpikeTrain {
         }
     }
 
-    static func variantResult(_ variant: Variant, points: [CVPoint]) -> VariantResult {
+    static func variantResult(_ variant: Variant, family: ModelFamily, points: [CVPoint]) -> VariantResult {
         let tau = points.first(where: \.meetsBar)?.tau
         let fallback = points.min { a, b in
             a.falseFlagUpper != b.falseFlagUpper ? a.falseFlagUpper < b.falseFlagUpper : a.tau > b.tau
         }!.tau
-        return VariantResult(variant: variant, points: points, tau: tau, fallbackTau: fallback)
+        return VariantResult(family: family, variant: variant, points: points, tau: tau, fallbackTau: fallback)
     }
 
     /// Lit amendment 2: the feasible variant with the highest CV recall at its τ (fewer features on a tie); with none
     /// feasible, the lowest CV Wilson upper bound of native false flags.
-    static func chooseVariant(_ results: [VariantResult]) -> (Variant, String) {
+    /// Lit amendment 2 + CTO decision 1, tuning side only: among (family, variant) pairs meeting the CV false-flag bar,
+    /// the highest CV recall at its τ; ties go to logistic regression, then to fewer features. With none feasible,
+    /// the lowest CV Wilson upper bound of native false flags.
+    static func chooseVariant(_ results: [VariantResult]) -> VariantResult {
+        func simpler(_ a: VariantResult, _ b: VariantResult) -> Bool {
+            if a.family != b.family { return a.family == .logistic }
+            return a.variant.size < b.variant.size
+        }
         let feasible = results.filter { $0.tau != nil }
         if let best = feasible.max(by: { a, b in
-            a.operating.recall != b.operating.recall ? a.operating.recall < b.operating.recall : a.variant.size > b.variant.size
+            a.operating.recall != b.operating.recall ? a.operating.recall < b.operating.recall : simpler(b, a)
         }) {
-            return (best.variant, "highest CV recall at its τ among the variants meeting the false-flag bar")
+            return best
         }
-        let best = results.min { a, b in
+        return results.min { a, b in
             a.operating.falseFlagUpper != b.operating.falseFlagUpper ? a.operating.falseFlagUpper < b.operating.falseFlagUpper
-                : a.variant.size < b.variant.size
+                : simpler(a, b)
         }!
-        return (best.variant, "no variant meets the CV false-flag bar at any τ: lowest CV Wilson upper bound")
+    }
+
+    /// A binary scorer of the given family on raw rows (the artefact controls: the same features and model family).
+    static func binaryScorer(_ x: [[Double]], _ y: [Bool], names: [String], family: ModelFamily) -> @Sendable ([Double]) -> Double {
+        switch family {
+        case .logistic:
+            let m = LogisticModel.fit(x, y, names: names)
+            return { m.probability($0) }
+        case .trees:
+            let t = BoostedTrees.fit(x, y, names: names)
+            return { t.probability($0) }
+        }
     }
 
     /// ±40 ms flips on the raw tuning takes (oracle spans jittered, spec 11 §4b), out-of-fold models. A flip to or
@@ -222,7 +249,7 @@ enum SpikeTrain {
     /// CTO markup 4: processed-vs-raw classifier (same features, same model family), trained and scored on held-out
     /// tuning folds; nucleus rows of the words both takes put through the arm.
     static func artefactAUC(_ clips: [SpikeClip], identity: [String: MeasuredAudio], arm: Arm, variant: Variant,
-                            fold: (SpikeClip) -> Int?, folds: Int) -> (Double?, Int) {
+                            family: ModelFamily, fold: (SpikeClip) -> Int?, folds: Int) -> (Double?, Int) {
         var rows: [(fold: Int, row: [Double], processed: Bool)] = []
         for clip in clips {
             guard let f = fold(clip), let processed = identity[clip.id], let words = clip.words(.oracle) else { continue }
@@ -237,13 +264,43 @@ enum SpikeTrain {
         var positives: [Double] = [], negatives: [Double] = []
         for f in 0..<folds {
             let train = rows.filter { $0.fold != f }
-            let model = LogisticModel.fit(train.map(\.row), train.map(\.processed), names: Features.names(variant))
+            guard !train.isEmpty else { continue }
+            let score = binaryScorer(train.map(\.row), train.map(\.processed), names: Features.names(variant), family: family)
             for r in rows where r.fold == f {
-                let p = model.probability(r.row)
+                let p = score(r.row)
                 if r.processed { positives.append(p) } else { negatives.append(p) }
             }
         }
         return (ROC.auc(positives: positives, negatives: negatives), rows.count)
+    }
+}
+
+extension SpikeTrain {
+    /// Round-trip control (reported): the negative's word in the swapped-back take vs the same word in the raw take,
+    /// nucleus rows, the same features and model family, CV on held-out tuning folds.
+    static func roundTripAUC(_ negatives: [SpikeNegative], raw: [String: SpikeClip], arm: Arm, variant: Variant,
+                             family: ModelFamily, fold: (Population, String) -> Int?, folds: Int) -> (Double?, Int) {
+        var rows: [(fold: Int, row: [Double], processed: Bool)] = []
+        for negative in negatives {
+            guard let f = fold(negative.population, negative.speaker), let clip = raw[negative.clip],
+                  let words = clip.words(.oracle), let j = words.firstIndex(where: { $0.index == negative.word }) else { continue }
+            let a = TakeScoring.select(clip.measured, words: words, arm: arm, source: .oracle, classifier: nil, tau: 0)[j]
+            let b = TakeScoring.select(negative.roundTrip, words: words, arm: arm, source: .oracle, classifier: nil, tau: 0)[j]
+            guard case .success(let x)? = a, case .success(let y)? = b else { continue }
+            for row in Features.rows(x.map { clip.measured.nuclei[$0] }, variant: variant) { rows.append((f, row, false)) }
+            for row in Features.rows(y.map { negative.roundTrip.nuclei[$0] }, variant: variant) { rows.append((f, row, true)) }
+        }
+        var positives: [Double] = [], negativesScores: [Double] = []
+        for f in 0..<folds {
+            let train = rows.filter { $0.fold != f }
+            guard !train.isEmpty else { continue }
+            let score = binaryScorer(train.map(\.row), train.map(\.processed), names: Features.names(variant), family: family)
+            for r in rows where r.fold == f {
+                let p = score(r.row)
+                if r.processed { positives.append(p) } else { negativesScores.append(p) }
+            }
+        }
+        return (ROC.auc(positives: positives, negatives: negativesScores), rows.count)
     }
 }
 
@@ -279,44 +336,79 @@ func spike27Train(_ env: SpikeEnvironment) async throws {
              + "\(negativesFile.negatives.count) negatives), \(folds) speaker folds")
 
     let allTakes = takes
+    // CTO decision 1: logistic regression first; boosted trees too, because logistic regression missed gate 2 on the
+    // first evaluation run (arm B runtime: 10/134 vs B1 27/134) and time allowed. The family is still chosen on
+    // tuning-side CV only (`chooseVariant`); `--families logistic` reproduces the logistic-only run.
+    let families = env.families
     var arms: [ArmTraining] = []
     for arm in Arm.allCases {
         let rows = SpikeTrain.trainingRows(takes, arm: arm)
         var results: [VariantResult] = []
         try await withThrowingTaskGroup(of: VariantResult.self) { group in
-            for variant in Variant.allCases {
-                group.addTask { SpikeTrain.variantResult(variant, points: SpikeTrain.cv(allTakes, arm: arm, variant: variant, folds: folds)) }
+            for family in families {
+                for variant in Variant.allCases {
+                    group.addTask {
+                        SpikeTrain.variantResult(variant, family: family,
+                                                 points: SpikeTrain.cv(allTakes, arm: arm, variant: variant, family: family, folds: folds))
+                    }
+                }
             }
             for try await r in group { results.append(r) }
         }
-        results.sort { Variant.allCases.firstIndex(of: $0.variant)! < Variant.allCases.firstIndex(of: $1.variant)! }
-        let (variant, rule) = SpikeTrain.chooseVariant(results)
-        let chosen = results.first { $0.variant == variant }!
+        results.sort { (ModelFamily.allCases.firstIndex(of: $0.family)!, Variant.allCases.firstIndex(of: $0.variant)!)
+            < (ModelFamily.allCases.firstIndex(of: $1.family)!, Variant.allCases.firstIndex(of: $1.variant)!) }
+        let chosen = SpikeTrain.chooseVariant(results)
+        let variant = chosen.variant, family = chosen.family
+        let rule = chosen.tau != nil
+            ? "highest CV recall at its τ among the (family, variant) pairs meeting the CV false-flag bar; ties to logistic regression, then fewer features"
+            : "no (family, variant) pair meets the CV false-flag bar at any τ: lowest CV Wilson upper bound"
         var models: [Int: StressClassifier] = [:]
         for f in 0..<folds {
-            models[f] = StressClassifier.fit(SpikeTrain.trainingRows(takes.filter { $0.fold != f }, arm: arm).words, variant: variant)
+            models[f] = StressClassifier.fit(SpikeTrain.trainingRows(takes.filter { $0.fold != f }, arm: arm).words,
+                                             variant: variant, family: family)
         }
         let jitter = SpikeTrain.tuningJitter(tuning, arm: arm, models: models, tau: chosen.operatingTau,
                                              fold: { fold($0.population, $0.speaker) }, seed: env.split.foldSeed)
-        let (auc, aucRows) = SpikeTrain.artefactAUC(tuning, identity: identity, arm: arm, variant: variant,
+        let (auc, aucRows) = SpikeTrain.artefactAUC(tuning, identity: identity, arm: arm, variant: variant, family: family,
                                                     fold: { fold($0.population, $0.speaker) }, folds: folds)
-        let classifier = StressClassifier.fit(rows.words, variant: variant)
+        let classifier = StressClassifier.fit(rows.words, variant: variant, family: family)
+        let (roundAUC, roundRows) = SpikeTrain.roundTripAUC(negativesFile.negatives, raw: Dictionary(uniqueKeysWithValues: clips.map { ($0.id, $0) }),
+                                                            arm: arm, variant: variant, family: family, fold: fold, folds: folds)
+        var argmax: [String: Int] = [:]
+        var signalWords = 0
+        for clip in tuning {
+            guard let words = clip.words(.oracle) else { continue }
+            for (j, r) in TakeScoring.select(clip.measured, words: words, arm: arm, source: .oracle, classifier: nil, tau: 0) {
+                guard case .success(let list) = r, let target = words[j].target else { continue }
+                let n = list.map { clip.measured.nuclei[$0] }
+                signalWords += 1
+                func best(_ v: [Double]) -> Int { v.indices.max { v[$0] < v[$1] || (v[$0] == v[$1] && $0 > $1) }! }
+                if best(n.map(\.duration)) == target { argmax["duration", default: 0] += 1 }
+                if best(n.map(\.energyDB)) == target { argmax["intensity", default: 0] += 1 }
+                if best(n.map { $0.f0Residual ?? -99 }) == target { argmax["f0 residual", default: 0] += 1 }
+                if best(n.map { -$0.tiltDB }) == target { argmax["flattest spectrum (−tilt)", default: 0] += 1 }
+                if target == 0 { argmax["first-syllable prior", default: 0] += 1 }
+            }
+        }
+        let signal = argmax.mapValues { Double($0) / Double(max(signalWords, 1)) }
         let result = ArmTraining(
             arm: arm, trainingWords: rows.words.count, positiveWords: rows.positives, negativeWords: rows.negatives,
             positiveAbstained: rows.positiveAbstained, negativeAbstained: rows.negativeAbstained, variants: results,
-            chosenVariant: variant, variantRule: rule, tau: chosen.operatingTau, tauMeetsBar: chosen.tau != nil,
-            jitterTuning: jitter, artefactAUC: auc, artefactRows: aucRows, classifier: classifier)
+            chosenFamily: family, chosenVariant: variant, variantRule: rule, tau: chosen.operatingTau, tauMeetsBar: chosen.tau != nil,
+            jitterTuning: jitter, artefactAUC: auc, artefactRows: aucRows, roundTripAUC: roundAUC, roundTripRows: roundRows,
+            signalCheck: signal, signalWords: signalWords, classifier: classifier)
         arms.append(result)
         for r in results {
             let o = r.operating
-            spikeLog(String(format: "spike27 train: arm %@ %@: τ %@ (%.2f) CV FF %d/%d %.2f%% (upper %.2f%%), recall %d/%d %.1f%%",
-                            arm.rawValue, r.variant.rawValue, r.tau == nil ? "NOT FOUND" : "met", r.operatingTau,
+            spikeLog(String(format: "spike27 train: arm %@ %@ %@: τ %@ (%.2f) CV FF %d/%d %.2f%% (upper %.2f%%), recall %d/%d %.1f%%",
+                            arm.rawValue, r.family.rawValue, r.variant.rawValue, r.tau == nil ? "NOT FOUND" : "met", r.operatingTau,
                             o.flags, o.positives, o.falseFlagRate * 100, o.falseFlagUpper * 100, o.negativeFlags,
                             o.negatives, o.recall * 100))
         }
-        spikeLog(String(format: "spike27 train: arm %@ chose %@ (%@), τ %.2f; tuning jitter %d/%d %.2f%%; artefact AUC %@",
-                        arm.rawValue, variant.rawValue, rule, chosen.operatingTau, jitter.flips, jitter.n,
-                        jitter.rate * 100, auc.map { String(format: "%.3f", $0) } ?? "–"))
+        spikeLog(String(format: "spike27 train: arm %@ chose %@ / %@ (%@), τ %.2f; tuning jitter %d/%d %.2f%%; artefact AUC %@; round-trip AUC %@ (%d rows)",
+                        arm.rawValue, family.rawValue, variant.rawValue, rule, chosen.operatingTau, jitter.flips, jitter.n,
+                        jitter.rate * 100, auc.map { String(format: "%.3f", $0) } ?? "–",
+                        roundAUC.map { String(format: "%.3f", $0) } ?? "–", roundRows))
     }
     let a = arms.first { $0.arm == .a }!, b = arms.first { $0.arm == .b }!
     let chosenArm: Arm
@@ -324,8 +416,8 @@ func spike27Train(_ env: SpikeEnvironment) async throws {
     if b.passesTuning { chosenArm = .b; armRule = "B passes the tuning-side checks (CV false-flag bar, tuning jitter ≤ 2%); B is preferred" }
     else if a.passesTuning { chosenArm = .a; armRule = "only A passes the tuning-side checks" }
     else {
-        let ua = a.variants.first { $0.variant == a.chosenVariant }!.operating.falseFlagUpper
-        let ub = b.variants.first { $0.variant == b.chosenVariant }!.operating.falseFlagUpper
+        let ua = a.variants.first { $0.variant == a.chosenVariant && $0.family == a.chosenFamily }!.operating.falseFlagUpper
+        let ub = b.variants.first { $0.variant == b.chosenVariant && $0.family == b.chosenFamily }!.operating.falseFlagUpper
         chosenArm = ua < ub ? .a : .b
         armRule = "neither arm passes the tuning-side checks: the lower CV Wilson upper bound of native false flags (B on a tie)"
     }
@@ -423,5 +515,30 @@ func spike27Train(_ env: SpikeEnvironment) async throws {
         prompts: finalPrompts)
     try (encoder.encode(list) + Data("\n".utf8)).write(
         to: env.root.appendingPathComponent("docs/agreement/spike27/final-direction-prompts.json"))
-    spikeLog("spike27 train: wrote \(url.path) and docs/agreement/spike27/final-direction-prompts.json")
+    // §5: the training manifest (no audio): every training-side take and negative, with its fold and swap.
+    struct ManifestTake: Encodable { let clip: String; let speaker: String; let population: String; let fold: Int? }
+    struct ManifestNegative: Encodable { let id: String; let clip: String; let word: Int; let target: Int; let swapped: Int; let syllables: Int }
+    struct Manifest: Encodable {
+        let description: String
+        let seed: UInt64
+        let folds: [[String]]
+        let positives: [ManifestTake]
+        let negativeSourceWords: Int
+        let negatives: [ManifestNegative]
+        let dropped: [String: Int]
+    }
+    let manifest = Manifest(
+        description: "Spec 27 §5 training manifest (no audio). Positives: tuning-side takes through the identity TD-PSOLA path, MFA word boundaries. Negatives: one seeded stressed↔unstressed swap per native multi-syllable word whose front end found its N nuclei; syllables 0-based in the context pronunciation. Fold null: the TTS voice, on the training side of every fold.",
+        seed: env.split.foldSeed, folds: env.split.cvFolds,
+        positives: clips.map { ManifestTake(clip: $0.id, speaker: $0.speaker, population: $0.population.rawValue,
+                                            fold: fold($0.population, $0.speaker)) },
+        negativeSourceWords: negativesFile.sourceWords,
+        negatives: negativesFile.negatives.map { ManifestNegative(id: $0.id, clip: $0.clip, word: $0.word, target: $0.target,
+                                                                   swapped: $0.swapped, syllables: $0.syllables) },
+        dropped: negativesFile.dropped)
+    let compact = JSONEncoder()
+    compact.outputFormatting = [.sortedKeys, .prettyPrinted]
+    try (compact.encode(manifest) + Data("\n".utf8)).write(
+        to: env.root.appendingPathComponent("docs/agreement/spike27/training-manifest.json"))
+    spikeLog("spike27 train: wrote \(url.path), docs/agreement/spike27/final-direction-prompts.json and training-manifest.json")
 }

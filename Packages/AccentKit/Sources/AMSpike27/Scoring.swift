@@ -111,6 +111,9 @@ public struct AbstentionError: Error, Sendable, Hashable {
 /// §4: the swap that turns a native word into a misplaced-stress negative.
 public enum StressSwap {
     public static let profilePoints = 11
+    /// Each modified stretch is the nucleus region widened by up to this on each side (never past its valley), so the
+    /// vowel's tails just outside the 9 dB region move with it rather than staying behind as a bump.
+    public static let marginSeconds = 0.03
 
     /// The two regions: the stressed nucleus takes the unstressed one's duration, intensity and f0 contour, and the
     /// other way round. Contours are read from the take's voiced frames inside each region by relative position.
@@ -118,10 +121,20 @@ public enum StressSwap {
                                take: MeasuredAudio) -> [PSOLA.Region] {
         let cs = contour(s, take), cu = contour(u, take)
         let toS = zip(cu, cs).map { $0 - $1 }
+        func stretch(_ n: MeasuredNucleus) -> (Double, Double) {
+            (max(n.regionStart - marginSeconds, min(n.leftValley, n.regionStart)),
+             min(n.regionEnd + marginSeconds, max(n.rightValley, n.regionEnd)))
+        }
+        let (s0, s1) = stretch(s), (u0, u1) = stretch(u)
+        // Never let the two stretches overlap (adjacent nuclei share a valley).
+        let (a, b) = s.peakTime < u.peakTime ? ((s0, s1), (u0, u1)) : ((u0, u1), (s0, s1))
+        let cut = min(a.1, b.0)
+        let first = (a.0, max(a.0, cut)), second = (max(cut, b.0), b.1)
+        let (sr, ur) = s.peakTime < u.peakTime ? (first, second) : (second, first)
         return [
-            PSOLA.Region(start: s.regionStart, end: s.regionEnd, durationFactor: u.duration / s.duration,
+            PSOLA.Region(start: sr.0, end: sr.1, durationFactor: u.duration / s.duration,
                          gainDB: u.energyDB - s.energyDB, shiftProfile: toS),
-            PSOLA.Region(start: u.regionStart, end: u.regionEnd, durationFactor: s.duration / u.duration,
+            PSOLA.Region(start: ur.0, end: ur.1, durationFactor: s.duration / u.duration,
                          gainDB: s.energyDB - u.energyDB, shiftProfile: toS.map { -$0 }),
         ]
     }

@@ -28,9 +28,13 @@ public struct MeasuredNucleus: Sendable, Hashable, Codable {
     /// Lit amendment 2: spectral balance, band energy 100–1,000 Hz minus 1,000–4,000 Hz (dB), Hann window over the
     /// same ± window as e. The same measure for every variant.
     public let tiltDB: Double
+    /// The envelope minima separating it from its neighbours (spec 25 §1); bound §4's swap stretch.
+    public let leftValley: Double
+    public let rightValley: Double
 
     public init(peakTime: Double, regionStart: Double, regionEnd: Double, prominenceDB: Double, peakDB: Double,
-                duration: Double, energyDB: Double, f0Semitones: Double?, f0Residual: Double?, tiltDB: Double) {
+                duration: Double, energyDB: Double, f0Semitones: Double?, f0Residual: Double?, tiltDB: Double,
+                leftValley: Double? = nil, rightValley: Double? = nil) {
         self.peakTime = peakTime
         self.regionStart = regionStart
         self.regionEnd = regionEnd
@@ -41,6 +45,8 @@ public struct MeasuredNucleus: Sendable, Hashable, Codable {
         self.f0Semitones = f0Semitones
         self.f0Residual = f0Residual
         self.tiltDB = tiltDB
+        self.leftValley = leftValley ?? regionStart
+        self.rightValley = rightValley ?? regionEnd
     }
 }
 
@@ -107,7 +113,7 @@ public enum FrontEnd {
                 energyDB: max(rmsDB(samples, window), floor),
                 f0Semitones: f0.isEmpty ? nil : f0.reduce(0, +) / Double(f0.count),
                 f0Residual: residual.isEmpty ? nil : residual.reduce(0, +) / Double(residual.count),
-                tiltDB: tilt(samples, window))
+                tiltDB: tilt(samples, window), leftValley: nucleus.leftValleyTime, rightValley: nucleus.rightValleyTime)
         }
         return MeasuredAudio(duration: Double(samples.count) / sampleRate, nuclei: measured, voicedTimes: times,
                              voicedSemitones: semitones, hopSeconds: track.hopSeconds)

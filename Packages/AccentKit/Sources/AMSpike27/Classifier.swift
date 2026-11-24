@@ -153,24 +153,41 @@ public struct LogisticModel: Sendable, Hashable, Codable {
     }
 }
 
-/// A fitted word-stress classifier: the variant and its model.
+public enum ModelFamily: String, Sendable, Hashable, Codable, CaseIterable {
+    case logistic = "logistic regression"
+    case trees = "boosted trees"
+}
+
+/// A fitted word-stress classifier: the variant and its model (one family).
 public struct StressClassifier: Sendable, Hashable, Codable {
     public let variant: Variant
-    public let model: LogisticModel
+    public let model: LogisticModel?
+    public let trees: BoostedTrees?
+
+    public var family: ModelFamily { trees == nil ? .logistic : .trees }
 
     public init(variant: Variant, model: LogisticModel) {
         self.variant = variant
         self.model = model
+        self.trees = nil
+    }
+
+    public init(variant: Variant, trees: BoostedTrees) {
+        self.variant = variant
+        self.model = nil
+        self.trees = trees
     }
 
     /// P(primary) per nucleus, in time order.
     public func probabilities(_ nuclei: [MeasuredNucleus]) -> [Double] {
-        Features.rows(nuclei, variant: variant).map(model.probability)
+        let rows = Features.rows(nuclei, variant: variant)
+        if let trees { return rows.map(trees.probability) }
+        return rows.map(model!.probability)
     }
 
     /// Fits on words whose `label` is the index of the nucleus that carries primary stress acoustically.
     public static func fit(_ words: [(nuclei: [MeasuredNucleus], label: Int)], variant: Variant,
-                           lambda: Double = LogisticModel.defaultLambda) -> StressClassifier {
+                           family: ModelFamily = .logistic, lambda: Double = LogisticModel.defaultLambda) -> StressClassifier {
         var x: [[Double]] = []
         var y: [Bool] = []
         for word in words {
@@ -179,8 +196,12 @@ public struct StressClassifier: Sendable, Hashable, Codable {
                 y.append(k == word.label)
             }
         }
-        return StressClassifier(variant: variant,
-                                model: LogisticModel.fit(x, y, names: Features.names(variant), lambda: lambda))
+        switch family {
+        case .logistic:
+            return StressClassifier(variant: variant, model: LogisticModel.fit(x, y, names: Features.names(variant), lambda: lambda))
+        case .trees:
+            return StressClassifier(variant: variant, trees: BoostedTrees.fit(x, y, names: Features.names(variant)))
+        }
     }
 }
 
@@ -232,5 +253,92 @@ public enum ROC {
         }
         let np = Double(positives.count), nn = Double(negatives.count)
         return (rankSum - np * (np + 1) / 2) / (np * nn)
+    }
+}
+
+/// Spec 27 §1's other small, inspectable family (CTO decision 1: only if logistic regression misses gate 2): gradient
+/// boosted trees on the logistic loss, depth ≤ 3, ≤ 100 trees, Newton leaf values with an L2 term (λ = 1),
+/// shrinkage 0.1, at least 20 rows a leaf, split thresholds at up to 32 quantiles of each feature. Deterministic.
+public struct BoostedTrees: Sendable, Hashable, Codable {
+    public struct Node: Sendable, Hashable, Codable {
+        /// -1 for a leaf.
+        public let feature: Int
+        public let threshold: Double
+        public let left: Int
+        public let right: Int
+        public let value: Double
+    }
+
+    public let names: [String]
+    public let base: Double
+    public let rate: Double
+    public let trees: [[Node]]
+
+    public static let maxTrees = 100
+    public static let maxDepth = 3
+
+    public static func fit(_ x: [[Double]], _ y: [Bool], names: [String], trees count: Int = maxTrees,
+                           depth: Int = maxDepth, rate: Double = 0.1, minLeaf: Int = 20, lambda: Double = 1) -> BoostedTrees {
+        let n = x.count, p = names.count
+        let positives = Double(y.count { $0 })
+        let prior = min(max(positives / Double(max(n, 1)), 1e-6), 1 - 1e-6)
+        let base = log(prior / (1 - prior))
+        var score = [Double](repeating: base, count: n)
+        // Candidate thresholds per feature.
+        var cuts: [[Double]] = []
+        for j in 0..<p {
+            let values = Array(Set(x.map { $0[j] })).sorted()
+            if values.count <= 33 {
+                cuts.append(zip(values, values.dropFirst()).map { ($0 + $1) / 2 })
+            } else {
+                cuts.append((1...32).map { values[$0 * (values.count - 1) / 33] })
+            }
+        }
+        var forest: [[Node]] = []
+        for _ in 0..<min(count, maxTrees) {
+            var g = [Double](repeating: 0, count: n), h = [Double](repeating: 0, count: n)
+            for i in 0..<n {
+                let mu = LogisticModel.sigmoid(score[i])
+                g[i] = (y[i] ? 1 : 0) - mu
+                h[i] = max(mu * (1 - mu), 1e-9)
+            }
+            var nodes: [Node] = []
+            func build(_ rows: [Int], _ level: Int) -> Int {
+                let G = rows.reduce(0) { $0 + g[$1] }, H = rows.reduce(0) { $0 + h[$1] }
+                let index = nodes.count
+                nodes.append(Node(feature: -1, threshold: 0, left: -1, right: -1, value: rate * G / (H + lambda)))
+                guard level < min(depth, maxDepth), rows.count >= 2 * minLeaf else { return index }
+                var best: (gain: Double, feature: Int, threshold: Double)? = nil
+                let parent = G * G / (H + lambda)
+                for j in 0..<p {
+                    for t in cuts[j] {
+                        var gl = 0.0, hl = 0.0, nl = 0
+                        for i in rows where x[i][j] <= t { gl += g[i]; hl += h[i]; nl += 1 }
+                        guard nl >= minLeaf, rows.count - nl >= minLeaf else { continue }
+                        let gain = gl * gl / (hl + lambda) + (G - gl) * (G - gl) / (H - hl + lambda) - parent
+                        if gain > (best?.gain ?? 1e-9) { best = (gain, j, t) }
+                    }
+                }
+                guard let best else { return index }
+                let left = build(rows.filter { x[$0][best.feature] <= best.threshold }, level + 1)
+                let right = build(rows.filter { x[$0][best.feature] > best.threshold }, level + 1)
+                nodes[index] = Node(feature: best.feature, threshold: best.threshold, left: left, right: right, value: 0)
+                return index
+            }
+            _ = build(Array(0..<n), 0)
+            forest.append(nodes)
+            for i in 0..<n { score[i] += Self.evaluate(nodes, x[i]) }
+        }
+        return BoostedTrees(names: names, base: base, rate: rate, trees: forest)
+    }
+
+    static func evaluate(_ nodes: [Node], _ row: [Double]) -> Double {
+        var k = 0
+        while nodes[k].feature >= 0 { k = row[nodes[k].feature] <= nodes[k].threshold ? nodes[k].left : nodes[k].right }
+        return nodes[k].value
+    }
+
+    public func probability(_ row: [Double]) -> Double {
+        LogisticModel.sigmoid(trees.reduce(base) { $0 + Self.evaluate($1, row) })
     }
 }

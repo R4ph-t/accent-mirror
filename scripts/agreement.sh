@@ -17,6 +17,9 @@
 #     (scripts/nucleus-jitter.sh)
 #   scripts/agreement.sh --suite nucleus-count [--tuning-log <entry.md>]   # spec 26 §1's grid, tuning speakers only;
 #     writes docs/agreement/reports/nucleus-count-<configDigest8>.{json,md} (scripts/nucleus-count.sh)
+#   scripts/agreement.sh --suite spike27 [--write-report]   # spec 27's offline spike: every gate per arm × boundary
+#     source, ends `Spike 27: GO` / `NO-GO` / `NO-GO (oracle-only)`; writes docs/agreement/reports/spike27-<configDigest8>.{json,md}
+#     (scripts/spike27.sh, niced, 3 jobs)
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
@@ -50,6 +53,7 @@ case "$suite" in
   l2-shared) am_eval suite --suite l2-shared ${extra[@]+"${extra[@]}"} ;;
   nucleus-jitter) "$root/scripts/nucleus-jitter.sh" ${extra[@]+"${extra[@]}"} ;;
   nucleus-count) "$root/scripts/nucleus-count.sh" ${extra[@]+"${extra[@]}"} ;;
+  spike27) "$root/scripts/spike27.sh" ${extra[@]+"${extra[@]}"} ;;
   release)
     mkdir -p "$cache/guard"
     GUARD_LABEL=shipped nice -n 10 "$root/scripts/spec11-guard.sh" held-out "$cache/guard/held-out-shipped.json"
@@ -65,5 +69,5 @@ case "$suite" in
     am_eval suite --suite l2-shared ${extra[@]+"${extra[@]}"} || status=1
     exit $status
     ;;
-  *) echo "agreement.sh: unknown suite $suite (sets, smoke, positive, l2-shared, release, nucleus-jitter, nucleus-count, all)" >&2; exit 64 ;;
+  *) echo "agreement.sh: unknown suite $suite (sets, smoke, positive, l2-shared, release, nucleus-jitter, nucleus-count, spike27, all)" >&2; exit 64 ;;
 esac

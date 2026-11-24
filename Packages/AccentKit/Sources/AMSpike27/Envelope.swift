@@ -16,6 +16,13 @@ public struct PhraseMetrics: Sendable, Hashable, Codable {
     public let finalClass: FinalClass?
     public let npvi: Double?
 
+    public init(pitchRange: Double?, finalSlope: Double?, finalClass: FinalClass?, npvi: Double?) {
+        self.pitchRange = pitchRange
+        self.finalSlope = finalSlope
+        self.finalClass = finalClass
+        self.npvi = npvi
+    }
+
     public static func measure(_ take: MeasuredAudio, words: [TimedWord], thresholds: Thresholds = .current)
         -> PhraseMetrics
     {
