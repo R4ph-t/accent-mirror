@@ -124,6 +124,13 @@ public enum NativeEnvelope {
         PhraseMetrics.percentile(sorted, q * 100)
     }
 
+    /// §2 (lit amendment 3), on any phrase-verdict row: under 30 natural takes the row is NOT EVALUATED (nil), never
+    /// NOT MET; otherwise MET when the Wilson upper bound of native false flags is ≤ 5%.
+    public static func verdictRowMet(n: Int, flags: Int) -> Bool? {
+        guard n >= minimumNaturalTakes else { return nil }
+        return SpikeStats.wilson(flags, n).upper <= 0.05 + 1e-12
+    }
+
     /// The candidate quantile pairs (q, 1 − q), widest first. Fixed before any data.
     public static let quantiles = [0.0, 0.01, 0.025, 0.05, 0.10]
 

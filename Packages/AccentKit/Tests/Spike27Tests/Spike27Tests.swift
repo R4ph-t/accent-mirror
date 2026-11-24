@@ -273,4 +273,13 @@ struct Spike27Tests {
         #expect(ArmC.select(nuclei, groupCentres: [0.12, 0.13], syllables: 2) == nil)
         #expect(ArmC.select(nuclei, groupCentres: [0.12, 0.45], syllables: 2) == nil)
     }
+
+    @Test("a phrase-verdict row with under 30 natural takes is NOT EVALUATED, never NOT MET")
+    func phraseRowMinimum() {
+        #expect(NativeEnvelope.verdictRowMet(n: 16, flags: 0) == nil)
+        #expect(NativeEnvelope.verdictRowMet(n: 29, flags: 5) == nil)
+        #expect(NativeEnvelope.verdictRowMet(n: 30, flags: 0) == false)
+        #expect(NativeEnvelope.verdictRowMet(n: 100, flags: 0) == true)
+        #expect(NativeEnvelope.verdictRowMet(n: 100, flags: 5) == false)
+    }
 }

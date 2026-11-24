@@ -69,6 +69,7 @@ struct PhraseLine: Codable, Sendable {
     let flags: Int
     let upper: Double
     let status: GateStatus
+    var note: String = ""
 }
 
 struct EvaluationFile: Codable {
@@ -106,8 +107,8 @@ enum SpikeEvaluate {
         return GateLine(gate: "gate 1 false flags", arm: arm.rawValue, source: source.rawValue, population: population,
                         n: n, count: flags, value: rate, lower: n > 0 ? w.lower : nil, upper: n > 0 ? w.upper : nil,
                         limit: "point ≤ 1% and Wilson upper ≤ 2%, n ≥ 600", status: status,
-                        detail: "\(outcomes.count) target words, \(outcomes.count - n) abstained"
-                            + (n < 600 ? " (n < 600: NOT EVALUATED)" : ""))
+                        detail: (n < 600 ? "NOT EVALUATED because n = \(n) non-abstained words is under 600; " : "")
+                            + "\(outcomes.count) target words, \(outcomes.count - n) abstained")
     }
 
     static func coverage(_ outcomes: [WordOutcome], arm: Arm, source: BoundarySource, population: String,
@@ -332,7 +333,8 @@ func spike27Evaluate(_ env: SpikeEnvironment, args: Arguments) async throws -> I
                 if metric == "final direction" && !e.finalDirectionVerdicted { continue }
                 guard e.evaluated, let interval = (metric == "monotone" ? e.pitchRange : e.finalSlope) else {
                     out.phrase.append(PhraseLine(metric: metric, source: source.rawValue, prompt: prompt, n: 0, flags: 0,
-                                                 upper: 1, status: .notEvaluated))
+                                                 upper: 1, status: .notEvaluated,
+                                                 note: "envelope NOT EVALUATED (< 30 natural tuning-side takes)"))
                     continue
                 }
                 func verdict(_ m: PhraseMetrics) -> Bool? {
@@ -353,8 +355,10 @@ func spike27Evaluate(_ env: SpikeEnvironment, args: Arguments) async throws -> I
                     jitterFlips[metric] = j
                 }
                 let upper = SpikeStats.wilson(flags, n).upper
+                let met = NativeEnvelope.verdictRowMet(n: n, flags: flags)
                 out.phrase.append(PhraseLine(metric: metric, source: source.rawValue, prompt: prompt, n: n, flags: flags,
-                                             upper: upper, status: n == 0 ? .notEvaluated : upper <= 0.05 + 1e-12 ? .met : .notMet))
+                                             upper: upper, status: met == nil ? .notEvaluated : met! ? .met : .notMet,
+                                             note: met == nil ? "n < 30" : ""))
             }
         }
         for metric in ["monotone", "final direction"] {
@@ -369,8 +373,8 @@ func spike27Evaluate(_ env: SpikeEnvironment, args: Arguments) async throws -> I
     }
     for line in out.gates { spikeLog(line.text) }
     for line in out.phrase {
-        spikeLog(String(format: "phrase %@ | %@ | %@: n=%d flags=%d Wilson upper %.1f%% (≤ 5%%): %@", line.metric, line.source,
-                        line.prompt, line.n, line.flags, line.upper * 100, line.status.rawValue))
+        spikeLog(String(format: "phrase %@ | %@ | %@: n=%d flags=%d Wilson upper %.1f%% (≤ 5%%, n ≥ 30): %@%@", line.metric, line.source,
+                        line.prompt, line.n, line.flags, line.upper * 100, line.status.rawValue, line.note.isEmpty ? "" : " (\(line.note))"))
     }
     return try spike27Report(env, training: training, evaluation: out, write: args.flag("write-report"))
 }

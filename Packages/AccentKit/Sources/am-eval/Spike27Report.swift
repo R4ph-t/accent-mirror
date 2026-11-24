@@ -66,14 +66,15 @@ enum SpikeVerdict {
         let jitter = e.gates.filter { $0.gate == "gate 3 jitter ±40 ms (phrase \(metric))" && $0.source == source.rawValue }
         let evaluated = lines.filter { $0.status != .notEvaluated }
         var texts = lines.map {
-            String(format: "gate 1 phrase %@ | %@ | %@: n=%d flags=%d Wilson upper %.1f%% (≤ 5%%): %@", $0.metric, $0.source,
-                   $0.prompt, $0.n, $0.flags, $0.upper * 100, $0.status.rawValue)
+            String(format: "gate 1 phrase %@ | %@ | %@: n=%d flags=%d Wilson upper %.1f%% (≤ 5%%, n ≥ 30): %@%@", $0.metric, $0.source,
+                   $0.prompt, $0.n, $0.flags, $0.upper * 100, $0.status.rawValue, $0.note.isEmpty ? "" : " (\($0.note))")
         }
         texts += jitter.map(\.text)
         texts.append("gate 2 (L2 recall vs B1): not defined for phrase metrics (no L2 phrase labels)")
         let status: GateStatus
+        // A claim with no evaluated prompt is NOT EVALUATED (still NO-GO); NOT EVALUATED rows never count as a pass.
         if evaluated.isEmpty { status = .notEvaluated }
-        else if lines.allSatisfy({ $0.status == .met }) && jitter.allSatisfy({ $0.status == .met }) && !jitter.isEmpty { status = .met }
+        else if evaluated.allSatisfy({ $0.status == .met }) && jitter.allSatisfy({ $0.status == .met }) && !jitter.isEmpty { status = .met }
         else { status = .notMet }
         return .init(name: "phrase \(metric), \(source.rawValue)", status: status, lines: texts)
     }
@@ -135,6 +136,23 @@ func spike27Report(_ env: SpikeEnvironment, training: TrainingFile, evaluation e
     return 0
 }
 
+/// The rows GO is judged on: every gate row of the tuning-side arm on the runtime source (known text for L2), plus the
+/// artefact control. Printed in the report header and right after the Spike line in result.txt.
+func spike27Headline(_ v: Spike27Verdict, e: EvaluationFile, training t: TrainingFile) -> [String] {
+    let arm = t.chosenArm.rawValue
+    var L = ["", "GO is judged on arm \(arm) (picked on the tuning side) × the runtime source (Whisper base.en word times). Every gate row:"]
+    for g in e.gates where g.arm == arm && (g.source == "runtime" || g.source == "runtime (known text)") {
+        L.append("  - " + g.text)
+    }
+    if let a = t.arms.first(where: { $0.arm == t.chosenArm }) {
+        L.append(String(format: "  - artefact control (CTO markup 4): processed-vs-raw AUC %@ (≤ 0.6): %@",
+                        a.artefactAUC.map { String(format: "%.3f", $0) } ?? "–", (a.artefactAUC ?? 1) <= 0.6 ? "MET" : "NOT MET"))
+    }
+    L.append("  - claim: \(v.wordStress["\(arm)/runtime"]!.name): \(v.wordStress["\(arm)/runtime"]!.status.rawValue)")
+    L.append("")
+    return L
+}
+
 private func pct(_ v: Double?) -> String { v.map { String(format: "%.2f%%", $0 * 100) } ?? "–" }
 
 /// The acceptance-1 lines spec 27 §5's Background quotes: spec 26 `.nucleus` flips (pooled and per group), both
@@ -185,6 +203,8 @@ func spike27Markdown(_ r: Spike27Report, acceptance: String) -> String {
     L.append("- Generated: \(r.generatedAt); commit `\(r.identity.evaluatedCommit)`" + (r.identity.cleanTree ? "" : " (dirty tree: not a report of record)"))
     L.append("- configDigest `\(r.identity.configDigest)`, sourceTreeHash `\(r.identity.sourceTreeHash)`, split manifest `fixtures/splits/vctk.json` (seed \(t.seed))")
     L.append("- Front end: spec 25's nucleus detector at spec 26's frozen detection grid (1.5 dB, 50 ms, 9 dB, ±60 ms voicing; report `\(r.nucleusReport)`), spec 25/26's assignment. No `Thresholds` key, no app or AMPipeline change.")
+    L.append("- **\(v.spikeLine)**" + (v.partialLine.map { " — \($0)" } ?? ""))
+    L += spike27Headline(v, e: e, training: t)
     L.append("- **Literature expectation (lit review 2026-11-24):** the published systems closest to this design report recall around **20–50%** at a usable operating point (Ferrer et al. 2015 miss 48.3% at a 5% false-correction rate; Korzekwa et al. 2021 94.8% precision at 49.2% recall, with an attention model); classic native-side error is about 10%. **A word-stress NO-GO with phrase metrics GO is a legitimate result.** The build did not push for a GO.")
     L.append("")
     L.append("## Background: spec 26 acceptance 1 (FAIL), quoted from the build's `acceptance1.txt` (configDigest 69675122)")
@@ -315,10 +335,11 @@ func spike27Markdown(_ r: Spike27Report, acceptance: String) -> String {
     L.append("| metric | source | prompt | n | flags | Wilson upper | status |")
     L.append("|---|---|---|---|---|---|---|")
     for p in e.phrase {
-        L.append(String(format: "| %@ | %@ | %@ | %d | %d | %.1f%% | %@ |", p.metric, p.source, p.prompt, p.n, p.flags, p.upper * 100, p.status.rawValue))
+        L.append(String(format: "| %@ | %@ | %@ | %d | %d | %.1f%% | %@%@ |", p.metric, p.source, p.prompt, p.n, p.flags, p.upper * 100,
+                        p.status.rawValue, p.note.isEmpty ? "" : " (\(p.note))"))
     }
     L.append("")
-    L.append("Held-out VCTK has at most 16 speakers per prompt, so a per-prompt Wilson upper bound can't reach 5% (0/16 gives 19.4%; 0 flags needs n ≥ 74).")
+    L.append("A phrase-verdict row with fewer than 30 natural takes is NOT EVALUATED (lit amendment 3), never NOT MET. Held-out VCTK has at most 16 speakers per prompt, so no held-out row reaches 30, and a claim with no evaluated prompt is NOT EVALUATED, which is still NO-GO for it. (Even at n ≥ 30 the 5% Wilson upper bound needs n ≥ 74 at zero flags.)")
     L.append("")
     L.append("## Verdict")
     L.append("")
@@ -355,6 +376,7 @@ func spike27Markdown(_ r: Spike27Report, acceptance: String) -> String {
 func spike27Summary(_ r: Spike27Report) -> String {
     let t = r.training, e = r.evaluation, v = r.verdict
     var L = [v.spikeLine]
+    L += spike27Headline(v, e: e, training: t)
     if let p = v.partialLine { L.append(p) }
     L.append("report \(r.baseName) (commit \(r.identity.evaluatedCommit.prefix(12))\(r.identity.cleanTree ? "" : ", dirty tree"))")
     L.append("chosen arm \(t.chosenArm.rawValue): \(t.armRule)")
@@ -390,7 +412,8 @@ func spike27Summary(_ r: Spike27Report) -> String {
         L.append("  \(env.prompt): natural n \(env.natural)\(env.evaluated ? "" : " NOT EVALUATED") range \(env.pitchRange.map { String(format: "%.2f…%.2f", $0[0], $0[1]) } ?? "–") dominant final \(env.dominantFinal?.rawValue ?? "–") \(env.dominantShare.map { String(format: "%.0f%%", $0 * 100) } ?? "")")
     }
     for p in e.phrase {
-        L.append(String(format: "  phrase %@ %@ %@: n=%d flags=%d upper %.1f%%: %@", p.metric, p.source, p.prompt, p.n, p.flags, p.upper * 100, p.status.rawValue))
+        L.append(String(format: "  phrase %@ %@ %@: n=%d flags=%d upper %.1f%%: %@%@", p.metric, p.source, p.prompt, p.n, p.flags,
+                        p.upper * 100, p.status.rawValue, p.note.isEmpty ? "" : " (\(p.note))"))
     }
     L.append("")
     L.append("CLAIMS:")
