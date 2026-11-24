@@ -254,91 +254,55 @@ struct PairTake: Sendable {
     }
 }
 
-/// The headline pairs of `speakers` (each take against the phrase's headline reader), as spec 12's positive set
-/// builds them for the held-out speakers.
-func headlinePairs(speakers: [String], available: Set<VCTKClip>, phrases: [String]) -> [VCTKPair] {
-    var pairs: [VCTKPair] = []
-    for speaker in speakers.sorted() {
-        for phrase in phrases where available.contains(VCTKClip(speaker: speaker, phrase: phrase)) {
-            let reference = VCTK.headlineReference(for: phrase)
-            if available.contains(VCTKClip(speaker: reference, phrase: phrase)) {
-                pairs.append(VCTKPair(speaker: speaker, phrase: phrase, reference: reference))
-            }
-        }
-    }
-    return pairs
-}
-
-/// Runs the analyzer on every pair (as `PositiveRun` does) and keeps what rescoring needs. Pairs the analyzer can't
-/// score are counted by reason and left out, as the positive set leaves them out of its rates.
+/// Runs the analyzer on every tuning take against its §3a reference (the first listed reference usable for every
+/// phrase word, as the positive set) and keeps what rescoring needs. Pairs the analyzer can't score are counted by
+/// reason and left out, as the positive set leaves them out of its rates.
 func pairTakes(
-    pairs: [VCTKPair], cache: URL, available: Set<VCTKClip>, phrases: PositivePhrases, timings: any WordTimestamper,
-    base: StressPlacementDetector
+    pairs: [(speaker: String, phrase: String)], references: ReferencedPhrases, base: StressPlacementDetector
 ) async throws -> (takes: [PairTake], unscored: [String: Int]) {
-    let analyzer = Analyzer(speech: SpeechModelHost(ready: timings), configuration: try .shipped())
-    func take(speaker: String, phrase: String) throws -> TakeAudio {
-        let url = vctkAudio(cache, speaker: speaker, phrase: phrase)
-        let (samples, rate) = try AudioFiles.readMono(url)
-        return TakeAudio(
-            samples: try AudioFiles.resample(samples, from: rate, to: TakeAudio.sampleRate),
-            sha256: try sha256(of: url), clipID: "\(speaker)_\(phrase)", recordedAt: Date(timeIntervalSince1970: 0))
-    }
     var unscored: [String: Int] = [:]
-    var inputs: [String: PhraseInput] = [:]
-    var natives: [PhraseID: [NativeRecording]] = [:]
-    var nativeTakes: [String: [PairTake.Native]] = [:]
-    for phrase in Set(pairs.map(\.phrase)).sorted() {
-        guard let input = try phrases.input(phrase) else { continue }
-        inputs[phrase] = input
-        for voice in VCTK.nativeReaders(for: phrase) where available.contains(VCTKClip(speaker: voice, phrase: phrase)) {
-            guard let record = try? await analyzer.analyseNative(take: try take(speaker: voice, phrase: phrase), phrase: input),
-                let native = DerivedCoding.native(in: record)
-            else { continue }
-            natives[input.id, default: []].append(NativeRecording(
-                id: EvalReferenceSet.recordingID(speaker: voice, phrase: phrase), voice: voice,
-                audioSHA256: try sha256(of: vctkAudio(cache, speaker: voice, phrase: phrase)), analysis: record))
-            let analysis = native.l1.analysis
-            nativeTakes[phrase, default: []].append(PairTake.Native(
-                voice: voice, take: PlacementTake(samples: [], words: input.words, heard: [], l0Key: ""),
-                analysis: analysis,
-                syllables: ComparableSyllable.all(
-                    in: analysis.segmentation, pitch: analysis.pitch, thresholds: base.thresholds.prominence)))
-        }
-    }
-    let reference = EvalReferenceSet(natives: natives)
     var out: [PairTake] = []
     for (n, pair) in pairs.enumerated() {
-        guard let input = inputs[pair.phrase] else {
-            unscored["no phrase text", default: 0] += 1
-            continue
-        }
-        let result = await analyzer.run(
-            take: try take(speaker: pair.speaker, phrase: pair.phrase), phrase: input, reference: reference,
-            voice: EvalReferenceSet.recordingID(speaker: pair.reference, phrase: pair.phrase))
         if (n + 1) % 100 == 0 { print("tune: analysed \(n + 1) of \(pairs.count) VCTK tuning pairs") }
+        guard let phrase = references.phrases[pair.phrase] else { unscored["no phrase text", default: 0] += 1; continue }
+        let (reference, _) = references.choose(speaker: pair.speaker, phrase: pair.phrase)
+        guard let reference else { unscored[WordUsabilityProblem.noUsableReference.rawValue, default: 0] += 1; continue }
+        let result = await references.analyzer.run(
+            take: try references.take(speaker: pair.speaker, phrase: pair.phrase), phrase: phrase.input,
+            reference: references.referenceSet(phrase: pair.phrase, excluding: pair.speaker),
+            voice: EvalReferenceSet.recordingID(speaker: reference, phrase: pair.phrase))
+        let natives = phrase.natives.filter { $0.voice != pair.speaker }.map { native in
+            PairTake.Native(
+                voice: native.voice, take: PlacementTake(samples: [], words: phrase.input.words, heard: [], l0Key: ""),
+                analysis: native.analysis.l1.analysis,
+                syllables: ComparableSyllable.all(
+                    in: native.analysis.l1.analysis.segmentation, pitch: native.analysis.l1.analysis.pitch,
+                    thresholds: base.thresholds.prominence))
+        }
         guard let decision = result.l2?.decision,
             let record = result.derived.first(where: { $0.level == .l1 }),
             let l1 = DerivedCoding.value(L1Analysis.self, in: record, key: record.key),
-            let model = nativeTakes[pair.phrase]?.first(where: { $0.voice == pair.reference })
+            let model = natives.first(where: { $0.voice == reference })
         else {
             unscored["\(result.response.outcome)".prefix(60).description, default: 0] += 1
             continue
         }
-        let warp = try PairScoring.warp(you: l1.analysis, model: model.analysis, words: input.words)
+        let words = phrase.input.words
+        let warp = try PairScoring.warp(you: l1.analysis, model: model.analysis, words: words)
         let probe = PairScoring.input(
-            words: input.words, you: l1.analysis, model: model.analysis, modelVoice: pair.reference, natives: [:],
+            words: words, you: l1.analysis, model: model.analysis, modelVoice: reference, natives: [:],
             thresholds: .current, warp: warp)
         let present = Set(probe.alignment.pairs.compactMap { if case .present(let w, _) = $0 { w } else { nil } })
         let yourCount = probe.you.syllables.count { present.contains($0.word) }
         let modelCount = probe.model.syllables.count { present.contains($0.word) }
-        let natives = nativeTakes[pair.phrase] ?? []
         let axes = TauAxis.merged(
             [TauAxis(bucket: TauAxis.bucket(forSyllableCount: yourCount), kind: .pair),
              TauAxis(bucket: TauAxis.bucket(forSyllableCount: modelCount), kind: .pair)]
                 + natives.map { TauAxis(bucket: TauAxis.bucket(forSyllableCount: $0.syllables.count), kind: .highOnly) })
         out.append(PairTake(
-            pair: pair, words: input.words, you: l1.analysis, modelVoice: pair.reference, model: model.analysis,
-            natives: natives, warp: warp, decision: decision, axes: axes))
+            pair: VCTKPair(speaker: pair.speaker, phrase: pair.phrase, reference: reference), words: words,
+            you: l1.analysis, modelVoice: reference, model: model.analysis, natives: natives, warp: warp,
+            decision: decision, axes: axes))
     }
     return (out, unscored)
 }
@@ -489,17 +453,21 @@ func tune(_ args: Arguments, root: URL) async throws -> Int32 {
     guard let cache = PositiveCache(cacheDir) else { throw CLIError.failed("no trimmed VCTK cache at \(cacheDir.path)") }
     let table = try VCTKSubPhraseTable.load(root.appendingPathComponent(Paths.subPhrases))
     let phrases = try PositivePhrases(root: root, manifest: manifest, table: table)
-    var pairs = headlinePairs(speakers: tuningSpeakers, available: Set(cache.kept), phrases: table.evaluationPhrases)
+    var pairs = referencedPairs(speakers: tuningSpeakers, available: Set(cache.kept), phrases: table.evaluationPhrases)
     if let limit { pairs = Array(pairs.prefix(limit)) }
     precondition(pairs.allSatisfy { !heldOut.contains($0.speaker) }, "a held-out speaker entered tuning")
     let timings = ReplayUnion(parts: [
         try FixtureTimestamper(directory: cacheURL(root, Paths.vctkTuningTimings)),
         try FixtureTimestamper(directory: cacheURL(root, Paths.vctkTimings)),
     ])
-    let (pairTakes, unscored) = try await pairTakes(
-        pairs: pairs, cache: cacheDir, available: Set(cache.kept), phrases: phrases, timings: timings, base: base)
+    let lists = try VCTKReferenceLists.load(root.appendingPathComponent(Paths.referenceLists))
+    let references = try await ReferencedPhrases.build(
+        phrases: Set(pairs.map(\.phrase)), lists: lists, cache: cacheDir, available: Set(cache.kept), phrases: phrases,
+        timings: timings)
+    precondition(lists.phrases.values.allSatisfy { Set($0).isDisjoint(with: heldOut) }, "a held-out speaker is a reference")
+    let (pairTakes, unscored) = try await pairTakes(pairs: pairs, references: references, base: base)
     let multiAxis = pairTakes.filter { $0.axes.count > 1 }.count
-    print("tune: VCTK tuning pairs: \(pairs.count) headline, \(pairTakes.count) scored, unscored \(unscored.sorted { $0.key < $1.key }.map { "\($0.value) \($0.key)" }.joined(separator: "; ")); \(multiAxis) read τ from more than one bucket")
+    print("tune: VCTK tuning pairs: \(pairs.count) takes, \(pairTakes.count) scored, unscored \(unscored.sorted { $0.key < $1.key }.map { "\($0.value) \($0.key)" }.joined(separator: "; ")); \(multiAxis) read τ from more than one bucket")
     lap("VCTK features")
 
     let recallTables = await l2Tables(words: recallWords, takes: recallTakes, kind: .recallWord, grid: grid, base: base)

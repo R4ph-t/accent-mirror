@@ -191,10 +191,37 @@ public struct GuardEvaluation: Sendable {
         }
     }
 
+    /// The multi-syllable groups whose flips §4b gates at ±40 ms (CTO, 2026-11-24 12:53).
+    public static let flipGatedBuckets = ["2", "3", "4+"]
+
+    /// Flips per multi-syllable group (2, 3, 4+): gated at ≤ 2% with n ≥ 30, else `reported (n < 30)`.
+    public func groupFlips(_ comparison: GuardRun.Comparison?, set: String, name: String) -> [GuardCheck] {
+        guard let c = comparison, c.evaluated else {
+            return Self.flipGatedBuckets.map {
+                GuardCheck(name: "\(name), \($0)-syllable flips", set: set, n: 0, value: nil, limit: diffMax,
+                           status: .notEvaluated, interval: nil, detail: comparison?.reason ?? "not run")
+            }
+        }
+        return Self.flipGatedBuckets.map { bucket in
+            guard let b = c.bySyllables.first(where: { $0.bucket == bucket }), b.words > 0 else {
+                return GuardCheck(name: "\(name), \(bucket)-syllable flips", set: set, n: 0, value: nil, limit: diffMax,
+                                  status: .reportedSmall, interval: nil, detail: "no words")
+            }
+            let share = Double(b.differing) / Double(b.words)
+            return GuardCheck(
+                name: "\(name), \(bucket)-syllable flips", set: set, n: b.words, value: share, limit: diffMax,
+                status: b.words < Self.minimumGatedGroupWords ? .reportedSmall : microunit(share) <= diffMax ? .met : .notMet,
+                interval: Statistics.wilson(successes: b.differing, n: b.words),
+                detail: "\(b.differing) of \(b.words) words")
+        }
+    }
+
     /// All checks of one comparison: flips (or only the rise), overall rise, groups.
-    func checks(_ id: String, in set: GuardRun.GuardSet?, setName: String, name: String, gateRise: Bool) -> [GuardCheck] {
+    func checks(_ id: String, in set: GuardRun.GuardSet?, setName: String, name: String, gateRise: Bool,
+                groupFlipsGated: Bool = false) -> [GuardCheck] {
         let c = set?.comparison(id)
         var out = [flips(c, set: setName, name: name)]
+        if groupFlipsGated { out += groupFlips(c, set: setName, name: name) }
         let r = rise(c, set: setName, name: "\(name), inconclusive rise")
         out.append(gateRise ? r : GuardCheck(name: r.name, set: r.set, n: r.n, value: r.value, limit: nil,
                                              status: r.status == .notEvaluated ? .notEvaluated : .reported,
@@ -214,7 +241,7 @@ public struct GuardEvaluation: Sendable {
     public var tuningChecks: [GuardCheck] {
         let name = vctk?.set ?? "vctk-tuning"
         return checks("b2", in: vctk, setName: name, name: "b2 vs MFA", gateRise: true)
-            + checks("jitter-40", in: vctk, setName: name, name: "jitter ±40 ms", gateRise: false)
+            + checks("jitter-40", in: vctk, setName: name, name: "jitter ±40 ms", gateRise: false, groupFlipsGated: true)
     }
 
     public var tuningConditionsMet: Bool { Self.met(tuningChecks) }
@@ -232,10 +259,13 @@ public struct GuardEvaluation: Sendable {
             + checks("b2", in: vctk, setName: vctk?.set ?? "vctk", name: "b2 vs oracle", gateRise: true)
     }
 
-    /// Condition 4: ±40 ms jitter on each set (≤ 2% flips, gaming guard).
+    /// Condition 4: ±40 ms jitter on each set, ≤ 2% flips pooled and in each multi-syllable group with n ≥ 30, plus
+    /// the gaming guard.
     public var condition4: [GuardCheck] {
-        checks("jitter-40", in: synthetic, setName: "synthetic", name: "jitter ±40 ms", gateRise: false)
-            + checks("jitter-40", in: vctk, setName: vctk?.set ?? "vctk", name: "jitter ±40 ms", gateRise: false)
+        checks("jitter-40", in: synthetic, setName: "synthetic", name: "jitter ±40 ms", gateRise: false,
+               groupFlipsGated: true)
+            + checks("jitter-40", in: vctk, setName: vctk?.set ?? "vctk", name: "jitter ±40 ms", gateRise: false,
+                     groupFlipsGated: true)
     }
 
     /// ±20 and ±80 ms: reported only.
