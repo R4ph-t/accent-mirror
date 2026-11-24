@@ -305,4 +305,58 @@ be Done.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+- **How it runs.** `scripts/tune.sh` first measures the guard on the 24 VCTK tuning speakers
+  (`scripts/spec11-guard.sh tuning`: MFA oracle, b2 and ±20/40/80 ms jitter through spec 23's `DownstreamHarness`, in
+  the new `am-timestamps spec11-guard`), then runs `am-eval tune`. That builds exact per-unit outcome tables over the
+  whole fixed grid and searches it (`AMEvaluation/TuningSearch.swift`). It then runs the §1 nested CV and the VCTK CV,
+  and writes `eval-cache/tuning/tuning-<configDigest8>.json`. `scripts/agreement.sh --suite release` re-measures the
+  guard on held-out data (`spec11-guard.sh held-out`) and runs `am-eval suite --suite release`, which writes
+  `docs/agreement/reports/release-<configDigest8>.{json,md}`. Heavy runs are capped with `--jobs` / `AM_EVAL_JOBS`
+  (default 3) and run under `nice`.
+- **Exact search over the full grid, not a sample.** The grid has 634,238,748 points: 36 weights × 11 λ × 117³ τ
+  pairs. A unit's outcome depends on τ only through the margin bucket of each of its takes, so each unit stores one
+  table per (weights, λ), indexed by its τ coordinates. The search sums these tables and applies spec 02's
+  `TuningSelectionRule` unchanged. The tables reuse the real stages (`StressPlacementDetector.place`, the
+  `PairScoring.input` warp, `Scorer.score`), through two small overloads that take precomputed syllables or a
+  precomputed warp. Before searching, the run checks that the tables reproduce the shared detector and the analyzer
+  at the initial thresholds, and spot-checks random grid points against a direct run. Unit tests compare a slice
+  with a brute-force search on a small grid.
+- **WordVerdict doesn't depend on the tuned keys.** Spec 23's syllable verdict comes from `SyllableSegmenter`,
+  which reads none of the tuned keys (prominence weights, λ, τ). So the control, the b2 gate and the jitter test
+  give the same numbers at every grid point: they are measured once on tuning data and once on held-out data, not
+  per point. Because the tuning-data guard is NOT MET (b2 1,599/6,824 = 23.4% flips with an 8.3-point inconclusive
+  rise; jitter ±40 ms 830/6,824 = 12.2%), no grid point can be feasible, whatever the L2 and VCTK constraints say.
+  This is the §4c FALLBACK. The search still reports the rule's choice without the guard, plus the closest points
+  by constraint violation, so CTO can see what the L2 constraints alone would have allowed.
+- **References (§3a).** `fixtures/vctk/reference-lists.json` is generated once by `am-eval vctk-reference-lists`
+  from the split manifest and the trimmed cache, before any scoring: bundled voices in order (p226 first for 015),
+  then tuning speakers only until there are 3. A held-out speaker as a reference is a fatal error. A list shorter
+  than 3 is reported, not fatal: phrase 019 has only 2 usable references (p225, p226), because no other bundled
+  voice or tuning speaker has a take of it that survives the 2–6 s trim.
+- **Per-word fallback is per pair (spec gap).** Spec 10's scorer warps one take onto one native model and scores the
+  whole phrase against it, so splicing words from different references into one model isn't sound: the warp, nPVI
+  and pitch range would mix speakers. Each pair therefore uses the first reference in its list that is usable for
+  every word of the phrase, and words are never mixed. Each excluded reference word is recorded with its reason
+  (`asrSubstitution`, `asrMissing`, `lowAsrConfidence` below `levelMedium`, `spanSanityFailed`, `trimRejected`), and
+  each pair records the reference it used. A pair is dropped as `noUsableReference` only when every reference fails.
+  Per-word splicing would need a spec 10 change; that's CTO's call.
+- **Per-row accounting** (`RowAccounting`): each positive row prints pairs, distinct reference speakers, distinct
+  prompts, lost pairs and their reasons, both in the JSON and in the markdown table.
+- **Jitter (§4b).** Word edges are jittered by a fixed-seed uniform offset (the seed is `vctk.json`'s `foldSeed`). For
+  contiguous MFA words the clamp rule (a word never crosses its neighbour) makes the shift effectively inward-only.
+  That's how spec 23's harness defines it; it isn't changed here. ±40 ms is gated pooled and per 2 / 3 / 4+ group
+  with n ≥ 30 words. Smaller groups print `reported (n < 30)`. The n ≥ 30 minimum is a constant in `AMEvaluation`
+  (`GuardEvaluation.minimumGatedGroupWords`), not a `Thresholds` key (spec gap: moving it into `Thresholds` would
+  change the configDigest; left for Raph).
+- **CV folds (§1).** An inner fit with no feasible point falls back to the initial thresholds for that outer fold;
+  the fold's line says so. Inner folds apply the selection rule without the guard, which is invariant (see above)
+  and measured on all tuning speakers, not per fold. "Final-syllable recall" counts words whose stressed syllable is
+  the last, lengthening-exposed one.
+- **L2 false-flag split (§3).** The Whisper-substituted group also counts words Whisper deleted (no aligned word):
+  neither kind reaches the detector. The report writes `lowAsrConfidenceBelow: 0.45`.
+- **Not evaluated, with reasons.** The synthetic set and end-to-end check (ii) print NOT EVALUATED: there's no
+  ElevenLabs key and no Premium English Mac voice on this host, so `syntheticReference` is
+  `mac-premium-fallback (reason)`. 3-take stability prints NOT EVALUATED, because there are no repeated takes (Open
+  question 2).
+- **Caches.** `AM_EVAL_CACHE`, `MODELS_CACHE`, `MFA_CACHE` and `VCTK_CACHE` let every run read and write outside
+  the worktree. `am-eval record-timings --set vctk-tuning | l2-tuning [--append]` records the missing tuning timings.
