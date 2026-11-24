@@ -67,3 +67,4 @@ So:
 | 13 | [Sandbox, microphone entitlement and usage string (by hand)](13-entitlements-mic-string.md) | Ready | 00 | – | 0.5 h |
 | 21 | [Coordinator-wired UI: record, compare, play back](21-coordinator-wired-ui.md) | Ready | 27 (analysis gate; was 11, repointed 2026-11-24, CTO OK), 12, 13, 14, 15, 16, 20 | 10–12 h | 2 h |
 | 17 | [Clip import pipeline (no UI)](17-clip-import.md) | Done | 03, 06, 12, 15, 16 | 4–5 h | 1 h |
+| 29 | [v3 show-don't-judge UI: YOUR TAKE, Play Both, strip, inspector, earlier takes (Designer spec v3; fixture-driven)](29-v3-show-dont-judge-ui.md) | Ready | 28, 19 (needs PR #29, specs 18–19 fixes round 5, merged first) | 8–10 h | 2 h |
