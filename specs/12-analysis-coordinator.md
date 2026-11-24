@@ -1,6 +1,6 @@
 # 12: Analysis pipeline and coordinator
 
-Status: Ready · Branch: – · Depends on: 03 (WhisperKit, cancellation), 05 (take quality, endpointing), 10 (verdict
+Status: Done · Branch: – · Depends on: 03 (WhisperKit, cancellation), 05 (take quality, endpointing), 10 (verdict
 path) · Estimate: 6–8 h agent run + 1.5 h Raph review
 
 Source: Plan v2 revision 4.1 (Notion "Accent Mirror v1 groundwork plan v2 (2026-11-23)", approved 2026-11-23 09:56
