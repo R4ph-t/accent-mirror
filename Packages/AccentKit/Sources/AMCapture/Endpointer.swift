@@ -31,6 +31,9 @@ public struct Endpointer: Sendable {
         /// Onsets that still count as speech, in order.
         public let onsets: [Onset]
         public let floorDBFS: Double
+        /// The end of the last frame that still counts as speech, in seconds from the first frame; nil with no kept
+        /// speech. For an `endOfSpeech` take it is `endTime − endOfTakeS`.
+        public let lastSpeechEndTime: Double?
     }
 
     public enum State: Sendable, Hashable {
@@ -84,6 +87,9 @@ public struct Endpointer: Sendable {
     public var noiseFloorDBFS: Double { detector.floor.dBFS }
     public var isNoiseFloorSettled: Bool { detector.floor.isSettled }
 
+    /// Samples held for the take right now (0 once it has ended or been cancelled).
+    var bufferedSampleCount: Int { audio.count }
+
     /// Feeds the next 10 ms frame. Frames after the take has ended or been cancelled are ignored.
     public mutating func process(frame: [Float]) -> [Event] {
         guard state == .listening else { return [] }
@@ -125,7 +131,8 @@ public struct Endpointer: Sendable {
         let take = Take(
             reason: reason, endTime: elapsed, audioStartTime: Double(startSample) / sampleRate,
             audio: Array(audio[min(startSample, audio.count)...]), onsets: kept.map(detector.onset(of:)),
-            floorDBFS: detector.floor.dBFS)
+            floorDBFS: detector.floor.dBFS,
+            lastSpeechEndTime: detector.lastSpeechEnd.map { Double($0) * detector.frameSeconds })
         audio = []
         state = .ended(take)
         return take
