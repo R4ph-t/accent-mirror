@@ -62,6 +62,7 @@ So:
 | 27 | [Word-stress classifier and native envelope: offline feasibility spike, GO/NO-GO (CTO decision 2026-11-24 + lit review; hand build)](27-stress-classifier-feasibility-spike.md) | Ready | 02, 06, 10, 22, 24, 25 (front end, branch factory/25-nucleus-anchored), 26 (detection grid, branch factory/26-nucleus-count-assignment) | 10 h (time box) | 1.5 h |
 | 15 | [Reference library: bundled starter phrases and native recordings](15-reference-library.md) | Done | 06, 10, 12 | 4–6 h | 1.5 h |
 | 16 | [Take store](16-take-store.md) | Done | 01, 12, 15 | 4–5 h | 1 h |
+| 28 | [Scoring off: show-don't-judge v1 (verdict paths gated out of the shipped app; Raph 2026-11-24 18:42)](28-scoring-off.md) | Ready | 10, 12, 15, 16, 19 (spike 27 NO-GO; report in docs PR #69) | 6–8 h | 2 h |
 | 14 | [Live microphone capture (macOS)](14-live-capture.md) | Done | 05 (the hand test needs spec 13) | 3–4 h | 1 h |
 | 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19, 27 (analysis gate; was 11, repointed 2026-11-24, CTO OK) | 6–8 h | 1.5 h |
 | 13 | [Sandbox, microphone entitlement and usage string (by hand)](13-entitlements-mic-string.md) | Ready | 00 | – | 0.5 h |
