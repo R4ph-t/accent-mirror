@@ -4,7 +4,7 @@ Status: Ready · Branch: – · Depends on: 10, 12, 15, 16, 19 (all Done; spike 
 
 Risk: high. This changes the analysis contract (`Verdict`, `AnalysisIdentity`), persisted takes, the package graph and the presenter. It merges only after CTO's review and Raph's Merge OK (review verdict `hold`). It must not touch `Thresholds.swift`, `project.yml`, entitlements, `Resources/Models/`, `Resources/Starter/` or the agreement corpus.
 
-Source: Raph's decision at 18:42 Europe/Paris on 2026-11-24, relayed by CPO: "Yes, ship v1 as show-don't-judge, and merge #68". The plan "Accent Mirror v1 show-don't-judge integration plan (2026-11-24)" (Notion Bot Docs, https://app.notion.com/p/4220d0d4459281399adef9364a99bb69), which CTO approved with 8 changes (all folded in here). CTO decision record "Accent Mirror: stress and prosody reformulation" (https://app.notion.com/p/4220d0d445928128b258faf2852259c1). Spike 27 report `docs/agreement/reports/spike27-69675122.md` (NO-GO: on natives, the dictionary-stressed syllable is the longest, loudest or highest only 50–70% of the time).
+Source: Designer spec v3 (Notion "Accent Mirror v1: show, don't judge", https://app.notion.com/p/4220d0d4459281d39d67d6fdc5d50dfc), §7 ("AccentKit may still compute verdicts for evaluation, but the presenter drops them") and §4 (inspector measures with the native range); v3 wins over v2 and addenda r2–r6. This spec is the engine and contract side only. The v3 UI (card 1 YOUR TAKE and Play Both, strip, inspector, earlier takes, connectors, legends, fixtures, the banned-word test) is spec 29. Raph's decision at 18:42 Europe/Paris on 2026-11-24, relayed by CPO: "Yes, ship v1 as show-don't-judge, and merge #68". The plan "Accent Mirror v1 show-don't-judge integration plan (2026-11-24)" (Notion Bot Docs, https://app.notion.com/p/4220d0d4459281399adef9364a99bb69), which CTO approved with 8 changes (all folded in here). CTO decision record "Accent Mirror: stress and prosody reformulation" (https://app.notion.com/p/4220d0d445928128b258faf2852259c1). Spike 27 report `docs/agreement/reports/spike27-69675122.md` (NO-GO: on natives, the dictionary-stressed syllable is the longest, loudest or highest only 50–70% of the time).
 
 ## Goal
 
@@ -60,25 +60,21 @@ v1 shows the learner's pitch and timing against the native reference and never j
 - **Existing tests** of `Scorer`, `placementDecision`, `StressPlacementDetector`, PairScoring natives and smoke placement goldens move to an `AMVerdictsTests` target and keep passing unchanged. `am-eval` links `AMVerdicts`.
 - **Fallback:** if the split turns out to cost more than one day of agent time, stop the split and ship the guard test in §5 alone, with `NoOpScorer` selected by `ShippedConfig`. Say so explicitly in Implementation notes ("module split not done: <reason, measured cost>") and in the PR body. CTO expects the split, so the fallback needs his OK in review.
 
-### 3. Presenter and copy (app)
+### 3. The presenter ignores verdicts (app, minimal)
 
-On `.notScored`:
-- **Card 1 ("WHAT TO CHANGE") isn't drawn on an analysed result.** No rows, no close / noClearDifference / inconclusive sentence, no placement-only line, no quiet line about measures.
-  - Card 1 still appears for recording and for take problems ("YOUR TAKE" rows, Try Again).
-  - Designer's neutral-comparison spec will replace this later.
-- **The inspector** shows no measures with state or reason, and no STRESS lines. Timing match and model recording attribution stay.
-- **Your row in the strip:** neutral `strip.you` bars, heights from measured share and prominence as today, **no Lime**. Measured stress isn't shown as stress.
-- **The native row in the strip:** Lime only on syllables whose **context-resolved** expected stress is primary (§4), **never the raw CMUdict primary**, and never measured stress. `expectedAmbiguous` words get no Lime.
-  - The legend or tooltip copy doesn't say the native "stressed" them. Spike 27: native acoustics follow the expected stress only 50–70% of the time, so the Lime marks the lexical pattern, not what the speaker did.
-- **The native band is display-only.**
-  - No copy, colour, icon or animation implies that pitch outside the band is wrong.
-  - Your line keeps one colour inside and outside the band.
-  - No "out of band" highlighting, no counts, no sentence about the band.
-- VoiceOver doesn't announce a card-1 sentence for an analysed take. It announces "Result ready".
-- The fixtures under `AccentMirror/Resources/Fixtures/` gain `.notScored` analysed states for the starter phrases. Existing scored fixtures stay, for Milestone 2.
-- `Copy.swift` keeps its verdict sentences (unused on `.notScored`).
+Spec 29 does the v3 UI. This spec only makes sure no view reads a verdict.
+
+- `ShellPresenter` and `Copy.swift` stop reading `Verdict` (every case), `DiffRow`, `StressLine`, `NeutralReason`, `InconclusiveReason` and measure states.
+  - On any analysed result, scored legacy takes included, card 1 shows the title "YOUR TAKE" and no rows. Spec 29 adds the result row and Play Both.
+  - The inspector shows no measure states, no STRESS lines and no diff icons.
+  - The strip and pitch card are drawn as they are today. Spec 29 changes how they look.
+- The fixture schema (`AccentMirror/Resources/Fixtures/SCHEMA.md`, `FixtureModel.swift`) accepts `verdict: {"notScored": {}}` and a missing verdict. The existing verdict fixtures still decode, and spec 29 retires them (v3 §10).
+- The verdict copy functions in `Copy.swift` are deleted only if nothing else calls them. Otherwise they're left unused for spec 29 to remove with its banned-word test.
+- VoiceOver doesn't announce a card-1 sentence for an analysed take. Spec 29 adds v3's "Result ready. Your take is drawn over the model's."
 
 ### 4. Context-resolved expected stress (AMPipeline)
+
+This is the data behind spec 29's dictionary-stress mark (v3 §3.2). This spec provides it but draws nothing.
 
 - The model's syllables carry the expected stress pattern resolved in context:
   - the phrase's pronunciation override (spec 06/15) first;
@@ -87,7 +83,21 @@ On `.notScored`:
 - **`expectedAmbiguous`** words carry no expected pattern.
 - **Where it goes:** reuse `SyllableMeasure.stress` with `stressSource == .dictionary` for the model side, populated from the resolved pattern, not the raw CMUdict primary. If that can't express ambiguity, add an optional `expectedStress` to `WordSpan`, decoding as nil for old takes. Record which in Implementation notes.
 - **This moves into `AMPipeline`**, since it's no longer reached through `Scorer`'s `StressLine.expectedPattern`. One function is shared with `AMVerdicts`; don't copy it.
-- **Test:** a phrase whose override or part of speech differs from CMUdict's first entry. Use any starter phrase with an override, or a test fixture built from `docs/agreement/spike27/heteronyms.json` once that's on main, or else a synthetic one. The native-row Lime follows the override.
+- **Test:** a phrase whose override or part of speech differs from CMUdict's first entry. Use any starter phrase with an override, or a test fixture built from `docs/agreement/spike27/heteronyms.json` once that's on main, or else a synthetic one. The resolved primary follows the override, not CMUdict's first entry.
+- **Caveat for every consumer:** native acoustics follow this pattern only 50–70% of the time (spike 27). It's the lexical pattern, not what the speaker did.
+
+### 4a. Descriptive measures and the native range (AMPipeline)
+
+v3 §4's inspector shows plain measures for you, next to the range across the phrase's native voices. These are measurements, not verdicts, so they live in `AMPipeline`, not in `AMVerdicts`.
+
+- **Add `AnalysisResult.describe: DescribedMeasures`**, optional so it decodes as nil for old takes. It holds:
+  - `you`: length (s), syllables per second, pitch range P10–P90 (st), rhythm nPVI and ending direction (`rising`, `falling` or `level`);
+  - `native`: the min–max of each across the phrase's bundled native voices (spec 15's per-recording analyses), plus a count of ending directions ("5 falling, 3 rising"). For a single native take (an imported clip), it's that take's value.
+- Each value is a `MeasureState`-style value-or-reason, so a missing measure shows "—" with a reason.
+- **No thresholds and no comparison:** nothing here says whether you're inside the range.
+- **Reuse the pure functions** (P10–P90, nPVI, final slope) by moving them from `AMScoring` down to `AMPipeline` or `AMProsody`, not by copying them. `AMScoring` keeps calling them.
+- **The ending-direction cut-off** is a display constant here, not a `Thresholds` key. Record its value in Implementation notes.
+- **Tests:** the values on two starter phrases equal the ones `AMScoring` computes for the same inputs today, and the native range covers every bundled voice.
 
 ### 5. Partial time map inverse lookup (investigate here, not in spec 20)
 
@@ -108,11 +118,7 @@ On `.notScored`:
   - `timeMap`, `youPitchOnModel` and `nativeBand` are equal to today's for the same inputs;
   - there are no `DiffRow`s anywhere in the encoded result.
 - **`ShippedGraphTests`:** `AMPipelineModule.dependencies` doesn't contain `AMScoring` or `AMVerdicts`. It also scans every `.swift` file under `AccentMirror/` (found from `#filePath`) and fails on `import AMScoring` or `import AMVerdicts`. It's a Swift test, not a Makefile change: the Makefile is a hand-spec path.
-- **Presenter tests:**
-  - on `.notScored`, card 1 isn't present in the analysed state;
-  - the native row's Lime spans equal the context-resolved primaries;
-  - your row has no `.stressed` fill;
-  - no band-related copy exists.
+- **Presenter tests:** on `.notScored` and on a legacy scored take, the analysed state has card 1 "YOUR TAKE" with no rows. A source scan finds no reference to `Verdict`, `DiffRow` or `StressLine` in `ShellPresenter.swift` and `Copy.swift`.
 - **The take store** (spec 16) reads the legacy golden and the new one from disk.
 
 ## Defaults
@@ -132,7 +138,7 @@ On `.notScored`:
 
 ## Out of scope
 
-- Designer's neutral comparison card (replaces card 1 in the analysed state): a later spec.
+- The whole v3 UI: card 1's result row and Play Both, the strip's bars, dictionary-stress mark, labels and timing connectors, legends, the inspector's MEASURE / YOU / NATIVE RANGE table, earlier takes on by default with ⇧⌘G, retiring the `mistake` token from views, the v3 fixture set, and the banned-word test. That's spec 29.
 - Live strip, playhead and earlier takes (spec 20). Wiring the coordinator and microphone (spec 21).
 - Any new prosody measure, and spike 27's per-prompt native envelope.
 - Milestone 2 (linking `AMVerdicts` into the app).
@@ -144,12 +150,10 @@ On `.notScored`:
 
 ## How to test (Raph)
 
-1. `make review PR=<n>`, then `make check` and `make test-vm`. Everything passes, including `ScoringOffTests`, `ShippedGraphTests` and the two new goldens. **pass/fail**
+1. `make review PR=<n>`, then `make check` and `make test-vm`. Everything passes, including `ScoringOffTests`, `ShippedGraphTests`, the two new goldens and the descriptive-measure tests. **pass/fail**
 2. `rg -n 'import AM(Scoring|Verdicts)' AccentMirror` prints nothing. `rg -n '"AMScoring"' Packages/AccentKit/Package.swift` shows it only in the `AMVerdicts` and `AMScoring` entries. **pass/fail**
-3. Launch the app and open each starter phrase's fixture result. There's no "WHAT TO CHANGE" card, no sentence about stress or closeness, and no STRESS lines or measures in the inspector. The strip and pitch card are drawn. **pass/fail**
-4. In the strip, your bars have no Lime. The native row's Lime sits on the expected stressed syllables, including the 2 Compound Nouns phrases (005 and 006: the first part of the compound). **taste call (Raph)**
-5. In the pitch card, push your line outside the band (any fixture where it leaves the band). Nothing changes colour, and no copy appears. **pass/fail**
-6. Open a take saved before this build, from the take store or a copied take folder. It opens without an error and, once re-analysed, shows the unjudged result. **pass/fail**
+3. Launch the app and open a few fixture results, both scored and not scored. Card 1 reads "YOUR TAKE" with no rows. There's no sentence about stress or closeness, and no STRESS lines or measure states in the inspector. The strip and pitch card are drawn. **pass/fail**
+4. Open a take saved before this build, from the take store or a copied take folder. It opens without an error and shows the same unjudged screen. **pass/fail**
 
 ## Implementation notes
 
