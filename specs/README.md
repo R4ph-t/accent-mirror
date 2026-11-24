@@ -53,7 +53,7 @@ So:
 | 12 | [Analysis pipeline and coordinator](12-analysis-coordinator.md) | Done | 03, 05, 10 | 6–8 h | 1.5 h |
 | 11 | [Stress validation and threshold tuning](11-stress-validation-tuning.md) | Ready | 02, 10, 12, 22, 23 (b2 harness for the guard; #27 merges as measurement-only) | 9–12 h | 2.5 h |
 | 15 | [Reference library: bundled starter phrases and native recordings](15-reference-library.md) | Done | 06, 10, 12 | 4–6 h | 1.5 h |
-| 16 | [Take store](16-take-store.md) | Ready | 01, 12, 15 | 4–5 h | 1 h |
+| 16 | [Take store](16-take-store.md) | Done | 01, 12, 15 | 4–5 h | 1 h |
 | 14 | [Live microphone capture (macOS)](14-live-capture.md) | Done | 05 (the hand test needs spec 13) | 3–4 h | 1 h |
 | 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19, 11 (analysis gate) | 6–8 h | 1.5 h |
 | 13 | [Sandbox, microphone entitlement and usage string (by hand)](13-entitlements-mic-string.md) | Ready | 00 | – | 0.5 h |
