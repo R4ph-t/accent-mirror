@@ -1,6 +1,6 @@
 # 27: Word-stress classifier and native envelope, offline feasibility spike (GO / NO-GO)
 
-Status: Draft · Branch: factory/27-stress-classifier-spike (placeholder; hand build after the hold) · Depends on: 02, 06, 10, 22, 24, 25 (nucleus detector as the front end, from the unmerged
+Status: Ready · Branch: factory/27-stress-classifier-spike (hand build) · Depends on: 02, 06, 10, 22, 24, 25 (nucleus detector as the front end, from the unmerged
 branch `factory/25-nucleus-anchored`) and spec 26's detection grid (frozen nucleus parameters, from the unmerged branch
 `factory/26-nucleus-count-assignment`) · Time box: 10 h agent run + 1.5 h review · Risk: medium (offline only; no app
 code, no `Thresholds` keys)
@@ -10,8 +10,10 @@ code, no `Thresholds` keys)
 Europe/Paris on 2026-11-24.
 
 CTO approved this spec on 2026-11-24 at 16:56 Europe/Paris with five markups (folded in: §1, §1a, §3, §4 and §5)
-and accepted defaults 1, 2, 4 and 5. Markup 1 replaces default 3. **On hold (Raph, 16:57): it stays Draft, with no
-merge and no build, until the literature review lands.** Its amendments may follow. The spike ends with one line, `Spike 27: GO` or `Spike
+and accepted defaults 1, 2, 4 and 5. Markup 1 replaces default 3. Raph held it at 16:57 for a literature review. The
+review is "Accent Mirror: stress & prosody feedback literature review (2026-11-24)",
+https://app.notion.com/p/4220d0d4459281a0b298e1f086014b75. CTO accepted its five amendments at 17:01 (folded in:
+§1, §2, §3 and §3a, marked "lit amendment"). The spike ends with one line, `Spike 27: GO` or `Spike
 27: NO-GO`, and CTO decides what follows. A GO leads to integration specs, and their merges still need Raph's Merge
 OK. A NO-GO means v1 ships with phrase rhythm and intonation inside the native envelope only, and that scope call goes
 to Raph via CPO.
@@ -27,6 +29,13 @@ Source: CTO's decision record above, based on spec 11's honest result in #66
 CTO's diagnosis: comparing per-syllable prosody against one reference recording measures normal native variation, not
 learner error, so the formulation is infeasible, not badly tuned. Specs 26 and 25 confirmed it: 7.1% and 4.5% VCTK
 flips at ±40 ms, with 63.5% and 57.6% inconclusive. This spec tests a different formulation, and only offline.
+
+**Expectations (the literature review, for the report header):**
+- The published systems closest to this design report **recall around 20–50% at a usable operating point**: Ferrer
+  et al. 2015 miss 48.3% at a 5% false-correction rate, and Korzekwa et al. 2021 report 94.8% precision at 49.2%
+  recall, but only with an attention model.
+- Classic native-side error is about 10%.
+- **A word-stress NO-GO with phrase metrics GO is a legitimate result.** The build must not push for a GO.
 
 ## Goal
 
@@ -60,17 +69,23 @@ The answer is GO or NO-GO with numbers. There's no app integration.
 - **Features,** all relative within the word, per nucleus k:
   - duration d_k / mean d;
   - intensity e_k − mean e (dB);
-  - f0 p_k − median p (semitones);
+  - **f0 relative to the phrase contour (lit amendment 2):** the nucleus f0 residual (semitones) after a smooth
+    phrase-level fit (a low-order fit over the phrase's voiced frames), compared within the word;
+  - **spectral tilt/balance** of the nucleus relative to the word mean (lit amendment 2). The measure is the
+    band-energy difference (low band against high band, in dB), the same for every variant;
   - each feature's rank within the word;
   - the syllable count and k's position (initial, medial, final).
   - No absolute values, speaker id or reference recording are used.
+  - **Variants (lit amendment 2):** with and without spectral tilt, and with phrase-residual f0 or **no f0** (an
+    ablation that's always reported). The shipped variant is picked on tuning-side speaker-grouped CV only.
 - **Model:** small and inspectable. Either L2-regularised logistic regression scoring each nucleus as "primary", or
   small boosted trees (depth ≤ 3, ≤ 100 trees), fitted offline in Swift inside `am-eval`, with no new dependency.
   - The predicted stressed syllable is the argmax over the word's nuclei.
   - **Abstention:** flag "stress not on syllable k*" only when the predicted syllable ≠ the target, and its
     probability margin over the target syllable is ≥ τ. Otherwise the word is "close" or "unsure".
-  - τ is chosen on training-side cross-validation only (speaker-grouped folds), and then frozen. The criterion is
-    **the CV Wilson upper bound of native false flags ≤ 5%**, not the point estimate (CTO markup 5).
+  - τ is chosen on training-side cross-validation only (speaker-grouped folds), and then frozen. The criterion
+    is on the CV Wilson upper bound, not the point estimate alone (CTO markup 5): the point estimate of native false
+    flags must be **≤ 1%** and its CV Wilson upper bound **≤ 2%** (lit amendment 1).
 - **Training data,** fully automated and never using evaluation speakers:
   - **Positives:** native words from the VCTK tuning speakers (MFA word boundaries, spec 07's pinned MFA) and from the
     spec 22 TTS references, labelled with the target index.
@@ -94,21 +109,32 @@ The answer is GO or NO-GO with numbers. There's no app integration.
   - **Known text (CTO markup 3):** L2 words are evaluated with the **prompt text as the transcript**. The
     ASR-transcript variant (spec 03's Whisper transcript) is printed beside it, and coverage of the 134 is reported
     under both.
+  - **speechocean762 (CC BY 4.0) is a second L2 test set, evaluation only (lit amendment 4).** It is kept out of
+    training, feature choice and τ.
+    - Utterances that overlap the 134 set are dropped, by utterance id.
+    - **Label rule, fixed here before any run:** only words with ≥ 2 syllables in CMUdict and a word accuracy score
+      ≥ 5 (intelligible) count. A word is **misplaced** when its released word-level stress score is 5 ("stress is
+      wrong"), and **correctly stressed** when it's 10. Any other value is excluded and counted.
+    - The data is fetched to the build's `_cache-27` on the Mac. This is dev-time data, not an app network call.
   - A test asserts that the training and threshold code reads neither set.
 
 ### 2. Native envelope for phrase metrics
 
 - **Metrics:** nPVI, pitch range and final direction, using spec 10's definitions on spec 09/10's measurements.
-- **Envelope:** for each starter phrase (and pooled across phrases for each metric), the native distribution from the
-  **8 bundled voices** (p225, p226, p227, p233, p241, p252, p311, p345) plus the **VCTK tuning speakers** reading the
-  same prompts where they exist.
-  - The envelope is an empirical central interval whose quantile pair is chosen on the tuning side only. The
-    criterion is **the speaker-grouped CV Wilson upper bound of native false flags ≤ 5%** (CTO markup 5). Its n is
-    printed.
-  - Final direction uses the native share of each direction class. A learner is flagged only on a class with a native
-    share < 5%.
+- **Per-prompt native envelope (lit amendment 3):** one envelope per starter prompt, never pooled across prompts.
+  - Its natural speakers are the 8 bundled voices (p225, p226, p227, p233, p241, p252, p311, p345) and the VCTK
+    tuning speakers reading the same prompt.
+  - **Only natural speakers count toward n and the spread.** TTS takes count at most once per voice.
+  - **Under 30 natural takes for a prompt, that prompt's metrics are NOT EVALUATED,** with no pooling fallback.
+  - The envelope is an empirical central interval whose quantile pair is chosen on the tuning side only, on the
+    speaker-grouped CV Wilson upper bound of native false flags ≤ 5% (CTO markup 5). Its n is printed.
+- **Intonation is shown by default:** the learner's contour against the native envelope, with no verdict. **Verdicts
+  are given only for:**
+  - **monotone:** pitch range below the envelope;
+  - **final direction,** only on prompts where ≥ 80% of the tuning-side native takes share one class. That prompt
+    list is fixed and committed before any evaluation run.
+  - nPVI and the other phrase measures are shown and reported, never verdicted.
 - **Flag only outside the envelope.** Never compare against a single voice.
-- A phrase metric with fewer than 30 native takes is reported as NOT EVALUATED and is never gated or flagged.
 
 ### 3. Gates (they replace the reference-diff rows for this spike)
 
@@ -120,17 +146,34 @@ boundary sources (CTO markup 2)**:
 **GO is judged on the runtime source.** A GO on oracle boundaries only is reported as `oracle-only` and counts as
 NO-GO.
 
-1. **Native false flags ≤ 5% on held-out VCTK, judged on the Wilson upper bound.** This holds for word stress (flags
-   among candidate words) and separately for each phrase metric (nPVI, pitch range, final direction).
+1. **False flags (lit amendment 1).**
+   - **Word stress:** the point estimate is **≤ 1% AND** the Wilson upper bound is **≤ 2%**, on **n ≥ 600**
+     non-abstained words per population, otherwise NOT EVALUATED. It applies separately to:
+     - **held-out native VCTK;**
+     - **correctly stressed L2 words** (the clean 1,400, and speechocean762's correctly stressed words, each
+       reported on its own).
+   - Also reported: the full precision–recall curve, and precision at the operating point at an assumed 5% and 10%
+     prevalence of stress errors.
+   - **Note for CPO, written in the report:** the 1% is an engineering ship bar. The precision it implies is a
+     product trade-off.
+   - **Phrase verdicts** (monotone, and final direction where it's verdicted): native false flags ≤ 5% on held-out
+     VCTK, judged on the Wilson upper bound, per prompt.
 2. **L2 word-stress recall on the 134 beats B1** (spec 02's longest-syllable detector, the same words and front end),
-   with a **significant paired McNemar win** (exact test, p < 0.05, on the discordant pairs). Also report B2,
-   precision on the clean 1,400, and coverage (non-abstained share) of the 134.
+   with a **significant paired McNemar win** (exact test, p < 0.05, on the discordant pairs). This test stays
+   unchanged. Also report B2, precision on the clean 1,400, and coverage (non-abstained share) of the 134. The same
+   rows are reported on speechocean762 as a second test set.
 3. **±40 ms jitter ≤ 2% flips** on held-out VCTK and on the synthetic set, pooled and per multi-syllable group with
    n ≥ 30. This is spec 11 §4b's test with its fixed seed. **A flip to or from abstain counts as a flip** (CTO
    markup 1).
 4. **Coverage:** the non-abstained share of the starter words' placement-applicable recordings across the bundled
    voices, and of held-out VCTK candidate words, is reported. **Its minimum is a CPO product call** and isn't gated
    here.
+
+### 3a. Arm C (report-only, lit amendment 5)
+
+Arms A and B stay as gated. **Arm C** takes vowel positions from b2's character CTC under the known prompt text. It is
+built **only if time remains**, and it is **report-only**. If C passes alone, that is not a GO: it means a follow-up
+spec.
 
 **GO** needs gates 1–3 all met **on the runtime source**, for word stress (on the arm picked on the tuning side)
 and for every phrase metric the spike recommends keeping. For word stress, GO also needs the §1 artefact control
@@ -159,7 +202,9 @@ and for every phrase metric the spike recommends keeping. For word stress, GO al
 
 - `docs/agreement/reports/spike27-<configDigest8>.{json,md}` with spec 02's identity header. It opens with a
   **Background** section that quotes spec 26's acceptance 1 FAIL numbers from the build's `acceptance1.txt` (16:48
-  run, configDigest 69675122):
+  run, configDigest 69675122). The report header also carries the literature's expectation: recall at the operating
+  point is around 20–50%, and a word-stress NO-GO with phrase metrics GO is a legitimate result. The background
+  quotes:
   - ±40 ms flips on synthetic and VCTK, pooled and per group;
   - both inconclusive budget populations;
   - `assignmentAmbiguous` rates;
@@ -203,8 +248,9 @@ and for every phrase metric the spike recommends keeping. For word stress, GO al
 - No new dependency, no network, and GPL-3.0-compatible only. No code copied from Praat, Prosogram or any PSOLA
   library.
 - Spec 26's frozen detection parameters are used as they are. Retuning the front end is out of scope.
-- Arm choice, τ and the envelope quantiles use tuning-side data only. Held-out numbers are reported for both arms but
-  never used to choose.
+- Arm choice, the feature variant, τ and the envelope quantiles use tuning-side data only. Held-out numbers are
+  reported for both arms but never used to choose. speechocean762 and the 134 never enter training or τ. Nobody
+  pushes for a GO.
 
 ## Out of scope
 
@@ -247,6 +293,8 @@ Every step is run by the build agent and repeated by the reviewer.
    - the heteronym table resolves or excludes every starter heteronym;
    - the identity PSOLA leaves the measured features within tolerance;
    - arm B picks the N_w most prominent nuclei in time order and abstains only below N_w;
+   - the speechocean762 label rule and the overlap drop by utterance id match the spec;
+   - a prompt with under 30 natural takes is NOT EVALUATED, and TTS counts at most once per voice;
    - two runs are identical.
 2. `scripts/agreement.sh --suite spike27` prints every gate line with n and Wilson intervals for each arm (A, B) ×
    boundary source (oracle MFA, runtime Whisper). It also prints the B1/B2 McNemar table, coverage (known-text and
