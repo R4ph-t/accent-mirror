@@ -35,8 +35,9 @@ func bench(_ args: Arguments, root: URL) async throws -> Int32 {
     let items = Dictionary(uniqueKeysWithValues: inputs.items.map { ($0.item, $0) })
     let gap = [Float](repeating: 0, count: Int(0.25 * TakeAudio.sampleRate))
 
-    /// `speaker`'s readings of `prompts`, joined with 250 ms of silence, and the joined transcript.
-    func joined(_ speaker: String, _ prompts: [String]) throws -> (samples: [Float], text: String) {
+    /// `speaker`'s readings of `prompts`, joined with 250 ms of silence and padded with trailing silence to `seconds`,
+    /// and the joined transcript.
+    func joined(_ speaker: String, _ prompts: [String], seconds: Double) throws -> (samples: [Float], text: String) {
         var samples: [Float] = []
         var words: [String] = []
         for prompt in prompts {
@@ -45,17 +46,19 @@ func bench(_ args: Arguments, root: URL) async throws -> Int32 {
             samples += (samples.isEmpty ? [] : gap) + (try AudioFiles.resample(audio, from: rate, to: TakeAudio.sampleRate))
             words += item.words.map(\.text)
         }
+        let target = Int(seconds * TakeAudio.sampleRate)
+        if samples.count < target { samples += [Float](repeating: 0, count: target - samples.count) }
         return (samples, words.joined(separator: " "))
     }
-    let lengths: [(label: String, prompts: [String], budget: Double)] = [
-        ("3 s", ["002"], 2.0),
-        ("15 s", ["018", "002", "018", "002"], 3.0),
-        ("20 s", ["018", "002", "018", "002", "018"], 3.5),
+    let lengths: [(label: String, seconds: Double, prompts: [String], budget: Double)] = [
+        ("3 s", 3, ["002"], 2.0),
+        ("15 s", 15, ["018", "002", "018"], 3.0),
+        ("20 s", 20, ["018", "002", "018", "002"], 3.5),
     ]
     var rows: [String] = []
     var failures = 0
     for length in lengths {
-        let you = try joined("p245", length.prompts)
+        let you = try joined("p245", length.prompts, seconds: length.seconds)
         let phraseWords = try starterPhraseWords(you.text, selector: selector, dictionary: dictionary).map {
             PlacementTake.Word(
                 index: WordIndex($0.index), text: $0.text, pronunciation: try Pronunciation(arpabet: $0.phones),
@@ -67,10 +70,13 @@ func bench(_ args: Arguments, root: URL) async throws -> Int32 {
         let builder = Analyzer(speech: host, configuration: try .shipped())
         var natives: [NativeRecording] = []
         for speaker in ["p288", "p360"] {
-            let audio = TakeAudio(samples: try joined(speaker, length.prompts).samples, clipID: "bench-\(speaker)")
+            let audio = TakeAudio(
+                samples: try joined(speaker, length.prompts, seconds: length.seconds).samples, clipID: "bench-\(speaker)")
+            let record = try await builder.analyseNative(take: audio, phrase: phrase)
+            let present = DerivedCoding.native(in: record)?.l1.analysis.segmentation.words.filter { $0.kind == .present }.count ?? 0
+            print("bench \(length.label): reference \(speaker) has \(present) of \(phrase.words.count) phrase words present (all are needed to serve as the model)")
             natives.append(NativeRecording(
-                id: RecordingID(speaker), voice: speaker, audioSHA256: audio.sha256,
-                analysis: try await builder.analyseNative(take: audio, phrase: phrase)))
+                id: RecordingID(speaker), voice: speaker, audioSHA256: audio.sha256, analysis: record))
         }
         let reference = EvalReferenceSet(natives: [phrase.id: natives])
 
