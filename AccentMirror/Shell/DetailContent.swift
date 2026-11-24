@@ -4,6 +4,7 @@ import SwiftUI
 /// With no fixture loaded it is the plain spec 18 surface.
 struct DetailContent: View {
     @Environment(\.palette) private var palette
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     var model: ShellModel
 
     var body: some View {
@@ -30,12 +31,17 @@ extension DetailContent {
     private func cards(_ detail: DetailPresentation) -> some View {
         VStack(spacing: Metrics.inner) {
             CardOneView(card: detail.card, playBoth: model.playBoth)
-            // The playhead follows the playback clock while something plays (spec 21 wires the audio).
-            TimelineView(.animation(paused: model.playback == nil)) { _ in
-                StripCard(strip: detail.strip, playhead: model.playbackPhase, playModel: model.playModel,
-                          loop: model.loop(word:), loopingWord: model.loopingWord)
+            // Spec 20: both charts are resolved from `ChartModel` at the chart clock's now. The timeline ticks while
+            // something plays or a fade or ease runs (spec 21 wires the audio), and pauses otherwise.
+            TimelineView(.animation(paused: model.playback == nil && !model.motionActive)) { _ in
+                if let charts = model.charts(systemReduceMotion: reduceMotion) {
+                    VStack(spacing: Metrics.inner) {
+                        StripCard(chart: charts.strip, playModel: model.playModel, loop: model.loop(word:),
+                                  hover: model.hover(word:))
+                        PitchCard(chart: charts.pitch)
+                    }
+                }
             }
-            PitchCard(pitch: detail.pitch)
         }
         .onKeyPress(.escape) {
             guard model.playback != nil else { return .ignored }

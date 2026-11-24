@@ -93,6 +93,10 @@ enum Copy {
         "Looping \u{201C}\(word)\u{201D} \u{00B7} Esc to stop"
     }
 
+    /// The strip card header while audio plays (Addendum r6 E4), after a ▶ glyph.
+    static let playingModel = "Playing the model"
+    static let playingYou = "Playing your take"
+
     /// Edit Transcript (r6 E2, v3 §5).
     static func editTranscriptNote(takes: Int) -> String {
         "Your \(takes) takes will be lined up with the new wording again. Takes that don\u{2019}t fit stay in the menu as not comparable."

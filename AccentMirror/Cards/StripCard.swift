@@ -4,17 +4,21 @@ import SwiftUI
 /// each speaker's own timeline, all in strip.bar. The native row's dictionary-stressed syllables get bold caps and a
 /// Lime dot; your labels are plain. Timing connectors join each native syllable to yours. 216 pt tall:
 /// 16 + 16 title + 8 + (56 row + 24 labels) + 4 + (56 + 24) + 12.
+///
+/// Spec 20 adds the motion on top, all from `StripChart`: the live recording row, the 1 pt playhead on each row's own
+/// timeline, the outline on the syllable being played, the hover and loop boxes, and the header's "Playing …" or
+/// "Looping …" note.
 struct StripCard: View {
     @Environment(\.palette) private var palette
-    var strip: StripPresentation
-    /// The playhead while something plays (Play Model, Play You, Play Both).
-    var playhead: PlaybackSchedule.Phase? = nil
+    var chart: StripChart
     /// Clicking a missing word plays the model only.
     var playModel: () -> Void = {}
     /// Clicking a label loops that word (v3 §3.5) until Esc.
     var loop: (Int) -> Void = { _ in }
-    /// The word being looped, for the caption.
-    var loopingWord: String? = nil
+    /// The pointer entered (a word index) or left (nil) a label.
+    var hover: (Int?) -> Void = { _ in }
+
+    private var strip: StripPresentation { chart.strip }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -23,10 +27,8 @@ struct StripCard: View {
                     .typeRole(.mono)
                     .foregroundStyle(palette.textSecondary)
                 Spacer()
-                if let loopingWord {
-                    Text(Copy.looping(loopingWord))
-                        .typeRole(.small)
-                        .foregroundStyle(palette.textPrimary)
+                if let note = chart.header {
+                    HeaderNote(note: note)
                         .padding(.trailing, 16)
                 }
                 HStack(spacing: 6) {
@@ -43,11 +45,15 @@ struct StripCard: View {
             VStack(alignment: .leading, spacing: 0) {
                 StripRow(label: "NATIVE") {
                     ZStack {
+                        HighlightBox(clusters: strip.native, highlight: chart.highlight)
                         BarsCanvas(clusters: strip.native, rowHeight: 56)
-                        Playhead(progress: progress(.model))
+                        SyllableOutline(cluster: chart.playing.native.flatMap {
+                            strip.native.indices.contains($0) ? strip.native[$0] : nil
+                        })
+                        Playhead(progress: chart.playhead?.native)
                     }
                 } labels: {
-                    ClusterLabels(clusters: strip.native, slots: [], playModel: playModel, loop: loop)
+                    ClusterLabels(clusters: strip.native, slots: [], playModel: playModel, loop: loop, hover: hover)
                 }
                 .padding(.bottom, StripGeometry.rowGap)
 
@@ -65,11 +71,6 @@ struct StripCard: View {
         .surface(palette.surfaceCard, cornerRadius: Metrics.cardRadius)
     }
 
-    private func progress(_ side: PlaybackSchedule.Side) -> Double? {
-        if case .playing(side, let progress) = playhead { return progress }
-        return nil
-    }
-
     @ViewBuilder private var youRow: some View {
         switch strip.you {
         case .placeholder:
@@ -80,15 +81,17 @@ struct StripCard: View {
                     .typeRole(.body)
                     .foregroundStyle(palette.textTertiary)
             }
-        case .recording(let clusters, let playhead):
-            RecordingRow(clusters: clusters, playhead: playhead)
+        case .recording(let envelope):
+            LiveRecordingRow(envelope: envelope, modelSeconds: chart.modelSeconds)
         case .takeProblem(let clusters, let shape, let caption):
             TakeProblemRow(clusters: clusters, shape: shape, caption: caption)
         case .bars(let clusters, let slots, _):
             ZStack {
+                HighlightBox(clusters: clusters, highlight: chart.highlight)
                 BarsCanvas(clusters: clusters, rowHeight: 56)
                 MissingSlots(slots: slots, playModel: playModel)
-                Playhead(progress: progress(.you))
+                SyllableOutline(cluster: chart.playing.you.flatMap { clusters.indices.contains($0) ? clusters[$0] : nil })
+                Playhead(progress: chart.playhead?.you)
             }
         }
     }
@@ -96,10 +99,82 @@ struct StripCard: View {
     @ViewBuilder private var youLabels: some View {
         switch strip.you {
         case .bars(let clusters, let slots, let showsLabels) where showsLabels:
-            ClusterLabels(clusters: clusters, slots: slots, playModel: playModel, loop: loop)
+            ClusterLabels(clusters: clusters, slots: slots, playModel: playModel, loop: loop, hover: hover)
         default:
             Color.clear
         }
+    }
+}
+
+/// "▶ Playing the model", "▶ Playing your take" (r6 E4) or the loop's "Looping …" label (E3), Geist 12 secondary.
+private struct HeaderNote: View {
+    @Environment(\.palette) private var palette
+    var note: StripHeaderNote
+
+    var body: some View {
+        HStack(spacing: 6) {
+            switch note {
+            case .looping(let word):
+                Image(systemName: "repeat")
+                    .font(.system(size: 11))
+                    .accessibilityHidden(true)
+                Text(Copy.looping(word))
+            case .playing(let side):
+                Image(systemName: "play.fill")
+                    .font(.system(size: 8))
+                    .accessibilityHidden(true)
+                Text(side == .model ? Copy.playingModel : Copy.playingYou)
+            }
+        }
+        .typeRole(.small)
+        .foregroundStyle(palette.textSecondary)
+        .accessibilityElement(children: .combine)
+    }
+}
+
+/// The hover or loop box (r6 E3): one rounded rectangle, radius 4, 4 pt outside the word's bars, in the neutral
+/// `highlight` token, behind the bars. Faded in by the chart clock.
+private struct HighlightBox: View {
+    @Environment(\.palette) private var palette
+    var clusters: [StripCluster]
+    var highlight: ChartHighlight?
+
+    var body: some View {
+        Canvas { context, size in
+            guard let highlight else { return }
+            let bars = clusters.filter { $0.word == highlight.word }
+                .flatMap { clusterBars($0, width: size.width, maxHeight: size.height - 4) }
+            guard let first = bars.first, let last = bars.last else { return }
+            let tallest = bars.map(\.height).max() ?? 0
+            let rect = CGRect(x: first.x - 4, y: size.height / 2 - tallest / 2 - 4,
+                              width: last.x + CGFloat(EnvelopeBins.barWidth) - first.x + 8, height: tallest + 8)
+            let fill = highlight.strength == .loop ? palette.highlightLoop : palette.highlightHover
+            context.fill(Path(roundedRect: rect, cornerRadius: 4), with: .color(fill.opacity(highlight.opacity)))
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+}
+
+/// The syllable being played (r6 E4): a 1 pt text.secondary outline, radius 4, 3 pt outside its bars. It jumps with
+/// the playhead, never animates.
+private struct SyllableOutline: View {
+    @Environment(\.palette) private var palette
+    var cluster: StripCluster?
+
+    var body: some View {
+        Canvas { context, size in
+            guard let cluster else { return }
+            let bars = clusterBars(cluster, width: size.width, maxHeight: size.height - 4)
+            guard let first = bars.first, let last = bars.last else { return }
+            let tallest = bars.map(\.height).max() ?? 0
+            let rect = CGRect(x: first.x - 3, y: size.height / 2 - tallest / 2 - 3,
+                              width: last.x + CGFloat(EnvelopeBins.barWidth) - first.x + 6, height: tallest + 6)
+            context.stroke(Path(roundedRect: rect.insetBy(dx: 0.5, dy: 0.5), cornerRadius: 4),
+                           with: .color(palette.textSecondary), lineWidth: 1)
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 }
 
@@ -160,7 +235,8 @@ private struct Connectors: View {
     }
 }
 
-/// The 2 pt playhead on the row that is playing, in text.primary (Lime is kept for recording, A3).
+/// The 1 pt playhead (§9), in text.primary (Lime is kept for recording, A3), on this row's own timeline: the row that
+/// plays, and the other row where the time map reaches it. None across a gap.
 private struct Playhead: View {
     @Environment(\.palette) private var palette
     var progress: Double?
@@ -170,8 +246,8 @@ private struct Playhead: View {
             if let progress {
                 Rectangle()
                     .fill(palette.textPrimary)
-                    .frame(width: 2, height: proxy.size.height + 4)
-                    .offset(x: CGFloat(progress) * proxy.size.width - 1, y: -2)
+                    .frame(width: 1, height: proxy.size.height + 4)
+                    .offset(x: CGFloat(progress) * proxy.size.width - 0.5, y: -2)
             }
         }
         .allowsHitTesting(false)
@@ -205,13 +281,7 @@ private struct StripRow<Plot: View, Labels: View>: View {
 // MARK: - Bars
 
 /// Deterministic per-bar jitter so the texture is identical on every render.
-func barJitter(_ seed: Int, _ index: Int) -> Double {
-    var x = UInt64(truncatingIfNeeded: seed &* 73_856_093 ^ index &* 19_349_663) &+ 0x9E37_79B9_7F4A_7C15
-    x = (x ^ (x >> 30)) &* 0xBF58_476D_1CE4_E5B9
-    x = (x ^ (x >> 27)) &* 0x94D0_49BB_1331_11EB
-    x ^= x >> 31
-    return Double(x % 10_000) / 10_000
-}
+func barJitter(_ seed: Int, _ index: Int) -> Double { barJitterValue(seed, index) }
 
 /// Bar heights for one syllable cluster: its envelope scaled by measured prominence.
 func clusterBars(_ cluster: StripCluster, width: CGFloat, maxHeight: CGFloat, pitch: CGFloat = 3,
@@ -252,16 +322,39 @@ struct BarsCanvas: View {
     }
 }
 
-private struct RecordingRow: View {
+/// Keeps the live row's bins between frames, so each frame only folds in the samples that arrived since the last.
+private final class EnvelopeBinCache {
+    var bins = EnvelopeBins()
+
+    func update(_ envelope: RecordingEnvelope, width: Double, modelSeconds: Double) -> EnvelopeBins {
+        bins.update(envelope, plotWidth: width, modelSeconds: modelSeconds)
+        return bins
+    }
+}
+
+/// Your row while recording (§7, A3, r6 E9): `Canvas` bars in strip.bar from the envelope stream, growing left to
+/// right up to the 2 pt Lime playhead. x = elapsed ÷ the model's duration × width; a take longer than the model
+/// compresses to fit, with the playhead at the right edge.
+private struct LiveRecordingRow: View {
     @Environment(\.palette) private var palette
-    var clusters: [StripCluster]
-    var playhead: Double
+    var envelope: RecordingEnvelope
+    var modelSeconds: Double
+    @State private var cache = EnvelopeBinCache()
 
     var body: some View {
         GeometryReader { proxy in
-            let x = CGFloat(playhead) * proxy.size.width
+            let x = CGFloat(RecordingScale.playhead(elapsed: envelope.elapsed, modelSeconds: modelSeconds)) * proxy.size.width
             ZStack(alignment: .topLeading) {
-                BarsCanvas(clusters: clusters, rowHeight: 56, clipAt: playhead)
+                Canvas { context, size in
+                    let bins = cache.update(envelope, width: Double(size.width), modelSeconds: modelSeconds)
+                    let midY = size.height / 2
+                    for (index, value) in bins.heights.enumerated() {
+                        let height = max(1.5, CGFloat(value) * (size.height - 4))
+                        let rect = CGRect(x: CGFloat(index) * CGFloat(EnvelopeBins.pitch), y: midY - height / 2,
+                                          width: CGFloat(EnvelopeBins.barWidth), height: height)
+                        context.fill(Path(roundedRect: rect, cornerRadius: 0.75), with: .color(palette.stripBar))
+                    }
+                }
                 Rectangle()
                     .fill(palette.baseline)
                     .frame(width: max(0, proxy.size.width - x), height: 1)
@@ -366,6 +459,7 @@ private struct ClusterLabels: View {
     var slots: [MissingSlot]
     var playModel: () -> Void
     var loop: (Int) -> Void
+    var hover: (Int?) -> Void
 
     private enum Content {
         case syllable(ClusterLabel, tooltip: String?, word: Int?)
@@ -416,6 +510,9 @@ private struct ClusterLabels: View {
                 .fixedSize()
                 .help(tooltip ?? "")
                 .onTapGesture { if let word { loop(word) } }
+                // Hovering a label boxes its word on both rows and the pitch plot (r6 E3), with the pointing hand.
+                .onHover { inside in if let word { hover(inside ? word : nil) } }
+                .pointerStyle(word == nil ? nil : .link)
         case .missing(let expected):
             // The expected word in tertiary, no strike-through (v3 §3.4). Clicking it plays the model only.
             Text(expected)

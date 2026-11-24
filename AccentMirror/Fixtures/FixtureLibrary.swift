@@ -7,6 +7,9 @@ struct LoadedFixture: Sendable {
     var take: TakeFixture?
     /// `fixture.earlierTakes`, resolved, newest first.
     var earlierTakes: [TakeFixture] = []
+    /// Takes and phrases the `chart` block names (ghosts before a save, the menu preview, a voice switch), by id.
+    var chartTakes: [String: TakeFixture] = [:]
+    var chartPhrases: [String: PhraseFixture] = [:]
 }
 
 /// Loads the committed JSON fixtures from the app bundle (`Contents/Resources/Fixtures/`). Bundle only:
@@ -42,7 +45,13 @@ struct FixtureLibrary: Sendable {
         let phrase: PhraseFixture = try decode("phrases", fixture.phrase)
         let take: TakeFixture? = try fixture.take.map { try decode("takes", $0) }
         let earlier: [TakeFixture] = try (fixture.earlierTakes ?? []).map { try decode("takes", $0) }
-        return LoadedFixture(fixture: fixture, phrase: phrase, take: take, earlierTakes: earlier)
+        var loaded = LoadedFixture(fixture: fixture, phrase: phrase, take: take, earlierTakes: earlier)
+        if let chart = fixture.chart {
+            let takeIDs = (chart.earlierTakes?.before ?? []) + [chart.menuPreview, chart.voiceSwitch?.take].compactMap { $0 }
+            for id in takeIDs { loaded.chartTakes[id] = try decode("takes", id) }
+            if let id = chart.voiceSwitch?.phrase { loaded.chartPhrases[id] = try decode("phrases", id) }
+        }
+        return loaded
     }
 
     private func decode<T: Decodable>(_ folder: String, _ name: String) throws -> T {

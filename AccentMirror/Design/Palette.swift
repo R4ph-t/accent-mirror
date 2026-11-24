@@ -21,6 +21,10 @@ struct Palette: Equatable, Sendable {
     var pitchTexture: Color
     var baseline: Color
     var rowHover: Color
+    /// `highlight` (Addendum r6 E3): neutral, never Lime or blue. text.primary at 5% (light) / 6% (dark) behind a
+    /// hovered word, 9% / 11% behind a looping one.
+    var highlightHover: Color
+    var highlightLoop: Color
 
     // Lime and mistakes
     var lime1: Color
@@ -76,6 +80,8 @@ struct Palette: Equatable, Sendable {
         pitchTexture: Color(rgb: 70, 64, 56, 0.055),
         baseline: Color(hex: 0xD3CDC1),
         rowHover: Color(rgb: 60, 50, 35, 0.03),
+        highlightHover: Color(rgb: 28, 26, 23, 0.05), // text.primary #1C1A17 at 5%
+        highlightLoop: Color(rgb: 28, 26, 23, 0.09),
         lime1: Color(hex: 0x23891C),
         lime2: Color(hex: 0x86C400),
         limeText: Color(hex: 0x2F7A0E),
@@ -107,6 +113,8 @@ struct Palette: Equatable, Sendable {
         pitchTexture: Color(rgb: 240, 235, 225, 0.045),
         baseline: Color(hex: 0x34322E),
         rowHover: Color(rgb: 255, 255, 255, 0.025),
+        highlightHover: Color(rgb: 242, 239, 233, 0.06), // text.primary #F2EFE9 at 6%
+        highlightLoop: Color(rgb: 242, 239, 233, 0.11),
         lime1: Color(hex: 0xC8F03C),
         lime2: Color(hex: 0x5BE3A6),
         limeText: Color(hex: 0xC6EE4A),
