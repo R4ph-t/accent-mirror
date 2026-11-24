@@ -2,7 +2,7 @@
 
 Status: Done · Branch: factory/18-19-ui-shell (PR #4), fixes on factory/18-19-fixes (PR #11) and factory/18-19-fixes-r3 · Depends on: 18 (UI foundation) · Estimate: 6–8 h agent run + 1.5 h Raph review
 
-Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)"), including Addendum 2026-11-23 (r2), Addendum 2026-11-23 (r3, items B1–B11) and Addendum 2026-11-23 (r4, items C1–C9). r4 wins over r3, r2 and spec v2 wherever they differ; r3 wins over r2 and spec v2; r2 wins over spec v2. Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px for a 1200 × 800 pt window). This spec does not depend on spec 11 (scoring).
+Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)"), including Addendum 2026-11-23 (r2), Addendum 2026-11-23 (r3, items B1–B11), Addendum 2026-11-23 (r4, items C1–C9) and Addendum 2026-11-23 (r5, items D1–D3). r5 wins over r4, r3, r2 and spec v2 wherever they differ; r4 wins over r3, r2 and spec v2; r3 wins over r2 and spec v2; r2 wins over spec v2. Engineering review proposing rows 18–21. Plan v2, approved 2026-11-23 09:56 Europe/Paris. Reference mockups: `mockup-{result,empty,recording,error}-{light,dark}-final2@2x.png` (2400 × 1600 px for a 1200 × 800 pt window). This spec does not depend on spec 11 (scoring).
 
 ## Goal
 
@@ -160,7 +160,7 @@ Hover ghosts, Option-to-show-earlier-takes, and the 150 ms voice-switch ease may
 - **This target is not run by CI and is not part of `make check`.** AGENTS.md stands: CI never launches the app, never uses the microphone, never runs UI tests. Implementation of this spec may add a local `make screenshots` target; it must not be called from `.github/workflows/ci.yml`.
 - Output goes to a gitignored or reviewed-artifact folder (for example `screenshots/ui-shell/`), named `<fixture>-{light,dark}@2x.png`. The four primary states are compared against the final2 mockups. The other states are the set sent back to Designer.
 
-### Narrow and short windows (fixes rounds 5 and 5b, Addendum r4 C4 to C8)
+### Narrow and short windows (fixes rounds 5, 5b and 6, Addendum r4 C4 to C8, r5 D1 to D3)
 
 - **Labels keep 4 pt apart (C6).** The syllable labels under each strip row, and the word labels under the pitch
   plot, keep at least 4 pt between neighbouring labels that show.
@@ -170,17 +170,23 @@ Hover ghosts, Option-to-show-earlier-takes, and the 150 ms voice-switch ease may
   left to right, and one shows only if it keeps the gap to every label already showing.
 - **Target words (C6).** A word with a stressed native syllable, a word named in a card-1 diff row, or a word named
   in the card-1 sentence (for example the missing words of targetWordsMissing). A starter manifest's `targets` add
-  to this set and never replace it.
+  to this set and never replace it. No word has a rule of its own (r5 D3): "than" is a target only in a take whose
+  card-1 diff row or sentence names it (the reduction row "ra, phy, than."); elsewhere it is an unstressed,
+  non-target word label and hides first.
 - **Nothing is lost.** A hidden label keeps its hover area and tooltip, and VoiceOver still reads every syllable and
   every word.
 - **Tested rules.** `LabelLayout.visibility` (which labels show), `LabelLayout.syllablePriority` /
   `missingWordPriority` / `wordPriority` (the hide order) and `ShellPresenter.namedTargetWords` (the target set)
   are pure and covered by Swift Testing cases.
-- **Toolbar (C7).** See spec 18, Toolbar.
+- **Toolbar (C7, r5 D1).** See spec 18, Toolbar: the title truncates to 160 pt before any control compacts.
 - **Too-much-contrast strip (C4).** Your over-contrast syllables (HAR, LOOKS) stand at full height. Each unstressed
   neighbour is at most half as tall, relative to them, as the native's neighbour is to the native's stressed
-  syllable. Syllables the row doesn't name (TOG) keep native's relative height; they are never shrunk to fake
-  contrast. This applies to `rows-too-much-contrast` and `feedback-too-much-contrast-last`, and a data test checks it.
+  syllable. Every other syllable keeps native's relative height (r5 D2): TOG, and the small syllables the row
+  doesn't name (pho, ra, phy, than), neither shrunk to fake contrast nor heavier than native. The one exception is a
+  syllable a reduction row in the same take names, which may be heavier (`feedback-too-much-contrast-last`: ra,
+  phy and than; pho stays at native's height). A light neighbour is never named in a reduction row (r5 D2), so
+  that row reads "ra, phy, than." with no "der". This applies to `rows-too-much-contrast` and
+  `feedback-too-much-contrast-last`, and data tests check it.
 - **Question rise (C1).** In `rows-final-direction-higher` the native line dips low at the start of LOOKS, then
   rises in a concave-up curve through the last ~60% of the word, ends near the TOG peak (85–90% of the plot
   height), flattens slightly at the very end and stays inside the plot. No straight ramp, no kink before LOOKS.
@@ -372,3 +378,21 @@ Addendum A5 says: "A(w) = the context-compatible dictionary pronunciation plus t
     byte-identical PNGs (130 frames, `narrow-inspector-open` included) and pass `check-screenshots`. The committed
     frames that changed were refreshed: `narrow-inspector-open-*`, `round4/rows-too-much-contrast-light`,
     `round4/rows-final-direction-higher-light` and both contact sheets.
+- **Fixes round 6 (2026-11-24).** The Designer's review of PR #29 at 707b1bc, built against Addendum r5 (D1–D3):
+  - **D1.** `ToolbarCompaction.decide` takes the available width and the controls' widths (no longer the title's
+    natural width). The title gives up its extra width down to 160 pt before any control compacts; each C7 step
+    starts only when a 160 pt title no longer fits; after all three the title may go to 154 pt. With the measured
+    controls (full 402, chevron 356, dot 292, words only 238 pt) and the inspector open: 1200 pt keeps every
+    control full with a 230 pt title (round 5b collapsed the take menu there, in `inspector-open`,
+    `feedback-quiet-priority`, `noVoicedFrames`, `stress-*` and `words-*`); the take menu compacts below 1130 pt,
+    Record below 1084, Model and You below 1020; 960 pt gives a 154 pt title. The title block's tooltip is the
+    full title, and VoiceOver reads it whole. `ToolbarCompactionTests` covers 1200, 960, the widths in between
+    and a 1 pt sweep.
+  - **D2.** `photography-take04-strong-contrast`: pho 0.22, ra 0.20, phy 0.25 and than 0.18, native's relative
+    height (round 5b kept the close-match 0.35, 0.35, 0.38 and 0.30). `-unreduced`: pho 0.22; ra, phy and than stay
+    heavier because its reduction row names them. `tooMuchContrastStripShowsMoreContrast` checks every syllable
+    the row doesn't name against native's relative height (±10%), and `lightNeighboursAreNeverNamedAsTooHeavy`
+    checks, across every fixture, that no light neighbour is named in a reduction row.
+  - **D3.** There was no special case for "than" in code; `thanIsATargetOnlyWhereCardOneNamesIt` checks, across
+    every fixture with the word, that it is a target (never hidden) exactly where card 1 names it and a low-priority
+    label everywhere else.
