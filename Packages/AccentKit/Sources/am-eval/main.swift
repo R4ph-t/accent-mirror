@@ -714,6 +714,8 @@ func usage() {
           bench [--runs <n>] [--model-dir <dir>]           spec 12 latency: L_stop, L_speech, L2 recompute (real WhisperKit, local only)
           smoke-detector [--build-inputs --corpus <so762 dir>] [--record]
                                                            check (or record) the smoke set's L1 digests and placements
+          nucleus-jitter --span <run> --nucleus <run> [--write-report] [--summary <file>]
+                                                           spec 25 acceptance 1 from two spec11-guard --rows jitter runs
         """)
 }
 
@@ -745,6 +747,7 @@ do {
     case "smoke-detector": exit(try await smokeDetector(args, root: try repositoryRoot()))
     case "bench": exit(try await bench(args, root: try repositoryRoot()))
     case "starter-build": exit(try await starterBuild(args))
+    case "nucleus-jitter": exit(try await nucleusJitter(args, root: try repositoryRoot()))
     default:
         usage()
         exit(args.command == "help" ? 0 : 64)

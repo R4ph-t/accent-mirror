@@ -12,6 +12,8 @@
 #     docs/agreement/reports/release-<configDigest8>.{json,md} (clean tree). Needs scripts/tune.sh first; measures
 #     the guard on held-out data with scripts/spec11-guard.sh. Runs under nice.
 #     needs the fetched corpus and its replayed timings: scripts/am-eval.sh record-timings --set l2-shared
+#   scripts/agreement.sh --suite nucleus-jitter [--summary <file>]   # spec 25 acceptance 1 (.span beside .nucleus);
+#     writes docs/agreement/reports/nucleus-jitter-<configDigest8>.{json,md}. Runs under nice (scripts/nucleus-jitter.sh)
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
@@ -22,6 +24,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --suite) suite="$2"; shift 2 ;;
     --write-report|--release) extra+=("$1"); shift ;;
+    --summary) extra+=("$1" "$2"); shift 2 ;;
     *) echo "agreement.sh: unknown argument $1" >&2; exit 64 ;;
   esac
 done
@@ -42,6 +45,7 @@ case "$suite" in
   smoke) am_eval suite --suite smoke && am_eval smoke-detector ;;
   positive) am_eval suite --suite positive --vctk "$cache/vctk/current" ${extra[@]+"${extra[@]}"} ;;
   l2-shared) am_eval suite --suite l2-shared ${extra[@]+"${extra[@]}"} ;;
+  nucleus-jitter) "$root/scripts/nucleus-jitter.sh" ${extra[@]+"${extra[@]}"} ;;
   release)
     mkdir -p "$cache/guard"
     GUARD_LABEL=shipped nice -n 10 "$root/scripts/spec11-guard.sh" held-out "$cache/guard/held-out-shipped.json"
@@ -57,5 +61,5 @@ case "$suite" in
     am_eval suite --suite l2-shared ${extra[@]+"${extra[@]}"} || status=1
     exit $status
     ;;
-  *) echo "agreement.sh: unknown suite $suite (sets, smoke, positive, l2-shared, release, all)" >&2; exit 64 ;;
+  *) echo "agreement.sh: unknown suite $suite (sets, smoke, positive, l2-shared, release, nucleus-jitter, all)" >&2; exit 64 ;;
 esac
