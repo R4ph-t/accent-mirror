@@ -81,10 +81,12 @@ public struct TakeRecord: Sendable, Hashable {
     public let samples: [Float]
     /// L0, L1 and L2 for this take, as `AMPipeline` encoded them.
     public let derived: [DerivedRecord]
+    /// The analysis the records come from (spec 16 keeps it in the take's manifest).
+    public let identity: AnalysisIdentity?
 
     public init(
         takeID: TakeID, phraseID: PhraseID, recording: RecordingID, recordedAt: Date, audioSHA256: String,
-        samples: [Float], derived: [DerivedRecord]
+        samples: [Float], derived: [DerivedRecord], identity: AnalysisIdentity? = nil
     ) {
         self.takeID = takeID
         self.phraseID = phraseID
@@ -93,6 +95,7 @@ public struct TakeRecord: Sendable, Hashable {
         self.audioSHA256 = audioSHA256
         self.samples = samples
         self.derived = derived
+        self.identity = identity
     }
 }
 

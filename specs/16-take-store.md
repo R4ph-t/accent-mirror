@@ -95,4 +95,43 @@ succeeds. Unalignable takes count toward the 10.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+- `AMLibrary/TakeStore.swift`: the `TakeStore` actor (implements spec 12's `TakePersisting`), `TakeRef` (phrase +
+  take ID, the address every read takes), `StoredTake` (number, recorded-at, `comparable` / `unalignable(reason:)`,
+  stored voices most recently used first), `Ghost`, `TakeRecomputer` (the keys the running code expects and the
+  recompute closure, injected by `AMPipeline`), `TakeStoreError`, `TakeRecoveryReport`. API: `save(_:)`, `recover()`
+  (run once at launch), `takes(for:)`, `result(take:voice:)`, `ghosts(before:voice:)`, `markUnalignable(take:reason:)`,
+  `delete(take:)`, `TakeStore.applicationSupportRoot()`.
+- `AMLibrary/TakeStoreFiles.swift`: `manifest.json` (format, phrase and take IDs, number, recorded-at, the samples'
+  SHA-256, SHA-256 of each file's bytes, the `AnalysisIdentity` the take was saved with, the stored comparisons in LRU
+  order, the unalignable reason), 16 kHz mono Float32 CAF through AVFAudio, fsync, `renamex_np(RENAME_EXCL)` for the
+  commit and the moves into `.trash/` and `.quarantine/`, an atomic replace (synced temp file + rename + folder sync)
+  for files inside a committed take, and the errno / Cocoa error mapping onto `StorageError`.
+- Save: staged files written and synced, manifest last and synced, staging folder synced, one rename into `takes/`,
+  `takes/` synced, then prune. A take that is already stored (the same audio analysed again, which is what the
+  coordinator's voice switch does) keeps its folder and number: its features and that voice's comparison are replaced
+  file by file and the manifest last, evicting the least recently used of 3 voices.
+- Reads: a derived file counts only if its bytes match the manifest's hash and its key is the one `TakeRecomputer`
+  expects (L1 key for `features.json`, L2 key for the comparison); anything else is a miss, recomputed from the stored
+  audio, stored and returned. Concurrent reads of the same comparison share one recompute. A read of a stored
+  comparison makes it the most recently used.
+- `AMPipeline/TakeStorage.swift`: `TakeRecomputer.pipeline(analyzer:reference:phrase:)` and `GhostPitch` (a ghost's
+  `youPitchOnModel`, decoded from its L2). `Analyzer` gained nonisolated `l0Key` / `l1Key` / `l2Key`, now the only place
+  the level keys are built, so the store's expected keys can't drift from what `run` stores (a test checks a stored
+  comparison is a hit). `TakeRecord` gained `identity` (the coordinator passes the response's).
+- Crash tests use `TakeStore.Faults` (`crashAfter:` a `SaveStep`, the save stops without cleaning up, as a dead
+  process would; `pruneFails`). The shipped store has none.
+
+### Spec gaps (built with the least-committal version)
+
+1. Reads take a `TakeRef` (phrase + take ID), not a bare take ID: take IDs come from the audio hash, so the same
+   audio under two phrases would be ambiguous. `ghosts(before:voice:)` takes the current voice, which the spec implies.
+2. Numbers are never reused even after `delete(take:)` of the newest take: the last number given is kept in
+   `phrases/<phraseID>/take-counter.json` (not in the spec's layout), written before the commit, so a crash can skip a
+   number but never reuse one.
+3. The manifest's `AnalysisIdentity` is the one the take was saved with; a comparison recomputed later is identified
+   by its record's key (identity in derived JSON, §9.2), not by a new manifest identity.
+4. "Failed and unsaved takes are never written" is decided by the coordinator (spec 12), which `AMLibrary` can't
+   import, so that test is in `AMPipelineTests` ("Take store through the pipeline"), not under
+   `--filter AMLibraryTests`. Run both filters.
+5. After a failed prune the extra take stays listed until the next launch prunes it.
+6. A quarantined take stays in `.quarantine/` (not deleted); the spec only says it's moved and logged.

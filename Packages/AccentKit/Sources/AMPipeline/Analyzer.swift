@@ -156,10 +156,25 @@ public actor Analyzer {
 
     // MARK: - Levels
 
-    func l0Key(_ take: TakeAudio) -> L0Key {
+    func l0Key(_ take: TakeAudio) -> L0Key { l0Key(takeAudioSHA256: take.sha256) }
+
+    /// The L0 key this analyzer gives a take with this audio.
+    public nonisolated func l0Key(takeAudioSHA256: String) -> L0Key {
         L0Key(
-            takeAudioSHA256: take.sha256, asrModelID: speech.asrModelID, pitchTrackerID: configuration.pitchTracker.id,
-            voicingID: configuration.voicing.id)
+            takeAudioSHA256: takeAudioSHA256, asrModelID: speech.asrModelID,
+            pitchTrackerID: configuration.pitchTracker.id, voicingID: configuration.voicing.id)
+    }
+
+    /// The L1 key this analyzer gives a take with this L0 key, read against `phrase`.
+    public nonisolated func l1Key(l0: L0Key, phrase: PhraseInput) -> L1Key {
+        L1Key(
+            l0: l0, transcriptRevision: phrase.transcriptRevision, pronunciationHash: phrase.pronunciationHash,
+            aligner: configuration.boundaryRefiner.id)
+    }
+
+    /// The L2 key this analyzer gives a comparison with `reference` (the take store checks stored records with it).
+    public nonisolated func l2Key(l1: L1Key, reference: ReferenceIdentity) -> L2Key {
+        L2Key(l1: l1, reference: reference, thresholdsVersion: Versions.thresholdsVersion)
     }
 
     /// Decode, take quality, then ASR alongside pitch. Voicing comes from the quality pass (spec 05 decides both in
@@ -221,9 +236,7 @@ public actor Analyzer {
     private func takeL1(_ take: TakeAudio, phrase: PhraseInput, l0: L0Analysis, clock: inout StageClock) async throws
         -> L1Analysis
     {
-        let key = L1Key(
-            l0: l0.key, transcriptRevision: phrase.transcriptRevision, pronunciationHash: phrase.pronunciationHash,
-            aligner: configuration.boundaryRefiner.id)
+        let key = l1Key(l0: l0.key, phrase: phrase)
         if let cached = l1Cache[key] {
             statistics.l1Hits += 1
             return cached
@@ -263,7 +276,7 @@ public actor Analyzer {
         take: TakeAudio, phrase: PhraseInput, l1: L1Analysis, reference: any ReferenceSet, voice: RecordingID,
         identity: AnalysisIdentity, clock: inout StageClock
     ) async throws -> L2Analysis {
-        let key = L2Key(l1: l1.key, reference: identity.reference, thresholdsVersion: Versions.thresholdsVersion)
+        let key = l2Key(l1: l1.key, reference: identity.reference)
         if let cached = l2Cache[key] {
             statistics.l2Hits += 1
             return cached
