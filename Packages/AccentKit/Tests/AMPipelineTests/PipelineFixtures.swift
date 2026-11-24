@@ -1,4 +1,4 @@
-// Shared fixtures for spec 12's tests: three readers of VCTK prompt 002 from the committed smoke set (CC BY 4.0) with
+// Shared fixtures for spec 12's tests: three readers of VCTK prompt 018 from the committed smoke set (CC BY 4.0) with
 // their replayed word timings, a reference set over two of them, and fakes for the seams (recogniser, pitch, store).
 // No ASR, no network, no microphone.
 
@@ -13,12 +13,14 @@ import Testing
 
 enum PipelineFixtures {
     static let detector = SmokePlacementGoldenTests.detector
-    static let phraseID = PhraseID("vctk-002")
-    /// Your take: p245 reading prompt 002.
-    static let youItem = "vctk-p245_002"
-    /// The selected voice and the other native reader.
-    static let modelItem = "vctk-p288_002"
-    static let otherItem = "vctk-p360_002"
+    /// The prompt: 018 ("Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain",
+    /// 4.6 s) by default; 002 (3.1 s) for the 3 s latency figure.
+    static let prompt = "018"
+    static var phraseID: PhraseID { PhraseID("vctk-" + prompt) }
+    /// Your take: p245; the selected voice p288; the other native reader p360.
+    static let youItem = "vctk-p245_018"
+    static let modelItem = "vctk-p288_018"
+    static let otherItem = "vctk-p360_018"
     static let recordedAt = Date(timeIntervalSince1970: 1_795_000_000)
 
     static func items() throws -> [String: PlacementFixtureItem] {
@@ -38,7 +40,7 @@ enum PipelineFixtures {
 
     static func phrase(_ item: PlacementFixtureItem, revision: Int = 0) throws -> PhraseInput {
         PhraseInput(
-            id: phraseID,
+            id: PhraseID("vctk-" + (item.item.split(separator: "_").last.map(String.init) ?? prompt)),
             words: try item.words.map {
                 PlacementTake.Word(
                     index: WordIndex($0.index), text: $0.text, pronunciation: try Pronunciation(arpabet: $0.phones),
@@ -56,15 +58,16 @@ enum PipelineFixtures {
         let timings: FixtureTimestamper
     }
 
-    static func world() async throws -> World {
+    static func world(prompt: String = prompt) async throws -> World {
+        func named(_ item: String) -> String { item.replacingOccurrences(of: "_" + Self.prompt, with: "_" + prompt) }
         let items = try items()
         let timings = try timings()
-        let you = try take(items[youItem]!)
-        let phrase = try phrase(items[youItem]!)
+        let you = try take(items[named(youItem)]!)
+        let phrase = try phrase(items[named(youItem)]!)
         let builder = Analyzer(speech: SpeechModelHost(ready: timings), configuration: try .shipped())
         var natives: [NativeRecording] = []
         for name in [modelItem, otherItem] {
-            let item = items[name]!
+            let item = items[named(name)]!
             let record = try await builder.analyseNative(take: try take(item), phrase: phrase)
             natives.append(NativeRecording(
                 id: voice(name), voice: item.speaker, audioSHA256: item.audioSHA256, analysis: record))

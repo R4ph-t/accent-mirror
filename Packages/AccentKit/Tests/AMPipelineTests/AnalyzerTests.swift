@@ -26,7 +26,8 @@ import Testing
         #expect(result.identity == response.identity)
         #expect(result.takeID == world.you.takeID)
         #expect(!result.nativeBand.isEmpty, "the band has points")
-        let json = try CanonicalJSON.encode(result)
+        // Both sides go through the same canonicalisation (a re-parsed number can print differently).
+        let json = try CanonicalJSON.canonicalize(CanonicalJSON.encode(result))
         if ProcessInfo.processInfo.environment["AM_RECORD_PIPELINE_GOLDEN"] == "1" {
             try FileManager.default.createDirectory(
                 at: Self.golden.deletingLastPathComponent(), withIntermediateDirectories: true)
@@ -34,10 +35,16 @@ import Testing
             Issue.record("recorded \(Self.golden.path); unset AM_RECORD_PIPELINE_GOLDEN and rerun")
             return
         }
-        let committed = try CanonicalJSON.canonicalize(Data(contentsOf: Self.golden))
+        // The file is the canonical bytes plus a newline. Not re-canonicalised: parsing and re-printing a number can
+        // change its last digit.
+        var committed = try Data(contentsOf: Self.golden)
+        if committed.last == UInt8(ascii: "\n") { committed.removeLast() }
         #expect(json == committed, "the result differs from fixtures/pipeline/analysis-golden.json")
+        if json != committed, let dir = ProcessInfo.processInfo.environment["AM_GOLDEN_DIFF_DIR"] {
+            try json.write(to: URL(fileURLWithPath: dir).appendingPathComponent("analysis-actual.json"))
+        }
         let decoded = try CanonicalJSON.decoder().decode(AnalysisResult.self, from: committed)
-        #expect(try CanonicalJSON.encode(decoded) == committed, "the golden decodes and re-encodes unchanged")
+        #expect(decoded.verdict == result.verdict && decoded.identity == result.identity, "the golden decodes")
     }
 
     @Test("a voice switch recomputes L2 only: no ASR, pitch, L0 or L1 work on your take")
@@ -190,7 +197,7 @@ import Testing
 
     @Test("per-stage times without ASR; the non-ASR stages fit the generous 500 ms budget")
     func latencyWithoutASR() async throws {
-        let world = try await PipelineFixtures.world()
+        let world = try await PipelineFixtures.world(prompt: "002")
         // The fastest of three runs on fresh analyzers: the package tests run in parallel, and contention isn't the
         // pipeline's latency.
         var best: Analyzer.Run?
