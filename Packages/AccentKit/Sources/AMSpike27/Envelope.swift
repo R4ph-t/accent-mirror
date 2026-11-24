@@ -50,7 +50,7 @@ public struct PhraseMetrics: Sendable, Hashable, Codable {
         return PhraseMetrics(pitchRange: range, finalSlope: slope, finalClass: finalClass, npvi: npvi(durations))
     }
 
-    static func percentile(_ sorted: [Double], _ p: Double) -> Double {
+    public static func percentile(_ sorted: [Double], _ p: Double) -> Double {
         let position = p / 100 * Double(sorted.count - 1)
         let lo = Int(position.rounded(.down))
         let hi = min(lo + 1, sorted.count - 1)

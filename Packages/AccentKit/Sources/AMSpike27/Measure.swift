@@ -28,6 +28,20 @@ public struct MeasuredNucleus: Sendable, Hashable, Codable {
     /// Lit amendment 2: spectral balance, band energy 100–1,000 Hz minus 1,000–4,000 Hz (dB), Hann window over the
     /// same ± window as e. The same measure for every variant.
     public let tiltDB: Double
+
+    public init(peakTime: Double, regionStart: Double, regionEnd: Double, prominenceDB: Double, peakDB: Double,
+                duration: Double, energyDB: Double, f0Semitones: Double?, f0Residual: Double?, tiltDB: Double) {
+        self.peakTime = peakTime
+        self.regionStart = regionStart
+        self.regionEnd = regionEnd
+        self.prominenceDB = prominenceDB
+        self.peakDB = peakDB
+        self.duration = duration
+        self.energyDB = energyDB
+        self.f0Semitones = f0Semitones
+        self.f0Residual = f0Residual
+        self.tiltDB = tiltDB
+    }
 }
 
 /// One take through the front end: its nuclei and the voiced frames the phrase metrics read.
@@ -38,6 +52,15 @@ public struct MeasuredAudio: Sendable, Hashable, Codable {
     public let voicedTimes: [Double]
     public let voicedSemitones: [Double]
     public let hopSeconds: Double
+
+    public init(duration: Double, nuclei: [MeasuredNucleus], voicedTimes: [Double], voicedSemitones: [Double],
+                hopSeconds: Double) {
+        self.duration = duration
+        self.nuclei = nuclei
+        self.voicedTimes = voicedTimes
+        self.voicedSemitones = voicedSemitones
+        self.hopSeconds = hopSeconds
+    }
 }
 
 public enum FrontEnd {

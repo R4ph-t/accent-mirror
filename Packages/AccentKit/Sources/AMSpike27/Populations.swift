@@ -99,3 +99,12 @@ public enum SpeechOcean762Rule {
     /// The utterances holding any of the 134 (spec 02 §6.3's recall set), by utterance id.
     public static func overlap(recall: [SpeechOceanWord]) -> Set<String> { Set(recall.map(\.utterance)) }
 }
+
+/// Wilson 95% bounds that tolerate n = 0 (no data: [0, 1]).
+public enum SpikeStats {
+    public static func wilson(_ successes: Int, _ n: Int) -> (lower: Double, upper: Double) {
+        guard n > 0 else { return (0, 1) }
+        let i = Statistics.wilson(successes: successes, n: n)
+        return (i.lower, i.upper)
+    }
+}
