@@ -160,7 +160,8 @@ extension PlacementSuppression {
 
 /// Runs WhisperKit over `clips` (id → audio file) and writes replay JSON plus `manifest.json`.
 func recordTimings(
-    _ clips: [(id: String, audio: URL)], modelDir: URL, manifest: URL, attribution: String, out: URL
+    _ clips: [(id: String, audio: URL)], modelDir: URL, manifest: URL, attribution: String, out: URL,
+    keeping kept: [ReplayManifest.Entry] = []
 ) async throws -> ReplayManifest {
     let model = try ModelManifest(contentsOf: manifest)
     try model.verify(folder: modelDir)
@@ -168,7 +169,7 @@ func recordTimings(
     try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
-    var entries: [ReplayManifest.Entry] = []
+    var entries: [ReplayManifest.Entry] = kept
     for (n, clip) in clips.enumerated() {
         let samples = try WhisperKitTimestamper.samples(fromFileAt: clip.audio)
         let (text, words) = try await whisper.transcribe(TimestampRequest(clipID: clip.id, samples: samples))
@@ -181,6 +182,7 @@ func recordTimings(
         entries.append(.init(clipID: clip.id, file: file, sha256: SHA256Digest.hex(of: data)))
         if (n + 1) % 100 == 0 { print("record-timings: \(n + 1) of \(clips.count)") }
     }
+    entries.sort { $0.clipID < $1.clipID }
     let replay = ReplayManifest(asrModelID: model.asrModelID, attribution: attribution, clips: entries)
     try (encoder.encode(replay) + Data("\n".utf8))
         .write(to: out.appendingPathComponent(ReplayManifest.fileName), options: .atomic)

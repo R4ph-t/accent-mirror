@@ -29,6 +29,11 @@ struct AMTimestamps {
                         CTO diagnostic round on spec 23's downstream gate: control (markers vs MFA on TTS), ranking
                         (whisper, dsp-snap-1, b2), b2's flip breakdown and inconclusive split. Measures only.
                         Exit 4 when b2's diff does not reproduce the gate report; on --release, 2 on a dirty tree.
+          spec11-guard  --out F [--thresholds F] [--label L] [--seed N] [--ctc-manifest M --ctc-dir D]
+                        [--reference D --manifest M --model-dir D]
+                        [--vctk-inputs F --vctk-baseline F --vctk-replay D [--set-name N]]
+                        Spec 11 §4–§4b on one set of thresholds: control (markers vs MFA on TTS), b2 vs oracle and the
+                        ±20/40/80 ms oracle jitter, spec 23's harness unchanged. Writes JSON counts only; no PASS/FAIL.
           reference-phrases --clips F --corpus D --out F [--files-pin F]
                         List each eval phrase once for spec 22's TTS tool under tools/ (scripts/reference-check.sh),
                         which speaks them with SSML <mark> bookmarks and writes the MFA input corpus and markers.json.
@@ -50,6 +55,7 @@ struct AMTimestamps {
             case "eval": status = try await evaluate(options)
             case "boundaries": status = try await boundaries(options)
             case "diagnostics": status = try await diagnostics(options)
+            case "spec11-guard": status = try await spec11Guard(options)
             case "reference-phrases": status = try referencePhrases(options)
             case "reference-compare": status = try referenceCompare(options)
             case "cancel-check": status = try await cancelCheck(options)

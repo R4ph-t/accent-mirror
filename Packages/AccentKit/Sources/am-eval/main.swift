@@ -112,6 +112,18 @@ enum Paths {
     static let whisperModel = "openai_whisper-base.en"
     static let vctkCache = "eval-cache/vctk/current"
     static let vctkTimings = "eval-cache/vctk-timings"
+    /// Spec 11: the VCTK tuning speakers' replayed word timings (spec 22's synthref reads the same folder).
+    static let vctkTuningTimings = "eval-cache/vctk-tuning-timings"
+}
+
+/// A path under `eval-cache/`, moved to `$AM_EVAL_CACHE` when that is set (spec 11: corpora, recordings and models
+/// stay outside the worktree, which `make test-vm` syncs into the VM).
+func cacheURL(_ root: URL, _ path: String) -> URL {
+    let prefix = "eval-cache/"
+    if path.hasPrefix(prefix), let cache = ProcessInfo.processInfo.environment["AM_EVAL_CACHE"], !cache.isEmpty {
+        return URL(fileURLWithPath: cache).appendingPathComponent(String(path.dropFirst(prefix.count)))
+    }
+    return root.appendingPathComponent(path)
 }
 
 /// The identity of the configuration the harness evaluates. ASR is replayed word timings (CI never runs ASR); the
@@ -447,9 +459,9 @@ func l2Shared(_ args: Arguments, root: URL) async throws -> Int32 {
     let sets = SpeechOceanSets(labels: labels)
     let split = try JSONDecoder().decode(
         SpeechOceanSplitManifest.self, from: Data(contentsOf: root.appendingPathComponent(Paths.soSplit)))
-    let corpusDir = args.value("corpus").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.so762Cache)
+    let corpusDir = args.value("corpus").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.so762Cache)
     let timingsDir = args.value("timings").map(URL.init(fileURLWithPath:))
-        ?? root.appendingPathComponent(Paths.so762Timings)
+        ?? cacheURL(root, Paths.so762Timings)
     let suites: [(name: String, words: [SpeechOceanWord], layer: ValidationLayer, key: String)] = [
         ("L2 recall (stress-wrong words), after suppression", sets.recall, .descriptive, "recall"),
         ("L2 false positives, clean 1,400, after suppression", sets.cleanFalsePositive, .shippedConfigCheck, "clean"),
@@ -531,7 +543,7 @@ func l2Shared(_ args: Arguments, root: URL) async throws -> Int32 {
 /// held-out pair analysed by the pipeline (spec 12) over replayed word timings.
 func positive(_ args: Arguments, root: URL) async throws -> Int32 {
     let manifest = try VCTKEvalSpeakersManifest.load(root.appendingPathComponent(Paths.evalSpeakers))
-    let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.vctkCache)
+    let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.vctkCache)
     guard let cache = PositiveCache(cacheDir) else {
         print("positive: NOT EVALUATED (no trimmed VCTK cache: run scripts/fetch-vctk-eval.sh)")
         return 0
@@ -546,7 +558,7 @@ func positive(_ args: Arguments, root: URL) async throws -> Int32 {
     // Every positive-set gate goes through the one consumer (PositiveSetGates.line), and none can read PASS while the
     // set is NOT EVALUATED. Each held-out pair is analysed by the Analyzer (spec 12): replayed word timings, real
     // pitch, real scoring, against the phrase's bundled native readers.
-    let timingsDir = args.value("timings").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.vctkTimings)
+    let timingsDir = args.value("timings").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.vctkTimings)
     var notes: [String] = []
     var run = PositiveRun()
     if FileManager.default.fileExists(atPath: timingsDir.appendingPathComponent(ReplayManifest.fileName).path) {
@@ -629,13 +641,6 @@ func positive(_ args: Arguments, root: URL) async throws -> Int32 {
     return 0
 }
 
-func tune(_ args: Arguments, root: URL) -> Int32 {
-    let grid = TuningGrid()
-    print("tune: grid of \(grid.weights.count) weight points × \(grid.lambdas.count) λ × \(grid.tauPairs.count)³ τ pairs per n-bucket = \(grid.count) points")
-    print("tune: NOT RUN: the fixed-grid fit over cached L1 features is spec 11 (spec 08's detector is wired). Re-tunes are logged in \(Paths.tuningLog).")
-    return 2
-}
-
 func usage() {
     print("""
         am-eval <command> [options]
@@ -648,8 +653,11 @@ func usage() {
           vctk-split [--eval-speakers <json>] [--out <json>]               write fixtures/splits/vctk.json
           smoke-build --selection <json> --so762 <dir> --vctk <dir> --out <dir>
           suite --suite smoke|l2-shared|positive [--write-report] [--release]
-          tune
-          record-timings --set smoke|l2-shared|positive [--corpus <so762 dir>] [--vctk <dir>] [--model-dir <dir>] [--out <dir>]
+          tune [--guard <spec11-guard tuning JSON>] [--limit <n>] [--spot-checks <n>]
+                                                           spec 11: the fixed-grid fit, the nested CV and the VCTK CV
+          guard-inputs --scope tuning|held-out --out <dir> [--vctk <dir>]
+                                                           spec 11: the guard's VCTK clips, MFA input corpus and inputs JSON
+          record-timings --set smoke|l2-shared|l2-tuning|positive|vctk-tuning [--corpus <so762 dir>] [--vctk <dir>] [--model-dir <dir>] [--out <dir>] [--append]
                                                            run WhisperKit once and save replayable word timings (local only)
           bench [--runs <n>] [--model-dir <dir>]           spec 12 latency: L_stop, L_speech, L2 recompute (real WhisperKit, local only)
           smoke-detector [--build-inputs --corpus <so762 dir>] [--record]
@@ -676,7 +684,8 @@ do {
         case "positive": exit(try await positive(args, root: root))
         case let other: throw CLIError.usage("unknown suite \(other)")
         }
-    case "tune": exit(tune(args, root: try repositoryRoot()))
+    case "tune": exit(try await tune(args, root: try repositoryRoot()))
+    case "guard-inputs": exit(try guardInputs(args, root: try repositoryRoot()))
     case "record-timings": exit(try await recordTimingsCommand(args, root: try repositoryRoot()))
     case "smoke-detector": exit(try await smokeDetector(args, root: try repositoryRoot()))
     case "bench": exit(try await bench(args, root: try repositoryRoot()))

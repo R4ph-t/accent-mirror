@@ -34,7 +34,17 @@ public enum PairScoring {
         natives: [WordIndex: [NativeReading]] = [:], thresholds: Thresholds = .current
     ) throws -> ScoringInput {
         let warp = try warp(you: you, model: model, words: words, thresholds: thresholds)
+        return input(
+            words: words, you: you, model: model, modelVoice: modelVoice, natives: natives, thresholds: thresholds,
+            warp: warp)
+    }
 
+    /// `input` with your take already warped onto the model (`warp(you:model:words:)`). The warp reads no tuned key,
+    /// so spec 11's tuner warps each pair once and rebuilds the rest at every grid point.
+    public static func input(
+        words: [PlacementTake.Word], you: PlacementAnalysis, model: PlacementAnalysis, modelVoice: String,
+        natives: [WordIndex: [NativeReading]], thresholds: Thresholds, warp: TimeWarp
+    ) -> ScoringInput {
         let scoringWords = words.map { word -> ScoringWord in
             // A polysyllable with no A(w) is `expectedAmbiguous`; a monosyllable has nothing to decide but still
             // counts in S and U.

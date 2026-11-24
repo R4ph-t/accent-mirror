@@ -40,6 +40,12 @@ struct PositiveCache {
         }
     }
 
+    /// The VCTK tuning speakers' takes (spec 11's tuning objective and guard on tuning data).
+    func tuningClips(manifest: VCTKEvalSpeakersManifest) -> [VCTKClip] {
+        let speakers = Set(manifest.tuningSpeakers.map(\.id))
+        return kept.filter { speakers.contains($0.speaker) }.sorted { ($0.speaker, $0.phrase) < ($1.speaker, $1.phrase) }
+    }
+
     /// The clips whose word timings the suite replays: the held-out speakers' takes and the bundled readers'.
     func timingClips(manifest: VCTKEvalSpeakersManifest) -> [VCTKClip] {
         let speakers = Set(manifest.heldOutSpeakers.map(\.id) + VCTK.bundledVoices)

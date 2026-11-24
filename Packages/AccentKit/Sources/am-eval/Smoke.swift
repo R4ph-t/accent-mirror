@@ -18,7 +18,8 @@ func smokeClipID(_ file: SmokeManifest.File) -> String {
 func recordTimingsCommand(_ args: Arguments, root: URL) async throws -> Int32 {
     let model = Paths.whisperModel
     let modelDir = args.value("model-dir").map(URL.init(fileURLWithPath:))
-        ?? root.appendingPathComponent(".cache/models/\(model)")
+        ?? (ProcessInfo.processInfo.environment["MODELS_CACHE"].map(URL.init(fileURLWithPath:))
+            ?? root.appendingPathComponent(".cache/models")).appendingPathComponent(model)
     let manifest = root.appendingPathComponent("Resources/Models/\(model)/manifest.json")
     let clips: [(id: String, audio: URL)]
     let out: URL
@@ -34,31 +35,69 @@ func recordTimingsCommand(_ args: Arguments, root: URL) async throws -> Int32 {
     case "positive":
         let root = root
         let manifest = try VCTKEvalSpeakersManifest.load(root.appendingPathComponent(Paths.evalSpeakers))
-        let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.vctkCache)
+        let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.vctkCache)
         guard let cache = PositiveCache(cacheDir) else {
             throw CLIError.failed("no trimmed VCTK cache at \(cacheDir.path) (scripts/fetch-vctk-eval.sh)")
         }
         clips = cache.timingClips(manifest: manifest).map {
             ("\($0.speaker)_\($0.phrase)", vctkAudio(cacheDir, speaker: $0.speaker, phrase: $0.phrase))
         }
-        out = args.value("out").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.vctkTimings)
+        out = args.value("out").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.vctkTimings)
         attribution = vctkAttribution
     case "l2-shared":
         let corpusDir = args.value("corpus").map(URL.init(fileURLWithPath:))
-            ?? root.appendingPathComponent(Paths.so762Cache)
+            ?? cacheURL(root, Paths.so762Cache)
         let corpus = try SpeechOceanCorpusFiles(root: corpusDir)
         let labels = try loadLabels(Arguments(["", "--labels", root.appendingPathComponent(Paths.labels).path]), root: root)
         let sets = SpeechOceanSets(labels: labels)
         let utterances = Set((sets.recall + sets.cleanFalsePositive + sets.unintelligible).map(\.utterance)).sorted()
         clips = utterances.map { ($0, corpus.audioURL(utterance: $0)) }
-        out = args.value("out").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.so762Timings)
+        out = args.value("out").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.so762Timings)
+        attribution = "speechocean762 (OpenSLR 101, SpeechOcean), CC BY 4.0; local evaluation cache, never committed"
+    case "vctk-tuning":
+        // Spec 11: the VCTK tuning speakers' takes, for the tuning objective and the guard on tuning data.
+        let manifest = try VCTKEvalSpeakersManifest.load(root.appendingPathComponent(Paths.evalSpeakers))
+        let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.vctkCache)
+        guard let cache = PositiveCache(cacheDir) else {
+            throw CLIError.failed("no trimmed VCTK cache at \(cacheDir.path) (scripts/fetch-vctk-eval.sh)")
+        }
+        clips = cache.tuningClips(manifest: manifest).map {
+            ("\($0.speaker)_\($0.phrase)", vctkAudio(cacheDir, speaker: $0.speaker, phrase: $0.phrase))
+        }
+        out = args.value("out").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.vctkTuningTimings)
+        attribution = vctkAttribution
+    case "l2-tuning":
+        // Spec 11: every utterance the tuning pool and the release's L2 rows read (the tuning-correct train-half
+        // words and the 1,868-word supplementary set on top of l2-shared's sets). Use with --append.
+        let corpusDir = args.value("corpus").map(URL.init(fileURLWithPath:))
+            ?? cacheURL(root, Paths.so762Cache)
+        let corpus = try SpeechOceanCorpusFiles(root: corpusDir)
+        let labels = try loadLabels(Arguments(["", "--labels", root.appendingPathComponent(Paths.labels).path]), root: root)
+        let sets = SpeechOceanSets(labels: labels)
+        let words = sets.recall + sets.cleanFalsePositive + sets.unintelligible + sets.tuningCorrect
+            + sets.supplementaryFalsePositive
+        clips = Set(words.map(\.utterance)).sorted().map { ($0, corpus.audioURL(utterance: $0)) }
+        out = args.value("out").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.so762Timings)
         attribution = "speechocean762 (OpenSLR 101, SpeechOcean), CC BY 4.0; local evaluation cache, never committed"
     case let other:
-        throw CLIError.usage("record-timings --set smoke|l2-shared|positive (got \(other))")
+        throw CLIError.usage("record-timings --set smoke|l2-shared|l2-tuning|positive|vctk-tuning (got \(other))")
     }
-    print("record-timings: \(clips.count) clips with \(model) → \(out.path)")
+    // --append keeps an existing recording directory's clips and records only the missing ones (spec 11).
+    var kept: [ReplayManifest.Entry] = []
+    var todo = clips
+    if args.flag("append"),
+        let data = try? Data(contentsOf: out.appendingPathComponent(ReplayManifest.fileName)),
+        let existing = try? JSONDecoder().decode(ReplayManifest.self, from: data)
+    {
+        let wanted = Set(clips.map(\.id))
+        kept = existing.clips.filter { wanted.contains($0.clipID) }
+        let have = Set(kept.map(\.clipID))
+        todo = clips.filter { !have.contains($0.id) }
+        print("record-timings: --append keeps \(kept.count) recorded clips, records \(todo.count)")
+    }
+    print("record-timings: \(todo.count) clips with \(model) → \(out.path)")
     let replay = try await recordTimings(
-        clips, modelDir: modelDir, manifest: manifest, attribution: attribution, out: out)
+        todo, modelDir: modelDir, manifest: manifest, attribution: attribution, out: out, keeping: kept)
     print("record-timings: wrote \(replay.clips.count) recordings; recordingsSHA256 \(replay.recordingsSHA256)")
     return 0
 }
@@ -127,7 +166,7 @@ func smokeDetector(_ args: Arguments, root: URL) async throws -> Int32 {
     let dir = root.appendingPathComponent(Paths.smokeDetector)
     let inputsURL = dir.appendingPathComponent("inputs.json")
     if args.flag("build-inputs") {
-        let corpus = args.value("corpus").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.so762Cache)
+        let corpus = args.value("corpus").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.so762Cache)
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         try encodeFixture(try buildSmokeInputs(root: root, corpusDir: corpus)).write(to: inputsURL, options: .atomic)
         print("smoke-detector: wrote \(inputsURL.path)")
