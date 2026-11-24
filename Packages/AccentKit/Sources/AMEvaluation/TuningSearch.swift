@@ -290,12 +290,13 @@ public struct TuningSearch: Sendable {
 
     /// Walks every grid point. Each (weights, λ) slice runs as its own task; slices merge with the rule's preference
     /// and global grid order, so the result is the one a single in-order walk gives.
-    public func run(_ pool: TuningSearchPool, guard guardRule: TuningGuard) async -> TuningSearchResult {
+    public func run(_ pool: TuningSearchPool, guard guardRule: TuningGuard, jobs: Int = 3) async -> TuningSearchResult {
         let slices = await withTaskGroup(of: Slice.self) { group in
+            var out: [Slice] = []
             for k in 0..<grid.weightLambdaCount {
+                if k >= max(1, jobs), let done = await group.next() { out.append(done) }
                 group.addTask { self.slice(pool, k: k, guard: guardRule) }
             }
-            var out: [Slice] = []
             for await slice in group { out.append(slice) }
             return out.sorted { $0.k < $1.k }
         }
@@ -334,6 +335,22 @@ public struct TuningSearch: Sendable {
 
     static func keepClosest(_ points: [ScoredPoint], count: Int) -> [ScoredPoint] {
         Array(points.sorted { ($0.violation, $0.index) < ($1.violation, $1.index) }.prefix(count))
+    }
+
+    /// Squared distance to the initial point without building a `TuningPoint`: the rule's `distance` terms, summed in
+    /// the same order (`TuningPoint.vector`), so its square root is bit-identical.
+    func squaredDistance(k: Int, tau j: [Int]) -> Double {
+        let (w, lambda) = grid.weightsAndLambda(k)
+        let initial = rule.initial
+        var sum = 0.0
+        func add(_ a: Double, _ b: Double) { sum += (a - b) * (a - b) }
+        add(w[0], initial.durationWeight); add(w[1], initial.energyWeight); add(w[2], initial.pitchWeight)
+        add(lambda, initial.lambda)
+        for b in 0..<3 {
+            add(grid.tauPairs[j[b]].medium, initial.tau[b].medium)
+            add(grid.tauPairs[j[b]].high, initial.tau[b].high)
+        }
+        return sum
     }
 
     func prefers(_ a: ScoredPoint, over b: ScoredPoint) -> Bool {
@@ -427,16 +444,18 @@ public struct TuningSearch: Sendable {
                     guard ruleOK else { continue }
                     slice.ruleFeasible += 1
                     let key = (Int(counts[0]), Int(counts[1]), Int(counts[2]), Int(counts[3]))
-                    func mayWin(_ best: (recall: Int, shared: Int, placement: Int, any: Int)?) -> Bool {
-                        // Same denominators within a pool, so counts order exactly as the rule's shares do.
-                        guard let best else { return true }
+                    func mayWin(_ best: (recall: Int, shared: Int, placement: Int, any: Int)?, _ chosen: ScoredPoint?) -> Bool {
+                        // Same denominators within a pool, so counts order exactly as the rule's shares do. On a full
+                        // tie the rule goes to distance from the initial point, then grid order; a slice walks in
+                        // grid order, so a later point wins only when strictly closer.
+                        guard let best, let chosen else { return true }
                         if key.0 != best.recall { return key.0 > best.recall }
                         if key.1 != best.shared { return key.1 < best.shared }
                         if key.2 != best.placement { return key.2 < best.placement }
                         if key.3 != best.any { return key.3 < best.any }
-                        return true
+                        return squaredDistance(k: k, tau: j).squareRoot() < rule.distance(chosen.point)
                     }
-                    if mayWin(bestUnguardedKey) {
+                    if mayWin(bestUnguardedKey, slice.chosenWithoutGuard) {
                         let candidate = ScoredPoint(index: index, point: grid[index], metrics: metrics, violation: v)
                         if slice.chosenWithoutGuard.map({ prefers(candidate, over: $0) }) ?? true {
                             slice.chosenWithoutGuard = candidate
@@ -447,7 +466,7 @@ public struct TuningSearch: Sendable {
                     slice.ruleAndBudgetFeasible += 1
                     guard guardRule.invariantConditionsMet else { continue }
                     slice.feasible += 1
-                    if mayWin(bestKey) {
+                    if mayWin(bestKey, slice.chosen) {
                         let candidate = ScoredPoint(index: index, point: grid[index], metrics: metrics, violation: v)
                         if slice.chosen.map({ prefers(candidate, over: $0) }) ?? true {
                             slice.chosen = candidate

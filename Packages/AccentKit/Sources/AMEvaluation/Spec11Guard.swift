@@ -100,6 +100,18 @@ public struct GuardCheck: Sendable, Hashable, Codable {
     public let interval: Interval?
     public let detail: String
 
+    public init(name: String, set: String, n: Int, value: Double?, limit: Double?, status: Status, interval: Interval?,
+                detail: String) {
+        self.name = name
+        self.set = set
+        self.n = n
+        self.value = value
+        self.limit = limit
+        self.status = status
+        self.interval = interval
+        self.detail = detail
+    }
+
     public var line: String {
         let v = value.map { String(format: "%.4f", $0) } ?? "–"
         let l = limit.map { String(format: "≤ %.2f", $0) } ?? "no limit"

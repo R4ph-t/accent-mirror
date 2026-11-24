@@ -44,8 +44,10 @@ func guardInputs(_ args: Arguments, root: URL) throws -> Int32 {
         try Data((text + "\n").utf8).write(to: dir.appendingPathComponent("\(id).lab"))
         inputs.append(GuardInput(clipID: id, audio: audio.path, transcript: text))
     }
-    try Data((inputs.map(\.clipID).joined(separator: "\n") + "\n").utf8)
-        .write(to: out.appendingPathComponent("clips.txt"))
+    // Rewritten only when it changes: scripts/spec11-guard.sh re-runs MFA when clips.txt is newer than its output.
+    let list = Data((inputs.map(\.clipID).joined(separator: "\n") + "\n").utf8)
+    let listURL = out.appendingPathComponent("clips.txt")
+    if (try? Data(contentsOf: listURL)) != list { try list.write(to: listURL) }
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
     try encoder.encode(inputs).write(to: out.appendingPathComponent("inputs.json"))

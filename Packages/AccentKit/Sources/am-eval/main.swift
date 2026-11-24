@@ -701,7 +701,7 @@ func usage() {
                                                            write the sub-phrase cut list from MFA alignments
           vctk-split [--eval-speakers <json>] [--out <json>]               write fixtures/splits/vctk.json
           smoke-build --selection <json> --so762 <dir> --vctk <dir> --out <dir>
-          suite --suite smoke|l2-shared|positive [--write-report] [--release]
+          suite --suite smoke|l2-shared|positive|release [--write-report] [--release] [--tuning <json>] [--guard <json>] [--guard-initial <json>]
           tune [--guard <spec11-guard tuning JSON>] [--limit <n>] [--spot-checks <n>]
                                                            spec 11: the fixed-grid fit, the nested CV and the VCTK CV
           vctk-reference-lists [--vctk <dir>]             spec 11 §3a: write fixtures/vctk/reference-lists.json
@@ -717,6 +717,7 @@ func usage() {
 
 // MARK: - Main
 
+setlinebuf(stdout)  // progress reaches a tee'd log as it happens
 let args = Arguments(Array(CommandLine.arguments.dropFirst()))
 do {
     switch args.command {
@@ -732,6 +733,7 @@ do {
         case "smoke": exit(try smoke(root: root))
         case "l2-shared": exit(try await l2Shared(args, root: root))
         case "positive": exit(try await positive(args, root: root))
+        case "release": exit(try await release(args, root: root))
         case let other: throw CLIError.usage("unknown suite \(other)")
         }
     case "tune": exit(try await tune(args, root: try repositoryRoot()))

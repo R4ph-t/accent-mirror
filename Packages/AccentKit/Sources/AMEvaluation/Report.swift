@@ -124,11 +124,15 @@ public struct AgreementReport: Sendable, Hashable, Codable {
     public let positiveSet: PositiveSetStatus?
     public let notes: [String]
     public let limitations: [String]
+    /// Spec 11's release section (guard, L2 split, tuning outcome); nil on other suites.
+    public let spec11: Spec11Release?
 
     public init(
         suite: String, generatedAt: Date, release: Bool, identity: ReportIdentity, metrics: [MetricResult],
-        folds: FoldRunRecord? = nil, summary: ReleaseSummary, notes: [String] = []
+        folds: FoldRunRecord? = nil, summary: ReleaseSummary, notes: [String] = [], spec11: Spec11Release? = nil,
+        summaryLines: [String]? = nil
     ) {
+        self.spec11 = spec11
         self.suite = suite
         self.generatedAt = ISO8601DateFormatter().string(from: generatedAt)
         self.release = release
@@ -136,7 +140,7 @@ public struct AgreementReport: Sendable, Hashable, Codable {
         self.metrics = metrics
         self.folds = folds
         self.summary = summary
-        self.summaryLines = summary.lines
+        self.summaryLines = summaryLines ?? summary.lines
         self.positiveSet = summary.positiveSet
         self.notes = notes
         self.limitations = [Self.limitation]
@@ -176,6 +180,15 @@ public struct AgreementReport: Sendable, Hashable, Codable {
                 let worstPhrase = m.worstPhrase.map { String(format: "%@ %.4f (n=%d)", $0.id, $0.value, $0.n) } ?? "–"
                 out += "| \(m.name) | \(m.n) | \(value) | \(gate) | \(m.status.text) | \(intervals.isEmpty ? "–" : intervals) | \(worstSpeaker) | \(worstPhrase) |\n"
             }
+            let accounted = lines.filter { $0.accounting != nil }
+            if !accounted.isEmpty {
+                out += "\nPer-row accounting (§3a):\n\n| Metric | Pairs | Reference speakers | Prompts | Lost | Lost by reason |\n|---|---|---|---|---|---|\n"
+                for m in accounted {
+                    let a = m.accounting!
+                    let reasons = a.lostReasons.sorted { $0.key < $1.key }.map { "\($0.key) \($0.value)" }.joined(separator: "; ")
+                    out += "| \(m.name) | \(a.pairs) | \(a.referenceSpeakers) | \(a.prompts) | \(a.lostPairs) | \(reasons.isEmpty ? "–" : reasons) |\n"
+                }
+            }
         }
         if let folds {
             out += "\n## Folds (one config per fold, every path under it)\n\n| Fold | configDigest | Held-out speakers | Paths |\n|---|---|---|---|\n"
@@ -190,9 +203,31 @@ public struct AgreementReport: Sendable, Hashable, Codable {
             }
             out += "\n"
         }
+        if let spec11 {
+            out += "\n## Spec 11 guard (§4c): \(spec11.guardLine)\n"
+            for condition in spec11.conditions {
+                out += "\n### Condition \(condition.number): \(condition.name): \(condition.met ? "MET" : "NOT MET")\n\n"
+                out += "| Check | Set | n | Value | Limit | Interval | Status | Detail |\n|---|---|---|---|---|---|---|---|\n"
+                for c in condition.checks {
+                    let value = c.value.map { String(format: "%.4f", $0) } ?? "–"
+                    let limit = c.limit.map { String(format: "≤ %.2f", $0) } ?? "–"
+                    let interval = c.interval.map { String(format: "[%.4f, %.4f]", $0.lower, $0.upper) } ?? "–"
+                    out += "| \(c.name) | \(c.set) | \(c.n) | \(value) | \(limit) | \(interval) | \(c.status.rawValue) | \(c.detail) |\n"
+                }
+            }
+            out += "\n## L2 false-flag split, clean 1,400 (reported, not gated; `lowAsrConfidenceBelow: \(spec11.lowAsrConfidenceBelow)`)\n\n"
+            out += "| Thresholds | Group | Flagged | Words | Rate | Wilson 95% |\n|---|---|---|---|---|---|\n"
+            for row in spec11.falseFlagSplit {
+                let rate = row.words == 0 ? "–" : String(format: "%.4f", Double(row.flagged) / Double(row.words))
+                let interval = row.interval.map { String(format: "[%.4f, %.4f]", $0.lower, $0.upper) } ?? "–"
+                out += "| \(row.thresholds) | \(row.group) | \(row.flagged) | \(row.words) | \(rate) | \(interval) |\n"
+            }
+            out += "\n## Tuning (§1, §2)\n\n" + spec11.tuningLines.map { "- \($0)\n" }.joined()
+            out += "\n## Reported only (never asserted)\n\n" + spec11.reportedLines.map { "- \($0)\n" }.joined()
+        }
         if !notes.isEmpty { out += "\n## Notes\n\n" + notes.map { "- \($0)\n" }.joined() }
         out += "\n## Limitations\n\n" + limitations.map { "- \($0)\n" }.joined()
-        out += "\n## Summary\n\n" + summary.lines.map { "    \($0)\n" }.joined()
+        out += "\n## Summary\n\n" + summaryLines.map { "    \($0)\n" }.joined()
         return out
     }
 }

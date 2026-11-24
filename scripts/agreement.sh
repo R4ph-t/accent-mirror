@@ -8,6 +8,9 @@
 #   scripts/agreement.sh --suite positive [--write-report]   # VCTK pairs through the pipeline (spec 12), every spec 09/10 gate
 #     needs the trimmed VCTK cache and its replayed timings: scripts/am-eval.sh record-timings --set positive
 #   scripts/agreement.sh --suite l2-shared [--write-report] [--release]   # shared-detector mode, reported (gate: spec 11)
+#   scripts/agreement.sh --suite release          # spec 11: the release suite on the shipped config; writes
+#     docs/agreement/reports/release-<configDigest8>.{json,md} (clean tree). Needs scripts/tune.sh first; measures
+#     the guard on held-out data with scripts/spec11-guard.sh. Runs under nice.
 #     needs the fetched corpus and its replayed timings: scripts/am-eval.sh record-timings --set l2-shared
 set -euo pipefail
 
@@ -39,6 +42,12 @@ case "$suite" in
   smoke) am_eval suite --suite smoke && am_eval smoke-detector ;;
   positive) am_eval suite --suite positive --vctk "$cache/vctk/current" ${extra[@]+"${extra[@]}"} ;;
   l2-shared) am_eval suite --suite l2-shared ${extra[@]+"${extra[@]}"} ;;
+  release)
+    mkdir -p "$cache/guard"
+    GUARD_LABEL=shipped nice -n 10 "$root/scripts/spec11-guard.sh" held-out "$cache/guard/held-out-shipped.json"
+    nice -n 10 "$root/scripts/am-eval.sh" suite --suite release --write-report \
+      --guard "$cache/guard/held-out-shipped.json" ${extra[@]+"${extra[@]}"}
+    ;;
   all)
     status=0
     run_sets || status=1
@@ -48,5 +57,5 @@ case "$suite" in
     am_eval suite --suite l2-shared ${extra[@]+"${extra[@]}"} || status=1
     exit $status
     ;;
-  *) echo "agreement.sh: unknown suite $suite (sets, smoke, positive, l2-shared, all)" >&2; exit 64 ;;
+  *) echo "agreement.sh: unknown suite $suite (sets, smoke, positive, l2-shared, release, all)" >&2; exit 64 ;;
 esac

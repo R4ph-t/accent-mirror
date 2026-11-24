@@ -90,6 +90,13 @@ public struct TuningGrid: Sendable, Hashable, RandomAccessCollection {
         tauPairs = pairs
     }
 
+    /// A smaller grid with the same indexing (spec 11's tests; the shipped search always uses `init()`).
+    init(weights: [[Double]], lambdas: [Double], tauPairs: [TuningPoint.TauPair]) {
+        self.weights = weights
+        self.lambdas = lambdas
+        self.tauPairs = tauPairs
+    }
+
     public var startIndex: Int { 0 }
     public var endIndex: Int { weights.count * lambdas.count * tauPairs.count * tauPairs.count * tauPairs.count }
 

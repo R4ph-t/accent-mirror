@@ -20,6 +20,16 @@ import AMProsody
 import AMScoring
 import AMWarp
 import Foundation
+import Synchronization
+
+// MARK: - Parallelism
+
+/// How many tasks a heavy section runs at once: `--jobs`, else `$AM_EVAL_JOBS`, else 3 (the Mac is shared).
+let evalJobs: Int = {
+    let arguments = CommandLine.arguments
+    if let i = arguments.firstIndex(of: "--jobs"), i + 1 < arguments.count, let n = Int(arguments[i + 1]) { return max(1, n) }
+    return ProcessInfo.processInfo.environment["AM_EVAL_JOBS"].flatMap(Int.init).map { max(1, $0) } ?? 3
+}()
 
 // MARK: - Replay from several folders
 
@@ -102,7 +112,7 @@ func l2Takes(
     return try await withThrowingTaskGroup(of: L2Take?.self) { group in
         var started = 0
         var out: [L2Take] = []
-        let limit = max(2, ProcessInfo.processInfo.activeProcessorCount)
+        let limit = max(1, evalJobs)
         for utterance in byUtterance.keys.sorted() {
             if started >= limit, let done = try await group.next() { if let done { out.append(done) } }
             started += 1
@@ -157,8 +167,11 @@ func l2Tables(
     words: [SpeechOceanWord], takes: [L2Take], kind: TuningUnitTable.Kind, grid: TuningGrid,
     base: StressPlacementDetector
 ) async -> [TuningUnitTable] {
+    let jobs = max(1, evalJobs)
     let tables = await withTaskGroup(of: [TuningUnitTable].self) { group in
-        for take in takes {
+        var out: [String: TuningUnitTable] = [:]
+        for (i, take) in takes.enumerated() {
+            if i >= jobs, let batch = await group.next() { for table in batch { out[table.id] = table } }
             group.addTask {
                 let axes = take.axes
                 let stride = TuningUnitTable.stride(axes: axes, grid: grid)
@@ -175,7 +188,6 @@ func l2Tables(
                 }
             }
         }
-        var out: [String: TuningUnitTable] = [:]
         for await batch in group { for table in batch { out[table.id] = table } }
         return out
     }
@@ -316,34 +328,65 @@ func nativesKey(_ take: PairTake, k: Int, thresholds: Thresholds) -> String {
 }
 
 func pairTables(_ takes: [PairTake], grid: TuningGrid, base: StressPlacementDetector) async -> [TuningUnitTable] {
-    let byPhrase = Dictionary(grouping: takes, by: \.pair.phrase)
-    let tables = await withTaskGroup(of: [TuningUnitTable].self) { group in
-        for phrase in byPhrase.keys.sorted() {
+    let done = Counter()
+    let jobs = max(1, evalJobs)
+    let tables = await withTaskGroup(of: TuningUnitTable.self) { group in
+        var out: [TuningUnitTable] = []
+        for (i, take) in takes.enumerated() {
+            if i >= jobs, let table = await group.next() { out.append(table) }
             group.addTask {
                 var memo: [String: [WordIndex: [NativeReading]]] = [:]
-                var out: [TuningUnitTable] = []
-                for take in byPhrase[phrase]! {
-                    let stride = TuningUnitTable.stride(axes: take.axes, grid: grid)
-                    var bits = [UInt8](repeating: 0, count: grid.weightLambdaCount * stride)
-                    for k in 0..<grid.weightLambdaCount {
-                        if memo.count > 4_096 { memo.removeAll(keepingCapacity: true) }
-                        for c in 0..<stride {
-                            let t = unitThresholds(k: k, combination: c, axes: take.axes, grid: grid)
-                            bits[k * stride + c] = take.bits(base, t, readings: &memo, memoKey: nativesKey(take, k: k, thresholds: t)).rawValue
+                var scored: [String: UInt8] = [:]
+                let stride = TuningUnitTable.stride(axes: take.axes, grid: grid)
+                var bits = [UInt8](repeating: 0, count: grid.weightLambdaCount * stride)
+                let probe = PairScoring.input(
+                    words: take.words, you: take.you, model: take.model, modelVoice: take.modelVoice, natives: [:],
+                    thresholds: .current, warp: take.warp)
+                let present = Set(probe.alignment.pairs.compactMap { if case .present(let w, _) = $0 { w } else { nil } })
+                let you = probe.you.syllables.filter { present.contains($0.word) }
+                let model = probe.model.syllables.filter { present.contains($0.word) }
+                let decided = take.words.filter { $0.pronunciation.syllables.count >= 2 }.map(\.index)
+                for k in 0..<grid.weightLambdaCount {
+                    memo.removeAll(keepingCapacity: true)
+                    scored.removeAll(keepingCapacity: true)
+                    for c in 0..<stride {
+                        let t = unitThresholds(k: k, combination: c, axes: take.axes, grid: grid)
+                        // τ reaches the scorer only through each observed stress's margin level (your take, the
+                        // model, and the natives' readings): one scoring per distinct signature. The direct spot
+                        // checks re-score without this memo.
+                        let natives = nativesKey(take, k: k, thresholds: t)
+                        func levels(_ syllables: [ComparableSyllable]) -> String {
+                            guard let p = TakeProminence(syllables, thresholds: t.prominence) else { return "-" }
+                            return decided.map { p.observedStress(of: $0).map { "\($0.marginConfidence.rawValue)" } ?? "x" }
+                                .joined(separator: ",")
+                        }
+                        let signature = natives + "|" + levels(you) + "|" + levels(model)
+                        if let known = scored[signature] {
+                            bits[k * stride + c] = known
+                        } else {
+                            let value = take.bits(base, t, readings: &memo, memoKey: natives).rawValue
+                            scored[signature] = value
+                            bits[k * stride + c] = value
                         }
                     }
-                    out.append(TuningUnitTable(
-                        id: "\(take.pair.speaker)_\(take.pair.phrase)", speaker: take.pair.speaker, kind: .vctkPair,
-                        axes: take.axes, bits: bits))
                 }
-                return out
+                let n = done.increment()
+                if n % 25 == 0 || n == takes.count { print("tune: VCTK pair tables \(n) of \(takes.count)") }
+                return TuningUnitTable(
+                    id: "\(take.pair.speaker)_\(take.pair.phrase)", speaker: take.pair.speaker, kind: .vctkPair,
+                    axes: take.axes, bits: bits)
             }
         }
-        var out: [TuningUnitTable] = []
-        for await batch in group { out += batch }
+        for await table in group { out.append(table) }
         return out
     }
     return tables.sorted { $0.id < $1.id }
+}
+
+/// A thread-safe progress counter.
+final class Counter: Sendable {
+    private let value = Mutex(0)
+    func increment() -> Int { value.withLock { $0 += 1; return $0 } }
 }
 
 // MARK: - Output
@@ -415,6 +458,7 @@ func tune(_ args: Arguments, root: URL) async throws -> Int32 {
         print("tune: \(name) done in \(String(format: "%.0f", seconds[name]!)) s")
     }
     let grid = TuningGrid()
+    print("tune: \(evalJobs) parallel jobs")
     print("tune: grid of \(grid.weights.count) weight points × \(grid.lambdas.count) λ × \(grid.tauPairs.count)³ τ pairs per n-bucket = \(grid.count) points")
     let initialDigest = try configDigest(harnessConfig())
 
@@ -566,7 +610,7 @@ func tune(_ args: Arguments, root: URL) async throws -> Int32 {
     // §2: the shipped fit on the whole pool.
     let pool = TuningSearchPool(recall: recallTables, correct: correctTables, vctkPairs: pairTables)
     let guardRule = TuningGuard(invariantConditionsMet: invariantMet)
-    let fit = await search.run(pool, guard: guardRule)
+    let fit = await search.run(pool, guard: guardRule, jobs: evalJobs)
     lap("§2 fit")
     func describe(_ p: ScoredPoint) -> String {
         let m = p.metrics
@@ -590,7 +634,7 @@ func tune(_ args: Arguments, root: URL) async throws -> Int32 {
     let recallByID = Dictionary(uniqueKeysWithValues: recallTables.map { ($0.id, $0) })
     let correctByID = Dictionary(uniqueKeysWithValues: correctTables.map { ($0.id, $0) })
     func fitFold(_ index: Int, heldOutSpeakers: [String], pool: TuningSearchPool) async throws -> FoldFit {
-        let result = await search.run(pool, guard: TuningGuard(invariantConditionsMet: true))
+        let result = await search.run(pool, guard: TuningGuard(invariantConditionsMet: true), jobs: evalJobs)
         let applied = result.chosen?.point ?? TuningPoint(.current)
         let digest = try FoldConfig(identity: harnessConfig(), thresholds: applied.applied(to: .current)).digest
         return FoldFit(fold: index, heldOutSpeakers: heldOutSpeakers, ruleFeasible: result.ruleFeasible,
@@ -645,7 +689,8 @@ func tune(_ args: Arguments, root: URL) async throws -> Int32 {
         let point = foldPoints[k]!
         let c = search.coordinates(of: point)!
         for word in folds.heldOutRecall(for: k) {
-            let bits = recallByID[word.id]!.bits(at: c.k, tau: c.tau, grid: grid, highIndex: highIndex)
+            guard let unit = recallByID[word.id] else { continue }
+            let bits = unit.bits(at: c.k, tau: c.tau, grid: grid, highIndex: highIndex)
             after[word.id] = bits.contains(.flagged)
             before[word.id] = bits.contains(.flaggedBeforeSuppression)
         }
