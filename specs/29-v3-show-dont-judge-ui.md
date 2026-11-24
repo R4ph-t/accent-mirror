@@ -23,8 +23,10 @@ The fixture-driven app shows v3's result screen. Your pitch and timing are drawn
   - at the right, a **Play Both** ghost button (`surface.well`, 28 tall, radius 6, play triangle), with the tooltip "Play the model, then your take".
 - **Play Both** plays the model's phrase, a 0.4 s pause, then your take, with the playhead. It's also in the menu as Take ▸ Play Model, Then You (⌥⌘L). Play Model (⌘L) and Play You (⇧⌘L) are unchanged. Here it runs on the injected clock; spec 21 wires the audio.
 - **At most one quiet line**, Geist 12 secondary with `info.circle`. It's never counted as a row. The first that applies shows:
-  1. low coverage;
-  2. rough timing;
+  1. low coverage: when `AnalysisResult.comparableCoverage` (added in spec 28, CTO must-fix 3) is non-nil and low
+     (the `result-coverage-low` fixture encodes this; live wiring in spec 21 reads the same field). Don't invent a
+     second coverage field;
+  2. rough timing (`timing == .rough`);
   3. inserted words.
   The copy is v3 §3.1's, word for word.
 - Card 1's other states (no takes yet, recording with the E5 meter, analysing, take problems, unalignable) keep v2's layout with v3 §5's copy.
