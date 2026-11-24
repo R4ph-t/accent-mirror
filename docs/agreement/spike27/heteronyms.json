@@ -1,0 +1,26 @@
+{
+  "description": "Spec 27 §1: starter-word heteronyms, resolved by hand per phrase or excluded. Covers every multi-syllable word of spec 15's 14 starter phrases whose CMUdict entries carry more than one primary-stress position or syllable count. A word whose entries disagree on primary stress and that isn't resolved here is excluded. Starter phrases hold none of the classic noun/verb pairs (record, present, object, ...).",
+  "entries": [
+    {
+      "phrase": "vctk-005",
+      "word": "into",
+      "wordIndex": 5,
+      "stressIndex": null,
+      "reason": "excluded: CMUdict has IH0 N T UW1, IH1 N T UW0 and IH1 N T AH0 (primary on 1, on 0, or a weak form); a function word whose stress depends on the phrase, so no lexical target"
+    },
+    {
+      "phrase": "vctk-007",
+      "word": "into",
+      "wordIndex": 8,
+      "stressIndex": null,
+      "reason": "excluded: same as vctk-005 (CMUdict entries disagree on primary stress)"
+    },
+    {
+      "phrase": "vctk-017",
+      "word": "physically",
+      "wordIndex": 7,
+      "stressIndex": 0,
+      "reason": "resolved: CMUdict has F IH1 Z IH0 K L IY0 and F IH1 Z IH0 K AH0 L IY0; they differ in syllable count only and both put primary stress on the first syllable"
+    }
+  ]
+}

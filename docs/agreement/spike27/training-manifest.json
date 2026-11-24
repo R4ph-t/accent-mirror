@@ -1,0 +1,7168 @@
+{
+  "description" : "Spec 27 §5 training manifest (no audio). Positives: tuning-side takes through the identity TD-PSOLA path, MFA word boundaries. Negatives: one seeded stressed↔unstressed swap per native multi-syllable word whose front end found its N nuclei; syllables 0-based in the context pronunciation. Fold null: the TTS voice, on the training side of every fold.",
+  "dropped" : {
+    "clipping" : 91,
+    "front end found fewer than N nuclei" : 1103,
+    "pitch-mark coverage < 90% of the voiced span" : 52
+  },
+  "folds" : [
+    [
+      "p245",
+      "p283",
+      "p305",
+      "p376"
+    ],
+    [
+      "p256",
+      "p285",
+      "p303",
+      "p317"
+    ],
+    [
+      "p251",
+      "p288",
+      "p333",
+      "p374"
+    ],
+    [
+      "p232",
+      "p351",
+      "p360",
+      "p363"
+    ],
+    [
+      "p248",
+      "p284",
+      "p334",
+      "p347"
+    ],
+    [
+      "p246",
+      "p261",
+      "p298",
+      "p326"
+    ]
+  ],
+  "negativeSourceWords" : 1739,
+  "negatives" : [
+    {
+      "clip" : "p232_006",
+      "id" : "p232_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p232_006",
+      "id" : "p232_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p232_007",
+      "id" : "p232_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p232_007",
+      "id" : "p232_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p232_009",
+      "id" : "p232_009#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p232_010",
+      "id" : "p232_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p232_014",
+      "id" : "p232_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p232_016",
+      "id" : "p232_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p232_016",
+      "id" : "p232_016#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p232_017",
+      "id" : "p232_017#6",
+      "swapped" : 0,
+      "syllables" : 4,
+      "target" : 1,
+      "word" : 6
+    },
+    {
+      "clip" : "p232_018",
+      "id" : "p232_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p232_020",
+      "id" : "p232_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p232_021-a",
+      "id" : "p232_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p232_024",
+      "id" : "p232_024#10",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p232_024",
+      "id" : "p232_024#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p245_004",
+      "id" : "p245_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p245_006",
+      "id" : "p245_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p245_006",
+      "id" : "p245_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p245_007",
+      "id" : "p245_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p245_007",
+      "id" : "p245_007#4",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p245_007",
+      "id" : "p245_007#10",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p245_009",
+      "id" : "p245_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p245_010",
+      "id" : "p245_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p245_010",
+      "id" : "p245_010#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p245_012",
+      "id" : "p245_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p245_012",
+      "id" : "p245_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p245_014",
+      "id" : "p245_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p245_014",
+      "id" : "p245_014#13",
+      "swapped" : 0,
+      "syllables" : 4,
+      "target" : 2,
+      "word" : 13
+    },
+    {
+      "clip" : "p245_015",
+      "id" : "p245_015#17",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 17
+    },
+    {
+      "clip" : "p245_017",
+      "id" : "p245_017#4",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p245_020",
+      "id" : "p245_020#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p245_021-a",
+      "id" : "p245_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p245_023-b",
+      "id" : "p245_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p245_023-b",
+      "id" : "p245_023-b#11",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 11
+    },
+    {
+      "clip" : "p246_004",
+      "id" : "p246_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p246_006",
+      "id" : "p246_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p246_006",
+      "id" : "p246_006#12",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 12
+    },
+    {
+      "clip" : "p246_006",
+      "id" : "p246_006#16",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 16
+    },
+    {
+      "clip" : "p246_007",
+      "id" : "p246_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p246_009",
+      "id" : "p246_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p246_010",
+      "id" : "p246_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p246_013",
+      "id" : "p246_013#7",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 7
+    },
+    {
+      "clip" : "p246_014",
+      "id" : "p246_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p246_020",
+      "id" : "p246_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p246_021-a",
+      "id" : "p246_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p246_023-b",
+      "id" : "p246_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p248_004",
+      "id" : "p248_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p248_007",
+      "id" : "p248_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p248_007",
+      "id" : "p248_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p248_007",
+      "id" : "p248_007#10",
+      "swapped" : 1,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p248_009",
+      "id" : "p248_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p248_009",
+      "id" : "p248_009#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p248_010",
+      "id" : "p248_010#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p248_012",
+      "id" : "p248_012#2",
+      "swapped" : 1,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p248_012",
+      "id" : "p248_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p248_012",
+      "id" : "p248_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p248_013",
+      "id" : "p248_013#6",
+      "swapped" : 1,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p248_013",
+      "id" : "p248_013#8",
+      "swapped" : 1,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 8
+    },
+    {
+      "clip" : "p248_014",
+      "id" : "p248_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p248_014",
+      "id" : "p248_014#13",
+      "swapped" : 0,
+      "syllables" : 4,
+      "target" : 2,
+      "word" : 13
+    },
+    {
+      "clip" : "p248_017",
+      "id" : "p248_017#6",
+      "swapped" : 2,
+      "syllables" : 4,
+      "target" : 1,
+      "word" : 6
+    },
+    {
+      "clip" : "p248_018",
+      "id" : "p248_018#8",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 8
+    },
+    {
+      "clip" : "p248_020",
+      "id" : "p248_020#1",
+      "swapped" : 1,
+      "syllables" : 4,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p248_020",
+      "id" : "p248_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p248_021-a",
+      "id" : "p248_021-a#5",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 5
+    },
+    {
+      "clip" : "p248_023-a",
+      "id" : "p248_023-a#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p248_023-b",
+      "id" : "p248_023-b#11",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 11
+    },
+    {
+      "clip" : "p248_023-c",
+      "id" : "p248_023-c#8",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 8
+    },
+    {
+      "clip" : "p251_006",
+      "id" : "p251_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p251_006",
+      "id" : "p251_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p251_006",
+      "id" : "p251_006#12",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 12
+    },
+    {
+      "clip" : "p251_006",
+      "id" : "p251_006#16",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 16
+    },
+    {
+      "clip" : "p251_007",
+      "id" : "p251_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p251_009",
+      "id" : "p251_009#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p251_011",
+      "id" : "p251_011#6",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 6
+    },
+    {
+      "clip" : "p251_012",
+      "id" : "p251_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p251_014",
+      "id" : "p251_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p251_015",
+      "id" : "p251_015#17",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 17
+    },
+    {
+      "clip" : "p251_018",
+      "id" : "p251_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p251_022",
+      "id" : "p251_022#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p251_022",
+      "id" : "p251_022#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p251_023-b",
+      "id" : "p251_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p256_004",
+      "id" : "p256_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p256_007",
+      "id" : "p256_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p256_010",
+      "id" : "p256_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p256_012",
+      "id" : "p256_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p256_014",
+      "id" : "p256_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p256_014",
+      "id" : "p256_014#13",
+      "swapped" : 3,
+      "syllables" : 4,
+      "target" : 2,
+      "word" : 13
+    },
+    {
+      "clip" : "p256_015",
+      "id" : "p256_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "p256_016",
+      "id" : "p256_016#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p256_018",
+      "id" : "p256_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p256_023-b",
+      "id" : "p256_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p261_004",
+      "id" : "p261_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p261_005",
+      "id" : "p261_005#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p261_006",
+      "id" : "p261_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p261_006",
+      "id" : "p261_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p261_006",
+      "id" : "p261_006#12",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 12
+    },
+    {
+      "clip" : "p261_006",
+      "id" : "p261_006#16",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 16
+    },
+    {
+      "clip" : "p261_007",
+      "id" : "p261_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p261_007",
+      "id" : "p261_007#4",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p261_007",
+      "id" : "p261_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p261_007",
+      "id" : "p261_007#10",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p261_009",
+      "id" : "p261_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p261_010",
+      "id" : "p261_010#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p261_011",
+      "id" : "p261_011#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p261_011",
+      "id" : "p261_011#14",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 14
+    },
+    {
+      "clip" : "p261_011",
+      "id" : "p261_011#25",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 25
+    },
+    {
+      "clip" : "p261_012",
+      "id" : "p261_012#0",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 0
+    },
+    {
+      "clip" : "p261_012",
+      "id" : "p261_012#2",
+      "swapped" : 1,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p261_012",
+      "id" : "p261_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p261_012",
+      "id" : "p261_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p261_013",
+      "id" : "p261_013#2",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "p261_013",
+      "id" : "p261_013#9",
+      "swapped" : 1,
+      "syllables" : 4,
+      "target" : 2,
+      "word" : 9
+    },
+    {
+      "clip" : "p261_014",
+      "id" : "p261_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p261_014",
+      "id" : "p261_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p261_014",
+      "id" : "p261_014#13",
+      "swapped" : 3,
+      "syllables" : 4,
+      "target" : 2,
+      "word" : 13
+    },
+    {
+      "clip" : "p261_015",
+      "id" : "p261_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "p261_015",
+      "id" : "p261_015#17",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 17
+    },
+    {
+      "clip" : "p261_017",
+      "id" : "p261_017#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p261_017",
+      "id" : "p261_017#6",
+      "swapped" : 2,
+      "syllables" : 4,
+      "target" : 1,
+      "word" : 6
+    },
+    {
+      "clip" : "p261_018",
+      "id" : "p261_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p261_020",
+      "id" : "p261_020#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p261_020",
+      "id" : "p261_020#1",
+      "swapped" : 1,
+      "syllables" : 4,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p261_020",
+      "id" : "p261_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p261_021-a",
+      "id" : "p261_021-a#6",
+      "swapped" : 3,
+      "syllables" : 5,
+      "target" : 1,
+      "word" : 6
+    },
+    {
+      "clip" : "p261_022",
+      "id" : "p261_022#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p261_022",
+      "id" : "p261_022#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p261_023-a",
+      "id" : "p261_023-a#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p261_023-b",
+      "id" : "p261_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p261_023-b",
+      "id" : "p261_023-b#9",
+      "swapped" : 3,
+      "syllables" : 4,
+      "target" : 1,
+      "word" : 9
+    },
+    {
+      "clip" : "p261_024",
+      "id" : "p261_024#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p261_024",
+      "id" : "p261_024#13",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 13
+    },
+    {
+      "clip" : "p261_024",
+      "id" : "p261_024#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p283_006",
+      "id" : "p283_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p283_006",
+      "id" : "p283_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p283_006",
+      "id" : "p283_006#12",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 12
+    },
+    {
+      "clip" : "p283_007",
+      "id" : "p283_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p283_007",
+      "id" : "p283_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p283_009",
+      "id" : "p283_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p283_010",
+      "id" : "p283_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p283_010",
+      "id" : "p283_010#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p283_012",
+      "id" : "p283_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p283_013",
+      "id" : "p283_013#2",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "p283_014",
+      "id" : "p283_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p283_014",
+      "id" : "p283_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p283_017",
+      "id" : "p283_017#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p283_018",
+      "id" : "p283_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p283_020",
+      "id" : "p283_020#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p283_020",
+      "id" : "p283_020#3",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 3
+    },
+    {
+      "clip" : "p283_020",
+      "id" : "p283_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p283_021-a",
+      "id" : "p283_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p283_022",
+      "id" : "p283_022#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p283_022",
+      "id" : "p283_022#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p283_023-a",
+      "id" : "p283_023-a#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p283_023-b",
+      "id" : "p283_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p283_023-b",
+      "id" : "p283_023-b#11",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 11
+    },
+    {
+      "clip" : "p283_024",
+      "id" : "p283_024#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p283_024",
+      "id" : "p283_024#10",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p283_024",
+      "id" : "p283_024#13",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 13
+    },
+    {
+      "clip" : "p283_024",
+      "id" : "p283_024#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p284_004",
+      "id" : "p284_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p284_007",
+      "id" : "p284_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p284_009",
+      "id" : "p284_009#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p284_014",
+      "id" : "p284_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p284_014",
+      "id" : "p284_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p284_016",
+      "id" : "p284_016#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p284_018",
+      "id" : "p284_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p285_003",
+      "id" : "p285_003#13",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 13
+    },
+    {
+      "clip" : "p285_007",
+      "id" : "p285_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p285_009",
+      "id" : "p285_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p285_012",
+      "id" : "p285_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p285_012",
+      "id" : "p285_012#5",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 5
+    },
+    {
+      "clip" : "p285_014",
+      "id" : "p285_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p285_016",
+      "id" : "p285_016#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p285_017",
+      "id" : "p285_017#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p285_017",
+      "id" : "p285_017#4",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p285_018",
+      "id" : "p285_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p285_020",
+      "id" : "p285_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p285_023-b",
+      "id" : "p285_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p285_024",
+      "id" : "p285_024#10",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p288_004",
+      "id" : "p288_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p288_007",
+      "id" : "p288_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p288_007",
+      "id" : "p288_007#4",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p288_009",
+      "id" : "p288_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p288_010",
+      "id" : "p288_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p288_013",
+      "id" : "p288_013#7",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 7
+    },
+    {
+      "clip" : "p288_014",
+      "id" : "p288_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p288_014",
+      "id" : "p288_014#13",
+      "swapped" : 0,
+      "syllables" : 4,
+      "target" : 2,
+      "word" : 13
+    },
+    {
+      "clip" : "p288_015",
+      "id" : "p288_015#4",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p288_015",
+      "id" : "p288_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "p288_016",
+      "id" : "p288_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p288_016",
+      "id" : "p288_016#2",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "p288_017",
+      "id" : "p288_017#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p288_020",
+      "id" : "p288_020#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p288_020",
+      "id" : "p288_020#1",
+      "swapped" : 3,
+      "syllables" : 4,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p288_020",
+      "id" : "p288_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p288_021-a",
+      "id" : "p288_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p288_023-b",
+      "id" : "p288_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p288_023-b",
+      "id" : "p288_023-b#11",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 11
+    },
+    {
+      "clip" : "p298_003",
+      "id" : "p298_003#13",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 13
+    },
+    {
+      "clip" : "p298_004",
+      "id" : "p298_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p298_006",
+      "id" : "p298_006#12",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 12
+    },
+    {
+      "clip" : "p298_007",
+      "id" : "p298_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p298_007",
+      "id" : "p298_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p298_009",
+      "id" : "p298_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p298_011",
+      "id" : "p298_011#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p298_011",
+      "id" : "p298_011#14",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 14
+    },
+    {
+      "clip" : "p298_012",
+      "id" : "p298_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p298_014",
+      "id" : "p298_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p298_014",
+      "id" : "p298_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p298_015",
+      "id" : "p298_015#17",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 17
+    },
+    {
+      "clip" : "p298_016",
+      "id" : "p298_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p298_016",
+      "id" : "p298_016#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p298_018",
+      "id" : "p298_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p298_021-a",
+      "id" : "p298_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p298_023-b",
+      "id" : "p298_023-b#9",
+      "swapped" : 2,
+      "syllables" : 4,
+      "target" : 1,
+      "word" : 9
+    },
+    {
+      "clip" : "p298_024",
+      "id" : "p298_024#10",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p303_004",
+      "id" : "p303_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p303_006",
+      "id" : "p303_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p303_006",
+      "id" : "p303_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p303_007",
+      "id" : "p303_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p303_007",
+      "id" : "p303_007#4",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p303_007",
+      "id" : "p303_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p303_009",
+      "id" : "p303_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p303_010",
+      "id" : "p303_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p303_010",
+      "id" : "p303_010#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p303_012",
+      "id" : "p303_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p303_013",
+      "id" : "p303_013#2",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "p303_014",
+      "id" : "p303_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p303_015",
+      "id" : "p303_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "p303_015",
+      "id" : "p303_015#17",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 17
+    },
+    {
+      "clip" : "p303_017",
+      "id" : "p303_017#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p303_017",
+      "id" : "p303_017#4",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p303_017",
+      "id" : "p303_017#6",
+      "swapped" : 2,
+      "syllables" : 4,
+      "target" : 1,
+      "word" : 6
+    },
+    {
+      "clip" : "p303_018",
+      "id" : "p303_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p303_020",
+      "id" : "p303_020#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p303_020",
+      "id" : "p303_020#1",
+      "swapped" : 2,
+      "syllables" : 4,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p303_020",
+      "id" : "p303_020#2",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "p303_020",
+      "id" : "p303_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p303_021-a",
+      "id" : "p303_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p303_021-b",
+      "id" : "p303_021-b#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p303_023-b",
+      "id" : "p303_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p303_023-b",
+      "id" : "p303_023-b#11",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 11
+    },
+    {
+      "clip" : "p305_004",
+      "id" : "p305_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p305_004",
+      "id" : "p305_004#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p305_005",
+      "id" : "p305_005#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p305_006",
+      "id" : "p305_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p305_006",
+      "id" : "p305_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p305_007",
+      "id" : "p305_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p305_007",
+      "id" : "p305_007#4",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p305_007",
+      "id" : "p305_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p305_010",
+      "id" : "p305_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p305_010",
+      "id" : "p305_010#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p305_011",
+      "id" : "p305_011#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p305_011",
+      "id" : "p305_011#14",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 14
+    },
+    {
+      "clip" : "p305_012",
+      "id" : "p305_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p305_012",
+      "id" : "p305_012#5",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 5
+    },
+    {
+      "clip" : "p305_014",
+      "id" : "p305_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p305_014",
+      "id" : "p305_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p305_015",
+      "id" : "p305_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "p305_016",
+      "id" : "p305_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p305_016",
+      "id" : "p305_016#2",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "p305_020",
+      "id" : "p305_020#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p305_020",
+      "id" : "p305_020#3",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 3
+    },
+    {
+      "clip" : "p305_023-a",
+      "id" : "p305_023-a#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p305_023-a",
+      "id" : "p305_023-a#8",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 8
+    },
+    {
+      "clip" : "p305_023-b",
+      "id" : "p305_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p317_004",
+      "id" : "p317_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p317_006",
+      "id" : "p317_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p317_006",
+      "id" : "p317_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p317_006",
+      "id" : "p317_006#12",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 12
+    },
+    {
+      "clip" : "p317_007",
+      "id" : "p317_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p317_007",
+      "id" : "p317_007#4",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p317_007",
+      "id" : "p317_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p317_009",
+      "id" : "p317_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p317_010",
+      "id" : "p317_010#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p317_012",
+      "id" : "p317_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p317_012",
+      "id" : "p317_012#5",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 5
+    },
+    {
+      "clip" : "p317_012",
+      "id" : "p317_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p317_013",
+      "id" : "p317_013#8",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 8
+    },
+    {
+      "clip" : "p317_014",
+      "id" : "p317_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p317_014",
+      "id" : "p317_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p317_015",
+      "id" : "p317_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "p317_015",
+      "id" : "p317_015#17",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 17
+    },
+    {
+      "clip" : "p317_016",
+      "id" : "p317_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p317_016",
+      "id" : "p317_016#2",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "p317_016",
+      "id" : "p317_016#8",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 8
+    },
+    {
+      "clip" : "p317_017",
+      "id" : "p317_017#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p317_017",
+      "id" : "p317_017#6",
+      "swapped" : 0,
+      "syllables" : 4,
+      "target" : 1,
+      "word" : 6
+    },
+    {
+      "clip" : "p317_018",
+      "id" : "p317_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p317_020",
+      "id" : "p317_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p317_021-a",
+      "id" : "p317_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p317_021-b",
+      "id" : "p317_021-b#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p317_023-b",
+      "id" : "p317_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p317_023-b",
+      "id" : "p317_023-b#9",
+      "swapped" : 2,
+      "syllables" : 4,
+      "target" : 1,
+      "word" : 9
+    },
+    {
+      "clip" : "p317_023-b",
+      "id" : "p317_023-b#11",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 11
+    },
+    {
+      "clip" : "p326_009",
+      "id" : "p326_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p326_014",
+      "id" : "p326_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p326_016",
+      "id" : "p326_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p326_023-b",
+      "id" : "p326_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p333_003",
+      "id" : "p333_003#13",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 13
+    },
+    {
+      "clip" : "p333_003",
+      "id" : "p333_003#18",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 18
+    },
+    {
+      "clip" : "p333_005",
+      "id" : "p333_005#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p333_007",
+      "id" : "p333_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p333_009",
+      "id" : "p333_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p333_010",
+      "id" : "p333_010#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p333_011",
+      "id" : "p333_011#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p333_011",
+      "id" : "p333_011#14",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 14
+    },
+    {
+      "clip" : "p333_012",
+      "id" : "p333_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p333_012",
+      "id" : "p333_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p333_014",
+      "id" : "p333_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p333_014",
+      "id" : "p333_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p333_015",
+      "id" : "p333_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "p333_015",
+      "id" : "p333_015#17",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 17
+    },
+    {
+      "clip" : "p333_016",
+      "id" : "p333_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p333_016",
+      "id" : "p333_016#2",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "p333_016",
+      "id" : "p333_016#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p333_017",
+      "id" : "p333_017#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p333_017",
+      "id" : "p333_017#4",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p333_018",
+      "id" : "p333_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p333_020",
+      "id" : "p333_020#2",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "p333_021-a",
+      "id" : "p333_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p333_021-b",
+      "id" : "p333_021-b#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p333_022",
+      "id" : "p333_022#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p333_022",
+      "id" : "p333_022#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p333_023-a",
+      "id" : "p333_023-a#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p333_023-b",
+      "id" : "p333_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p333_023-b",
+      "id" : "p333_023-b#11",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 11
+    },
+    {
+      "clip" : "p333_024",
+      "id" : "p333_024#13",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 13
+    },
+    {
+      "clip" : "p334_004",
+      "id" : "p334_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p334_006",
+      "id" : "p334_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p334_007",
+      "id" : "p334_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p334_010",
+      "id" : "p334_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p334_024",
+      "id" : "p334_024#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p347_006",
+      "id" : "p347_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p347_007",
+      "id" : "p347_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p347_007",
+      "id" : "p347_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p347_009",
+      "id" : "p347_009#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p347_010",
+      "id" : "p347_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p347_012",
+      "id" : "p347_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p347_015",
+      "id" : "p347_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "p347_015",
+      "id" : "p347_015#17",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 17
+    },
+    {
+      "clip" : "p347_017",
+      "id" : "p347_017#6",
+      "swapped" : 0,
+      "syllables" : 4,
+      "target" : 1,
+      "word" : 6
+    },
+    {
+      "clip" : "p347_020",
+      "id" : "p347_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p347_021-a",
+      "id" : "p347_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p347_023-b",
+      "id" : "p347_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p351_004",
+      "id" : "p351_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p351_005",
+      "id" : "p351_005#19",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 19
+    },
+    {
+      "clip" : "p351_006",
+      "id" : "p351_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p351_006",
+      "id" : "p351_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p351_006",
+      "id" : "p351_006#12",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 12
+    },
+    {
+      "clip" : "p351_006",
+      "id" : "p351_006#16",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 16
+    },
+    {
+      "clip" : "p351_007",
+      "id" : "p351_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p351_007",
+      "id" : "p351_007#4",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p351_007",
+      "id" : "p351_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p351_007",
+      "id" : "p351_007#10",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p351_009",
+      "id" : "p351_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p351_010",
+      "id" : "p351_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p351_010",
+      "id" : "p351_010#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p351_011",
+      "id" : "p351_011#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p351_011",
+      "id" : "p351_011#14",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 14
+    },
+    {
+      "clip" : "p351_011",
+      "id" : "p351_011#25",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 25
+    },
+    {
+      "clip" : "p351_012",
+      "id" : "p351_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p351_012",
+      "id" : "p351_012#5",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 5
+    },
+    {
+      "clip" : "p351_012",
+      "id" : "p351_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p351_013",
+      "id" : "p351_013#2",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "p351_013",
+      "id" : "p351_013#7",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 7
+    },
+    {
+      "clip" : "p351_014",
+      "id" : "p351_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p351_014",
+      "id" : "p351_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p351_015",
+      "id" : "p351_015#4",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p351_015",
+      "id" : "p351_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "p351_016",
+      "id" : "p351_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p351_016",
+      "id" : "p351_016#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p351_017",
+      "id" : "p351_017#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p351_018",
+      "id" : "p351_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p351_020",
+      "id" : "p351_020#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p351_020",
+      "id" : "p351_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p351_022",
+      "id" : "p351_022#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p351_022",
+      "id" : "p351_022#4",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p351_022",
+      "id" : "p351_022#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p351_023-a",
+      "id" : "p351_023-a#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p351_023-b",
+      "id" : "p351_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p351_023-b",
+      "id" : "p351_023-b#11",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 11
+    },
+    {
+      "clip" : "p351_024",
+      "id" : "p351_024#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p351_024",
+      "id" : "p351_024#10",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p351_024",
+      "id" : "p351_024#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p360_003",
+      "id" : "p360_003#13",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 13
+    },
+    {
+      "clip" : "p360_003",
+      "id" : "p360_003#18",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 18
+    },
+    {
+      "clip" : "p360_005",
+      "id" : "p360_005#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p360_007",
+      "id" : "p360_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p360_007",
+      "id" : "p360_007#4",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p360_007",
+      "id" : "p360_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p360_012",
+      "id" : "p360_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "p360_014",
+      "id" : "p360_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p360_014",
+      "id" : "p360_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p360_015",
+      "id" : "p360_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "p360_016",
+      "id" : "p360_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p360_018",
+      "id" : "p360_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p360_020",
+      "id" : "p360_020#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p360_020",
+      "id" : "p360_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p360_021-a",
+      "id" : "p360_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p360_023-a",
+      "id" : "p360_023-a#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p360_023-b",
+      "id" : "p360_023-b#1",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 1
+    },
+    {
+      "clip" : "p360_024",
+      "id" : "p360_024#10",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p360_024",
+      "id" : "p360_024#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p363_006",
+      "id" : "p363_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p363_006",
+      "id" : "p363_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p363_007",
+      "id" : "p363_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "p363_012",
+      "id" : "p363_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p363_014",
+      "id" : "p363_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p363_015",
+      "id" : "p363_015#17",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 17
+    },
+    {
+      "clip" : "p363_016",
+      "id" : "p363_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p363_016",
+      "id" : "p363_016#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p363_016",
+      "id" : "p363_016#8",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 8
+    },
+    {
+      "clip" : "p363_018",
+      "id" : "p363_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p363_021-a",
+      "id" : "p363_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p363_022",
+      "id" : "p363_022#2",
+      "swapped" : 1,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p363_022",
+      "id" : "p363_022#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p363_023-a",
+      "id" : "p363_023-a#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "p363_023-b",
+      "id" : "p363_023-b#11",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 11
+    },
+    {
+      "clip" : "p363_024",
+      "id" : "p363_024#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p363_024",
+      "id" : "p363_024#10",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p363_024",
+      "id" : "p363_024#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "p374_004",
+      "id" : "p374_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p374_007",
+      "id" : "p374_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "p374_010",
+      "id" : "p374_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p374_012",
+      "id" : "p374_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "p374_014",
+      "id" : "p374_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p374_014",
+      "id" : "p374_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p374_017",
+      "id" : "p374_017#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p374_020",
+      "id" : "p374_020#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p374_021-a",
+      "id" : "p374_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p376_006",
+      "id" : "p376_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p376_007",
+      "id" : "p376_007#4",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 4
+    },
+    {
+      "clip" : "p376_010",
+      "id" : "p376_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "p376_014",
+      "id" : "p376_014#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "p376_014",
+      "id" : "p376_014#6",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 6
+    },
+    {
+      "clip" : "p376_016",
+      "id" : "p376_016#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p376_018",
+      "id" : "p376_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p376_021-a",
+      "id" : "p376_021-a#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "p376_024",
+      "id" : "p376_024#10",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "p376_024",
+      "id" : "p376_024#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "tts_003",
+      "id" : "tts_003#13",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 13
+    },
+    {
+      "clip" : "tts_003",
+      "id" : "tts_003#18",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 18
+    },
+    {
+      "clip" : "tts_004",
+      "id" : "tts_004#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "tts_005",
+      "id" : "tts_005#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    },
+    {
+      "clip" : "tts_006",
+      "id" : "tts_006#2",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "tts_006",
+      "id" : "tts_006#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "tts_006",
+      "id" : "tts_006#12",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 12
+    },
+    {
+      "clip" : "tts_006",
+      "id" : "tts_006#16",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 16
+    },
+    {
+      "clip" : "tts_007",
+      "id" : "tts_007#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "tts_007",
+      "id" : "tts_007#9",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 9
+    },
+    {
+      "clip" : "tts_007",
+      "id" : "tts_007#10",
+      "swapped" : 1,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "tts_008",
+      "id" : "tts_008#19",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 19
+    },
+    {
+      "clip" : "tts_009",
+      "id" : "tts_009#2",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "tts_009",
+      "id" : "tts_009#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "tts_010",
+      "id" : "tts_010#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "tts_010",
+      "id" : "tts_010#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "tts_011",
+      "id" : "tts_011#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "tts_011",
+      "id" : "tts_011#6",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 6
+    },
+    {
+      "clip" : "tts_011",
+      "id" : "tts_011#14",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 14
+    },
+    {
+      "clip" : "tts_011",
+      "id" : "tts_011#25",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 25
+    },
+    {
+      "clip" : "tts_012",
+      "id" : "tts_012#3",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 3
+    },
+    {
+      "clip" : "tts_012",
+      "id" : "tts_012#5",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 5
+    },
+    {
+      "clip" : "tts_012",
+      "id" : "tts_012#7",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 7
+    },
+    {
+      "clip" : "tts_013",
+      "id" : "tts_013#2",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "tts_013",
+      "id" : "tts_013#7",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 7
+    },
+    {
+      "clip" : "tts_013",
+      "id" : "tts_013#8",
+      "swapped" : 1,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 8
+    },
+    {
+      "clip" : "tts_013",
+      "id" : "tts_013#9",
+      "swapped" : 0,
+      "syllables" : 4,
+      "target" : 2,
+      "word" : 9
+    },
+    {
+      "clip" : "tts_014",
+      "id" : "tts_014#13",
+      "swapped" : 1,
+      "syllables" : 4,
+      "target" : 2,
+      "word" : 13
+    },
+    {
+      "clip" : "tts_015",
+      "id" : "tts_015#14",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 14
+    },
+    {
+      "clip" : "tts_015",
+      "id" : "tts_015#17",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 17
+    },
+    {
+      "clip" : "tts_016",
+      "id" : "tts_016#1",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "tts_016",
+      "id" : "tts_016#2",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 2
+    },
+    {
+      "clip" : "tts_016",
+      "id" : "tts_016#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "tts_016",
+      "id" : "tts_016#8",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 8
+    },
+    {
+      "clip" : "tts_017",
+      "id" : "tts_017#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "tts_017",
+      "id" : "tts_017#6",
+      "swapped" : 2,
+      "syllables" : 4,
+      "target" : 1,
+      "word" : 6
+    },
+    {
+      "clip" : "tts_018",
+      "id" : "tts_018#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "tts_018",
+      "id" : "tts_018#8",
+      "swapped" : 0,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 8
+    },
+    {
+      "clip" : "tts_019",
+      "id" : "tts_019#2",
+      "swapped" : 1,
+      "syllables" : 3,
+      "target" : 0,
+      "word" : 2
+    },
+    {
+      "clip" : "tts_019",
+      "id" : "tts_019#9",
+      "swapped" : 2,
+      "syllables" : 3,
+      "target" : 1,
+      "word" : 9
+    },
+    {
+      "clip" : "tts_019",
+      "id" : "tts_019#14",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 14
+    },
+    {
+      "clip" : "tts_019",
+      "id" : "tts_019#16",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 16
+    },
+    {
+      "clip" : "tts_019",
+      "id" : "tts_019#18",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 18
+    },
+    {
+      "clip" : "tts_020",
+      "id" : "tts_020#0",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 0
+    },
+    {
+      "clip" : "tts_020",
+      "id" : "tts_020#1",
+      "swapped" : 3,
+      "syllables" : 4,
+      "target" : 0,
+      "word" : 1
+    },
+    {
+      "clip" : "tts_020",
+      "id" : "tts_020#3",
+      "swapped" : 0,
+      "syllables" : 2,
+      "target" : 1,
+      "word" : 3
+    },
+    {
+      "clip" : "tts_020",
+      "id" : "tts_020#5",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 5
+    },
+    {
+      "clip" : "tts_024",
+      "id" : "tts_024#4",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 4
+    },
+    {
+      "clip" : "tts_024",
+      "id" : "tts_024#10",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 10
+    },
+    {
+      "clip" : "tts_024",
+      "id" : "tts_024#13",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 13
+    },
+    {
+      "clip" : "tts_024",
+      "id" : "tts_024#15",
+      "swapped" : 1,
+      "syllables" : 2,
+      "target" : 0,
+      "word" : 15
+    }
+  ],
+  "positives" : [
+    {
+      "clip" : "p232_002",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_004",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_006",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_007",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_008",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_009",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_010",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_012",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_013",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_014",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_015",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_016",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_017",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_018",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_020",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_021-a",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_021-b",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_022",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_023-a",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_023-b",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_023-c",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p232_024",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p232"
+    },
+    {
+      "clip" : "p245_002",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_004",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_006",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_007",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_009",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_010",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_012",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_013",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_014",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_015",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_017",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_018",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_020",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_021-a",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_021-b",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_023-a",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_023-b",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p245_023-c",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p245"
+    },
+    {
+      "clip" : "p246_002",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_004",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_006",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_007",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_009",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_010",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_012",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_013",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_014",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_015",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_017",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_020",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_021-a",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_021-b",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_023-a",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_023-b",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p246_023-c",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p246"
+    },
+    {
+      "clip" : "p248_002",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_004",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_007",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_009",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_010",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_012",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_013",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_014",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_017",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_018",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_020",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_021-a",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_021-b",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_023-a",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_023-b",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p248_023-c",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p248"
+    },
+    {
+      "clip" : "p251_002",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_004",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_005",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_006",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_007",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_009",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_010",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_011",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_012",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_013",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_014",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_015",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_016",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_017",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_018",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_020",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_021-a",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_021-b",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_022",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_023-a",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_023-b",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p251_023-c",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p251"
+    },
+    {
+      "clip" : "p256_002",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_004",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_005",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_006",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_007",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_009",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_010",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_012",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_013",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_014",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_015",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_016",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_017",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_018",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_020",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_021-a",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_021-b",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_022",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_023-a",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_023-b",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p256_023-c",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p256"
+    },
+    {
+      "clip" : "p261_002",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_004",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_005",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_006",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_007",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_009",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_010",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_011",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_012",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_013",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_014",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_015",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_017",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_018",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_020",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_021-a",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_021-b",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_022",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_023-a",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_023-b",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_023-c",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p261_024",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p261"
+    },
+    {
+      "clip" : "p283_002",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_004",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_005",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_006",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_007",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_009",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_010",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_012",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_013",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_014",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_017",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_018",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_020",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_021-a",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_021-b",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_022",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_023-a",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_023-b",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_023-c",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p283_024",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p283"
+    },
+    {
+      "clip" : "p284_002",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_003",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_004",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_005",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_006",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_007",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_008",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_009",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_011",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_012",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_013",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_014",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_015",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_016",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_017",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_018",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_020",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_021-a",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_021-b",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_022",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_023-a",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_023-b",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p284_023-c",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p284"
+    },
+    {
+      "clip" : "p285_002",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_003",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_004",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_005",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_006",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_007",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_009",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_010",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_011",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_012",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_013",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_014",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_015",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_016",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_017",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_018",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_020",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_021-a",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_021-b",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_022",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_023-a",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_023-b",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_023-c",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p285_024",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p285"
+    },
+    {
+      "clip" : "p288_001",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_002",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_004",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_006",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_007",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_009",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_010",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_011",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_012",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_013",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_014",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_015",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_016",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_017",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_018",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_020",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_021-a",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_021-b",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_023-a",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_023-b",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p288_023-c",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p288"
+    },
+    {
+      "clip" : "p298_001",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_002",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_003",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_004",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_005",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_006",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_007",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_009",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_010",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_011",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_012",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_013",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_014",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_015",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_016",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_017",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_018",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_020",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_021-a",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_021-b",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_022",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_023-a",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_023-b",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_023-c",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p298_024",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p298"
+    },
+    {
+      "clip" : "p303_001",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_002",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_004",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_006",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_007",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_009",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_010",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_012",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_013",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_014",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_015",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_017",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_018",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_020",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_021-a",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_021-b",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_023-a",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_023-b",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p303_023-c",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p303"
+    },
+    {
+      "clip" : "p305_002",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_004",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_005",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_006",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_007",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_009",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_010",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_011",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_012",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_013",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_014",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_015",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_016",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_017",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_018",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_020",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_021-a",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_021-b",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_023-a",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_023-b",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p305_023-c",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p305"
+    },
+    {
+      "clip" : "p317_002",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_004",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_005",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_006",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_007",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_009",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_010",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_012",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_013",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_014",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_015",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_016",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_017",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_018",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_020",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_021-a",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_021-b",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_023-a",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_023-b",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p317_023-c",
+      "fold" : 1,
+      "population" : "vctk-tuning",
+      "speaker" : "p317"
+    },
+    {
+      "clip" : "p326_001",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_002",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_004",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_005",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_006",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_007",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_009",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_010",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_011",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_012",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_013",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_014",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_015",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_016",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_017",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_018",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_020",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_021-a",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_021-b",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_023-a",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_023-b",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_023-c",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p326_024",
+      "fold" : 5,
+      "population" : "vctk-tuning",
+      "speaker" : "p326"
+    },
+    {
+      "clip" : "p333_002",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_003",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_004",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_005",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_006",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_007",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_009",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_010",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_011",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_012",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_013",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_014",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_015",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_016",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_017",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_018",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_020",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_021-a",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_021-b",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_022",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_023-a",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_023-b",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_023-c",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p333_024",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p333"
+    },
+    {
+      "clip" : "p334_002",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_003",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_004",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_005",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_006",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_007",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_008",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_009",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_010",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_012",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_015",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_016",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_017",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_018",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_019",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_020",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_021-a",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_021-b",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_022",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_023-a",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_023-b",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_023-c",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p334_024",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p334"
+    },
+    {
+      "clip" : "p347_002",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_004",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_006",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_007",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_009",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_010",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_012",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_013",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_014",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_015",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_017",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_020",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_021-a",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_021-b",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_023-a",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_023-b",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p347_023-c",
+      "fold" : 4,
+      "population" : "vctk-tuning",
+      "speaker" : "p347"
+    },
+    {
+      "clip" : "p351_001",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_002",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_004",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_005",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_006",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_007",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_009",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_010",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_011",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_012",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_013",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_014",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_015",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_016",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_017",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_018",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_020",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_021-a",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_021-b",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_022",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_023-a",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_023-b",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_023-c",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p351_024",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p351"
+    },
+    {
+      "clip" : "p360_002",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_003",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_004",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_005",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_006",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_007",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_009",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_010",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_012",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_013",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_014",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_015",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_016",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_017",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_018",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_020",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_021-a",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_021-b",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_022",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_023-a",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_023-b",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_023-c",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p360_024",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p360"
+    },
+    {
+      "clip" : "p363_001",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_002",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_003",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_004",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_005",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_006",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_007",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_009",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_010",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_012",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_013",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_014",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_015",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_016",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_017",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_018",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_019",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_020",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_021-a",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_021-b",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_022",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_023-a",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_023-b",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_023-c",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p363_024",
+      "fold" : 3,
+      "population" : "vctk-tuning",
+      "speaker" : "p363"
+    },
+    {
+      "clip" : "p374_002",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_004",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_006",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_007",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_009",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_010",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_012",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_013",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_014",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_015",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_017",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_018",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_020",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_021-a",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_021-b",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_023-a",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_023-b",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p374_023-c",
+      "fold" : 2,
+      "population" : "vctk-tuning",
+      "speaker" : "p374"
+    },
+    {
+      "clip" : "p376_001",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_002",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_004",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_005",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_006",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_007",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_009",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_010",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_011",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_012",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_013",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_014",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_015",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_016",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_017",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_018",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_020",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_021-a",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_021-b",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_022",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_023-a",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_023-b",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_023-c",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "p376_024",
+      "fold" : 0,
+      "population" : "vctk-tuning",
+      "speaker" : "p376"
+    },
+    {
+      "clip" : "tts_002",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_003",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_004",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_005",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_006",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_007",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_008",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_009",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_010",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_011",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_012",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_013",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_014",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_015",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_016",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_017",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_018",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_019",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_020",
+      "population" : "tts",
+      "speaker" : "tts"
+    },
+    {
+      "clip" : "tts_024",
+      "population" : "tts",
+      "speaker" : "tts"
+    }
+  ],
+  "seed" : 20261125
+}
