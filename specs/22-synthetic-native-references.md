@@ -52,6 +52,11 @@ main gate or tuning.
 - Keep a voice only if all three hold: ≥ 90% of moved items have their observed primary on the marked syllable at ≥
   medium confidence; ≥ 95% of correct items match the expected stress; used as the reference for the **18 VCTK
   tuning speakers only**, it passes the positive-set placement-FP gate (≤ 2%).
+- **That placement-FP gate is no longer blocked on spec 24.** It consumes spec 02's positive-set result through spec
+  02's `PositiveSetGates.line`. It was blocked on spec 24 (CTO ruling, 2026-11-23 14:18). Spec 24 merged in #35
+  (6f69934), and the set is now EVALUABLE (20 phrases, 17 distinct source prompts, 274 headline pairs), so the gate
+  evaluates. A NOT EVALUATED line is still never a pass and never a waiver, and no voice passes verification on one. "18 VCTK
+  tuning speakers" is a floor (≥ 18; the manifest records the actual 24).
 - **Selection uses only VCTK tuning speakers and the verification items**, through spec 02's tuning-only API. Held-
   out VCTK speakers and speechocean762 words are never used to pick voices (Raph 09:56).
 - Passing ElevenLabs voices are the default reference; passing Mac Premium voices are the fallback. If no voice of
@@ -122,4 +127,45 @@ main gate or tuning.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Built 2026-11-24 by hand (Claude Code, Opus) on `factory/22-synthetic-native-references`.
+
+- **Where it lives.** `tools/SynthRef/` is its own Swift package (library `SynthRefKit`, executable `synthref`,
+  tests `SynthRefKitTests`) depending only on AccentKit by local path; no new third-party dependency. The app and
+  AccentKit's library products never link it. `scripts/check-no-tts-in-app.sh` scans `AccentMirror/`,
+  `Packages/AccentKit/Sources`, AccentKit's `Package.swift` and `project.yml` for `AVSpeechSynthesi…`,
+  `elevenlabs.io`, `xi-api-key`, `ELEVENLABS_API_KEY` and `SynthRef`; it runs as the package test
+  `NoTTSInAppGuardTests` until `make check` calls it. AccentKit's *tests* are not scanned: spec 07's TTS marker gate
+  renders a pinned system voice there.
+- **Engines.** `EngineChoice.choose` reads `ELEVENLABS_API_KEY` from the process environment only; no key gives
+  `syntheticReference: mac-premium-fallback (no key)`, `--offline` gives `(offline)`. `APIKey` redacts itself in
+  descriptions, mirrors and dumps. `ElevenLabsEngine` posts to `/v1/text-to-speech/<voice>/with-timestamps` with
+  `eleven_flash_v2`, `output_format=pcm_16000`, inline `<phoneme alphabet="cmu-arpabet">`, the key only in
+  `xi-api-key`; every request goes through `HTTPTransport`, and tests use a stub. Word spans come from the
+  character alignment (unverified until the first keyed run; a mismatch throws). `MacPremiumEngine` renders with
+  `AVSpeechSynthesizer.write` to buffers (never played), SSML `<phoneme alphabet="ipa">` with stress marks and a
+  bookmark per word; only installed Premium English voices qualify.
+- **Cache and manifest.** Digest = SHA-256 of the canonical JSON of (engine text incl. SSML, engine, voice ID, model
+  ID, settings). Renders go to git-ignored `eval-cache/tts/renders/`; a hit never calls the engine. Only
+  `fixtures/tts/digests.json` is committed (digests, voice/model IDs, character counts, item IDs; no audio, key or
+  host).
+- **Verification items.** CPO's set = every word of CPO's 20 prompts (`VCTK.starterPhrases`, texts from the
+  corpus transcripts) with two or more syllables in CMUdict: 62 words. Traps = stress-shift words among them
+  (`into`) plus photography, photograph, photographic. Correct = CMUdict's first variant; moved = primary on the
+  next syllable (previous when last). 130 items, 9,378 characters of ElevenLabs SSML per voice.
+- **Bars.** `agreement.voiceMovedStressMin` 0.90, `.voiceCorrectStressMin` 0.95 and
+  `.syntheticDSPAgreementMaxPoints` 0.05 added (thresholdsVersion 7, untuned). The placement-FP bar for a voice
+  goes only through `PositiveSetGates.line` with spec 02's spec 22 dependent (`agreement.placementDiffPairsMax`),
+  scored on `TuningPairOutcome`s that can hold only a `TuningSpeaker`. A voice is kept only if moved, correct and
+  the FP line all read PASS and the SSML check passes; NOT EVALUATED drops it. `VoiceSelection.tuningSpeakers`
+  refuses held-out, bundled and speechocean762 ids. Reference = kept ElevenLabs voice first, then Mac.
+- **End-to-end (ii).** `EndToEndPath` is an `EvaluationPath`, so `FoldRunner` runs it with each fold's trained
+  config next to the shared-detector path (tested). `PipelineEndToEndScorer` renders the utterance, runs spec 08's
+  detector on both takes and spec 10's `PairScoring.score`, which gained an additive `natives:` parameter (default
+  empty, spec 10 goldens unchanged) so A(w) includes the voice's high-confidence observed primary. FP uses the
+  shipped config on the clean 1,400 and is reported, not gated.
+- **Negative set.** Our TD-PSOLA (`TDPSOLA.modify`) and the Rubber Band CLI (only if on PATH; never linked). Edits
+  push the next syllable of clear tuning-speaker words at native P50, P90 and 1.5 × P90 (F0, duration, level),
+  re-measure the achieved F0 shift, and run null-processing and correct-boost controls.
+- **Run on this Mac (no key):** no Premium or Enhanced English voice installed (26 standard voices), so the Mac
+  fallback is NOT EVALUATED; Rubber Band is not installed; no replayed word timings exist for VCTK tuning speakers,
+  so the placement-FP pairs and the negative set have no takes. Check (ii) is NOT EVALUATED (no verified voice).

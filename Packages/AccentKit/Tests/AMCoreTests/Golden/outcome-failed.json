@@ -7,7 +7,7 @@
       "asrModelID" : "whisperkit-base.en",
       "contractVersion" : 2,
       "pitchTrackerID" : "pyin-1",
-      "thresholdsVersion" : 5,
+      "thresholdsVersion" : 8,
       "voicingID" : "acf-1"
     },
     "reference" : {

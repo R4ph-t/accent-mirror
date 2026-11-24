@@ -13,6 +13,8 @@ let modules: [(name: String, dependencies: [String])] = [
     ("AMScoring", ["AMCore", "AMProsody", "AMWarp"]),
     ("AMLibrary", ["AMCore"]),
     ("AMPipeline", ["AMCore", "AMCapture", "AMAlignment", "AMPitch", "AMProsody", "AMWarp", "AMScoring", "AMLibrary"]),
+    // Evaluation only (spec 02): manifests, folds, statistics and the reporter. The app never links it.
+    ("AMEvaluation", ["AMCore"]),
 ]
 
 /// Third-party products a module links, by module name.
@@ -25,7 +27,8 @@ let externalDependencies: [String: [Target.Dependency]] = [
 let package = Package(
     name: "AccentKit",
     platforms: [.macOS(.v26), .iOS(.v26)],
-    products: modules.map { .library(name: $0.name, targets: [$0.name]) },
+    products: modules.map { .library(name: $0.name, targets: [$0.name]) }
+        + [.executable(name: "am-eval", targets: ["am-eval"])],
     dependencies: [
         .package(url: "https://github.com/argmaxinc/WhisperKit.git", exact: "1.1.1"),
     ],
@@ -46,6 +49,13 @@ let package = Package(
             ),
         ]
     } + [
+        // The agreement harness's command-line runner (spec 02), called by scripts/agreement.sh and friends. Tool
+        // only: the app target depends on AMPipeline alone and never links this or AMEvaluation.
+        .executableTarget(
+            name: "am-eval",
+            dependencies: [.target(name: "AMPipeline"), .target(name: "AMEvaluation")],
+            path: "Sources/am-eval"
+        ),
         // Local evaluation tooling (spec 03): never linked into the app, never run by CI.
         .target(name: "AMTimestampEval", dependencies: ["AMCore", "AMAlignment"]),
         .testTarget(name: "AMTimestampEvalTests", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),

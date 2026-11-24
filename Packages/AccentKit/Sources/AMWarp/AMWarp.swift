@@ -1,5 +1,5 @@
 // AMWarp: time-warping a take onto the native model.
-// Placeholder from spec 00; real types arrive in later specs.
+// Spec 09: the partial time map (TimeWarp), pitch on model time, DTW for Poor anchors and the native band.
 
 import Foundation
 import AMCore

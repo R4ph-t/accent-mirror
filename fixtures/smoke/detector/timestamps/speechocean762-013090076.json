@@ -1,0 +1,45 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "3e778ce893bf208500dc36315f1d3a97ce49c84c815558dd6cfcb81acd67576c",
+  "clipID" : "speechocean762-013090076",
+  "formatVersion" : 1,
+  "text" : "and without fear of being arrested.",
+  "words" : [
+    {
+      "end" : 0.72,
+      "probability" : 0.65,
+      "start" : 0.56,
+      "word" : " and"
+    },
+    {
+      "end" : 0.98,
+      "probability" : 0.97,
+      "start" : 0.72,
+      "word" : " without"
+    },
+    {
+      "end" : 1.2,
+      "probability" : 1,
+      "start" : 0.98,
+      "word" : " fear"
+    },
+    {
+      "end" : 1.44,
+      "probability" : 0.99,
+      "start" : 1.2,
+      "word" : " of"
+    },
+    {
+      "end" : 1.72,
+      "probability" : 0.99,
+      "start" : 1.44,
+      "word" : " being"
+    },
+    {
+      "end" : 2.04,
+      "probability" : 0.96,
+      "start" : 1.72,
+      "word" : " arrested."
+    }
+  ]
+}

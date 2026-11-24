@@ -155,6 +155,9 @@ thresholds table and "first v2" the first v2 (09:10), both carried over "as befo
 | Weak-length diff | `diffs.weakLengthPointsAboveModel` | 15 | points of W | v1 | 10 | Yours this many points above the model's |
 | Pitch-range diff, ratio | `diffs.pitchRangeBelowModelRatio` | 0.6 | × model's range | v1 | 10 | |
 | Pitch-range diff, width | `diffs.pitchRangeNarrowerSemitones` | 3 | st | v1 | 10 | And at least this much narrower |
+| Weak-length diff enabled | `diffs.weakLengthEnabled` | 1 | 1 = on, 0 = off | v1 ("ship only if stable"), spec 10 Open question 1 | 10 | Vowel reduction. Spec 11 turns it off if 3-take stability fails |
+| Pitch-range diff enabled | `diffs.pitchRangeEnabled` | 1 | 1 = on, 0 = off | v1 ("ship only if stable"), spec 10 Open question 1 | 10 | Spec 11 turns it off if 3-take stability fails |
+| Final-direction diff enabled | `diffs.finalDirectionEnabled` | 1 | 1 = on, 0 = off | v1 ("ship only if stable"), spec 10 Open question 1 | 10 | Spec 11 turns it off if 3-take stability fails |
 | Shape match frames | `measures.shapeMatchMinOverlappingFrames` | 20 | overlapping voiced frames | §1.1, first v2 §11 | 10 | Fewer: `.unavailable(.tooFewOverlappingFrames)` |
 
 ## Native band
@@ -203,6 +206,9 @@ thresholds table and "first v2" the first v2 (09:10), both carried over "as befo
 | L2 false positives, worst speaker | `agreement.l2FalsePositiveWorstSpeakerMax` | 0.10 | share | §6.7 | 11 | |
 | Which-syllable accuracy | `agreement.whichSyllableAccuracyMin` | 0.80 | share | §6.7 | 22 | Synthetic, clear; plus the §6.5 rule vs B0/B1 |
 | Synthetic controls | `agreement.syntheticControlDiffsMax` | 0.02 | share with diffs | §6.7 | 22 | |
+| Voice verification, moved stress | `agreement.voiceMovedStressMin` | 0.90 | share of moved items | §6.4 | 22 | Observed primary on the marked syllable at ≥ medium confidence |
+| Voice verification, correct stress | `agreement.voiceCorrectStressMin` | 0.95 | share of correct items | §6.4 | 22 | Observed primary is the expected one |
+| Synthetic negative set, DSP agreement | `agreement.syntheticDSPAgreementMaxPoints` | 0.05 | points | §6.4 | 22 | TD-PSOLA vs Rubber Band which-syllable accuracy |
 | Unintelligible words | `agreement.unintelligiblePlacementDiffsMax` | 0 | placement diffs | §6.7 | 02, 11 | Of 157; every one inconclusive or unscored |
 | End-to-end recall gap | `agreement.endToEndRecallWithinPoints` | 0.10 | points | §6.7 | 22 | Within this of the shared-detector recall |
 | End-to-end false positives | `agreement.endToEndFalsePositiveMax` | 0.02 | share | §6.7 | 22 | On the clean 1,400 |

@@ -25,12 +25,19 @@ skip() {
 [[ -x "$mfa_home/env/bin/mfa" && -f "$mfa_home/models/english_mfa.zip" && -f "$mfa_home/models/english_mfa.dict" ]] \
   || skip "MFA is not installed in ${mfa_home#"$root"/} (scripts/setup-mfa.sh)"
 
-status=0
-"$root/scripts/am-timestamps.sh" tts-reference \
+# The phrases come from am-timestamps; the speaking is tools/SynthRef's (spec 22: no TTS in AccentKit).
+mkdir -p "$root/.cache"
+phrases="$root/.cache/reference-phrases.json"
+"$root/scripts/am-timestamps.sh" reference-phrases \
   --clips "$root/fixtures/vctk/starter-clips.txt" \
   --corpus "${VCTK_CACHE:-$root/.cache/vctk}/VCTK-Corpus-0.92" \
   --files-pin "$root/fixtures/vctk/vctk-0.92-clips.sha256" \
-  --voice "$voice" --out "$out" || status=$?
+  --out "$phrases"
+swift build --package-path "$root/tools/SynthRef" -c release --product synthref >/dev/null \
+  || { echo "reference-check: synthref build failed (swift build --package-path tools/SynthRef)" >&2; exit 1; }
+status=0
+"$root/tools/SynthRef/.build/release/synthref" tts-reference --phrases "$phrases" --voice "$voice" --out "$out" \
+  || status=$?
 [[ "$status" == 3 ]] && skip "voice $voice is not installed on this Mac"
 [[ "$status" == 0 ]] || exit "$status"
 

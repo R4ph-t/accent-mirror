@@ -1,0 +1,14 @@
+{
+  "corpus": "speechocean762",
+  "licence": "CC BY 4.0",
+  "source": "https://www.openslr.org/resources/101/speechocean762.tar.gz",
+  "archiveSHA256": "876c34b828c2ebcc35ba2ff1ba5947d50e6b0162fc4a4af91db0942422b3bdd5",
+  "repo": "https://github.com/jimbozhang/speechocean762",
+  "repoCommit": "613968e3b0b789fc33936fb5eba1973176ba7d11",
+  "scoresJSONPrefix": "31c847b8",
+  "scoresJSONSuffix": "a1159f8",
+  "scoresJSONSHA256": "31c847b8ee29d61d8fe338bcbb1d4c4721425f05481d2144ad57cd19ea1159f8",
+  "scoresDetailJSONSHA256": "8a90ff40558fe8032d9bfa919429dcae267c0ec3fbdedf1dca30c0515ea989e1",
+  "corpusManifestSHA256": "fec07c7456afded152b107bf2793b24fcf503908b7f10ca37949cb3e3ab11cc6",
+  "note": "Audio from the OpenSLR 101 tarball; scores.json and scores-detail.json from the repo at repoCommit (the tarball's scores.json predates it and does not match the plan's 31c847b8\u2026a1159f8). Empty pins are recorded by the first fetch (spec 02, Open question 1)."
+}

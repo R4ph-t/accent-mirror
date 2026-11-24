@@ -1,0 +1,1652 @@
+{
+  "algorithmVersion" : 1,
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "formatVersion" : 1,
+  "items" : [
+    {
+      "item" : "speechocean762-000360343",
+      "l1Digest" : "daedc7fadb839c448f2e7a37d98b34b2ebdf2be2faba342a016243ccd943d632",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "000360343#2",
+          "index" : 2,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "000360343#3",
+          "index" : 3,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "000360343#6",
+          "index" : 6,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "000360343#7",
+          "index" : 7,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowWordConfidence"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-000540058",
+      "l1Digest" : "fb1a9839ab07adecf88b79f97eec192d440fac65983c200f44b00bca96f8d892",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "000540058#0",
+          "index" : 0,
+          "present" : false
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "000540058#1",
+          "index" : 1,
+          "present" : false
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "000540058#2",
+          "index" : 2,
+          "present" : false
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "000540058#4",
+          "index" : 4,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-001450171",
+      "l1Digest" : "a9b681597146be338c738ac67c6aef6ec90988215f33d49d69621b671cee5aed",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "001450171#2",
+          "index" : 2,
+          "present" : false
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "001450171#4",
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-004820329",
+      "l1Digest" : "09857360da824cdaf28ea1c5cbf819771316e15b191a7f771f62ea81c4165476",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "004820329#2",
+          "index" : 2,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "low"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "004820329#4",
+          "index" : 4,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "004820329#5",
+          "index" : 5,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "exposedSyllable"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-004820378",
+      "l1Digest" : "3792ae729f7f970560c425274a0bfaaf210de5fa305c569f1bab97765f01ab2b",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "004820378#2",
+          "index" : 2,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "004820378#3",
+          "index" : 3,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "004820378#4",
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "004820378#7",
+          "index" : 7,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "exposedSyllable"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-008130346",
+      "l1Digest" : "943b6dfe3b335d008e02058bece4a79975dd4d7e9a5c281dcc8ff0c93ac50c51",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "008130346#3",
+          "index" : 3,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "008130346#4",
+          "index" : 4,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-009600335",
+      "l1Digest" : "f93127ebc6a3909740600a88f5fa9e357b067459c34b3d21200d4c169779c7cd",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "009600335#4",
+          "index" : 4,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-010120265",
+      "l1Digest" : "7113686825065b2e647807db03df4716f1144c073ffeb5612ac7eec3416c7890",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "010120265#0",
+          "index" : 0,
+          "present" : false
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "010120265#1",
+          "index" : 1,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "low"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "010120265#2",
+          "index" : 2,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-010330103",
+      "l1Digest" : "f4b55490afcf0ff7cf2c9d0d48e90a91db00eb1a2af4402b6df331c7be1c6142",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "010330103#0",
+          "index" : 0,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "010330103#1",
+          "index" : 1,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "010330103#4",
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-010640280",
+      "l1Digest" : "e0b81bc0104dfe9b8f55cb5d1d30248aa6aabfe5aa4cc8b7b9ca7e0de1db1eca",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "010640280#6",
+          "index" : 6,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-013090076",
+      "l1Digest" : "3eee9de846aa4506b546691c39827be07bd21634a64a9ae01ac11faa52daf9d1",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "013090076#1",
+          "index" : 1,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "013090076#4",
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "013090076#5",
+          "index" : 5,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-013620106",
+      "l1Digest" : "31ec291aeb426f681875c36dd3a5c7d28545ea96345f17b285ae53777fb1716e",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "013620106#6",
+          "index" : 6,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-014070304",
+      "l1Digest" : "a44caa55c6f67808f86eb87dc5afc3e4d370f6f756b05819b7b38e347d1ee88d",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "014070304#7",
+          "index" : 7,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-014190062",
+      "l1Digest" : "8b6af60d380d7a712963280c9c6dd1f9c7e3360279d849e2e58d7a83fb747b4b",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "014190062#2",
+          "index" : 2,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-014190073",
+      "l1Digest" : "f08653956f55b62a50d26a1f64c969b5bd8c2c39e342a8b6d342b1c8041ebc6c",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "014190073#2",
+          "index" : 2,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-014350127",
+      "l1Digest" : "0d961c5bc8002d17401a6ec8e005ad83edcddd7475bb2d81b3b0791a43ea711b",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "014350127#0",
+          "index" : 0,
+          "present" : false
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "014350127#3",
+          "index" : 3,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-020590077",
+      "l1Digest" : "74d00be683ed67c5c782da60f422beff4c6151a03de768b67a60c0baff80355e",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "020590077#2",
+          "index" : 2,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "020590077#3",
+          "index" : 3,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "020590077#4",
+          "index" : 4,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "020590077#6",
+          "index" : 6,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "020590077#9",
+          "index" : 9,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-020610174",
+      "l1Digest" : "95c9e83e068c56866d074378d1441bb019f7c82976fc6e39e2ef0d0a7d6363f8",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "020610174#4",
+          "index" : 4,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "low"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "020610174#5",
+          "index" : 5,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-020890003",
+      "l1Digest" : "a55dbb9317b85174dca56f993062a6d07e505d28c591a6dd39f9768c7989c506",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "020890003#2",
+          "index" : 2,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "020890003#4",
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "020890003#5",
+          "index" : 5,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "020890003#8",
+          "index" : 8,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "exposedSyllable"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-022360321",
+      "l1Digest" : "c9d22c9746e7ac9d9e9ab1378d72679d8b7d193b1302bf7b849c73851d694472",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "022360321#1",
+          "index" : 1,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "022360321#3",
+          "index" : 3,
+          "present" : false
+        },
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "022360321#4",
+          "index" : 4,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "022360321#6",
+          "index" : 6,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-022420086",
+      "l1Digest" : "bcbc0aad805373bb39c39a79f42efb4d257394a04fd8c46e5f118f7d31ee74c5",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "022420086#1",
+          "index" : 1,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "022420086#2",
+          "index" : 2,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "022420086#4",
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "022420086#6",
+          "index" : 6,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-022440073",
+      "l1Digest" : "ee1c8e34fae9b72d153b44a60c0f441499454c164e0fdb049cde018fbc9ca199",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "022440073#1",
+          "index" : 1,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "022440073#3",
+          "index" : 3,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "022440073#6",
+          "index" : 6,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "022440073#7",
+          "index" : 7,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "low"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-023800160",
+      "l1Digest" : "10d39c2bec4dc62702274b3a54a7362279e0591480e38005a13f4a0cf6d2f372",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "023800160#0",
+          "index" : 0,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowWordConfidence"
+        },
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "023800160#2",
+          "index" : 2,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "023800160#3",
+          "index" : 3,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "low"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-023800330",
+      "l1Digest" : "e5bc478f3d4ff8df52b947f090126bfe11b116bd40ec79ecee710f7c2cb63e25",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "023800330#2",
+          "index" : 2,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-024020142",
+      "l1Digest" : "95bfc514f14b9406d65ab33da788ed5a29229f6bf29b10ca9df5ad4c130b7713",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "024020142#0",
+          "index" : 0,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "024020142#2",
+          "index" : 2,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "024020142#4",
+          "index" : 4,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "024020142#6",
+          "index" : 6,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-024020175",
+      "l1Digest" : "c44bffd27758c70e73a095184da53e5bebc2d506e0846baadd44b532dfcceb8c",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "024020175#0",
+          "index" : 0,
+          "present" : false
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "024020175#2",
+          "index" : 2,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "024020175#4",
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "exposedSyllable"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-024020328",
+      "l1Digest" : "d8c61eb7eef1a9e99167a66cba60bec6d223a5170e51c6fabd126e6406c08109",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "024020328#2",
+          "index" : 2,
+          "present" : false
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "024020328#5",
+          "index" : 5,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "024020328#8",
+          "index" : 8,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "024020328#9",
+          "index" : 9,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-024270127",
+      "l1Digest" : "6a50691ec8874e68ecd07e9bfbf0d44d43b0cf08aaab34c5b00acb89a06c7085",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "024270127#2",
+          "index" : 2,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "024270127#3",
+          "index" : 3,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "024270127#4",
+          "index" : 4,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-024300099",
+      "l1Digest" : "ae433a501bc8fb72e0b0ef154a39a5fc8b74a75ca02fcbeafcb02199ff58a9bb",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "024300099#1",
+          "index" : 1,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-024500151",
+      "l1Digest" : "ba24823594f596ea2a49eead005dfe8407bf5453d43d4c6aa1d527677272a27c",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "024500151#0",
+          "index" : 0,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "024500151#2",
+          "index" : 2,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "024500151#4",
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "exposedSyllable"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-027990156",
+      "l1Digest" : "82d5a4be2d0020b138ae0cd4e292c5c10acf2f84b3ed90999d8f42b3b9797240",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "027990156#0",
+          "index" : 0,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "027990156#1",
+          "index" : 1,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "027990156#3",
+          "index" : 3,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "027990156#8",
+          "index" : 8,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "exposedSyllable"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-030230092",
+      "l1Digest" : "565d74d78f97d775258279b47594eaf2626cf91fe3215c0f5925091c8d576eb6",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "030230092#2",
+          "index" : 2,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "030230092#7",
+          "index" : 7,
+          "observedPrimary" : 4,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-040050107",
+      "l1Digest" : "08ac3117a2988eb6906fe647959635612754bd91d9b6b0f34167b013333792af",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "040050107#0",
+          "index" : 0,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "040050107#1",
+          "index" : 1,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "high",
+          "suppression" : "poorTiming"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "040050107#3",
+          "index" : 3,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-054180022",
+      "l1Digest" : "469ce59757bacfa80496e4bcdb14d74f88a986330d8b282d0edda82bc3607714",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "054180022#3",
+          "index" : 3,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "054180022#4",
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "054180022#5",
+          "index" : 5,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-054180087",
+      "l1Digest" : "240b47598456f01a0b7160ee673e1a3ea4c89b09fbb62e908dcaf1d63c291ff8",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "054180087#0",
+          "index" : 0,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        },
+        {
+          "flaggedAfterSuppression" : true,
+          "flaggedBeforeSuppression" : true,
+          "id" : "054180087#1",
+          "index" : 1,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "high"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "054180087#5",
+          "index" : 5,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "054180087#6",
+          "index" : 6,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "exposedSyllable"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-055510122",
+      "l1Digest" : "9675b714fc31b64e9c1084f1e10597320d50e1ba7192184889c09ec0e74d2fc4",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "055510122#0",
+          "index" : 0,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "055510122#1",
+          "index" : 1,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "exposedSyllable"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "055510122#2",
+          "index" : 2,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "055510122#3",
+          "index" : 3,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "stressConfidenceBelowHigh"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-060100037",
+      "l1Digest" : "a492c5219edce723228a088310965abf0468d87f3c311e8bad477d1203b0d94e",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "060100037#3",
+          "index" : 3,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "exposedSyllable"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-061210174",
+      "l1Digest" : "a521fdab5313b28ee71dc50a945676cce9ee8542168a48f5270399b6c30af9e5",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "061210174#0",
+          "index" : 0,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "061210174#1",
+          "index" : 1,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "061210174#3",
+          "index" : 3,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "exposedSyllable"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-080020017",
+      "l1Digest" : "1d848c20cb2193cde40f945ed19253c378f0672d025df338df73cbe580fbcb8f",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "080020017#4",
+          "index" : 4,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-085850170",
+      "l1Digest" : "44ee55d4e57da58da1774dff72b4842968ba9e06e5b2dfdc1e753dda1a1d748b",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "085850170#0",
+          "index" : 0,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "085850170#2",
+          "index" : 2,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "085850170#5",
+          "index" : 5,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-095560008",
+      "l1Digest" : "0679a604d11c156b11c001f5fc001563c50d2927bcd5c14ca943385503c43b57",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "095560008#2",
+          "index" : 2,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-095560051",
+      "l1Digest" : "c54b27f6d87d9296d2f31e0337633508022f75358b15c597d04667011d206d7e",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "095560051#0",
+          "index" : 0,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "095560051#3",
+          "index" : 3,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "095560051#4",
+          "index" : 4,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "poorTiming"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "095560051#5",
+          "index" : 5,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-096000002",
+      "l1Digest" : "0f4f68b4765aa00e4c8318ef3bb4fdd7e4ba612785a7ebcbf61b359c5fe5f68f",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "096000002#4",
+          "index" : 4,
+          "observedPrimary" : 0,
+          "present" : true,
+          "stressConfidence" : "medium"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "id" : "096000002#7",
+          "index" : 7,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "exposedSyllable"
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-096060001",
+      "l1Digest" : "5013936d0d2d63be6a96e1fb99446c6873274f09a52805db5d1fa8a4d6b3fc3c",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "096060001#8",
+          "index" : 8,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-096160010",
+      "l1Digest" : "04b361f4f65a76850b7f0bd77eb91129000ecbddb796f051cc2b086d3f73182d",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "096160010#1",
+          "index" : 1,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-096190009",
+      "l1Digest" : "3f3e86ea5768a9f88a6f850321c5e3ade6e808e629d8dff0057f2a29a5f233fc",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "096190009#7",
+          "index" : 7,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "speechocean762-096430009",
+      "l1Digest" : "86ef1b5c5f3fcbb0d9a2cddce7607ed6f0fea910d46c40e06676b042200b04f1",
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : false,
+          "id" : "096430009#4",
+          "index" : 4,
+          "present" : false
+        }
+      ]
+    },
+    {
+      "item" : "vctk-p245_002",
+      "l1Digest" : "ded17f9c8b0ebd39e4fe7b2c97eec23adc0421ad069aa843fd6729f3e3ad01d3",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "inconclusive" : {
+                "reasons" : [
+                  {
+                    "noApplicableStressMeasure" : {
+
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p288_002"
+      },
+      "words" : [
+
+      ]
+    },
+    {
+      "item" : "vctk-p245_018",
+      "l1Digest" : "5a24e7776a08cd6ba237022527698a113272154080a6f65bc5822aa5e7169f5e",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "feedback" : {
+                "partial" : [
+                  "contrast"
+                ],
+                "rows" : [
+                  {
+                    "kind" : "roughTiming",
+                    "syllables" : [
+
+                    ],
+                    "values" : {
+
+                    }
+                  },
+                  {
+                    "kind" : "pitchRange",
+                    "syllables" : [
+
+                    ],
+                    "values" : {
+                      "model" : 5.3116907050217,
+                      "you" : 2.298766267023545
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p288_018"
+      },
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "index" : 0,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "index" : 8,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        }
+      ]
+    },
+    {
+      "item" : "vctk-p288_002",
+      "l1Digest" : "f1b82ff0c73c138a7a22d3981bc54307086f0499fa1836263b928088b682979d",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "inconclusive" : {
+                "reasons" : [
+                  {
+                    "noApplicableStressMeasure" : {
+
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p245_002"
+      },
+      "words" : [
+
+      ]
+    },
+    {
+      "item" : "vctk-p288_018",
+      "l1Digest" : "be7eb8470303f5371f12243d88c5f7a02bac3bf75b5f5ac9e11a21a65fa01b12",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "noClearDifference" : {
+                "reasons" : [
+                  {
+                    "mediumConfidenceOnly" : {
+                      "measures" : [
+                        "stressPlacement",
+                        "contrast",
+                        "tooMuchContrast",
+                        "weakLength"
+                      ]
+                    }
+                  },
+                  {
+                    "timingRough" : {
+
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p360_018"
+      },
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "index" : 0,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "index" : 8,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        }
+      ]
+    },
+    {
+      "item" : "vctk-p360_002",
+      "l1Digest" : "856071f276c181c068252d1de773d6aa5d3307fea84a0a13caae2888490e127b",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "inconclusive" : {
+                "reasons" : [
+                  {
+                    "noApplicableStressMeasure" : {
+
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p245_002"
+      },
+      "words" : [
+
+      ]
+    },
+    {
+      "item" : "vctk-p360_018",
+      "l1Digest" : "4c3704e9567703fb620f42ca55ee1bd6e7b5b4da14697f9f4670c5703fbe54fa",
+      "verdict" : {
+        "decision" : {
+          "verdict" : {
+            "verdict" : {
+              "noClearDifference" : {
+                "reasons" : [
+                  {
+                    "optionalMeasuresUnavailable" : {
+                      "measures" : [
+                        "pitchRange",
+                        "shapeMatch",
+                        "finalDirection"
+                      ]
+                    }
+                  },
+                  {
+                    "mediumConfidenceOnly" : {
+                      "measures" : [
+                        "stressPlacement",
+                        "contrast",
+                        "tooMuchContrast",
+                        "weakLength"
+                      ]
+                    }
+                  },
+                  {
+                    "timingRough" : {
+
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "model" : "vctk-p288_018"
+      },
+      "words" : [
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "index" : 0,
+          "observedPrimary" : 3,
+          "present" : true,
+          "stressConfidence" : "low",
+          "suppression" : "lowSyllableConfidence"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "index" : 4,
+          "observedPrimary" : 1,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        },
+        {
+          "flaggedAfterSuppression" : false,
+          "flaggedBeforeSuppression" : true,
+          "index" : 8,
+          "observedPrimary" : 2,
+          "present" : true,
+          "stressConfidence" : "medium",
+          "suppression" : "stressConfidenceBelowHigh"
+        }
+      ]
+    }
+  ],
+  "thresholdsVersion" : 8
+}

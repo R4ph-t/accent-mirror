@@ -1,0 +1,51 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "b4386e8d6242f2fd406b757fc75df2d9a45eff4a42c4bfd229f5c70c975f9aef",
+  "clipID" : "speechocean762-096000002",
+  "formatVersion" : 1,
+  "text" : "but it still only the first quarter",
+  "words" : [
+    {
+      "end" : 0.58,
+      "probability" : 0.37,
+      "start" : 0.5,
+      "word" : " but"
+    },
+    {
+      "end" : 1.02,
+      "probability" : 0.99,
+      "start" : 0.58,
+      "word" : " it"
+    },
+    {
+      "end" : 2.12,
+      "probability" : 0.23,
+      "start" : 1.02,
+      "word" : " still"
+    },
+    {
+      "end" : 3.18,
+      "probability" : 1,
+      "start" : 2.12,
+      "word" : " only"
+    },
+    {
+      "end" : 3.98,
+      "probability" : 0.92,
+      "start" : 3.18,
+      "word" : " the"
+    },
+    {
+      "end" : 4.72,
+      "probability" : 1,
+      "start" : 3.98,
+      "word" : " first"
+    },
+    {
+      "end" : 5.62,
+      "probability" : 1,
+      "start" : 4.72,
+      "word" : " quarter"
+    }
+  ]
+}
