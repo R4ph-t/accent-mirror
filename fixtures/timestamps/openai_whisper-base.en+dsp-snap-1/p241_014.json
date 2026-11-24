@@ -1,0 +1,99 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "f23f766cff82b368ff82a6497876e25f06f98c4bfb8ea35d94fa5fab01acf4a5",
+  "clipID" : "p241_014",
+  "formatVersion" : 1,
+  "text" : "To the Hebrews it was a token that there would be no more universal floods.",
+  "words" : [
+    {
+      "end" : 1.1,
+      "probability" : 0.51,
+      "start" : 0.94,
+      "word" : " To"
+    },
+    {
+      "end" : 1.12,
+      "probability" : 0.98,
+      "start" : 1.1,
+      "word" : " the"
+    },
+    {
+      "end" : 1.6300000000000001,
+      "probability" : 0.77,
+      "start" : 1.18,
+      "word" : " Hebrews"
+    },
+    {
+      "end" : 1.85,
+      "probability" : 0.6,
+      "start" : 1.7,
+      "word" : " it"
+    },
+    {
+      "end" : 1.97,
+      "probability" : 1,
+      "start" : 1.85,
+      "word" : " was"
+    },
+    {
+      "end" : 1.98,
+      "probability" : 0.99,
+      "start" : 1.97,
+      "word" : " a"
+    },
+    {
+      "end" : 2.22,
+      "probability" : 1,
+      "start" : 2.12,
+      "word" : " token"
+    },
+    {
+      "end" : 2.52,
+      "probability" : 0.96,
+      "start" : 2.33,
+      "word" : " that"
+    },
+    {
+      "end" : 2.66,
+      "probability" : 0.97,
+      "start" : 2.63,
+      "word" : " there"
+    },
+    {
+      "end" : 2.81,
+      "probability" : 0.98,
+      "start" : 2.66,
+      "word" : " would"
+    },
+    {
+      "end" : 3.1,
+      "probability" : 0.99,
+      "start" : 2.81,
+      "word" : " be"
+    },
+    {
+      "end" : 3.16,
+      "probability" : 0.98,
+      "start" : 3.1,
+      "word" : " no"
+    },
+    {
+      "end" : 3.34,
+      "probability" : 1,
+      "start" : 3.16,
+      "word" : " more"
+    },
+    {
+      "end" : 3.89,
+      "probability" : 0.94,
+      "start" : 3.34,
+      "word" : " universal"
+    },
+    {
+      "end" : 4.2,
+      "probability" : 0.96,
+      "start" : 3.89,
+      "word" : " floods."
+    }
+  ]
+}

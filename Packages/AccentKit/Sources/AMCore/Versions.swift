@@ -7,9 +7,9 @@ public enum Versions {
     /// Bump when an algorithm change can change any output for the same inputs.
     public static let algorithmVersion = 1
     /// Bump when any value in `Thresholds` changes.
-    public static let thresholdsVersion = 7
+    public static let thresholdsVersion = 8
     /// Bump when a contract type's shape or JSON changes.
-    public static let contractVersion = 1
+    public static let contractVersion = 2
 
     /// The golden-output digest recorded for one version triple.
     public struct GoldenDigest: Sendable, Hashable {
@@ -51,5 +51,12 @@ public enum Versions {
         GoldenDigest(
             algorithmVersion: 1, thresholdsVersion: 7, contractVersion: 1,
             digest: "378903a072998736f7bc45d615d0a6892a15847dc52acab90b86334736651782"),
+        // Spec 23: `ConfigIdentity.aligner` and `.alignerModelSHA256` added (contract change) and
+        // `wordBoundaries.*` added (spec defaults; `intensityDropDB` and `ctcConfidenceMin` not tuned). Version 5 was
+        // held for it, but a (1, 5, 2) record can't sit between 4 and 6 without contractVersion going 1 -> 2 -> 1, so
+        // it lands as 8 and 5 stays unused. Measurement-only: the shipped aligner is still `whisper`.
+        GoldenDigest(
+            algorithmVersion: 1, thresholdsVersion: 8, contractVersion: 2,
+            digest: "a1d4f4fba2eee439147911db15acfee4ad8c0886bdf22155d3b98016ebc15a06"),
     ]
 }

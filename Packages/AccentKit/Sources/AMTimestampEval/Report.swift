@@ -253,7 +253,7 @@ extension TimestampReport {
         md.append("- `configDigest`: `\(identity.configDigest)`")
         md.append("- `sourceTreeHash`: `\(identity.sourceTreeHash)`")
         md.append("- Evaluated commit: `\(identity.evaluatedCommit)`; clean tree: \(identity.cleanTree ? "yes" : "**no (not a release report)**")")
-        md.append("- `ConfigIdentity`: algorithmVersion \(identity.config.algorithmVersion), thresholdsVersion \(identity.config.thresholdsVersion), contractVersion \(identity.config.contractVersion), asrModelID `\(identity.config.asrModelID)`, pitchTrackerID `\(identity.config.pitchTrackerID)`, voicingID `\(identity.config.voicingID)`")
+        md.append("- `ConfigIdentity`: algorithmVersion \(identity.config.algorithmVersion), thresholdsVersion \(identity.config.thresholdsVersion), contractVersion \(identity.config.contractVersion), asrModelID `\(identity.config.asrModelID)`, pitchTrackerID `\(identity.config.pitchTrackerID)`, voicingID `\(identity.config.voicingID)`, aligner `\(identity.config.aligner)`")
         md.append("- Corpus manifest hash: `\(identity.corpusManifestHash)`")
         md.append("- Label (baseline) hash: \(identity.labelHash.map { "`\($0)` (`\(identity.labelFile ?? "")`)" } ?? "none")")
         md.append("- Toolchain: \(identity.toolchain.xcode); \(identity.toolchain.swift); macOS \(identity.toolchain.macOS); \(identity.toolchain.hardware)\(identity.toolchain.runnerImage.map { "; runner \($0)" } ?? "")")

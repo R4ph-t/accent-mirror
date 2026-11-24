@@ -1,0 +1,13 @@
+wav2vec2-base-960h, as used by Accent Mirror's evaluation of CTC word-boundary refinement (spec 23, candidate b2,
+aligner `ctc-w2v2b960-1`).
+
+- Model: facebook/wav2vec2-base-960h on Hugging Face, commit 22aad52d435eb6dbaf354bdad9b0da84ce7d6156, by Facebook AI
+  (Baevski, Zhou, Mohamed and Auli, "wav2vec 2.0", 2020). Licence: Apache License 2.0 (model card front matter
+  `license: apache-2.0` at that commit). The upstream repository ships no LICENSE or NOTICE file of its own.
+- Modification: converted to a Core ML package (float32) by tools/convert_ctc.py with coremltools 8.3.0
+  (BSD-3-Clause), run only by scripts/fetch-ctc.sh in a local Python venv. The weights are not changed.
+
+The upstream files and the converted package are fetched and built by scripts/fetch-ctc.sh and SHA-256 pinned in
+manifest.json. None is committed, none is in Git LFS, and none is bundled with the app: b2 did not pass spec 23's
+gate, so nothing ships. Bundling would wait for Raph's licence check (AGENTS.md).
+See LICENSE in this folder for the full Apache-2.0 text.

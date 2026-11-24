@@ -60,7 +60,9 @@ enum Golden {
 
     // MARK: Values
 
-    static let config = ConfigIdentity(asrModelID: "whisperkit-base.en", pitchTrackerID: "pyin-1", voicingID: "acf-1")
+    static let config = ConfigIdentity(
+        asrModelID: "whisperkit-base.en", pitchTrackerID: "pyin-1", voicingID: "acf-1", aligner: "whisper",
+        alignerModelSHA256: "none")
 
     static let identity = AnalysisIdentity(
         takeAudioSHA256: String(repeating: "a", count: 64),

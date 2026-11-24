@@ -1,0 +1,135 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "85c1560ca8bcf53ca02ac93913279f248ff94543c63a18e32efab46bfcda18c8",
+  "clipID" : "p233_024",
+  "formatVersion" : 1,
+  "text" : "This is a very common type of bow, one showing mainly red and yellow with little or no green or blue.",
+  "words" : [
+    {
+      "end" : 1.08,
+      "probability" : 0.91,
+      "start" : 0.96,
+      "word" : " This"
+    },
+    {
+      "end" : 1.24,
+      "probability" : 0.99,
+      "start" : 1.17,
+      "word" : " is"
+    },
+    {
+      "end" : 1.32,
+      "probability" : 0.99,
+      "start" : 1.3,
+      "word" : " a"
+    },
+    {
+      "end" : 1.58,
+      "probability" : 0.99,
+      "start" : 1.3800000000000001,
+      "word" : " very"
+    },
+    {
+      "end" : 1.9000000000000001,
+      "probability" : 1,
+      "start" : 1.6600000000000001,
+      "word" : " common"
+    },
+    {
+      "end" : 2.2,
+      "probability" : 0.99,
+      "start" : 1.97,
+      "word" : " type"
+    },
+    {
+      "end" : 2.32,
+      "probability" : 0.99,
+      "start" : 2.23,
+      "word" : " of"
+    },
+    {
+      "end" : 2.58,
+      "probability" : 0.96,
+      "start" : 2.4,
+      "word" : " bow,"
+    },
+    {
+      "end" : 3.3200000000000003,
+      "probability" : 0.75,
+      "start" : 3.07,
+      "word" : " one"
+    },
+    {
+      "end" : 3.63,
+      "probability" : 0.99,
+      "start" : 3.37,
+      "word" : " showing"
+    },
+    {
+      "end" : 3.89,
+      "probability" : 0.92,
+      "start" : 3.63,
+      "word" : " mainly"
+    },
+    {
+      "end" : 4.22,
+      "probability" : 0.99,
+      "start" : 3.89,
+      "word" : " red"
+    },
+    {
+      "end" : 4.46,
+      "probability" : 0.79,
+      "start" : 4.29,
+      "word" : " and"
+    },
+    {
+      "end" : 4.7700000000000005,
+      "probability" : 1,
+      "start" : 4.5200000000000005,
+      "word" : " yellow"
+    },
+    {
+      "end" : 5.12,
+      "probability" : 0.68,
+      "start" : 4.7700000000000005,
+      "word" : " with"
+    },
+    {
+      "end" : 5.37,
+      "probability" : 0.68,
+      "start" : 5.18,
+      "word" : " little"
+    },
+    {
+      "end" : 5.5200000000000005,
+      "probability" : 0.93,
+      "start" : 5.37,
+      "word" : " or"
+    },
+    {
+      "end" : 5.68,
+      "probability" : 0.98,
+      "start" : 5.58,
+      "word" : " no"
+    },
+    {
+      "end" : 6.0600000000000005,
+      "probability" : 0.95,
+      "start" : 5.79,
+      "word" : " green"
+    },
+    {
+      "end" : 6.2,
+      "probability" : 0.79,
+      "start" : 6.07,
+      "word" : " or"
+    },
+    {
+      "end" : 6.5,
+      "probability" : 0.98,
+      "start" : 6.28,
+      "word" : " blue."
+    }
+  ]
+}

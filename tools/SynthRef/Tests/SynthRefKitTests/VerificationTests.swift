@@ -208,7 +208,10 @@ struct FlagNothingPath: EvaluationPath {
                 t.agreement.bootstrapResamples = Double(1000 + pool.fold)
                 trained.withLock { $0.append(t) }
                 return try FoldConfig(
-                    identity: ConfigIdentity(asrModelID: "replayed", pitchTrackerID: "p", voicingID: "v"), thresholds: t)
+                    identity: ConfigIdentity(
+                        asrModelID: "replayed", pitchTrackerID: "p", voicingID: "v", aligner: "whisper",
+                        alignerModelSHA256: "none"),
+                    thresholds: t)
             },
             paths: [FlagNothingPath(), EndToEndPath(scorer: scorer)])
         #expect(record.folds.count == folds.folds.count)

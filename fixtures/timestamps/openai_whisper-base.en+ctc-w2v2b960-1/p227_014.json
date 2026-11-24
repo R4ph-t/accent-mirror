@@ -1,0 +1,99 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "e0aac7797f14b4b303f88dc15b93848cad284dfd8841149278388f1ccfb47fea",
+  "clipID" : "p227_014",
+  "formatVersion" : 1,
+  "text" : "To the Hebrews it was a token that there would be no more universal floods.",
+  "words" : [
+    {
+      "end" : 1.02,
+      "probability" : 0.88,
+      "start" : 0.9400000000000001,
+      "word" : " To"
+    },
+    {
+      "end" : 1.1400000000000001,
+      "probability" : 0.99,
+      "start" : 1.08,
+      "word" : " the"
+    },
+    {
+      "end" : 1.7,
+      "probability" : 0.97,
+      "start" : 1.2,
+      "word" : " Hebrews"
+    },
+    {
+      "end" : 1.94,
+      "probability" : 0.63,
+      "start" : 1.8699999999999999,
+      "word" : " it"
+    },
+    {
+      "end" : 2.14,
+      "probability" : 0.99,
+      "start" : 2.03,
+      "word" : " was"
+    },
+    {
+      "end" : 2.2600000000000002,
+      "probability" : 0.99,
+      "start" : 2.23,
+      "word" : " a"
+    },
+    {
+      "end" : 2.74,
+      "probability" : 1,
+      "start" : 2.34,
+      "word" : " token"
+    },
+    {
+      "end" : 2.98,
+      "probability" : 0.96,
+      "start" : 2.79,
+      "word" : " that"
+    },
+    {
+      "end" : 3.22,
+      "probability" : 0.97,
+      "start" : 3.06,
+      "word" : " there"
+    },
+    {
+      "end" : 3.4,
+      "probability" : 0.97,
+      "start" : 3.2600000000000002,
+      "word" : " would"
+    },
+    {
+      "end" : 3.56,
+      "probability" : 0.99,
+      "start" : 3.4499999999999997,
+      "word" : " be"
+    },
+    {
+      "end" : 3.8000000000000003,
+      "probability" : 0.98,
+      "start" : 3.65,
+      "word" : " no"
+    },
+    {
+      "end" : 4.16,
+      "probability" : 1,
+      "start" : 3.89,
+      "word" : " more"
+    },
+    {
+      "end" : 4.8100000000000005,
+      "probability" : 0.92,
+      "start" : 4.21,
+      "word" : " universal"
+    },
+    {
+      "end" : 5.3500000000000005,
+      "probability" : 0.99,
+      "start" : 4.8100000000000005,
+      "word" : " floods."
+    }
+  ]
+}

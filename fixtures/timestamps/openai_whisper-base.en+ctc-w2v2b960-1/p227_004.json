@@ -1,0 +1,99 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "75e8398cda5546d4dee388e21e6892da732da80f0dc3283980f37b805a91e14f",
+  "clipID" : "p227_004",
+  "formatVersion" : 1,
+  "text" : "We also need a small plastic snake and a big toy frog for the kids.",
+  "words" : [
+    {
+      "end" : 1.02,
+      "probability" : 0.86,
+      "start" : 0.96,
+      "word" : " We"
+    },
+    {
+      "end" : 1.3099999999999998,
+      "probability" : 0.99,
+      "start" : 1.12,
+      "word" : " also"
+    },
+    {
+      "end" : 1.52,
+      "probability" : 1,
+      "start" : 1.3099999999999998,
+      "word" : " need"
+    },
+    {
+      "end" : 1.6,
+      "probability" : 0.99,
+      "start" : 1.58,
+      "word" : " a"
+    },
+    {
+      "end" : 1.9000000000000001,
+      "probability" : 0.99,
+      "start" : 1.6600000000000001,
+      "word" : " small"
+    },
+    {
+      "end" : 2.22,
+      "probability" : 0.99,
+      "start" : 1.95,
+      "word" : " plastic"
+    },
+    {
+      "end" : 2.7800000000000002,
+      "probability" : 0.99,
+      "start" : 2.25,
+      "word" : " snake"
+    },
+    {
+      "end" : 3.06,
+      "probability" : 0.96,
+      "start" : 2.79,
+      "word" : " and"
+    },
+    {
+      "end" : 3.16,
+      "probability" : 0.96,
+      "start" : 3.12,
+      "word" : " a"
+    },
+    {
+      "end" : 3.36,
+      "probability" : 0.98,
+      "start" : 3.22,
+      "word" : " big"
+    },
+    {
+      "end" : 3.72,
+      "probability" : 0.97,
+      "start" : 3.4299999999999997,
+      "word" : " toy"
+    },
+    {
+      "end" : 4.12,
+      "probability" : 0.97,
+      "start" : 3.75,
+      "word" : " frog"
+    },
+    {
+      "end" : 4.5,
+      "probability" : 0.99,
+      "start" : 4.21,
+      "word" : " for"
+    },
+    {
+      "end" : 4.62,
+      "probability" : 0.99,
+      "start" : 4.54,
+      "word" : " the"
+    },
+    {
+      "end" : 4.96,
+      "probability" : 1,
+      "start" : 4.68,
+      "word" : " kids."
+    }
+  ]
+}

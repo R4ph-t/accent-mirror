@@ -1,0 +1,135 @@
+{
+  "asrModelID" : "openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631",
+  "audioSHA256" : "a3a8302f21184c7888d6662b2d370f449c48fdff3fec8bfd082467eb53e57a4e",
+  "clipID" : "p233_016",
+  "formatVersion" : 1,
+  "text" : "The Norsemen considered the rainbow as a bridge over which the gods passed from Earth to their home in the sky.",
+  "words" : [
+    {
+      "end" : 1.06,
+      "probability" : 0.82,
+      "start" : 0.96,
+      "word" : " The"
+    },
+    {
+      "end" : 1.52,
+      "probability" : 0.94,
+      "start" : 1.12,
+      "word" : " Norsemen"
+    },
+    {
+      "end" : 1.89,
+      "probability" : 0.97,
+      "start" : 1.58,
+      "word" : " considered"
+    },
+    {
+      "end" : 2.1,
+      "probability" : 0.99,
+      "start" : 1.89,
+      "word" : " the"
+    },
+    {
+      "end" : 2.39,
+      "probability" : 0.88,
+      "start" : 2.14,
+      "word" : " rainbow"
+    },
+    {
+      "end" : 2.68,
+      "probability" : 0.96,
+      "start" : 2.39,
+      "word" : " as"
+    },
+    {
+      "end" : 2.7800000000000002,
+      "probability" : 0.96,
+      "start" : 2.74,
+      "word" : " a"
+    },
+    {
+      "end" : 3.08,
+      "probability" : 0.99,
+      "start" : 2.84,
+      "word" : " bridge"
+    },
+    {
+      "end" : 3.36,
+      "probability" : 0.95,
+      "start" : 3.11,
+      "word" : " over"
+    },
+    {
+      "end" : 3.6,
+      "probability" : 0.99,
+      "start" : 3.44,
+      "word" : " which"
+    },
+    {
+      "end" : 3.72,
+      "probability" : 0.97,
+      "start" : 3.65,
+      "word" : " the"
+    },
+    {
+      "end" : 4,
+      "probability" : 0.93,
+      "start" : 3.7800000000000002,
+      "word" : " gods"
+    },
+    {
+      "end" : 4.29,
+      "probability" : 0.92,
+      "start" : 4.01,
+      "word" : " passed"
+    },
+    {
+      "end" : 4.54,
+      "probability" : 0.9,
+      "start" : 4.29,
+      "word" : " from"
+    },
+    {
+      "end" : 4.88,
+      "probability" : 0.59,
+      "start" : 4.72,
+      "word" : " Earth"
+    },
+    {
+      "end" : 5.0200000000000005,
+      "probability" : 1,
+      "start" : 4.91,
+      "word" : " to"
+    },
+    {
+      "end" : 5.22,
+      "probability" : 0.99,
+      "start" : 5.08,
+      "word" : " their"
+    },
+    {
+      "end" : 5.44,
+      "probability" : 1,
+      "start" : 5.28,
+      "word" : " home"
+    },
+    {
+      "end" : 5.54,
+      "probability" : 0.99,
+      "start" : 5.5,
+      "word" : " in"
+    },
+    {
+      "end" : 5.68,
+      "probability" : 1,
+      "start" : 5.62,
+      "word" : " the"
+    },
+    {
+      "end" : 6.0200000000000005,
+      "probability" : 1,
+      "start" : 5.74,
+      "word" : " sky."
+    }
+  ]
+}

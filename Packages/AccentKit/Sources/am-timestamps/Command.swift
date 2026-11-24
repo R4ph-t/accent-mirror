@@ -18,6 +18,22 @@ struct AMTimestamps {
                         [--baseline F] [--archive-pin F] [--files-pin F] [--release] [--no-comparator]
                         Run WhisperKit, compare with the baseline, write the report. Exit 1 on FAIL; on a --release
                         run, exit 2 on a dirty tree and 3 on NOT EVALUATED.
+          boundaries    --repo D --clips F --corpus D --baseline F --replay D --out D
+                        [--files-pin F] [--archive-pin F] [--record D] [--release] [--ctc-manifest M --ctc-dir D] [--reference F]
+                        Spec 23: refine the replayed Whisper words with each aligner, judge them against the
+                        baseline, write the word-boundaries report. --record writes the refined replays under D.
+                        Exit 1 on FAIL, 4 when a run differs from its recorded replay; on --release, 2 on a dirty tree.
+          diagnostics   --repo D --clips F --corpus D --baseline F --replay D --ctc-manifest M --ctc-dir D
+                        --gate-report F --out D [--name N] [--reference D --manifest M --model-dir D] [--files-pin F]
+                        [--release]
+                        CTO diagnostic round on spec 23's downstream gate: control (markers vs MFA on TTS), ranking
+                        (whisper, dsp-snap-1, b2), b2's flip breakdown and inconclusive split. Measures only.
+                        Exit 4 when b2's diff does not reproduce the gate report; on --release, 2 on a dirty tree.
+          reference-phrases --clips F --corpus D --out F [--files-pin F]
+                        List each eval phrase once for spec 22's TTS tool under tools/ (scripts/reference-check.sh),
+                        which speaks them with SSML <mark> bookmarks and writes the MFA input corpus and markers.json.
+          reference-compare --markers F --baseline F --out F
+                        Compare MFA's alignment of the synthesised phrases with the markers (not a gate).
           cancel-check  --clips F --corpus D --manifest M --model-dir D
                         Cancel a transcription 100 ms in; check it returns within about 300 ms and the model stays loaded.
         """
@@ -32,6 +48,10 @@ struct AMTimestamps {
             case "record": status = try await record(options)
             case "baseline": status = try baseline(options)
             case "eval": status = try await evaluate(options)
+            case "boundaries": status = try await boundaries(options)
+            case "diagnostics": status = try await diagnostics(options)
+            case "reference-phrases": status = try referencePhrases(options)
+            case "reference-compare": status = try referenceCompare(options)
             case "cancel-check": status = try await cancelCheck(options)
             default: throw ToolError.usage(usage)
             }

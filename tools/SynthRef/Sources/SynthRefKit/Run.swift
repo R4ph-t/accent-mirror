@@ -270,7 +270,7 @@ public struct SynthRefRun {
         let shipped = try FoldConfig(
             identity: ConfigIdentity(
                 asrModelID: "replayed-word-timings", pitchTrackerID: PYINTracker.trackerID,
-                voicingID: ACFVoicing.voicingID),
+                voicingID: ACFVoicing.voicingID, aligner: WhisperOnly.aligner, alignerModelSHA256: "none"),
             thresholds: thresholds)
         let recall = try await path.run(config: shipped, words: sets.recall)
         let hits = sets.recall.count { recall[$0.id] == true }

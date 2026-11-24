@@ -46,7 +46,7 @@ struct IdentityTests {
         let record = try ConfigDigestRecord(config: config)
         #expect(record.sha256 == (try configDigest(config)))
         #expect(record.sha256 == Digest.sha256(record.canonicalJSON))
-        #expect(record.canonicalJSON.hasPrefix(#"{"config":{"algorithmVersion":\#(Versions.algorithmVersion),"asrModelID":"openai_whisper-base.en@c#12345678","contractVersion":\#(Versions.contractVersion),"pitchTrackerID":"none","thresholdsVersion":\#(Versions.thresholdsVersion),"voicingID":"none"},"thresholds":{"#))
+        #expect(record.canonicalJSON.hasPrefix(#"{"config":{"algorithmVersion":\#(Versions.algorithmVersion),"aligner":"whisper","alignerModelSHA256":"none","asrModelID":"openai_whisper-base.en@c#12345678","contractVersion":\#(Versions.contractVersion),"pitchTrackerID":"none","thresholdsVersion":\#(Versions.thresholdsVersion),"voicingID":"none"},"thresholds":{"#))
         #expect(record.canonicalJSON.contains(#""wordTimestamps":{"medianErrorMaxMs":40,"withinToleranceMs":80,"withinToleranceShareMin":0.85}"#))
         var lowered = Thresholds.current
         lowered.wordTimestamps.medianErrorMaxMs = 45

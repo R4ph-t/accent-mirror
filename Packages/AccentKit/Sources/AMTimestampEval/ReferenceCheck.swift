@@ -1,0 +1,171 @@
+import AMAlignment
+import Foundation
+
+/// The reference sanity check (CTO review of spec 23): how far the MFA baseline itself is from known word boundaries.
+/// The eval phrases are synthesised with SSML `<mark>` bookmarks around every word, aligned with the same MFA and
+/// models as the baseline, and MFA's word starts and ends are compared with the marks. A labelled line, never a gate.
+public struct ReferenceCheck: Codable, Sendable, Equatable {
+    /// One side's figures: MFA minus the marker, in ms.
+    public struct Side: Codable, Sendable, Equatable {
+        public var n: Int
+        public var medianAbsErrorMs: Double?
+        public var shareWithinTolerance: Double?
+        /// Negative: MFA is earlier than the marker.
+        public var meanSignedErrorMs: Double?
+
+        public init(signedErrorsMs: [Double], toleranceMs: Double) {
+            let absolute = signedErrorsMs.map { microsecond(abs($0)) }
+            n = signedErrorsMs.count
+            medianAbsErrorMs = Statistics.median(absolute)
+            shareWithinTolerance = absolute.isEmpty
+                ? nil : Double(absolute.filter { $0 <= toleranceMs }.count) / Double(absolute.count)
+            meanSignedErrorMs = signedErrorsMs.isEmpty ? nil : signedErrorsMs.reduce(0, +) / Double(signedErrorsMs.count)
+        }
+    }
+
+    /// One synthesised phrase: its transcript, the marker spans and MFA's spans.
+    public struct Clip: Sendable {
+        public var clipID: String
+        public var transcript: String
+        public var markers: [BaselineWord]
+        public var aligned: [BaselineWord]
+
+        public init(clipID: String, transcript: String, markers: [BaselineWord], aligned: [BaselineWord]) {
+            self.clipID = clipID
+            self.transcript = transcript
+            self.markers = markers
+            self.aligned = aligned
+        }
+    }
+
+    public var voice: String
+    public var aligner: String
+    public var clips: Int
+    public var toleranceMs: Double
+    /// The marker offsets come in whole synthesiser buffers.
+    public var markerResolutionMs: Double
+    public var phraseTokens: Int
+    public var starts: Side
+    /// Every word's end. A word's end marker fires where the next word starts, so a pause after it counts as the
+    /// word's and MFA's end looks early there.
+    public var ends: Side
+    /// Ends of words with no punctuation after them, where the synthesiser rarely pauses.
+    public var endsWithoutPunctuation: Side
+    /// Words whose two markers did not both come back from the synthesiser.
+    public var wordsWithoutMarkers: Int
+    public var note: String
+
+    /// Pairs MFA's words and the markers with the transcript's tokens (as the gate pairs ASR and MFA) and measures
+    /// MFA minus the marker on each side.
+    public static func compare(_ clips: [Clip], voice: String, aligner: String, markerResolutionMs: Double,
+                               wordsWithoutMarkers: Int = 0,
+                               toleranceMs: Double = TimestampGate.plan.toleranceMs) -> ReferenceCheck {
+        let inputs = clips.map { clip in
+            ClipInput(clipID: clip.clipID, transcript: clip.transcript,
+                      asrWords: clip.aligned.map { WordTimestamp(word: $0.word, start: $0.start, end: $0.end, probability: 1) },
+                      baselineWords: clip.markers)
+        }
+        let (words, coverage) = Evaluation.comparableWords(inputs)
+        let starts = words.map { ($0.asr.start - $0.baseline.start) * 1000 }
+        let ends = words.map { ($0.asr.end - $0.baseline.end) * 1000 }
+        let plainEnds = words.filter { word in
+            let last = word.baseline.word.trimmingCharacters(in: .whitespaces).last
+            return last.map { $0.isLetter || $0.isNumber || $0 == "'" } ?? true
+        }.map { ($0.asr.end - $0.baseline.end) * 1000 }
+        return ReferenceCheck(
+            voice: voice, aligner: aligner, clips: clips.count, toleranceMs: toleranceMs,
+            markerResolutionMs: markerResolutionMs, phraseTokens: coverage.phraseTokens,
+            starts: Side(signedErrorsMs: starts, toleranceMs: toleranceMs),
+            ends: Side(signedErrorsMs: ends, toleranceMs: toleranceMs),
+            endsWithoutPunctuation: Side(signedErrorsMs: plainEnds, toleranceMs: toleranceMs),
+            wordsWithoutMarkers: wordsWithoutMarkers,
+            note: "Reference sanity check, not a gate: MFA's own error against SSML <mark> bookmarks in synthesised audio of the eval phrases.")
+    }
+
+    /// The report's one-line form.
+    public var line: String {
+        func side(_ s: Side) -> String {
+            "median \(fmt(s.medianAbsErrorMs, "%.1f ms")), within \(fmt(toleranceMs, "%.0f ms")) \(fmt(s.shareWithinTolerance.map { $0 * 100 }, "%.1f%%")), mean signed \(fmt(s.meanSignedErrorMs, "%+.1f ms")), n \(s.n)"
+        }
+        return "Reference sanity check (MFA's own error, **not a gate**): \(aligner) on \(clips) phrases synthesised by `\(voice)`, against SSML `<mark>` bookmarks (marker resolution \(fmt(markerResolutionMs, "%.1f ms"))). Starts: \(side(starts)). Ends: \(side(ends)). Ends of words with no punctuation after them: \(side(endsWithoutPunctuation)). Words without both markers: \(wordsWithoutMarkers)."
+    }
+}
+
+private func fmt(_ value: Double?, _ format: String) -> String {
+    value.map { String(format: format, $0) } ?? "–"
+}
+
+/// The reference error the CTO ruling of 2026-11-23 14:05 asks for, per side, reported and never netted out of a
+/// gate: MFA on TTS against the markers (the reference's own error), b2 on TTS against the markers (ground truth),
+/// and b2 against MFA on VCTK. Plus a quadrature **estimate** of b2's own VCTK error from the medians.
+public struct ReferenceErrors: Codable, Sendable, Equatable {
+    public struct Comparison: Codable, Sendable, Equatable {
+        public var label: String
+        public var starts: ReferenceCheck.Side
+        public var ends: ReferenceCheck.Side
+
+        public init(label: String, starts: ReferenceCheck.Side, ends: ReferenceCheck.Side) {
+            self.label = label
+            self.starts = starts
+            self.ends = ends
+        }
+    }
+
+    public var mfaOnTTS: Comparison?
+    public var b2OnTTS: Comparison?
+    public var b2VsMFAOnVCTK: Comparison?
+    /// sqrt(max(0, obs² − ref²)) on median absolute errors: obs is b2 vs MFA on VCTK, ref is MFA on TTS.
+    public var quadratureStartsMs: Double?
+    public var quadratureEndsMs: Double?
+    public var voice: String?
+    public var markerResolutionMs: Double?
+    /// Why a comparison is missing, when one is.
+    public var notes: [String]
+
+    public init(mfaOnTTS: Comparison?, b2OnTTS: Comparison?, b2VsMFAOnVCTK: Comparison?, voice: String?,
+                markerResolutionMs: Double?, notes: [String]) {
+        self.mfaOnTTS = mfaOnTTS
+        self.b2OnTTS = b2OnTTS
+        self.b2VsMFAOnVCTK = b2VsMFAOnVCTK
+        self.voice = voice
+        self.markerResolutionMs = markerResolutionMs
+        self.notes = notes
+        quadratureStartsMs = Self.quadrature(obs: b2VsMFAOnVCTK?.starts.medianAbsErrorMs, ref: mfaOnTTS?.starts.medianAbsErrorMs)
+        quadratureEndsMs = Self.quadrature(obs: b2VsMFAOnVCTK?.ends.medianAbsErrorMs, ref: mfaOnTTS?.ends.medianAbsErrorMs)
+    }
+
+    public static func quadrature(obs: Double?, ref: Double?) -> Double? {
+        guard let obs, let ref else { return nil }
+        return (max(0, obs * obs - ref * ref)).squareRoot()
+    }
+
+    /// MFA minus the marker (or b2 minus the marker), as `ReferenceCheck` measures it.
+    public static func comparison(_ check: ReferenceCheck, label: String) -> Comparison {
+        Comparison(label: label, starts: check.starts, ends: check.ends)
+    }
+
+    /// b2 minus MFA on VCTK's comparable words.
+    public static func versusBaseline(_ words: [ComparableWord], label: String,
+                                      toleranceMs: Double = TimestampGate.plan.toleranceMs) -> Comparison {
+        Comparison(label: label,
+                   starts: .init(signedErrorsMs: words.map { ($0.asr.start - $0.baseline.start) * 1000 }, toleranceMs: toleranceMs),
+                   ends: .init(signedErrorsMs: words.map { ($0.asr.end - $0.baseline.end) * 1000 }, toleranceMs: toleranceMs))
+    }
+
+    public func markdown(toleranceMs: Double) -> [String] {
+        func cells(_ s: ReferenceCheck.Side) -> String {
+            "\(fmt(s.medianAbsErrorMs, "%.1f ms")) | \(fmt(s.shareWithinTolerance.map { $0 * 100 }, "%.1f%%")) | \(fmt(s.meanSignedErrorMs, "%+.1f ms")) | \(s.n)"
+        }
+        var md = ["| Comparison (**reported, not a gate**) | Side | Median | Within \(fmt(toleranceMs, "%.0f ms")) | Mean signed | n |",
+                  "|---|---|---|---|---|---|"]
+        for comparison in [mfaOnTTS, b2OnTTS, b2VsMFAOnVCTK].compactMap({ $0 }) {
+            md.append("| \(comparison.label) | starts | \(cells(comparison.starts)) |")
+            md.append("| \(comparison.label) | ends | \(cells(comparison.ends)) |")
+        }
+        md.append("")
+        md.append("- Quadrature **estimate** of b2's own VCTK error, sqrt(max(0, obs² − ref²)) on the medians (obs: b2 vs MFA on VCTK; ref: MFA on TTS): starts \(fmt(quadratureStartsMs, "%.1f ms")), ends \(fmt(quadratureEndsMs, "%.1f ms")). An estimate; no gate reads it, and nothing is netted out of any figure.")
+        if let voice { md.append("- TTS: `\(voice)`, SSML `<mark>` bookmarks around every word, marker resolution \(fmt(markerResolutionMs, "%.1f ms")). A word's end marker fires where the next word starts, so a pause after it counts as the word's.") }
+        for note in notes { md.append("- \(note)") }
+        return md
+    }
+}

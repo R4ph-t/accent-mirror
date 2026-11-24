@@ -4,6 +4,9 @@
 # Needs scripts/fetch-vctk.sh and scripts/setup-mfa.sh first. Offline tooling only: never in the app or CI.
 #
 #   scripts/mfa-align.sh [clips-file]   # default: fixtures/vctk/starter-clips.txt
+#
+# Spec 23's reference sanity check reuses the same aligner, models and command on a prepared corpus:
+#   MFA_INPUT_CORPUS=<dir of <speaker>/<clip>.{wav,lab}> MFA_WORK=<dir> BASELINE_OUT=<file> scripts/mfa-align.sh <clips>
 set -euo pipefail
 
 root="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
@@ -19,9 +22,13 @@ export PATH="$mfa_home/env/bin:$PATH"   # MFA calls the OpenFst and Kaldi binari
 "$root/scripts/setup-mfa.sh" > /dev/null   # re-checks the pinned versions and model digests
 
 # MFA's input: one folder per speaker, each clip's official audio next to its official transcript (.lab).
-work="$mfa_home/work"
+work="${MFA_WORK:-$mfa_home/work}"
 rm -rf "$work"
 mkdir -p "$work/corpus" "$work/aligned"
+input="$work/corpus"
+if [[ -n "${MFA_INPUT_CORPUS:-}" ]]; then
+  input="$MFA_INPUT_CORPUS"
+else
 while IFS= read -r clip; do
   [[ -z "$clip" || "$clip" == \#* ]] && continue
   speaker="${clip%%_*}"
@@ -33,11 +40,12 @@ while IFS= read -r clip; do
   ln -s "$corpus/wav48_silence_trimmed/$speaker/${clip}_mic1.flac" "$work/corpus/$speaker/$clip.flac"
   cp "$corpus/txt/$speaker/$clip.txt" "$work/corpus/$speaker/$clip.lab"
 done < "$clips"
+fi
 
 command=(mfa align --clean --overwrite --output_format json --num_jobs 4
          CORPUS english_mfa.dict english_mfa.zip OUTPUT)
 "$mfa" align --clean --overwrite --output_format json --num_jobs 4 \
-  "$work/corpus" "$mfa_home/models/english_mfa.dict" "$mfa_home/models/english_mfa.zip" "$work/aligned"
+  "$input" "$mfa_home/models/english_mfa.dict" "$mfa_home/models/english_mfa.zip" "$work/aligned"
 
 "$root/scripts/am-timestamps.sh" baseline \
   --clips "$clips" --mfa-output "$work/aligned" --out "$out" \

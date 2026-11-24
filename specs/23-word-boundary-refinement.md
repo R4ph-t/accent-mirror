@@ -1,6 +1,6 @@
 # 23: Word-boundary refinement
 
-Status: In review · Branch: – · Depends on: 03 (WhisperKit word timings, the unpadded bar and its eval), 04 (pYIN),
+Status: Done (measurement-only; b2 not shipped) · Branch: – · Depends on: 03 (WhisperKit word timings, the unpadded bar and its eval), 04 (pYIN),
 07 (the segmenter the downstream gate runs) ·
 Estimate: 6–8 h agent run + 1.5 h Raph review · Risk: high
 
@@ -193,4 +193,76 @@ wherever they differ. The rest of this spec stands.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+**Under the CTO ruling of 2026-11-23 14:05:** b2 (`ctc-w2v2b960-1`) is the aligner of record, and b1 is a diagnostic.
+The ship gate is downstream, and b2 **fails it on both sets**: spec 07's word verdicts under b2's boundaries differ
+from those under oracle boundaries on 22.5% of words, against a 2% bar. The inconclusive rate also rises by 10–11
+points, against a 2-point bar. This goes to CTO with no retuning. `whisper` stays shipped, `algorithmVersion` stays
+1, and every ship line is PENDING or FAIL. The report is `docs/agreement/reports/word-boundaries-<configDigest8>.{json,md}`.
+
+| Downstream gate | Words | Verdicts differ | Inconclusive: oracle → b2 | Outcome |
+|---|---|---|---|---|
+| Synthetic (TTS markers as oracle) | 307 | 22.5% | 5.2% → 16.3% | FAIL |
+| VCTK (MFA as oracle) | 2,382 | 22.5% | 8.7% → 18.9% | FAIL |
+
+Reference error, per side (median / within 80 ms / mean signed). This is reported only and never netted out of a
+gate:
+
+| | Starts | Ends |
+|---|---|---|
+| MFA on TTS vs markers | 23.5 ms / 98.4% / −24.3 ms | 25.1 ms / 94.2% / −36.8 ms |
+| b2 on TTS vs markers | 27.7 ms / 87.3% / −8.1 ms | 56.3 ms / 73.1% / −82.1 ms |
+| b2 vs MFA on VCTK | 50 ms / 80.0% / −1.2 ms | 40 ms / 76.4% / −53.3 ms |
+| Quadrature **estimate** of b2's VCTK error | 44.1 ms | 31.1 ms |
+
+- **Harness.** Spec 07's `SyllableSegmenter` runs twice per take on the same audio, voicing (`ACFVoicing`),
+  pronunciations (spec 06, starter origin) and comparable words. Only the word spans differ, plus the probability:
+  the oracle run carries Whisper's word probability, and b2's run carries the same probability after the CTC
+  confidence gate. A word's verdict is inconclusive (any low syllable), syllable count, longest syllable index and
+  loudest syllable index.
+- **CTC confidence.** A word's confidence is the mean posterior, over the frames the Viterbi path spends on the
+  word's characters, of the character it's on there. A word b2 can't align gets 0. Below `ctcConfidenceMin` (0.5,
+  untuned), the word's `WordSpan` probability is 0, which makes it inconclusive inside the 10% budget. On VCTK, 3.1%
+  of words fall below it.
+- **Identity.** `ConfigIdentity.alignerModelSHA256` is b2's `packageSHA256`, and `none` otherwise. Contract 2.
+  Thresholds 5, because spec 07 took 4. That adds `ctcConfidenceMin`, `verdictDiffMax` and
+  `inconclusiveRiseMaxPoints`, and appends a digest after spec 07's.
+
+The first build's notes follow. b1 and b2 still miss the 40 ms / 85% bar, which is now a reported target.
+
+- **Seam (AMAlignment).** `WordBoundaryRefiner`, `WhisperOnly` (`whisper`) and `BoundarySearch`. `BoundarySearch`
+  is the one place the clamps live: words are refined left to right, a start window runs from the previous refined
+  end to the word's own recognised end, and an end window from its refined start to the next word's recognised end.
+  So the next word's start can always follow, and nothing leaves `[0, take]`.
+- **b1 (AMProsody, `DSPSnapRefiner`).** `AMProsody` is the lowest module allowed to import both `AMAlignment` and
+  `AMPitch`. It runs pYIN once per take (spec 04) and frame RMS in dBFS (spec 05's definition, vDSP). A voicing or
+  intensity edge counts only when it's a real transition inside the window: a window edge that is still voiced is
+  not an offset. Rule shares are in the report (Open question 2). No constant was tuned.
+- **b2 (AMAlignment, `CTCAligner`, an actor owning the `MLModel`).** One forward pass, then a banded CTC Viterbi over
+  the Whisper words' letters, each word confined to its span ± `snapWindowMs`. The model's `|` separator is folded
+  into blank. Word start is the first letter frame; word end is the frame after the last. A single Core ML
+  prediction can't stop part-way, so `CancellableWork` returns `CancellationError` at once and drops the
+  prediction's late result. The model stays loaded.
+- **b2 model.** `scripts/fetch-ctc.sh` fetches facebook/wav2vec2-base-960h at `22aad52…`, checks 7 upstream SHA-256s,
+  converts in a pinned venv under `.cache/` (`tools/convert_ctc.py`, `tools/ctc-requirements.txt`), and checks the
+  package's 3 files and `packageSHA256`. The conversion is made byte-reproducible: the protobuf spec is re-serialised
+  deterministically and `Manifest.json` gets path-derived identifiers. A clean fetch reproduces the pin. The licence
+  (Apache-2.0) was re-read at the pinned commit. Because b2 doesn't ship, its pin, LICENSE and NOTICE live in
+  `fixtures/models/wav2vec2-base-960h/` (eval-only, like spec 03's `fixtures/vctk/*.sha256`).
+  `Resources/Models/` and `THIRD_PARTY_NOTICES.md` are untouched.
+- **Eval.** `scripts/eval-word-boundaries.sh` (`am-timestamps boundaries`, sandboxed with networking denied) replays
+  spec 03's committed WhisperKit base.en words on the same VCTK audio, so no ASR runs. The refined boundaries are
+  recorded in `fixtures/timestamps/openai_whisper-base.en+<aligner>/`. A release run fails if it doesn't reproduce
+  them, and a package test replays them with networking denied.
+- **Identity.** `ConfigIdentity.aligner` (contract 2), `Thresholds.wordBoundaries` (thresholds 4), goldens
+  re-recorded and digest appended. `algorithmVersion` is unchanged: the shipped aligner is still `whisper`.
+- **Reference sanity check (CTO review, not a gate).** `scripts/reference-check.sh` synthesises the 20 eval phrases
+  with `com.apple.voice.compact.en-US.Samantha`, with SSML `<mark>` bookmarks around every word. The bookmarks come
+  back through the delegate during `write`, in whole 256-sample buffers, so the resolution is 11.6 ms. The audio is
+  aligned through `scripts/mfa-align.sh` (same MFA, models and command, new opt-in input-corpus mode). MFA against the
+  marks, MFA minus mark: starts median 23.5 ms, 98.4% within 80 ms, mean signed −24.3 ms; ends median 25.1 ms,
+  94.2%, −36.8 ms (n 313); ends of words with no punctuation after them median 24.3 ms, 97.9%, −28.1 ms (n 281).
+  End marks fire where the next word starts, so a pause after a word counts as part of it. The check skips cleanly
+  with no voice or no MFA, and fetches nothing.
+- **Diagnostic, not a fix.** b2's ends are early by a fairly constant amount (median signed −40 ms), the usual
+  peaky-CTC effect. Any change to b2's end rule would have to be chosen on spec 02's tuning speakers, which aren't on
+  main. Choosing it on these clips would be tuning on the gate.
