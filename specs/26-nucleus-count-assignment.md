@@ -1,12 +1,12 @@
 # 26: Nucleus count and edge-robust assignment (stacks on spec 25)
 
-Status: Draft · Branch: – · Depends on: 07, 08, 12, 23, 25 (stacked on the unmerged branch
-`factory/25-nucleus-anchored` at cd1855b and its report `nucleus-jitter-acb3910a`; see Open question 6) · Estimate:
+Status: Ready · Branch: factory/26-nucleus-count-assignment (hand build, from cd1855b) · Depends on: 07, 08, 12, 23, 25 (stacked on the unmerged branch
+`factory/25-nucleus-anchored` at cd1855b and its report `nucleus-jitter-acb3910a`; see CTO decision 6) · Estimate:
 6–8 h agent run + 1.5 h Raph review · Risk: high
 
 Risk: high. It changes `Packages/AccentKit/Sources/AMCore/Thresholds.swift` (nucleus keys chosen on the pre-declared
-grid), adds an `UnavailableReason` to the contract, and bumps `thresholdsVersion` and `algorithmVersion`. **Draft,
-not Ready: CTO reviews this spec before any build.** The implementation goes to CTO for an engine and threshold review
+grid), adds an `UnavailableReason` to the contract, and bumps `thresholdsVersion` and `algorithmVersion`. CTO approved this spec on 2026-11-24 at 16:02 Europe/Paris with
+two markups (folded in: §1a and §4) and accepted defaults 2, 3, 5, 6 and 7. The implementation goes to CTO for an engine and threshold review
 together with spec 25, before either merges.
 
 Source: CTO's ruling of 2026-11-24 15:56 Europe/Paris (relayed by Accent Mirror Lead), after spec 25's acceptance 1
@@ -19,6 +19,14 @@ Near-edge on VCTK: words with a nucleus peak within 40 ms of an oracle edge flip
 words: the peak frame must be pYIN-voiced, and pYIN's voicing starts about 60 ms after ACF's at vowel onsets, past
 the envelope peak (p238_001 "stella": peak 1.53–1.57 s, pYIN voiced from 1.58 s, ACF from 1.52 s). Raph asked for
 prior art (2026-11-24, via Accent Mirror Lead); it is in the next section.
+
+**Build order (CTO, 16:02):**
+1. the timestamp check (§1a);
+2. any tracker fix, as its own commit;
+3. the grid on tuning speakers (§1);
+4. the frozen choice, committed;
+5. acceptance 1 (§4);
+6. on a pass, acceptances 2–4 and a PR stacked on 25 (not merged). On a FAIL, the build stops and writes §6.
 
 ## Prior art (algorithms only; no code is copied)
 
@@ -37,7 +45,7 @@ Each source was checked on 2026-11-24. Licences are noted wherever code exists, 
   about 400 syllables. Its abstract suggests "alternative fluent-form syllabifications for multisyllabic words and
   ... phonological rules for predicting syllabic contractions" to improve count agreement. Used for: N_w as a set
   with reduced forms (§2). The convex-hull dip test, which suits merged vowels with shallow dips, is noted as an
-  alternative and not built here (Open question 7).
+  alternative and not built here (CTO decision 7).
 - **Mertens, Prosogram** (Mertens 2004, Speech Prosody, "The Prosogram: semi-automatic transcription of prosody based
   on a tonal perception model"; tool at sites.google.com/site/prosogram). Pitch is measured on syllabic nuclei: the
   voiced part around the local intensity peak, bounded at **−3 dB (left) and −9 dB (right)** from the peak, and
@@ -61,6 +69,29 @@ build writes the final scope proposal (§6). This is the last fallback.
 
 ## Behaviour
 
+### 1a. Timestamp check first (CTO markup 1)
+
+Before any grid run, the build checks `PYINTracker`'s frame timestamp convention. A steady lag of about 60 ms looks
+like frames stamped at their **start** rather than their **centre**: half of a 2048-sample frame at 16 kHz is 64 ms.
+
+- **Checks:**
+  - On spec 25's pulse train (known vowel onsets), compare the first pYIN-voiced frame time with the true onset.
+  - On about 20 MFA vowel onsets per tuning speaker, from at least 5 tuning speakers, compare pYIN and ACF voicing
+    onsets with the MFA vowel start.
+  - Report the median and 90th-percentile signed offsets.
+  - Read the tracker's code for where each frame's time comes from.
+- **If it's an offset bug,** the build fixes it in the tracker as **its own commit**, before the grid:
+  - `algorithmVersion` goes to the next one in this stack (3);
+  - spec 04's goldens are regenerated;
+  - a new test asserts that pYIN's voicing onset lands within 10 ms of the true onset on the pulse train;
+  - the Implementation notes say that pitch consumers (the live strip and spec 09's metrics) shift by the corrected
+    offset.
+  - The grid then uses `voicedWithinMs` ∈ {0, 30}.
+- **If it's real pYIN behaviour** (a lag that varies with onset type, or that remains with centre stamping), the
+  tracker is left alone and the grid uses `voicedWithinMs` ∈ {0, 30, 60}.
+- Either way, the grid stays detection-only on tuning speakers. The finding, with its numbers, goes into the
+  `nucleus-count` report and the tuning log.
+
 ### 1. Count fix, tuned against detection only
 
 - **Pre-declared fixed grid**, written here before any run. No value outside it is ever used.
@@ -69,11 +100,11 @@ build writes the final scope proposal (§6). This is the last fallback.
   - `nucleus.minSeparationMs` ∈ {50, 60, 70, 90}. Spec 25 used 70. 50 allows short unstressed syllables in fast
     speech; 90 is the most conservative merge.
   - `nucleus.regionDropDB` ∈ {3, 6, 9}. This spans Prosogram's −3 dB and −9 dB bounds and spec 25's 6.
-  - **Proposed by Accent Mirror Lead; needs CTO's OK (Open question 1):** `nucleus.voicedWithinMs` ∈ {0, 30, 60}. A
-    candidate peak counts as voiced when any pYIN-voiced frame lies within ±W ms of it; 0 is spec 25's rule. This
-    targets the voicing lag spec 25's build found, and it matches de Jong & Wempe's coarse voicing check. The nucleus
-    region still uses voiced frames only.
-  - That's 60 points, or 180 with the voicing dimension. Every other nucleus parameter stays at spec 25's value:
+  - `nucleus.voicedWithinMs` (CTO-approved fourth dimension, markup 1): {0, 30} if §1a finds an offset bug and the
+    tracker is fixed, otherwise {0, 30, 60}. A candidate peak counts as voiced when any pYIN-voiced frame lies within
+    ±W ms of it; 0 is spec 25's rule. This matches de Jong & Wempe's coarse voicing check. The nucleus region still
+    uses voiced frames only.
+  - That's 120 points (with {0, 30}) or 180 (with {0, 30, 60}). Every other nucleus parameter stays at spec 25's value:
     `minPeakDBFS` −45, `skipCostMs` 60, `windowMs` 30.
 - **Data:** the VCTK **tuning** speakers only (the split manifest, 24 speakers), with their MFA word and phone
   alignments from spec 07's pinned MFA. Phone tiers are re-derived from the existing tuning-speaker MFA runs if they're
@@ -86,7 +117,7 @@ build writes the final scope proposal (§6). This is the last fallback.
 - **Tie-breaks, in order:**
   1. the higher vowel-inside share;
   2. the higher median overlap (IoU) between nucleus regions and their MFA vowel intervals (the only criterion that
-     `regionDropDB` affects; Open question 2);
+     `regionDropDB` affects; CTO decision 2);
   3. the point closest to spec 25's initial values.
 - **Output:**
   - The chosen point goes into `Thresholds.swift` and `docs/thresholds.md`.
@@ -100,7 +131,7 @@ build writes the final scope proposal (§6). This is the last fallback.
   dictionary), plus the counts from a committed list of **reduced forms**. This follows Mermelstein's suggestion of
   alternative fluent-form syllabifications.
 - **Where the list lives:** `Packages/AccentKit/Sources/AMAlignment/Resources/ReducedForms/reduced-forms.json`.
-  - It's committed before any run and never edited on results.
+  - It's committed before any run and **frozen once the grid starts** (CTO, 16:02); it's never edited on results.
   - Each entry is `{word, fullCount, reducedCount, droppedSyllable (index in the context pronunciation), stress,
     source}`.
   - Entries only add counts; they never remove CMUdict's.
@@ -128,9 +159,9 @@ build writes the final scope proposal (§6). This is the last fallback.
   the DP's choice, and the peak moved to the neighbouring word (or skipped, when the neighbour can't take it under
   N_w). Every word the move touches is re-verdicted.
 - If the verdicts agree, the word keeps its verdict. If they don't, each word whose verdict differs gets
-  `.unavailable(.assignmentAmbiguous)`, a new `UnavailableReason` in AMCore (a contract addition; Open question 3).
+  `.unavailable(.assignmentAmbiguous)`, a new `UnavailableReason` in AMCore (a contract addition; CTO decision 3).
   Near-edge words aren't made inconclusive wholesale; only disagreement does that.
-- The report prints an `assignmentAmbiguous` line per set and group: the count, the rate, its Wilson interval, and its
+- The report prints an `assignmentAmbiguous` line per set and group, on both the unjittered and ±40 ms runs: the count, the rate, its Wilson interval, and its
   share of the inconclusive rate.
 
 ### 4. Acceptance tests, in order (stop at the first failure)
@@ -141,8 +172,9 @@ build writes the final scope proposal (§6). This is the last fallback.
    - Pass conditions:
      - **≤ 2% flips at ±40 ms on each set**, pooled and in every multi-syllable group (2, 3, 4+) with n ≥ 30;
      - a per-group inconclusive rise of ≤ 2 points (groups 2 and 3, n ≥ 30);
-     - the **10% inconclusive budget**. **Its population is written down here:** the compared words' inconclusive
-       share under ±40 ms jitter, which is how spec 25's build read it (Open question 4).
+     - the **10% inconclusive budget**, which must hold on **both** populations (CTO markup 4): the compared words'
+       inconclusive share on the **unjittered** oracle run, and their inconclusive share on the **±40 ms jittered**
+       runs. The per-group rise is still jittered against unjittered.
    - Groups with n < 30, and the ±20 and ±80 ms runs, are reported only.
    - It runs on the grid-chosen nucleus parameters and main's verdict thresholds. The `.span` results and spec 25's
      `.nucleus` results (acb3910a) are printed as before columns.
@@ -200,7 +232,7 @@ Nothing is cut in code here.
 - The grid run happens locally on the Mac, by the build itself (spec 11 §7's rule: no hand runs). Parameters outside
   the grid don't change.
 - `thresholdsVersion` and `algorithmVersion` follow on from spec 25's branch (9 and 2): **10 and 3**, with a new
-  golden-digest record (Open question 6).
+  golden-digest record (CTO decision 6).
 - Reports: `docs/agreement/reports/nucleus-count-<configDigest8>.{json,md}` for the grid, and
   `nucleus-jitter-<configDigest8>.{json,md}` for acceptance 1 and §6, each with spec 02's identity header.
 
@@ -220,8 +252,8 @@ Nothing is cut in code here.
 - A new pitch tracker or voicing source. Spec 04's tracker stays; the voicing tolerance is a window on its output.
 - Retuning verdict thresholds or margins.
 - Phone-level CTC from b2.
-- Mermelstein's convex-hull boundary test (Open question 7).
-- UI copy for the new reason (Open question 3).
+- Mermelstein's convex-hull boundary test (CTO decision 7).
+- UI copy for the new reason (an open copy item for Designer).
 
 ## Risks
 
@@ -232,33 +264,29 @@ Nothing is cut in code here.
 - **The synthetic set is small** (51 two-syllable and 15 three-syllable words), so its intervals are wide.
 - **The contract addition** touches every `switch` over `UnavailableReason`.
 
-## Open question (built with the default)
+## Decided (CTO, 2026-11-24 16:02)
 
-1. **Voicing tolerance in the grid.** CTO's grid names three parameters, but spec 25's diagnosis points at pYIN's
-   voicing lag. Default: add `voicedWithinMs` ∈ {0, 30, 60} as a fourth grid dimension. Without CTO's OK, the build
-   runs the three-parameter grid only.
-2. **`regionDropDB` and the objective.** It changes region length (duration) but not P or the peak position, so the
-   count objective can't choose it. Default: the region–vowel IoU tie-break chooses it.
-3. **`assignmentAmbiguous`.** Default: a new AMCore `UnavailableReason`, counted as inconclusive and shown in the app
-   like low confidence until Designer gives it copy. That copy is Designer's call, listed for the lead.
-4. **The 10% budget population for a jitter run.** Default: the compared words' inconclusive share under ±40 ms jitter,
-   which is spec 25's reading. CTO to confirm or name another population.
-5. **Vowel-inside floor.** Default: 0.90, with a 10 ms tolerance.
-6. **Stacking and versions.** Default: the build branch `factory/26-nucleus-count-assignment` is cut from
-   `factory/25-nucleus-anchored` (cd1855b), so spec 25's code, tests and report come with it. Both go to CTO
-   together, and spec 25's report stays unmerged. Versions 10 and 3 follow spec 25's 9 and 2. Because the index lists
-   25 as a dependency, the factory never picks this row; once CTO approves, it's a hand build.
-7. **Mermelstein's convex-hull dip** as an alternative to peak prominence for merged vowels ("idea", "really").
-   Default: not built, because it would add a detector outside the pre-declared grid. It's listed in case acceptance 1
-   fails on vowel–vowel sequences.
+1. **Voicing tolerance:** approved after the timestamp check (§1a). The grid uses {0, 30} if the tracker offset is
+   fixed, or {0, 30, 60} if the lag is real pYIN behaviour.
+2. **`regionDropDB`:** chosen on region–vowel overlap (accepted).
+3. **`assignmentAmbiguous`:** shown like low confidence. The implementation PR logs it as an open copy item for
+   Designer. No UI work.
+4. **The 10% budget** must hold on both the unjittered oracle run and the ±40 ms jittered runs (markup 4).
+5. **Vowel-inside floor:** 0.90 with 10 ms tolerance (accepted).
+6. **Stacking:** the branch `factory/26-nucleus-count-assignment` comes from cd1855b, versions are 10 and 3, and it is
+   reviewed jointly with spec 25 (accepted). If §1a fixes the tracker, that commit is the one that takes
+   `algorithmVersion` 3, and the nucleus changes share it.
+7. **Mermelstein's convex-hull dip** is out of scope (accepted).
 
 ## How to test (Raph)
 
 Every step is run by the build agent and repeated by the reviewer. None needs Raph's hands.
 
 1. `make check` is green, apart from the gate tests while a gate is NOT MET.
-2. `swift test --package-path Packages/AccentKit --filter "NucleusTests|NucleusCountTests|AssignmentStabilityTests"`
+2. `swift test --package-path Packages/AccentKit --filter "NucleusTests|NucleusCountTests|AssignmentStabilityTests|PitchTrackerTests"`
    checks that:
+   - if §1a fixed the tracker, pYIN's voicing onset is within 10 ms of the true onset on the pulse train, and spec 04's
+     goldens match;
    - the grid runner refuses a held-out or synthetic input and reads no verdict;
    - a reduced form ("family" with 2 nuclei) matches, maps syllable indices through `droppedSyllable`, and keeps
      A(w) on context indices;
