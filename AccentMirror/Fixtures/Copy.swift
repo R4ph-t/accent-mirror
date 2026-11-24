@@ -29,7 +29,7 @@ extension Array where Element == Segment {
 
 /// Every user-facing sentence of the fixture-driven shell, from Designer spec v2 §10, §11.1, §13 and Addendum r2.
 /// Pure functions of contract values, so the copy is testable without UI. Spec 28: nothing here reads a verdict, a
-/// diff row, a stress line or a measure state; that copy waits, unused by the views, in `VerdictCopy.swift` for spec
+/// diff row, a stress line or a measure state; that copy waits, unused by the views, in `VerdictSentences.swift` for spec
 /// 29 to delete with its banned-word test.
 enum Copy {
     // MARK: Card 1 titles
