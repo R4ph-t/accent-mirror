@@ -1,6 +1,6 @@
 # 15: Reference library: bundled starter phrases and native recordings
 
-Status: Ready · Branch: – · Depends on: 06 (pronunciations, starter validator), 10 (verdict path), 12 (L0/L1 stages
+Status: Done · Branch: – · Depends on: 06 (pronunciations, starter validator), 10 (verdict path), 12 (L0/L1 stages
 and cache identity) · Estimate: 4–6 h agent run + 1.5 h Raph review · Risk: high
 
 Risk: high. This spec adds `Resources/Starter/` (bundled third-party audio), edits `THIRD_PARTY_NOTICES.md` and adds a
