@@ -1,3 +1,7 @@
+// AMAlignmentCTC: evaluation tooling only (CTO ruling 2026-11-24 on #27). Only am-timestamps and the tests link it;
+// nothing in AMPipeline's dependency closure does, and ShippedAlignerTests fails if that changes. The shipped aligner
+// is `whisper`.
+//
 // ctc-w2v2b960-1 (spec 23, candidate b2): CTC forced alignment of the recognised words with
 // facebook/wav2vec2-base-960h (Apache-2.0) in Core ML. The model is fetched and converted by scripts/fetch-ctc.sh,
 // SHA-256 pinned in fixtures/models/wav2vec2-base-960h/manifest.json, and verified before every load. On device:
@@ -16,6 +20,7 @@
 @preconcurrency import CoreML
 import Foundation
 import Synchronization
+import AMAlignment
 import AMCore
 
 /// The pinned description of the CTC model: its upstream files, the conversion and the converted package.

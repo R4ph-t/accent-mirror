@@ -1,4 +1,5 @@
 import AMAlignment
+import AMAlignmentCTC
 import AMCore
 import AMProsody
 import AMTimestampEval

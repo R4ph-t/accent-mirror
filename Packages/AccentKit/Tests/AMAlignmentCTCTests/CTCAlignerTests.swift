@@ -1,8 +1,11 @@
 import Foundation
 import Testing
 import AMCore
-@testable import AMAlignment
+import AMAlignment
+@testable import AMAlignmentCTC
 
+let repoRoot = URL(filePath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+    .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
 let ctcManifestURL = repoRoot.appending(path: "fixtures/models/wav2vec2-base-960h/manifest.json")
 
 /// Log-probabilities with one class at ~0 per frame and the rest at -10. Classes: 0 blank, 1 separator, 2… letters.

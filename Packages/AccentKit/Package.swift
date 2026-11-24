@@ -59,9 +59,15 @@ let package = Package(
         // Local evaluation tooling (spec 03): never linked into the app, never run by CI.
         .target(name: "AMTimestampEval", dependencies: ["AMCore", "AMAlignment"]),
         .testTarget(name: "AMTimestampEvalTests", dependencies: ["AMCore", "AMAlignment", "AMTimestampEval"]),
+        // Spec 23's b2 (ctc-w2v2b960-1): evaluation tooling only, never shipped (CTO ruling 2026-11-24 on #27). Not a
+        // product and not in `modules`, so AMPipeline (what the app links) can't reach it; only am-timestamps and the
+        // tests depend on it. AMPipelineTests' ShippedAlignerTests fails if anything in AMPipeline's closure does.
+        .target(name: "AMAlignmentCTC", dependencies: ["AMCore", "AMAlignment"]),
+        .testTarget(name: "AMAlignmentCTCTests", dependencies: ["AMCore", "AMAlignment", "AMAlignmentCTC"]),
         // Spec 23 adds the refiners (dsp-snap-1 lives in AMProsody) to the same local tool.
         .executableTarget(name: "am-timestamps",
-                          dependencies: ["AMCore", "AMAlignment", "AMCapture", "AMPitch", "AMProsody", "AMTimestampEval"]),
+                          dependencies: ["AMCore", "AMAlignment", "AMAlignmentCTC", "AMCapture", "AMPitch", "AMProsody",
+                                         "AMTimestampEval"]),
         // Local evaluation tooling (spec 07): the syllable-boundary report. Never linked into the app, never run by CI.
         .target(name: "AMSyllableEval",
                 dependencies: ["AMCore", "AMAlignment", "AMCapture", "AMProsody", "AMTimestampEval"]),

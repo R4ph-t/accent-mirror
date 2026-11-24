@@ -1,4 +1,5 @@
 import AMAlignment
+import AMAlignmentCTC
 import AMCapture
 import AMCore
 import AMProsody
