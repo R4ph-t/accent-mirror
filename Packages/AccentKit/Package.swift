@@ -73,6 +73,9 @@ let package = Package(
                 dependencies: ["AMCore", "AMAlignment", "AMCapture", "AMProsody", "AMTimestampEval"]),
         .testTarget(name: "AMSyllableEvalTests", dependencies: ["AMCore", "AMAlignment", "AMProsody", "AMSyllableEval"]),
         .executableTarget(name: "am-syllables", dependencies: ["AMCore", "AMSyllableEval"]),
+        // The live-capture hand check (spec 14, scripts/capture-check.sh): one take from the microphone, nothing
+        // saved. Never linked into the app, never run by CI.
+        .executableTarget(name: "am-capture", dependencies: ["AMCore", "AMCapture"]),
     ],
     swiftLanguageModes: [.v6]
 )

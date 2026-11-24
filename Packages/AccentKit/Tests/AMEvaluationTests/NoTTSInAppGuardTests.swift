@@ -8,7 +8,8 @@ import Testing
 struct NoTTSInAppGuardTests {
     @Test("the repository passes the guard")
     func repositoryPasses() throws {
-        #expect(try Self.guardExit(root: nil) == 0)
+        // The root is passed, not found with git: the test VM's synced tree is not a git checkout.
+        #expect(try Self.guardExit(root: Repo.root) == 0)
     }
 
     /// Each forbidden reference, planted in a scratch tree laid out like the repository, fails the guard.
