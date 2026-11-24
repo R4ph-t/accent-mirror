@@ -1,0 +1,2774 @@
+{
+  "chosen" : {
+    "minProminenceDB" : 1.5,
+    "minSeparationMs" : 50,
+    "regionDropDB" : 9,
+    "voicedWithinMs" : 60
+  },
+  "clips" : 512,
+  "comparableWords" : 7047,
+  "feasible" : 120,
+  "generatedAt" : "2026-11-24T15:46:14Z",
+  "identity" : {
+    "cleanTree" : true,
+    "config" : {
+      "algorithmVersion" : 3,
+      "aligner" : "whisper",
+      "alignerModelSHA256" : "none",
+      "asrModelID" : "replayed-word-timings",
+      "contractVersion" : 2,
+      "pitchTrackerID" : "pyin-1",
+      "thresholdsVersion" : 10,
+      "voicingID" : "acf-1"
+    },
+    "configDigest" : "69675122c0665f107ef1062509ab426e586ebdfd7e53d08b9a9a404f20baa676",
+    "corpusManifestHash" : "",
+    "evaluatedCommit" : "86c0b8fcf12630f9f51b6b06db5a59de29b2b15b",
+    "labelHash" : "",
+    "macOSVersion" : "Version 26.3 (Build 25D125)",
+    "runnerImage" : "local",
+    "sourceTreeHash" : "5000fc378936541ecf6bedde30c501f856f164b96aeec784cc5b3fa17479c45d",
+    "splitManifestHash" : "cd021cf29163d619c8515e9e6b9eb5aa0d513435dce3bfcf47c5331a670d78d0",
+    "splitSeed" : 20261125,
+    "swiftVersion" : "Apple Swift version 6.2.3 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)",
+    "syntheticReference" : "none",
+    "xcodeVersion" : "Xcode 26.2"
+  },
+  "points" : [
+    {
+      "assignedPeaks" : 3422,
+      "countMatched" : 2085,
+      "medianIoU" : 0.46153847846759244,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 3026,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4250,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4355,
+      "countMatched" : 2694,
+      "medianIoU" : 0.4000000635782982,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3925,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3568,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4928,
+      "countMatched" : 3090,
+      "medianIoU" : 0.3636360345795334,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4491,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3164,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3422,
+      "countMatched" : 2085,
+      "medianIoU" : 0.5000001788140184,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 3026,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4250,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4355,
+      "countMatched" : 2694,
+      "medianIoU" : 0.454545888034194,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3925,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3568,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4928,
+      "countMatched" : 3090,
+      "medianIoU" : 0.41666648288574326,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4491,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3164,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3422,
+      "countMatched" : 2085,
+      "medianIoU" : 0.5000004172326133,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 3026,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4250,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4355,
+      "countMatched" : 2694,
+      "medianIoU" : 0.4615383846519988,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3925,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3568,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4928,
+      "countMatched" : 3090,
+      "medianIoU" : 0.4285703775859873,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4491,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3164,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3421,
+      "countMatched" : 2084,
+      "medianIoU" : 0.46153847846759244,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 3025,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4251,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4354,
+      "countMatched" : 2693,
+      "medianIoU" : 0.40000006457170373,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3924,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3569,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4927,
+      "countMatched" : 3089,
+      "medianIoU" : 0.36363614689209867,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4490,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3165,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3421,
+      "countMatched" : 2084,
+      "medianIoU" : 0.5000001788140184,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 3025,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4251,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4354,
+      "countMatched" : 2693,
+      "medianIoU" : 0.454545888034193,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3924,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3569,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4927,
+      "countMatched" : 3089,
+      "medianIoU" : 0.416666443149369,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4490,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3165,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3421,
+      "countMatched" : 2084,
+      "medianIoU" : 0.5000004172328606,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 3025,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4251,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4354,
+      "countMatched" : 2693,
+      "medianIoU" : 0.46153838359395893,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3924,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3569,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4927,
+      "countMatched" : 3089,
+      "medianIoU" : 0.4285703775859873,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4490,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3165,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3421,
+      "countMatched" : 2084,
+      "medianIoU" : 0.46153847846759244,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 3025,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4251,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4351,
+      "countMatched" : 2690,
+      "medianIoU" : 0.4000000762939126,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3921,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3572,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4919,
+      "countMatched" : 3083,
+      "medianIoU" : 0.3636363163467346,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4483,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3172,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3421,
+      "countMatched" : 2084,
+      "medianIoU" : 0.5000001788140184,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 3025,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4251,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4351,
+      "countMatched" : 2690,
+      "medianIoU" : 0.454545888034196,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3921,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3572,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4919,
+      "countMatched" : 3083,
+      "medianIoU" : 0.41666662196318544,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4483,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3172,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3421,
+      "countMatched" : 2084,
+      "medianIoU" : 0.5000004172328606,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 3025,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4251,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4351,
+      "countMatched" : 2690,
+      "medianIoU" : 0.4615383910003931,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3921,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3572,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4919,
+      "countMatched" : 3083,
+      "medianIoU" : 0.4285704943601052,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4483,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3172,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3376,
+      "countMatched" : 2054,
+      "medianIoU" : 0.46153887348083933,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2987,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4278,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4269,
+      "countMatched" : 2639,
+      "medianIoU" : 0.40000017404558164,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3847,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3622,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4812,
+      "countMatched" : 3023,
+      "medianIoU" : 0.36363666707819103,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4391,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3232,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3376,
+      "countMatched" : 2054,
+      "medianIoU" : 0.500000189741382,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2987,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4278,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4269,
+      "countMatched" : 2639,
+      "medianIoU" : 0.46153802138108513,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3847,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3622,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4812,
+      "countMatched" : 3023,
+      "medianIoU" : 0.4166669787634006,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4391,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3232,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3376,
+      "countMatched" : 2054,
+      "medianIoU" : 0.500000461935647,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2987,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4278,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4269,
+      "countMatched" : 2639,
+      "medianIoU" : 0.4615388847664914,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3847,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3622,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4812,
+      "countMatched" : 3023,
+      "medianIoU" : 0.42857101985386536,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4391,
+      "point" : {
+        "minProminenceDB" : 1.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3232,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3358,
+      "countMatched" : 2048,
+      "medianIoU" : 0.4654752997158593,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2982,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4292,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4246,
+      "countMatched" : 2641,
+      "medianIoU" : 0.4000003147126029,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3836,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3634,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4791,
+      "countMatched" : 3029,
+      "medianIoU" : 0.3636365587061102,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4375,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3242,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3358,
+      "countMatched" : 2048,
+      "medianIoU" : 0.5000002430036921,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2982,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4292,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4246,
+      "countMatched" : 2641,
+      "medianIoU" : 0.46153805523970426,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3836,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3634,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4791,
+      "countMatched" : 3029,
+      "medianIoU" : 0.4166668090556021,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4375,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3242,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3358,
+      "countMatched" : 2048,
+      "medianIoU" : 0.5000004768376097,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2982,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4292,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4246,
+      "countMatched" : 2641,
+      "medianIoU" : 0.46153891721445184,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3836,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3634,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4791,
+      "countMatched" : 3029,
+      "medianIoU" : 0.4285710198538645,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4375,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3242,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3358,
+      "countMatched" : 2048,
+      "medianIoU" : 0.4654752997158593,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2982,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4292,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4246,
+      "countMatched" : 2641,
+      "medianIoU" : 0.4000003147126029,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3836,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3634,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4791,
+      "countMatched" : 3029,
+      "medianIoU" : 0.3636365587061102,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4375,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3242,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3358,
+      "countMatched" : 2048,
+      "medianIoU" : 0.5000002430036921,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2982,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4292,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4246,
+      "countMatched" : 2641,
+      "medianIoU" : 0.46153805523970426,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3836,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3634,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4791,
+      "countMatched" : 3029,
+      "medianIoU" : 0.4166668090556021,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4375,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3242,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3358,
+      "countMatched" : 2048,
+      "medianIoU" : 0.5000004768376097,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2982,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4292,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4246,
+      "countMatched" : 2641,
+      "medianIoU" : 0.46153891721445184,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3836,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3634,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4791,
+      "countMatched" : 3029,
+      "medianIoU" : 0.4285710198538645,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4375,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3242,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3358,
+      "countMatched" : 2048,
+      "medianIoU" : 0.4654752997158593,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2982,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4292,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4244,
+      "countMatched" : 2639,
+      "medianIoU" : 0.4000003242493371,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3834,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3636,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4786,
+      "countMatched" : 3024,
+      "medianIoU" : 0.3636367025455749,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4371,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3247,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3358,
+      "countMatched" : 2048,
+      "medianIoU" : 0.5000002430036921,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2982,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4292,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4244,
+      "countMatched" : 2639,
+      "medianIoU" : 0.46153809191937384,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3834,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3636,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4786,
+      "countMatched" : 3024,
+      "medianIoU" : 0.4166669787634006,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4371,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3247,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3358,
+      "countMatched" : 2048,
+      "medianIoU" : 0.5000004768376097,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2982,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4292,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4244,
+      "countMatched" : 2639,
+      "medianIoU" : 0.4615389397865928,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3834,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3636,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4786,
+      "countMatched" : 3024,
+      "medianIoU" : 0.42857101985386503,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4371,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3247,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3323,
+      "countMatched" : 2021,
+      "medianIoU" : 0.4615389016962585,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2949,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4310,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4190,
+      "countMatched" : 2601,
+      "medianIoU" : 0.4000003242493371,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3781,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3668,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4719,
+      "countMatched" : 2984,
+      "medianIoU" : 0.3636369232300444,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4312,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3285,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3323,
+      "countMatched" : 2021,
+      "medianIoU" : 0.5000002086162569,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2949,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4310,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4190,
+      "countMatched" : 2601,
+      "medianIoU" : 0.46153805523970426,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3781,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3668,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4719,
+      "countMatched" : 2984,
+      "medianIoU" : 0.41935491611509895,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4312,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3285,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3323,
+      "countMatched" : 2021,
+      "medianIoU" : 0.5000004768373001,
+      "nonContextCounts" : 28,
+      "peaksInsideVowel" : 2949,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4310,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4190,
+      "countMatched" : 2601,
+      "medianIoU" : 0.4641017895009988,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3781,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3668,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4719,
+      "countMatched" : 2984,
+      "medianIoU" : 0.4285711074364406,
+      "nonContextCounts" : 42,
+      "peaksInsideVowel" : 4312,
+      "point" : {
+        "minProminenceDB" : 2,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3285,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3280,
+      "countMatched" : 1996,
+      "medianIoU" : 0.46291229461035455,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2912,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4331,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4125,
+      "countMatched" : 2565,
+      "medianIoU" : 0.40000030517586915,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3723,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3701,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4665,
+      "countMatched" : 2952,
+      "medianIoU" : 0.3636363163467346,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4257,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3313,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3280,
+      "countMatched" : 1996,
+      "medianIoU" : 0.5000001788140184,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2912,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4331,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4125,
+      "countMatched" : 2565,
+      "medianIoU" : 0.4615380552397026,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3723,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3701,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4665,
+      "countMatched" : 2952,
+      "medianIoU" : 0.41666662196318544,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4257,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3313,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3280,
+      "countMatched" : 1996,
+      "medianIoU" : 0.50000035762777,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2912,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4331,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4125,
+      "countMatched" : 2565,
+      "medianIoU" : 0.4615388847664914,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3723,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3701,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4665,
+      "countMatched" : 2952,
+      "medianIoU" : 0.4285704943601052,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4257,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3313,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3280,
+      "countMatched" : 1996,
+      "medianIoU" : 0.46291229461035455,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2912,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4331,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4125,
+      "countMatched" : 2565,
+      "medianIoU" : 0.40000030517586915,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3723,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3701,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4665,
+      "countMatched" : 2952,
+      "medianIoU" : 0.3636363163467346,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4257,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3313,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3280,
+      "countMatched" : 1996,
+      "medianIoU" : 0.5000001788140184,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2912,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4331,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4125,
+      "countMatched" : 2565,
+      "medianIoU" : 0.4615380552397026,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3723,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3701,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4665,
+      "countMatched" : 2952,
+      "medianIoU" : 0.41666662196318544,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4257,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3313,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3280,
+      "countMatched" : 1996,
+      "medianIoU" : 0.50000035762777,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2912,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4331,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4125,
+      "countMatched" : 2565,
+      "medianIoU" : 0.4615388847664914,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3723,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3701,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4665,
+      "countMatched" : 2952,
+      "medianIoU" : 0.4285704943601052,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4257,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3313,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3280,
+      "countMatched" : 1996,
+      "medianIoU" : 0.46291229461035455,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2912,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4331,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4124,
+      "countMatched" : 2564,
+      "medianIoU" : 0.4000003147126029,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3722,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3702,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4661,
+      "countMatched" : 2948,
+      "medianIoU" : 0.3636363656067652,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4254,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3317,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3280,
+      "countMatched" : 1996,
+      "medianIoU" : 0.5000001788140184,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2912,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4331,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4124,
+      "countMatched" : 2564,
+      "medianIoU" : 0.4615380552397026,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3722,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3702,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4661,
+      "countMatched" : 2948,
+      "medianIoU" : 0.41666665010982007,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4254,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3317,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3280,
+      "countMatched" : 1996,
+      "medianIoU" : 0.50000035762777,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2912,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4331,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4124,
+      "countMatched" : 2564,
+      "medianIoU" : 0.461538893231375,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3722,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3702,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4661,
+      "countMatched" : 2948,
+      "medianIoU" : 0.4285706500618339,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4254,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3317,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3254,
+      "countMatched" : 1974,
+      "medianIoU" : 0.4666655159002784,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2888,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4345,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4088,
+      "countMatched" : 2534,
+      "medianIoU" : 0.40000035285971197,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3687,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3726,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4609,
+      "countMatched" : 2914,
+      "medianIoU" : 0.3636365587061102,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4208,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3347,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3254,
+      "countMatched" : 1974,
+      "medianIoU" : 0.5000001996754693,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2888,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4345,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4088,
+      "countMatched" : 2534,
+      "medianIoU" : 0.4615381920832492,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3687,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3726,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4609,
+      "countMatched" : 2914,
+      "medianIoU" : 0.41666675359012545,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4208,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3347,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3254,
+      "countMatched" : 1974,
+      "medianIoU" : 0.5000004172326133,
+      "nonContextCounts" : 27,
+      "peaksInsideVowel" : 2888,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4345,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4088,
+      "countMatched" : 2534,
+      "medianIoU" : 0.4615389397865928,
+      "nonContextCounts" : 36,
+      "peaksInsideVowel" : 3687,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3726,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4609,
+      "countMatched" : 2914,
+      "medianIoU" : 0.42857101985386536,
+      "nonContextCounts" : 41,
+      "peaksInsideVowel" : 4208,
+      "point" : {
+        "minProminenceDB" : 2.5,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3347,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3240,
+      "countMatched" : 1967,
+      "medianIoU" : 0.46666636996818023,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2878,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4364,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4051,
+      "countMatched" : 2512,
+      "medianIoU" : 0.40000038147008626,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3657,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3748,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4560,
+      "countMatched" : 2884,
+      "medianIoU" : 0.36363648087529,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4165,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3378,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3240,
+      "countMatched" : 1967,
+      "medianIoU" : 0.5000002235174972,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2878,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4364,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4051,
+      "countMatched" : 2512,
+      "medianIoU" : 0.4615380552397026,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3657,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3748,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4560,
+      "countMatched" : 2884,
+      "medianIoU" : 0.416666746553478,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4165,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3378,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3240,
+      "countMatched" : 1967,
+      "medianIoU" : 0.5000004231931108,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2878,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4364,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4051,
+      "countMatched" : 2512,
+      "medianIoU" : 0.4615388368009367,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3657,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3748,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4560,
+      "countMatched" : 2884,
+      "medianIoU" : 0.42857101985386403,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4165,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3378,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3240,
+      "countMatched" : 1967,
+      "medianIoU" : 0.46666636996818023,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2878,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4364,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4051,
+      "countMatched" : 2512,
+      "medianIoU" : 0.40000038147008626,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3657,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3748,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4560,
+      "countMatched" : 2884,
+      "medianIoU" : 0.36363648087529,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4165,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3378,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3240,
+      "countMatched" : 1967,
+      "medianIoU" : 0.5000002235174972,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2878,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4364,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4051,
+      "countMatched" : 2512,
+      "medianIoU" : 0.4615380552397026,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3657,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3748,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4560,
+      "countMatched" : 2884,
+      "medianIoU" : 0.416666746553478,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4165,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3378,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3240,
+      "countMatched" : 1967,
+      "medianIoU" : 0.5000004231931108,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2878,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4364,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4051,
+      "countMatched" : 2512,
+      "medianIoU" : 0.4615388368009367,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3657,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3748,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4560,
+      "countMatched" : 2884,
+      "medianIoU" : 0.42857101985386403,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4165,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3378,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3240,
+      "countMatched" : 1967,
+      "medianIoU" : 0.46666636996818023,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2878,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4364,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4050,
+      "countMatched" : 2511,
+      "medianIoU" : 0.40000038147008626,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3656,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3749,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4557,
+      "countMatched" : 2881,
+      "medianIoU" : 0.3636365587061102,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4163,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3381,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3240,
+      "countMatched" : 1967,
+      "medianIoU" : 0.5000002235174972,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2878,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4364,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4050,
+      "countMatched" : 2511,
+      "medianIoU" : 0.4615380552397026,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3656,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3749,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4557,
+      "countMatched" : 2881,
+      "medianIoU" : 0.41666676600774133,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4163,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3381,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3240,
+      "countMatched" : 1967,
+      "medianIoU" : 0.5000004231931108,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2878,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4364,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4050,
+      "countMatched" : 2511,
+      "medianIoU" : 0.46153883821177527,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3656,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3749,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4557,
+      "countMatched" : 2881,
+      "medianIoU" : 0.42857101985386403,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4163,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3381,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3221,
+      "countMatched" : 1951,
+      "medianIoU" : 0.4666663699681795,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2861,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4373,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4025,
+      "countMatched" : 2489,
+      "medianIoU" : 0.4000003814700907,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3633,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3766,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4521,
+      "countMatched" : 2859,
+      "medianIoU" : 0.3636367104273552,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4132,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3403,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3221,
+      "countMatched" : 1951,
+      "medianIoU" : 0.5000002475886467,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2861,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4373,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4025,
+      "countMatched" : 2489,
+      "medianIoU" : 0.461538055239706,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3633,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3766,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4521,
+      "countMatched" : 2859,
+      "medianIoU" : 0.4166670640313426,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4132,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3403,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3221,
+      "countMatched" : 1951,
+      "medianIoU" : 0.500000429153361,
+      "nonContextCounts" : 25,
+      "peaksInsideVowel" : 2861,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4373,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4025,
+      "countMatched" : 2489,
+      "medianIoU" : 0.4615389016962585,
+      "nonContextCounts" : 33,
+      "peaksInsideVowel" : 3633,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3766,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4521,
+      "countMatched" : 2859,
+      "medianIoU" : 0.4285711074364406,
+      "nonContextCounts" : 38,
+      "peaksInsideVowel" : 4132,
+      "point" : {
+        "minProminenceDB" : 3,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3403,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3150,
+      "countMatched" : 1899,
+      "medianIoU" : 0.46291229461035455,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2796,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4426,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3902,
+      "countMatched" : 2408,
+      "medianIoU" : 0.4000003814700907,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3520,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3844,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4367,
+      "countMatched" : 2754,
+      "medianIoU" : 0.3636367104273552,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3990,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3508,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3150,
+      "countMatched" : 1899,
+      "medianIoU" : 0.5000001788140298,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2796,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4426,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3902,
+      "countMatched" : 2408,
+      "medianIoU" : 0.46153805523970426,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3520,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3844,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4367,
+      "countMatched" : 2754,
+      "medianIoU" : 0.4166670640313426,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3990,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3508,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3150,
+      "countMatched" : 1899,
+      "medianIoU" : 0.5000002960365262,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2796,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4426,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3902,
+      "countMatched" : 2408,
+      "medianIoU" : 0.46153883821177527,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3520,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3844,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4367,
+      "countMatched" : 2754,
+      "medianIoU" : 0.4285711074364406,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3990,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 50,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3508,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3150,
+      "countMatched" : 1899,
+      "medianIoU" : 0.46291229461035455,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2796,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4426,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3902,
+      "countMatched" : 2408,
+      "medianIoU" : 0.4000003814700907,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3520,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3844,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4367,
+      "countMatched" : 2754,
+      "medianIoU" : 0.3636367104273552,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3990,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3508,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3150,
+      "countMatched" : 1899,
+      "medianIoU" : 0.5000001788140298,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2796,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4426,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3902,
+      "countMatched" : 2408,
+      "medianIoU" : 0.46153805523970426,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3520,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3844,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4367,
+      "countMatched" : 2754,
+      "medianIoU" : 0.4166670640313426,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3990,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3508,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3150,
+      "countMatched" : 1899,
+      "medianIoU" : 0.5000002960365262,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2796,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4426,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3902,
+      "countMatched" : 2408,
+      "medianIoU" : 0.46153883821177527,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3520,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3844,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4367,
+      "countMatched" : 2754,
+      "medianIoU" : 0.4285711074364406,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3990,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 60,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3508,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3150,
+      "countMatched" : 1899,
+      "medianIoU" : 0.46291229461035455,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2796,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4426,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3901,
+      "countMatched" : 2407,
+      "medianIoU" : 0.4000003814700907,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3519,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3845,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4366,
+      "countMatched" : 2753,
+      "medianIoU" : 0.36363681682869975,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3989,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3509,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3150,
+      "countMatched" : 1899,
+      "medianIoU" : 0.5000001788140298,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2796,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4426,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3901,
+      "countMatched" : 2407,
+      "medianIoU" : 0.461538055239706,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3519,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3845,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4366,
+      "countMatched" : 2753,
+      "medianIoU" : 0.4166670640313426,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3989,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3509,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3150,
+      "countMatched" : 1899,
+      "medianIoU" : 0.5000002960365262,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2796,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4426,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3901,
+      "countMatched" : 2407,
+      "medianIoU" : 0.46153883962261383,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3519,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3845,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4366,
+      "countMatched" : 2753,
+      "medianIoU" : 0.4285711074364406,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3989,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 70,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3509,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3138,
+      "countMatched" : 1889,
+      "medianIoU" : 0.4615389016962585,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2786,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4431,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3884,
+      "countMatched" : 2395,
+      "medianIoU" : 0.4000003814700907,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3504,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3857,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4342,
+      "countMatched" : 2738,
+      "medianIoU" : 0.36602846477569784,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3970,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 3,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3524,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3138,
+      "countMatched" : 1889,
+      "medianIoU" : 0.5000001788140298,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2786,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4431,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3884,
+      "countMatched" : 2395,
+      "medianIoU" : 0.46153809191937384,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3504,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3857,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4342,
+      "countMatched" : 2738,
+      "medianIoU" : 0.419354610463036,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3970,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 6,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3524,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3138,
+      "countMatched" : 1889,
+      "medianIoU" : 0.500000273329968,
+      "nonContextCounts" : 26,
+      "peaksInsideVowel" : 2786,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 0
+      },
+      "short" : 4431,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 3884,
+      "countMatched" : 2395,
+      "medianIoU" : 0.46153886219455265,
+      "nonContextCounts" : 34,
+      "peaksInsideVowel" : 3504,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 30
+      },
+      "short" : 3857,
+      "words" : 7047
+    },
+    {
+      "assignedPeaks" : 4342,
+      "countMatched" : 2738,
+      "medianIoU" : 0.4285711074364406,
+      "nonContextCounts" : 37,
+      "peaksInsideVowel" : 3970,
+      "point" : {
+        "minProminenceDB" : 4,
+        "minSeparationMs" : 90,
+        "regionDropDB" : 9,
+        "voicedWithinMs" : 60
+      },
+      "short" : 3524,
+      "words" : 7047
+    }
+  ],
+  "reducedFormsEntries" : 11,
+  "reducedFormsSHA256" : "8cfdebb1ee56dade2a9a886885efee36d5f875e31c5a9a4c3f11e6a7c8059e46",
+  "speakers" : [
+    "p232",
+    "p245",
+    "p246",
+    "p248",
+    "p251",
+    "p256",
+    "p261",
+    "p283",
+    "p284",
+    "p285",
+    "p288",
+    "p298",
+    "p303",
+    "p305",
+    "p317",
+    "p326",
+    "p333",
+    "p334",
+    "p347",
+    "p351",
+    "p360",
+    "p363",
+    "p374",
+    "p376"
+  ],
+  "suite" : "nucleus-count",
+  "timestampCheck" : "REAL PYIN LAG (tracker unchanged; voicedWithinMs ∈ {0, 30, 60})",
+  "voicedWithinMs" : [
+    0,
+    30,
+    60
+  ]
+}
