@@ -23,7 +23,8 @@ public enum NotSavedReason: String, Sendable, Hashable, Codable, CaseIterable {
     case takeProblem, failed, cancelled, notAccepted
 }
 
-/// Why a write, rename or prune of the take store failed (spec 16 maps file-system errors onto these).
-public enum StorageError: String, Sendable, Hashable, Codable, CaseIterable {
+/// Why a write, rename or prune of the take store failed (spec 16 maps file-system errors onto these). An `Error` so
+/// a `TakePersisting` store can throw it (spec 12); its JSON is unchanged.
+public enum StorageError: String, Error, Sendable, Hashable, Codable, CaseIterable {
     case diskFull, permissionDenied, ioFailure
 }

@@ -22,6 +22,17 @@ public enum PairScoring {
         words: [PlacementTake.Word], you: PlacementAnalysis, model: PlacementAnalysis, modelVoice: String,
         natives: [WordIndex: [NativeReading]] = [:], thresholds: Thresholds = .current
     ) throws -> Scoring {
+        try Scorer.score(
+            input(words: words, you: you, model: model, modelVoice: modelVoice, natives: natives, thresholds: thresholds),
+            thresholds: thresholds)
+    }
+
+    /// What `score` scores: the words with A(w), both takes' L1 data and your take warped onto the model (spec 09).
+    /// The analyzer (spec 12) keeps the warp for the time map and the band.
+    public static func input(
+        words: [PlacementTake.Word], you: PlacementAnalysis, model: PlacementAnalysis, modelVoice: String,
+        natives: [WordIndex: [NativeReading]] = [:], thresholds: Thresholds = .current
+    ) throws -> ScoringInput {
         let modelWords = Dictionary(
             model.segmentation.words.filter { $0.kind == .present }.map { ($0.phraseWord, $0) },
             uniquingKeysWith: { a, _ in a })
@@ -71,11 +82,8 @@ public enum PairScoring {
             incompleteTargetWords: targets.filter { !present.contains($0) },
             incompleteNonTargetWords: words.map(\.index).filter { !present.contains($0) && !targets.contains($0) })
 
-        return try Scorer.score(
-            ScoringInput(
-                words: scoringWords, modelVoice: modelVoice, model: take(model), you: take(you),
-                alignment: you.alignment, alignmentSummary: summary, warp: warp,
-                hopSeconds: you.pitch.hopSeconds),
-            thresholds: thresholds)
+        return ScoringInput(
+            words: scoringWords, modelVoice: modelVoice, model: take(model), you: take(you),
+            alignment: you.alignment, alignmentSummary: summary, warp: warp, hopSeconds: you.pitch.hopSeconds)
     }
 }

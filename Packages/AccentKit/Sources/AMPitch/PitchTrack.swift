@@ -66,6 +66,30 @@ public struct PitchTrack: Sendable, Hashable {
     }
 }
 
+/// A stored track reads back exactly as it was built (spec 12's L0 cache): no post-processing runs again.
+extension PitchTrack: Codable {
+    enum CodingKeys: String, CodingKey { case segments, medianF0Hz, hopSeconds }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let segments = try container.decode([PitchSegment].self, forKey: .segments)
+        let median = try container.decodeIfPresent(Double.self, forKey: .medianF0Hz)
+        let hop = try container.decode(Double.self, forKey: .hopSeconds)
+        guard hop > 0, hop.isFinite, segments.isEmpty == (median == nil) else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .hopSeconds, in: container, debugDescription: "PitchTrack needs hop > 0 and a median iff voiced")
+        }
+        self.init(uncheckedSegments: segments, medianF0Hz: median, hopSeconds: hop)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(segments, forKey: .segments)
+        try container.encodeIfPresent(medianF0Hz, forKey: .medianF0Hz)
+        try container.encode(hopSeconds, forKey: .hopSeconds)
+    }
+}
+
 /// The post-processing steps, as pure functions over per-frame log2 F0 (nil: unvoiced).
 enum PitchContour {
     /// Octave repair looks this many frames either side for its local reference (pyin-1 algorithm constant).
