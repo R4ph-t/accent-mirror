@@ -153,9 +153,18 @@ public struct StressPlacementDetector: Sendable {
     public func place(
         _ take: PlacementTake, alignment: WordAlignment, segmentation: SyllableSegmentation, pitch: PitchTrack
     ) -> PlacementAnalysis {
-        let prominence = TakeProminence(
-            ComparableSyllable.all(in: segmentation, pitch: pitch, thresholds: thresholds.prominence),
-            thresholds: thresholds.prominence)
+        place(
+            take, alignment: alignment, segmentation: segmentation, pitch: pitch,
+            syllables: ComparableSyllable.all(in: segmentation, pitch: pitch, thresholds: thresholds.prominence))
+    }
+
+    /// `place` with the comparable syllables already built (`ComparableSyllable.all(in: segmentation, pitch:)`).
+    /// They read no tuned key, so spec 11's tuner builds them once per take and re-places them at every grid point.
+    public func place(
+        _ take: PlacementTake, alignment: WordAlignment, segmentation: SyllableSegmentation, pitch: PitchTrack,
+        syllables: [ComparableSyllable]
+    ) -> PlacementAnalysis {
+        let prominence = TakeProminence(syllables, thresholds: thresholds.prominence)
         let segmented = Dictionary(segmentation.words.map { ($0.phraseWord, $0) }, uniquingKeysWith: { first, _ in first })
 
         let results = take.words.compactMap { word -> PlacementWordResult? in

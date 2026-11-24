@@ -123,6 +123,15 @@ public struct MetricResult: Sendable, Hashable, Codable {
     /// True for a line that consumes the VCTK positive set (built by `PositiveSetGates.line`). The report check
     /// (`scripts/check-positive-set-guard.sh`) fails a report where such a line passes while the set is NOT EVALUATED.
     public let dependsOnPositiveSet: Bool?
+    /// Spec 11 §3a: the positive row's pairs, distinct reference speakers and prompts, and lost pairs by reason.
+    public var accounting: RowAccounting?
+
+    /// This line with its §3a accounting.
+    public func with(accounting: RowAccounting?) -> MetricResult {
+        var copy = self
+        copy.accounting = accounting
+        return copy
+    }
 
     public init(
         name: String, layer: ValidationLayer, n: Int, value: Double?, gate: Gate?, status: MetricStatus,

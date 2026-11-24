@@ -107,11 +107,25 @@ enum Paths {
     static let tuningLog = "docs/agreement/tuning-log.md"
     static let smokeDetector = "fixtures/smoke/detector"
     static let mfaBaseline = "fixtures/vctk/mfa-word-baseline.json"
+    /// Spec 11 §3a: each phrase's ordered native references.
+    static let referenceLists = "fixtures/vctk/reference-lists.json"
     static let so762Cache = "eval-cache/speechocean762/current"
     static let so762Timings = "eval-cache/speechocean762-timings"
     static let whisperModel = "openai_whisper-base.en"
     static let vctkCache = "eval-cache/vctk/current"
     static let vctkTimings = "eval-cache/vctk-timings"
+    /// Spec 11: the VCTK tuning speakers' replayed word timings (spec 22's synthref reads the same folder).
+    static let vctkTuningTimings = "eval-cache/vctk-tuning-timings"
+}
+
+/// A path under `eval-cache/`, moved to `$AM_EVAL_CACHE` when that is set (spec 11: corpora, recordings and models
+/// stay outside the worktree, which `make test-vm` syncs into the VM).
+func cacheURL(_ root: URL, _ path: String) -> URL {
+    let prefix = "eval-cache/"
+    if path.hasPrefix(prefix), let cache = ProcessInfo.processInfo.environment["AM_EVAL_CACHE"], !cache.isEmpty {
+        return URL(fileURLWithPath: cache).appendingPathComponent(String(path.dropFirst(prefix.count)))
+    }
+    return root.appendingPathComponent(path)
 }
 
 /// The identity of the configuration the harness evaluates. ASR is replayed word timings (CI never runs ASR); the
@@ -447,9 +461,9 @@ func l2Shared(_ args: Arguments, root: URL) async throws -> Int32 {
     let sets = SpeechOceanSets(labels: labels)
     let split = try JSONDecoder().decode(
         SpeechOceanSplitManifest.self, from: Data(contentsOf: root.appendingPathComponent(Paths.soSplit)))
-    let corpusDir = args.value("corpus").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.so762Cache)
+    let corpusDir = args.value("corpus").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.so762Cache)
     let timingsDir = args.value("timings").map(URL.init(fileURLWithPath:))
-        ?? root.appendingPathComponent(Paths.so762Timings)
+        ?? cacheURL(root, Paths.so762Timings)
     let suites: [(name: String, words: [SpeechOceanWord], layer: ValidationLayer, key: String)] = [
         ("L2 recall (stress-wrong words), after suppression", sets.recall, .descriptive, "recall"),
         ("L2 false positives, clean 1,400, after suppression", sets.cleanFalsePositive, .shippedConfigCheck, "clean"),
@@ -527,62 +541,80 @@ func l2Shared(_ args: Arguments, root: URL) async throws -> Int32 {
     return 0
 }
 
-/// The VCTK positive set: pair counts from the trimmed cache, then every positive-set gate (specs 09 and 10), each
-/// held-out pair analysed by the pipeline (spec 12) over replayed word timings.
-func positive(_ args: Arguments, root: URL) async throws -> Int32 {
+/// The positive set's result: its gate lines (with §3a accounting), the reported anomaly line, notes and status.
+struct PositiveResult {
+    var status: PositiveSetStatus
+    var lines: [MetricResult]
+    var anomaly: MetricResult
+    var notes: [String]
+    var run: PositiveRun
+    var headlinePairs: Int
+}
+
+/// The VCTK positive set (specs 09, 10, 12; spec 11 §3a): every held-out take with a kept clip, scored by the
+/// analyzer against the first listed reference usable for every phrase word.
+func positiveResult(_ args: Arguments, root: URL, prefix: String = "positive") async throws -> PositiveResult? {
     let manifest = try VCTKEvalSpeakersManifest.load(root.appendingPathComponent(Paths.evalSpeakers))
-    let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.vctkCache)
+    let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.vctkCache)
     guard let cache = PositiveCache(cacheDir) else {
-        print("positive: NOT EVALUATED (no trimmed VCTK cache: run scripts/fetch-vctk-eval.sh)")
-        return 0
+        print("\(prefix): NOT EVALUATED (no trimmed VCTK cache: run scripts/fetch-vctk-eval.sh)")
+        return nil
     }
     let table = try VCTKSubPhraseTable.load(root.appendingPathComponent(Paths.subPhrases))
     let counts = PositiveSetCounts(manifest: manifest, table: table, kept: cache.kept, rejected: cache.rejected)
-    for line in counts.lines { print("positive: \(line)") }
-    let pairs = counts.pairs
-    let status = pairs.status()
-    print("positive: \(status.text)")
+    for line in counts.lines { print("\(prefix): \(line)") }
+    let status = counts.pairs.status()
+    print("\(prefix): \(status.text)")
 
-    // Every positive-set gate goes through the one consumer (PositiveSetGates.line), and none can read PASS while the
-    // set is NOT EVALUATED. Each held-out pair is analysed by the Analyzer (spec 12): replayed word timings, real
-    // pitch, real scoring, against the phrase's bundled native readers.
-    let timingsDir = args.value("timings").map(URL.init(fileURLWithPath:)) ?? root.appendingPathComponent(Paths.vctkTimings)
+    let lists = try VCTKReferenceLists.load(root.appendingPathComponent(Paths.referenceLists))
+    let listProblems = lists.problems(manifest: manifest)
+    guard listProblems.isEmpty else { throw CLIError.failed("reference lists: " + listProblems.joined(separator: "; ")) }
+    for short in lists.shortLists { print("\(prefix): reference list short: \(short)") }
+    let timingsDir = args.value("timings").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.vctkTimings)
     var notes: [String] = []
     var run = PositiveRun()
+    let pairs = referencedPairs(
+        speakers: manifest.heldOutSpeakers.map(\.id), available: Set(cache.kept), phrases: table.evaluationPhrases)
     if FileManager.default.fileExists(atPath: timingsDir.appendingPathComponent(ReplayManifest.fileName).path) {
-        let timings = try FixtureTimestamper(directory: timingsDir)
-        print("positive: analysing \(pairs.headline.count) headline pairs through the pipeline (spec 12), word timings replayed from \(timings.asrModelID)")
-        run = try await PositiveRun.run(
-            pairs: pairs.headline, cache: cacheDir, available: Set(cache.kept),
+        var parts = [try FixtureTimestamper(directory: timingsDir)]
+        let tuningTimings = cacheURL(root, Paths.vctkTuningTimings)
+        if FileManager.default.fileExists(atPath: tuningTimings.appendingPathComponent(ReplayManifest.fileName).path) {
+            parts.append(try FixtureTimestamper(directory: tuningTimings))
+        }
+        let timings = ReplayUnion(parts: parts)
+        print("\(prefix): analysing \(pairs.count) held-out takes through the pipeline (spec 12) against the §3a reference lists, word timings replayed from \(timings.asrModelID)")
+        let references = try await ReferencedPhrases.build(
+            phrases: Set(pairs.map(\.phrase)), lists: lists, cache: cacheDir, available: Set(cache.kept),
             phrases: try PositivePhrases(root: root, manifest: manifest, table: table), timings: timings)
-        notes.append("pipeline: spec 12 Analyzer, word timings replayed from \(timings.asrModelID) (recorded once with am-eval record-timings --set positive), pYIN pitch, spec 10 scoring, natives = the phrase's bundled readers")
+        run = try await PositiveRun.run(pairs: pairs, references: references)
+        notes.append("pipeline: spec 12 Analyzer, word timings replayed from \(timings.asrModelID), pYIN pitch, spec 10 scoring; references: fixtures/vctk/reference-lists.json (§3a), first listed reference usable for every phrase word; natives (A(w), band) = the phrase's analysed references but the take's speaker")
+        let served = Dictionary(grouping: run.accounts.compactMap(\.reference), by: { $0 }).mapValues(\.count)
+        notes.append("references serving pairs: " + served.sorted { $0.key < $1.key }.map { "\($0.key) \($0.value)" }.joined(separator: ", "))
+        var skips: [String: Int] = [:]
+        for a in run.accounts { for (_, reason) in a.skipped { skips[reason.rawValue, default: 0] += 1 } }
+        notes.append("references skipped before the one used (first unusable word's reason): " + skips.sorted { $0.key < $1.key }.map { "\($0.key) \($0.value)" }.joined(separator: ", "))
     } else {
         let reason = "no recorded word timings at \(timingsDir.path) (am-eval record-timings --set positive)"
-        print("positive: pairs not analysed: \(reason)")
+        print("\(prefix): pairs not analysed: \(reason)")
         notes.append(reason)
     }
+    notes += lists.shortLists.map { "reference list short (§3a minimum 3): \($0)" }
     var measured = PositiveGates.measured(run.outcomes)
     measured[BandCoverageGate.dependent().name] = BandCoverageGate.measured(run.band)
-    let lines = PositiveSetGates.lines(positiveSet: status, measured: measured, pairs: pairs.headline.count)
-    func describe(_ m: MetricResult) -> String {
-        let value = m.value.map { String(format: "%.3f", $0) } ?? "–"
-        let gate = m.gate.map { " gate \($0.direction == .atLeast ? "≥" : "≤") \($0.bound)" } ?? ""
-        func f(_ x: Double) -> String { String(format: "%.3f", x) }
-        let interval = m.intervals.map { "\($0.label) [\(f($0.lower)), \(f($0.upper))]" }.joined(separator: "; ")
-        let worstSpeaker = m.worstSpeaker.map { "\($0.id) \(f($0.value)) (n \($0.n))" } ?? "–"
-        let worstPhrase = m.worstPhrase.map { "\($0.id) \(f($0.value)) (n \($0.n))" } ?? "–"
-        return "\(m.name): n \(m.n), value \(value),\(gate), interval \(interval.isEmpty ? "–" : interval), worst speaker \(worstSpeaker), worst phrase \(worstPhrase): \(m.status.text)"
+    let accounting = run.accounting()
+    let lines = PositiveSetGates.dependents().map { dependent in
+        PositiveSetGates.line(dependent, positiveSet: status, measured: measured[dependent.name], pairs: pairs.count)
+            .with(accounting: accounting[dependent.name])
     }
-    for m in lines { print("positive: \(describe(m))") }
+    for m in lines { print("\(prefix): \(describePositive(m))") }
     for row in PositiveGates.coverageByMeasure(run.outcomes) {
         let line = "evaluation coverage, \(row.measure.rawValue): \(String(format: "%.3f", row.coverage)) of \(row.applicable) applicable"
-        print("positive: \(line)")
+        print("\(prefix): \(line)")
         notes.append(line)
     }
     let anomaly = PositiveGates.referenceAnomaly(run.outcomes, positiveSet: status)
-    print("positive: \(describe(anomaly.line)) (reported, not a release gate)")
+    print("\(prefix): \(describePositive(anomaly.line)) (reported, not a release gate)")
     if !anomaly.reviewPhrases.isEmpty {
-        print("positive: override review (referenceAnomaly ≥ 20%): \(anomaly.reviewPhrases.joined(separator: ", "))")
         notes.append("override review (referenceAnomaly ≥ 20%): \(anomaly.reviewPhrases.joined(separator: ", "))")
     }
     let decisions = Dictionary(grouping: run.outcomes) { outcome -> String in
@@ -594,26 +626,38 @@ func positive(_ args: Arguments, root: URL) async throws -> Int32 {
         case .verdict(.inconclusive): "inconclusive"
         }
     }.mapValues(\.count).sorted { $0.key < $1.key }.map { "\($0.key) \($0.value)" }.joined(separator: ", ")
-    let measuredLine = "pairs measured: scoring \(run.outcomes.count), band coverage \(run.band.count) of \(pairs.headline.count) headline pairs (\(decisions.isEmpty ? "none" : decisions)); thresholds are initial and untuned"
-    print("positive: \(measuredLine)")
+    let measuredLine = "pairs measured: scoring \(run.outcomes.count), band coverage \(run.band.count) of \(pairs.count) held-out takes (\(decisions.isEmpty ? "none" : decisions)); thresholds digest \(try configDigest(harnessConfig()).prefix(8))"
+    print("\(prefix): \(measuredLine)")
     notes.append(measuredLine)
     for (reason, count) in run.unscored.sorted(by: { $0.key < $1.key }) {
-        print("positive: not scored: \(count) \(reason)")
+        print("\(prefix): not scored: \(count) \(reason)")
         notes.append("not scored: \(count) \(reason)")
     }
     if run.noBandCoverage > 0 {
-        print("positive: scored with no band coverage (no comparable voiced frame): \(run.noBandCoverage)")
         notes.append("scored with no band coverage (no comparable voiced frame): \(run.noBandCoverage)")
     }
-    for (reason, count) in run.nativeFailures.sorted(by: { $0.key < $1.key }) {
-        print("positive: native reader not analysed: \(count) \(reason)")
-        notes.append("native reader not analysed: \(count) \(reason)")
-    }
-    let summary = ReleaseSummary(negativeSet: nil, positiveSet: status, gated: lines)
+    return PositiveResult(
+        status: status, lines: lines, anomaly: anomaly.line, notes: notes, run: run, headlinePairs: pairs.count)
+}
+
+func describePositive(_ m: MetricResult) -> String {
+    let value = m.value.map { String(format: "%.3f", $0) } ?? "–"
+    let gate = m.gate.map { " gate \($0.direction == .atLeast ? "≥" : "≤") \($0.bound)" } ?? ""
+    func f(_ x: Double) -> String { String(format: "%.3f", x) }
+    let interval = m.intervals.map { "\($0.label) [\(f($0.lower)), \(f($0.upper))]" }.joined(separator: "; ")
+    let worstSpeaker = m.worstSpeaker.map { "\($0.id) \(f($0.value)) (n \($0.n))" } ?? "–"
+    let worstPhrase = m.worstPhrase.map { "\($0.id) \(f($0.value)) (n \($0.n))" } ?? "–"
+    let accounting = m.accounting.map { "; \($0.text)" } ?? ""
+    return "\(m.name): n \(m.n), value \(value),\(gate), interval \(interval.isEmpty ? "–" : interval), worst speaker \(worstSpeaker), worst phrase \(worstPhrase): \(m.status.text)\(accounting)"
+}
+
+/// `suite --suite positive`: the positive set alone (spec 12's report, with spec 11's references).
+func positive(_ args: Arguments, root: URL) async throws -> Int32 {
+    guard let result = try await positiveResult(args, root: root) else { return 0 }
+    let summary = ReleaseSummary(negativeSet: nil, positiveSet: result.status, gated: result.lines)
     for line in summary.lines { print(line) }
-    // The detector exists (spec 08); the VCTK CV estimate is a positive-set number, so it waits on the set itself.
-    print("VCTK CV estimate, not shipped (6 folds over the \(manifest.tuningSpeakers.count) tuning speakers): \(status.isEvaluable ? "NOT EVALUATED (the fold-tuned run is spec 11)" : "NOT EVALUATED (blocked on spec 24: positive set NOT EVALUATED)")")
     if args.flag("write-report") {
+        let manifest = try VCTKEvalSpeakersManifest.load(root.appendingPathComponent(Paths.evalSpeakers))
         let split = try JSONDecoder().decode(
             VCTKSplitManifest.self, from: Data(contentsOf: root.appendingPathComponent(Paths.vctkSplit)))
         let identity = try reportIdentity(
@@ -622,18 +666,28 @@ func positive(_ args: Arguments, root: URL) async throws -> Int32 {
             splitSeed: split.foldSeed)
         let report = AgreementReport(
             suite: "positive", generatedAt: Date(), release: args.flag("release"), identity: identity,
-            metrics: lines + [anomaly.line], summary: summary, notes: notes)
+            metrics: result.lines + [result.anomaly], summary: summary, notes: result.notes)
         let written = try ReportWriter.write(report, to: ReportWriter.directory(repositoryRoot: root))
         print("wrote \(written.json.path) and .md")
     }
     return 0
 }
 
-func tune(_ args: Arguments, root: URL) -> Int32 {
-    let grid = TuningGrid()
-    print("tune: grid of \(grid.weights.count) weight points × \(grid.lambdas.count) λ × \(grid.tauPairs.count)³ τ pairs per n-bucket = \(grid.count) points")
-    print("tune: NOT RUN: the fixed-grid fit over cached L1 features is spec 11 (spec 08's detector is wired). Re-tunes are logged in \(Paths.tuningLog).")
-    return 2
+/// Writes fixtures/vctk/reference-lists.json from the trimmed cache's kept clips (§3a; availability only).
+func vctkReferenceLists(_ args: Arguments, root: URL) throws -> Int32 {
+    let path = root.appendingPathComponent(Paths.evalSpeakers)
+    let manifest = try VCTKEvalSpeakersManifest.load(path)
+    let cacheDir = args.value("vctk").map(URL.init(fileURLWithPath:)) ?? cacheURL(root, Paths.vctkCache)
+    guard let cache = PositiveCache(cacheDir) else { throw CLIError.failed("no trimmed VCTK cache at \(cacheDir.path)") }
+    let table = try VCTKSubPhraseTable.load(root.appendingPathComponent(Paths.subPhrases))
+    let lists = VCTKReferenceLists.make(
+        manifest: manifest, available: Set(cache.kept), phrases: table.evaluationPhrases.sorted(),
+        evalSpeakersSHA256: try sha256(of: path))
+    let problems = lists.problems(manifest: manifest)
+    for problem in problems + lists.shortLists { print("vctk-reference-lists: \(problem)") }
+    try ManifestJSON.encode(lists).write(to: root.appendingPathComponent(Paths.referenceLists), options: .atomic)
+    print("vctk-reference-lists: \(lists.phrases.count) phrases → \(Paths.referenceLists)")
+    return problems.isEmpty ? 0 : 1
 }
 
 func usage() {
@@ -647,9 +701,13 @@ func usage() {
                                                            write the sub-phrase cut list from MFA alignments
           vctk-split [--eval-speakers <json>] [--out <json>]               write fixtures/splits/vctk.json
           smoke-build --selection <json> --so762 <dir> --vctk <dir> --out <dir>
-          suite --suite smoke|l2-shared|positive [--write-report] [--release]
-          tune
-          record-timings --set smoke|l2-shared|positive [--corpus <so762 dir>] [--vctk <dir>] [--model-dir <dir>] [--out <dir>]
+          suite --suite smoke|l2-shared|positive|release [--write-report] [--release] [--tuning <json>] [--guard <json>] [--guard-initial <json>]
+          tune [--guard <spec11-guard tuning JSON>] [--limit <n>] [--spot-checks <n>]
+                                                           spec 11: the fixed-grid fit, the nested CV and the VCTK CV
+          vctk-reference-lists [--vctk <dir>]             spec 11 §3a: write fixtures/vctk/reference-lists.json
+          guard-inputs --scope tuning|held-out --out <dir> [--vctk <dir>]
+                                                           spec 11: the guard's VCTK clips, MFA input corpus and inputs JSON
+          record-timings --set smoke|l2-shared|l2-tuning|positive|vctk-tuning [--corpus <so762 dir>] [--vctk <dir>] [--model-dir <dir>] [--out <dir>] [--append]
                                                            run WhisperKit once and save replayable word timings (local only)
           starter-build --phrases <json> --eval-speakers <json> --raw <dir> --timings <dir> --out <dir>
                                                            build Resources/Starter (spec 15; scripts/build-starter.sh)
@@ -661,6 +719,7 @@ func usage() {
 
 // MARK: - Main
 
+setlinebuf(stdout)  // progress reaches a tee'd log as it happens
 let args = Arguments(Array(CommandLine.arguments.dropFirst()))
 do {
     switch args.command {
@@ -676,9 +735,12 @@ do {
         case "smoke": exit(try smoke(root: root))
         case "l2-shared": exit(try await l2Shared(args, root: root))
         case "positive": exit(try await positive(args, root: root))
+        case "release": exit(try await release(args, root: root))
         case let other: throw CLIError.usage("unknown suite \(other)")
         }
-    case "tune": exit(tune(args, root: try repositoryRoot()))
+    case "tune": exit(try await tune(args, root: try repositoryRoot()))
+    case "guard-inputs": exit(try guardInputs(args, root: try repositoryRoot()))
+    case "vctk-reference-lists": exit(try vctkReferenceLists(args, root: try repositoryRoot()))
     case "record-timings": exit(try await recordTimingsCommand(args, root: try repositoryRoot()))
     case "smoke-detector": exit(try await smokeDetector(args, root: try repositoryRoot()))
     case "bench": exit(try await bench(args, root: try repositoryRoot()))
