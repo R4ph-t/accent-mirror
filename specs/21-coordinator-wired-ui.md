@@ -1,6 +1,7 @@
 # 21: Coordinator-wired UI: record, compare, play back
 
-Status: Ready · Branch: – · Depends on: 11 (tuned config), 12 (pipeline, coordinator), 13 (entitlement, mic string;
+Status: Ready · Branch: – · Depends on: 11 (tuned config; analysis gate: Done only when spec 11's release report shows every
+positive-set gate PASS; Raph 2026-11-24), 12 (pipeline, coordinator), 13 (entitlement, mic string;
 by hand), 14 (live capture), 15 (starter library), 16 (take store), 20 (charts) · Estimate: 10–12 h agent run + 2 h
 Raph review · Risk: high
 
