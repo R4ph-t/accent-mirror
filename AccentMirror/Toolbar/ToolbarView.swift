@@ -13,7 +13,6 @@ struct ToolbarView: View {
     var body: some View {
         let decision = ToolbarCompaction.decide(
             available: Double(available),
-            titleIdeal: Double(TextMeasure.width(state.title, role: .phraseTitle)),
             controls: Self.controlWidths(for: state)
         )
         HStack(spacing: 0) {
@@ -70,6 +69,9 @@ struct ToolbarView: View {
                 .lineLimit(1)
             subtitle
         }
+        // The title truncates before any control compacts (r5 D1): the full title in the tooltip, and VoiceOver
+        // reads it whole.
+        .help(state.title)
         .accessibilityElement(children: .combine)
     }
 
