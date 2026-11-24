@@ -1,0 +1,24 @@
+{
+  "version" : 1,
+  "about" : "Spec 26 §2: reduced (fluent) syllable counts added to N_w, after Mermelstein (1975)'s alternative fluent-form syllabifications. From general English phonology (schwa or syncope elision before a liquid or nasal, and smoothing), not from any corpus. Entries only add counts. An entry whose count the bundled CMUdict already lists for the word is dropped (alreadyInCMUdict). Frozen once spec 26's grid starts: never edited on results.",
+  "droppedSyllableMeaning" : "Index of the syllable the shorter form lacks, counted in the longer form. For a reduction (reducedCount < fullCount) the longer form is the context pronunciation, so it is an index in the context pronunciation; for a smoothing split (reducedCount > fullCount, 'real') it is the take's extra syllable, which maps to no context syllable.",
+  "entries" : [
+    { "word" : "memory", "fullCount" : 3, "reducedCount" : 2, "droppedSyllable" : 1, "stress" : 0, "source" : "syncope: schwa before a liquid (M EH1 M ER0 IY0 → mem-ry)" },
+    { "word" : "factory", "fullCount" : 3, "reducedCount" : 2, "droppedSyllable" : 1, "stress" : 0, "source" : "syncope: schwa before a liquid (F AE1 K T ER0 IY0 → fac-try)" },
+    { "word" : "mystery", "fullCount" : 3, "reducedCount" : 2, "droppedSyllable" : 1, "stress" : 0, "source" : "syncope: schwa before a liquid (M IH1 S T ER0 IY0 → mys-try)" },
+    { "word" : "library", "fullCount" : 3, "reducedCount" : 2, "droppedSyllable" : 1, "stress" : 0, "source" : "syncope: unstressed vowel between liquids (L AY1 B R EH0 R IY2 → li-bry)" },
+    { "word" : "centuries", "fullCount" : 3, "reducedCount" : 2, "droppedSyllable" : 1, "stress" : 0, "source" : "syncope: schwa before a liquid (S EH1 N CH ER0 IY0 Z → cen-chries)" },
+    { "word" : "various", "fullCount" : 3, "reducedCount" : 2, "droppedSyllable" : 1, "stress" : 0, "source" : "smoothing: unstressed /i/ to a glide before a vowel (V EH1 R IY0 AH0 S → var-yus)" },
+    { "word" : "everyone", "fullCount" : 3, "reducedCount" : 2, "droppedSyllable" : 1, "stress" : 0, "source" : "syncope: unstressed /i/ before a glide (EH1 V R IY0 W AH2 N → ev-rwun)" },
+    { "word" : "comfortable", "fullCount" : 4, "reducedCount" : 3, "droppedSyllable" : 1, "stress" : 0, "source" : "syncope: schwa before a liquid (K AH1 M F ER0 T AH0 B AH0 L → comf-ta-ble)" },
+    { "word" : "everybody", "fullCount" : 4, "reducedCount" : 3, "droppedSyllable" : 1, "stress" : 0, "source" : "syncope: unstressed /i/ of 'every' (EH1 V R IY0 B AA2 D IY0 → ev-ry-bo-dy → evr-bo-dy)" },
+    { "word" : "poem", "fullCount" : 2, "reducedCount" : 1, "droppedSyllable" : 1, "stress" : 0, "source" : "smoothing: vowel–schwa sequence merged (P OW1 AH0 M → pome)" },
+    { "word" : "real", "fullCount" : 1, "reducedCount" : 2, "droppedSyllable" : 1, "stress" : 0, "source" : "smoothing pair, the other way: the vowel–/l/ sequence split (R IY1 L → re-al)" }
+  ],
+  "alreadyInCMUdict" : [
+    "family", "every", "camera", "different", "chocolate", "favorite", "several", "general", "natural", "probably",
+    "restaurant", "evening", "history", "boundary", "separate", "average", "beverage", "opera", "business",
+    "wednesday", "temperature", "vegetable", "interesting", "actually", "usually", "basically", "everything",
+    "especially", "fire", "hour", "our"
+  ]
+}
