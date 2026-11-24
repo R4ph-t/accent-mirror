@@ -198,6 +198,10 @@ struct PositiveRun {
                 switch result.response.outcome {
                 case .takeProblem(let problem):
                     run.unscored["take problem before scoring (\(problem.rawValue))", default: 0] += 1
+                case .failed(.inferenceFailed(stage: .mapTime)):
+                    // The usual cause: the reference reader's recognised words miss or substitute a phrase word, so it
+                    // can't serve as the model (PairScoring.Failure.modelIncomplete).
+                    run.unscored["failed at mapTime (reference \(pair.reference) incomplete for \(pair.phrase))", default: 0] += 1
                 case .failed(let error):
                     run.unscored["failed: \(error)", default: 0] += 1
                 default:
