@@ -1,6 +1,6 @@
 # 20: Charts: live strip, playhead, earlier takes and voice-switch ease
 
-Status: Ready · Branch: – · Depends on: 19 (fixture-driven UI shell), 29 (v3 result screen, Designer spec v3), 28 (scoring off; was 11, then 27; repointed 2026-11-24 after spike 27's
+Status: Done · Branch: – · Depends on: 19 (fixture-driven UI shell), 29 (v3 result screen, Designer spec v3), 28 (scoring off; was 11, then 27; repointed 2026-11-24 after spike 27's
 NO-GO and Raph's v1 show-don't-judge decision) · Estimate: 6–8 h agent run + 1.5 h Raph review
 
 Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)") §7 (recording and analysing rows of the state
