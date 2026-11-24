@@ -193,14 +193,16 @@ import Testing
 
     @Test("a word with one peak fewer is nucleus-short: low, no stress features, out of the comparable set")
     func nucleusShortWord() async throws {
-        // "photography", 4 syllables; the last two share one bump with a 2 dB dip, so the energy shows 3 nuclei.
+        // "photography", 4 syllables; the last two share one bump with a dip under `nucleus.minProminenceDB`, so the
+        // energy shows 3 nuclei. Spec 25 used a 2 dB dip under its 3 dB floor; spec 26's grid chose 1.5 dB, so the dip
+        // is 1 dB: the same scenario (a dip shallower than the floor merges), not a looser check.
         let edges = [0.20, 0.40, 0.60, 0.80, 1.00]
         let word = SyntheticWord(
             text: "photography", arpabet: "F AH0 T AA1 G R AH0 F IY0", edges: edges,
             shape: { time, syllable, edges in
                 guard syllable >= 2 else { return SyntheticTake.bump(time, syllable, edges) }
                 let taper = min(1, (time - edges[2]) / 0.06, (edges[4] - time) / 0.06)
-                let dip = 1 - (1 - pow(10, -2.0 / 20)) * exp(-pow((time - edges[3]) / 0.03, 2) / 2)
+                let dip = 1 - (1 - pow(10, -1.0 / 20)) * exp(-pow((time - edges[3]) / 0.03, 2) / 2)
                 return max(0, taper) * dip
             })
         let take = SyntheticTake(words: [word], duration: 1.2)

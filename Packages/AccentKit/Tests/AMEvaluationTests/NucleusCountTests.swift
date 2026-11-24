@@ -46,6 +46,17 @@ import Testing
         }
     }
 
+    @Test("the reduced-forms file's hash in the tuning log matches the committed file") func reducedFormsHash() throws {
+        let file = try Data(contentsOf: Repo.url(
+            "Packages/AccentKit/Sources/AMAlignment/Resources/ReducedForms/reduced-forms.json"))
+        let log = try String(contentsOf: Repo.url("docs/agreement/tuning-log.md"), encoding: .utf8)
+        let entry = try #require(log.components(separatedBy: "\n### ").first { $0.contains("spec 26 nucleus count grid") })
+        let marker = "`reduced-forms.json` SHA-256 `"
+        let start = try #require(entry.range(of: marker))
+        let recorded = String(entry[start.upperBound...].prefix(64))
+        #expect(recorded == SHA256Digest.hex(of: file))
+    }
+
     @Test("the grid is the pre-declared one: 180 points with the real-lag voicing values, 120 after an offset fix")
     func predeclaredGrid() {
         #expect(NucleusCountGrid.points(voicedWithinMs: NucleusCountGrid.voicedWithinMsRealLag).count == 180)
