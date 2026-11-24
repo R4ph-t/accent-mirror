@@ -748,6 +748,7 @@ do {
     case "bench": exit(try await bench(args, root: try repositoryRoot()))
     case "starter-build": exit(try await starterBuild(args))
     case "nucleus-jitter": exit(try await nucleusJitter(args, root: try repositoryRoot()))
+    case "timestamp-check": exit(try await timestampCheck(args, root: try repositoryRoot()))
     default:
         usage()
         exit(args.command == "help" ? 0 : 64)

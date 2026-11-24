@@ -190,7 +190,7 @@ public struct NucleusDetector: Sendable {
     }
 
     /// Per 10 ms cell from the take's start: voiced in the track (bridged frames are not).
-    static func voicedCells(_ pitch: PitchTrack, count: Int) -> [Bool] {
+    public static func voicedCells(_ pitch: PitchTrack, count: Int) -> [Bool] {
         var cells = [Bool](repeating: false, count: count)
         let hop = pitch.hopSeconds
         for segment in pitch.segments {
