@@ -111,6 +111,33 @@ struct LabelLayoutTests {
         #expect(targets == ["photography", "harder", "than", "looks"])
     }
 
+    /// r5 D3: "than" has no rule of its own. It is a target word only in a take where a card-1 diff row or the
+    /// card-1 sentence names it (the reduction row "ra, phy, than."); everywhere else it is an unstressed,
+    /// non-target word label and hides first in a collision.
+    @MainActor @Test func thanIsATargetOnlyWhereCardOneNamesIt() throws {
+        let library = try #require(FixtureLibrary(bundle: Bundle(for: ShellModel.self)))
+        var named = 0, unnamed = 0
+        for name in try library.allNames() {
+            let loaded = try library.load(name)
+            guard loaded.phrase.words.contains(where: { ShellPresenter.normalizedWord($0.text) == "than" }) else { continue }
+            let verdict = loaded.fixture.analysis?.verdict
+            let rows = verdict?.kind == .feedback ? ShellPresenter.orderedRows(verdict?.rows ?? []) : []
+            let cardOneNames = rows.flatMap { ($0.word.map { [$0] } ?? []) + ($0.targets ?? []) }
+                + (verdict?.inconclusive?.words ?? [])
+            let isNamed = cardOneNames.map(ShellPresenter.normalizedWord).contains("than")
+            let than = try #require(ShellPresenter.pitch(loaded).words.first { ShellPresenter.normalizedWord($0.text) == "than" })
+            #expect(than.isTarget == isNamed, "\(name)")
+            #expect(LabelLayout.wordPriority(isTarget: than.isTarget) == (isNamed ? .always : .low), "\(name)")
+            if isNamed { named += 1 } else { unnamed += 1 }
+        }
+        // Both cases occur: result-feedback and feedback-too-much-contrast-last name it; rows-too-much-contrast doesn't.
+        #expect(named >= 2 && unnamed >= 2)
+        let tooMuch = try library.load("rows-too-much-contrast")
+        #expect(ShellPresenter.pitch(tooMuch).words.first { $0.text == "than" }?.isTarget == false)
+        let last = try library.load("feedback-too-much-contrast-last")
+        #expect(ShellPresenter.pitch(last).words.first { $0.text == "than" }?.isTarget == true)
+    }
+
     @MainActor @Test func namedTargetWordsComeFromRowsTheSentenceAndTheManifest() {
         let phrase = ["Photography", "is", "harder", "than", "it", "looks."]
         // A row's word, and a row target that is a whole word; a syllable (HAR) names no word.
