@@ -18,3 +18,7 @@
 # CI and the factory's own config.
 ^\.github/
 ^\.factory/
+
+# Synthetic references: network/API key tooling
+^tools/SynthRef/
+^scripts/check-no-tts-in-app\.sh$
