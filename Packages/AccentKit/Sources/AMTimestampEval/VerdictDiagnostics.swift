@@ -15,9 +15,17 @@ public struct DiagnosticWord: Codable, Sendable, Equatable {
     /// max(|start error|, |end error|) of the candidate's span against the oracle's, in ms.
     public var boundaryErrorMs: Double
     public var gatedByConfidence: Bool
+    /// Spec 25 (CTO markup 3): a nucleus peak lies within 40 ms of either of the word's oracle edges. Nil when the
+    /// harness had no pitch track (no nuclei).
+    public var nucleusNearEdge: Bool?
+    /// Spec 25, `.nucleus` only, on the oracle side: P (the nuclei the word could take) and whether it is
+    /// nucleus-short. Diagnostics only.
+    public var oracleNucleusAvailable: Int?
+    public var oracleNucleusShort: Bool?
 
     public init(clipID: String, word: String, oracle: WordVerdict, candidate: WordVerdict,
-                candidateUngated: WordVerdict? = nil, boundaryErrorMs: Double, gatedByConfidence: Bool = false) {
+                candidateUngated: WordVerdict? = nil, boundaryErrorMs: Double, gatedByConfidence: Bool = false,
+                nucleusNearEdge: Bool? = nil) {
         self.clipID = clipID
         self.word = word
         self.oracle = oracle
@@ -25,6 +33,7 @@ public struct DiagnosticWord: Codable, Sendable, Equatable {
         self.candidateUngated = candidateUngated ?? candidate
         self.boundaryErrorMs = boundaryErrorMs
         self.gatedByConfidence = gatedByConfidence
+        self.nucleusNearEdge = nucleusNearEdge
     }
 
     public var flipped: Bool { oracle != candidate }

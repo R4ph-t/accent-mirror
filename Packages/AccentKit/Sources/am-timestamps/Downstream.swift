@@ -72,9 +72,7 @@ struct DownstreamHarness {
                 pronunciations: pronunciations, spans: spans, l0Key: clipID, transcriptRevision: 1)
             let segmentation = try segmenter.segment(input)
             return Dictionary(uniqueKeysWithValues: segmentation.words.map { word in
-                (word.phraseWord, WordVerdict(syllables: word.syllables.map {
-                    (duration: $0.duration, intensityDB: $0.energyDBFS, low: $0.level == .low)
-                }))
+                (word.phraseWord, WordVerdict(word))
             })
         }
         let oracleVerdicts = try run(oraclePairs, oracleSpans)

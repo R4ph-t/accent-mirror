@@ -33,6 +33,31 @@ public struct GuardRun: Sendable, Hashable, Codable {
         public let gatedWords: Int
     }
 
+    /// Spec 25 (CTO markup 3): flips of words with a nucleus peak within 40 ms of an oracle edge, against words with none.
+    public struct NearEdge: Sendable, Hashable, Codable {
+        public let nearWords: Int
+        public let nearFlips: Int
+        public let farWords: Int
+        public let farFlips: Int
+
+        public init(nearWords: Int, nearFlips: Int, farWords: Int, farFlips: Int) {
+            self.nearWords = nearWords
+            self.nearFlips = nearFlips
+            self.farWords = farWords
+            self.farFlips = farFlips
+        }
+    }
+
+    /// Spec 25 diagnostics on the oracle side (`.nucleus`), per syllable group.
+    public struct NucleusBucket: Sendable, Hashable, Codable {
+        public let bucket: String
+        public let words: Int
+        /// Words with P = N_w.
+        public let countMatch: Int
+        /// Nucleus-short words.
+        public let short: Int
+    }
+
     public struct Comparison: Sendable, Hashable, Codable {
         public let id: String
         public let candidate: String
@@ -49,6 +74,9 @@ public struct GuardRun: Sendable, Hashable, Codable {
         public let boundaryError: [Bin]
         public let keptUnjittered: Int
         public let inconclusiveSplit: InconclusiveSplit?
+        /// Spec 25: present when the run had nuclei (a pitch track).
+        public var nearEdge: NearEdge? = nil
+        public var nucleusOracle: [NucleusBucket]? = nil
 
         public var evaluated: Bool { status == "evaluated" && words > 0 }
     }
@@ -69,6 +97,8 @@ public struct GuardRun: Sendable, Hashable, Codable {
 
     public let formatVersion: Int
     public let thresholdsLabel: String
+    /// Spec 25: `span` or `nucleus`; absent in runs from before spec 25 (span).
+    public var measurement: String? = nil
     public let seed: UInt64
     public let asrModelID: String?
     public let ctcModel: String?

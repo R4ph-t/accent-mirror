@@ -1,6 +1,7 @@
 import AMAlignment
 import AMAlignmentCTC
 import AMCore
+import AMPitch
 import AMProsody
 import AMTimestampEval
 import Foundation
@@ -32,8 +33,11 @@ extension DownstreamHarness {
     }
 
     /// `candidate` is keyed by phrase position; `recognised` is the recogniser's words (for the substitution count).
+    /// `pitch` is the take's spec 04 track: `.nucleus` measurement needs it (spec 25), and with it each word records
+    /// whether a nucleus peak lies within `nearEdgeMs` of an oracle edge (CTO markup 3's diagnostic).
     func diagnose(transcript: String, samples: [Float], sampleRate: Double, oracle: [BaselineWord],
-                  candidate: [Int: ConfidentWord], recognised: [WordTimestamp], clipID: String) throws -> Diagnosed {
+                  candidate: [Int: ConfidentWord], recognised: [WordTimestamp], clipID: String,
+                  pitch: PitchTrack? = nil) throws -> Diagnosed {
         let phrase = selector.expectedPhrase(for: PhraseText(text: transcript, origin: .starter))
         let tokens = phrase.words.map { Tokens.normalize($0.text) }
         let oracleIndex = Tokens.match(tokens: tokens, words: oracle.map(\.word))
@@ -72,24 +76,62 @@ extension DownstreamHarness {
         }
 
         func run(_ pairs: [AlignedWordPair], _ spans: [WordIndex: SyllableSegmenter.WordSpan]) throws -> [WordIndex: WordVerdict] {
+            var ignored: [WordIndex: NucleusWordAssignment] = [:]
+            return try run(pairs, spans, nuclei: &ignored)
+        }
+        func run(_ pairs: [AlignedWordPair], _ spans: [WordIndex: SyllableSegmenter.WordSpan],
+                 nuclei: inout [WordIndex: NucleusWordAssignment]) throws -> [WordIndex: WordVerdict] {
             let input = SyllableSegmenter.Input(
                 samples: samples, sampleRate: sampleRate, alignment: try WordAlignment(pairs: pairs),
-                pronunciations: pronunciations, spans: spans, l0Key: clipID, transcriptRevision: 1)
-            return Dictionary(uniqueKeysWithValues: try segmenter.segment(input).words.map { word in
-                (word.phraseWord, WordVerdict(syllables: word.syllables.map {
-                    (duration: $0.duration, intensityDB: $0.energyDBFS, low: $0.level == .low)
-                }))
-            })
+                pronunciations: pronunciations, spans: spans, l0Key: clipID, transcriptRevision: 1, pitch: pitch)
+            let words = try segmenter.segment(input).words
+            for word in words { if let assignment = word.nucleusAssignment { nuclei[word.phraseWord] = assignment } }
+            return Dictionary(uniqueKeysWithValues: words.map { word in (word.phraseWord, WordVerdict(word)) })
         }
-        let oracleVerdicts = try run(oraclePairs, oracleSpans)
+        // Peaks of the take's nuclei: detection reads no word edge, so one pass serves every run and both modes.
+        let peaks = pitch.map {
+            NucleusDetector(thresholds: segmenter.thresholds).detect(samples: samples, sampleRate: sampleRate, pitch: $0)
+                .map(\.peakTime)
+        }
+        var oracleNucleus: [WordIndex: NucleusWordAssignment] = [:]
+        let oracleVerdicts = try run(oraclePairs, oracleSpans, nuclei: &oracleNucleus)
         let gated = try run(candidatePairs, gatedSpans)
         let ungated = try run(candidatePairs, ungatedSpans)
         let words = oracleVerdicts.keys.sorted().compactMap { word -> DiagnosticWord? in
             guard let c = gated[word], let u = ungated[word], let o = oracleVerdicts[word], let meta = info[word] else { return nil }
-            return DiagnosticWord(clipID: clipID, word: meta.text, oracle: o, candidate: c, candidateUngated: u,
-                                  boundaryErrorMs: meta.errorMs, gatedByConfidence: meta.gated)
+            let near = peaks.map { peaks in
+                oracleSpans[word].map { span in
+                    peaks.contains { abs($0 - span.start) <= Self.nearEdgeS || abs($0 - span.end) <= Self.nearEdgeS }
+                } ?? false
+            }
+            var diagnostic = DiagnosticWord(clipID: clipID, word: meta.text, oracle: o, candidate: c, candidateUngated: u,
+                                            boundaryErrorMs: meta.errorMs, gatedByConfidence: meta.gated,
+                                            nucleusNearEdge: near)
+            diagnostic.oracleNucleusAvailable = oracleNucleus[word]?.available
+            diagnostic.oracleNucleusShort = oracleNucleus[word]?.short
+            return diagnostic
         }
         return Diagnosed(words: words, substituted: unmatched.substituted, deleted: unmatched.deleted)
+    }
+}
+
+extension DownstreamHarness {
+    /// CTO markup 3: a word is "near an edge" when a nucleus peak lies within 40 ms of either oracle edge (the ±40 ms
+    /// jitter radius). Diagnostic only.
+    static let nearEdgeS = 0.040
+}
+
+extension WordVerdict {
+    /// The gate's verdict of one segmented word. A nucleus-short word (spec 25 §2) has no stress features: it is
+    /// inconclusive, with no longest or loudest syllable (its display spans are not measured).
+    init(_ word: SegmentedWord) {
+        if word.isNucleusShort {
+            self.init(inconclusive: true, syllableCount: word.syllables.count, longestSyllable: nil, loudestSyllable: nil)
+        } else {
+            self.init(syllables: word.syllables.map {
+                (duration: $0.duration, intensityDB: $0.energyDBFS, low: $0.level == .low)
+            })
+        }
     }
 }
 
