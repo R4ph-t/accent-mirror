@@ -152,24 +152,27 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public init() {}
     }
 
-    /// Nucleus detection and assignment, spec 25 §1–§3. Initial values chosen before any data, never tuned on
-    /// held-out data (CTO markup 4: fixed in spec 25, pass or fail).
+    /// Nucleus detection and assignment, spec 25 §1–§3. Initial values chosen before any data (CTO markup 4: fixed in
+    /// spec 25). Spec 26 §1 chose `minProminenceDB`, `minSeparationMs`, `regionDropDB` and `voicedWithinMs` on its
+    /// pre-declared grid, against detection truth on the VCTK tuning speakers only (report `nucleus-count-*`, tuning
+    /// log 2026-11-24); the other keys keep spec 25's values.
     public struct Nucleus: Sendable, Hashable, Codable {
         /// A candidate peak of the band-limited envelope must reach this level.
         public var minPeakDBFS = -45.0
-        /// dB above the higher of the two minima separating a candidate from its neighbours (spec 07's 3 dB).
-        public var minProminenceDB = 3.0
-        /// Candidates closer than this are merged, keeping the higher.
-        public var minSeparationMs = 70.0
-        /// The nucleus region: contiguous voiced frames within this of the peak.
-        public var regionDropDB = 6.0
+        /// dB above the higher of the two minima separating a candidate from its neighbours (spec 25: 3; spec 26
+        /// grid choice).
+        public var minProminenceDB = 1.5
+        /// Candidates closer than this are merged, keeping the higher (spec 25: 70; spec 26 grid choice).
+        public var minSeparationMs = 50.0
+        /// The nucleus region: contiguous voiced frames within this of the peak (spec 25: 6; spec 26 grid choice).
+        public var regionDropDB = 9.0
         /// The assignment's cost of leaving a nucleus unassigned (an extra peak).
         public var skipCostMs = 60.0
         /// Intensity e is read over ± this around the peak, clamped to the nucleus region.
         public var windowMs = 30.0
         /// Spec 26 §1 (CTO markup 1): a candidate peak counts as voiced when a pYIN-voiced frame lies within ± this of
         /// it (0: the peak frame itself must be voiced, spec 25's rule). The region still holds voiced frames only.
-        public var voicedWithinMs = 0.0
+        public var voicedWithinMs = 60.0
         /// Spec 26 §3: a word is edge-exposed when an assigned or candidate nucleus peak lies within this of either of
         /// its edges; its verdict is then checked under both candidate assignments of that peak.
         public var ambiguityEdgeMs = 40.0

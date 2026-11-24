@@ -5,9 +5,9 @@ import Foundation
 
 public enum Versions {
     /// Bump when an algorithm change can change any output for the same inputs.
-    public static let algorithmVersion = 2
+    public static let algorithmVersion = 3
     /// Bump when any value in `Thresholds` changes.
-    public static let thresholdsVersion = 9
+    public static let thresholdsVersion = 10
     /// Bump when a contract type's shape or JSON changes.
     public static let contractVersion = 2
 
@@ -65,5 +65,13 @@ public enum Versions {
         GoldenDigest(
             algorithmVersion: 2, thresholdsVersion: 9, contractVersion: 2,
             digest: "fe67e40c43c73b88b8c0f73d97e7cb75bd606e812fae955ae8c0011c1d3d2e40"),
+        // Spec 26: `nucleus.voicedWithinMs` and `nucleus.ambiguityEdgeMs` added, the grid-chosen `minProminenceDB`,
+        // `minSeparationMs`, `regionDropDB` and `voicedWithinMs` (tuning speakers, detection only), and the algorithm
+        // moves to 3: N_w as a set (CMUdict alternates, reduced forms), the voicing tolerance and assignment
+        // stability (`.assignmentAmbiguous`). §1a found a real pYIN lag, so the tracker is unchanged. Only the version
+        // fields moved in the goldens.
+        GoldenDigest(
+            algorithmVersion: 3, thresholdsVersion: 10, contractVersion: 2,
+            digest: "9dfaea30f0db527d8de44ca87212031b44ad5009509f37c6b495b735260e8a59"),
     ]
 }

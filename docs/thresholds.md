@@ -128,18 +128,21 @@ thresholds table and "first v2" the first v2 (09:10), both carried over "as befo
 
 ## Nuclei (`Thresholds.nucleus`, spec 25)
 
-Initial values chosen before any data (spec 25 §1–§3). CTO markup 4: they stay fixed in spec 25, pass or fail; tuning
-them would be a later spec on the tuning pool only.
+Initial values chosen before any data (spec 25 §1–§3; CTO markup 4: fixed in spec 25). Spec 26 §1 chose
+`minProminenceDB`, `minSeparationMs`, `regionDropDB` and `voicedWithinMs` on its pre-declared grid (180 points), against
+detection truth only (MFA words, phones and N_w on the 24 VCTK tuning speakers; no verdict, flip or held-out number):
+see `docs/agreement/tuning-log.md` (2026-11-24) and `docs/agreement/reports/nucleus-count-*`. The other keys keep spec
+25's values.
 
 | Name | Key | Value | Unit | Plan | Owner spec | Notes |
 |---|---|---|---|---|---|---|
 | Nucleus peak floor | `nucleus.minPeakDBFS` | -45 | dBFS | spec 25 §1 | 25 | Smoothed 300–2,500 Hz band envelope at the peak |
-| Nucleus prominence | `nucleus.minProminenceDB` | 3 | dB | spec 25 §1 | 25 | Above the higher of the two minima to the neighbouring candidates; the same value as `confidence.splitValleyMinDB` |
-| Nucleus separation | `nucleus.minSeparationMs` | 70 | ms | spec 25 §1 | 25 | Closer candidates are merged, keeping the higher |
-| Nucleus region drop | `nucleus.regionDropDB` | 6 | dB | spec 25 §1, Open question 4 | 25 | Region: contiguous voiced frames within this of the peak, never past a valley; d is its length |
+| Nucleus prominence | `nucleus.minProminenceDB` | 1.5 | dB | spec 25 §1, spec 26 §1 | 26 | Above the higher of the two minima to the neighbouring candidates. Spec 25: 3. Spec 26 grid {1.5, 2, 2.5, 3, 4}, chosen on tuning-speaker detection truth (count-match, vowel-inside floor 0.90) |
+| Nucleus separation | `nucleus.minSeparationMs` | 50 | ms | spec 25 §1, spec 26 §1 | 26 | Closer candidates are merged, keeping the higher. Spec 25: 70. Spec 26 grid {50, 60, 70, 90} |
+| Nucleus region drop | `nucleus.regionDropDB` | 9 | dB | spec 25 §1, spec 26 §1 | 26 | Region: contiguous voiced frames within this of the peak, never past a valley; d is its length. Spec 25: 6. Spec 26 grid {3, 6, 9} (Prosogram's −3/−9 dB), decided by region–vowel IoU only |
 | Nucleus skip cost | `nucleus.skipCostMs` | 60 | ms | spec 25 §2 | 25 | Assignment cost of leaving a nucleus unassigned; a nucleus costs its distance outside the word span (0 inside), and can't go further out than `alignment.asrPaddingMs` |
 | Nucleus intensity window | `nucleus.windowMs` | 30 | ± ms | spec 25 §3 | 25 | e: full-band RMS around the peak, clamped to the region |
-| Nucleus voicing tolerance | `nucleus.voicedWithinMs` | 0 | ± ms | spec 26 §1 | 26 | A candidate peak is voiced when a pYIN-voiced frame lies within this of it (0: the peak frame itself, spec 25's rule); the region still holds voiced frames only. Grid {0, 30, 60} (§1a: real pYIN lag) |
+| Nucleus voicing tolerance | `nucleus.voicedWithinMs` | 60 | ± ms | spec 26 §1 | 26 | A candidate peak is voiced when a pYIN-voiced frame lies within this of it (0: the peak frame itself, spec 25's rule); the region still holds voiced frames only. Grid {0, 30, 60} (§1a: real pYIN lag) |
 | Nucleus ambiguity edge | `nucleus.ambiguityEdgeMs` | 40 | ms | spec 26 §3 | 26 | A word is edge-exposed when an assigned or candidate nucleus peak lies within this of either edge; verdicts under both assignments of that peak must agree, else `.assignmentAmbiguous`. The ±40 ms jitter radius; not tuned |
 
 ## Applicability

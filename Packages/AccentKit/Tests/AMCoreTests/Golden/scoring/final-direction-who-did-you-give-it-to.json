@@ -101,13 +101,13 @@
   },
   "identity" : {
     "config" : {
-      "algorithmVersion" : 2,
+      "algorithmVersion" : 3,
       "aligner" : "whisper",
       "alignerModelSHA256" : "none",
       "asrModelID" : "replayed-word-timings",
       "contractVersion" : 2,
       "pitchTrackerID" : "pyin-1",
-      "thresholdsVersion" : 9,
+      "thresholdsVersion" : 10,
       "voicingID" : "acf-1"
     },
     "reference" : {
