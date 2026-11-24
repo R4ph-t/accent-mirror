@@ -1,9 +1,14 @@
 # 11: Stress validation and threshold tuning ("03b")
 
-Status: Ready · Branch: – · Depends on: 02 (harness, folds, tuning API), 10 (verdict path), 12 (pipeline for
+Status: Replaced by 28 · Branch: – · Depends on: 02 (harness, folds, tuning API), 10 (verdict path), 12 (pipeline for
 held-out pairs), 22 (synthetic references, end-to-end check ii), 23 (b2 and its `DownstreamHarness` on main for §4a and the
 guard; #27 merges as measurement-only; Done only when the analysis gate in §7 passes) · Estimate: 9–12 h agent run + 2.5 h Raph review
 · Risk: high
+
+**Superseded 2026-11-24 (v1 show-don't-judge).** Spike 27 came back NO-GO (CTO accepted; report
+`docs/agreement/reports/spike27-69675122.md`, docs PR #69) and Raph decided at 18:42 Europe/Paris to ship v1 without
+verdicts. This spec's verdict gate is superseded and its row reads `Replaced by 28` (scoring off). Its branch stays
+unmerged as history and data for Milestone 2. Nothing below is built further.
 
 Risk: high. This spec changes `Packages/AccentKit/Sources/AMCore/Thresholds.swift` (a risky path) and
 `docs/thresholds.md`. The PR waits for Raph's Merge OK whatever the review verdict says.

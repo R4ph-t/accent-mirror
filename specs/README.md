@@ -20,6 +20,15 @@ the timestamp check to proceed after the skeleton.
 audio analysis before spending more cycles on UI", and the validation runs through the factory with no hand runs.
 So:
 
+- **v1 is show-don't-judge (Raph, 2026-11-24 18:42 Europe/Paris, relayed by CPO: "Yes, ship v1 as show-don't-judge,
+  and merge #68").** Spike 27 came back NO-GO (CTO accepted; report `docs/agreement/reports/spike27-69675122.md`,
+  docs PR #69). v1 overlays your pitch and timing on the native reference with no stress or phrase verdicts;
+  scoring stays off until a model clears spec 27's gates (Milestone 2). Spec 28 gates the verdict paths out of the
+  shipped app; spec 29 draws Designer spec v3's result screen (which wins over v2 and addenda r2–r6:
+  https://app.notion.com/p/4220d0d4459281d39d67d6fdc5d50dfc); 20 and 21 now depend on 28 and 29. The verdict gates of 11, 23, 25 and 26 are superseded: 11, 25 and 26
+  read `Replaced by 28`, and their branches (`factory/11-…`, `factory/25-…`, `factory/26-…`) stay unmerged as
+  history and data. Plan: Notion "Accent Mirror v1 show-don't-judge integration plan (2026-11-24)",
+  https://app.notion.com/p/4220d0d4459281399adef9364a99bb69 (CTO approved). The bullets below are history.
 - **Repointed 2026-11-24 (Manufacture Lead's ask, CTO OK; CTO decision record
   https://app.notion.com/p/4220d0d445928128b258faf2852259c1): 20 and 21 now depend on 27, not 11.** Spec 27's
   offline spike (GO or NO-GO) replaces the reference-diff verdict gates of 11, 23, 25 and 26. Its row reaches Done
@@ -46,7 +55,7 @@ So:
 | 04 | [Pitch tracker](04-pitch-tracker.md) | Done | 01 | 3–4 h | 1 h |
 | 05 | [Take quality and endpointing](05-take-quality-endpointing.md) | Done | 01 (no dependency on 04) | 3–4 h | 1 h |
 | 06 | [Pronunciation, alignment, normalisation](06-pronunciation-alignment.md) | Done | 01 | 4–5 h | 1 h |
-| 23 | [Word-boundary refinement (measurement-only; b2 not shipped)](23-word-boundary-refinement.md) | Done | 03, 04, 07 (downstream gate) | 6–8 h | 1.5 h |
+| 23 | [Word-boundary refinement (measurement-only; b2 not shipped; downstream verdict gate superseded)](23-word-boundary-refinement.md) | Done | 03, 04, 07 (downstream gate) | 6–8 h | 1.5 h |
 | 24 | [VCTK positive-set phrase coverage](24-vctk-positive-phrase-coverage.md) | Done | 02 | 3–4 h | 1 h |
 | 07 | [Syllable segmenter and timing confidence](07-syllable-segmenter.md) | Done | 06 (word boundaries injected; its real-speech gates wait on 23) | 3–4 h | 1 h |
 | 18 | [UI foundation](18-ui-foundation.md) | Done | 00 | 3–5 h | 1 h |
@@ -56,14 +65,14 @@ So:
 | 10 | [Measures, verdict and diffs](10-measures-verdict-diffs.md) | Done | 02, 08, 09 | 4–5 h | 1.5 h |
 | 22 | [Synthetic native references (evaluation only)](22-synthetic-native-references.md) | Done | 02, 10 | 4–6 h | 1.5 h |
 | 12 | [Analysis pipeline and coordinator](12-analysis-coordinator.md) | Done | 03, 05, 10 | 6–8 h | 1.5 h |
-| 11 | [Stress validation and threshold tuning](11-stress-validation-tuning.md) | Ready | 02, 10, 12, 22, 23 (b2 harness for the guard; #27 merges as measurement-only) | 9–12 h | 2.5 h |
-| 25 | [Nucleus-anchored syllable measurement (spec 11's FALLBACK; hand build)](25-nucleus-anchored-syllables.md) | Ready | 07, 08, 12, 23 (spec 11's harness and FALLBACK report) | 6–8 h | 1.5 h |
-| 26 | [Nucleus count and edge-robust assignment (stacks on 25; hand build)](26-nucleus-count-assignment.md) | Ready | 07, 08, 12, 23, 25 (stacked on branch factory/25-nucleus-anchored) | 6–8 h | 1.5 h |
-| 27 | [Word-stress classifier and native envelope: offline feasibility spike, GO/NO-GO (CTO decision 2026-11-24 + lit review; hand build)](27-stress-classifier-feasibility-spike.md) | Ready | 02, 06, 10, 22, 24, 25 (front end, branch factory/25-nucleus-anchored), 26 (detection grid, branch factory/26-nucleus-count-assignment) | 10 h (time box) | 1.5 h |
+| 11 | [Stress validation and threshold tuning (verdict gates superseded: spike 27 NO-GO, v1 show-don't-judge)](11-stress-validation-tuning.md) | Replaced by 28 | 02, 10, 12, 22, 23 (b2 harness for the guard; #27 merges as measurement-only) | 9–12 h | 2.5 h |
+| 25 | [Nucleus-anchored syllable measurement (spec 11's FALLBACK; hand build; verdict gate superseded, branch kept as data)](25-nucleus-anchored-syllables.md) | Replaced by 28 | 07, 08, 12, 23 (spec 11's harness and FALLBACK report) | 6–8 h | 1.5 h |
+| 26 | [Nucleus count and edge-robust assignment (stacks on 25; hand build; verdict gate superseded, branch kept as data)](26-nucleus-count-assignment.md) | Replaced by 28 | 07, 08, 12, 23, 25 (stacked on branch factory/25-nucleus-anchored) | 6–8 h | 1.5 h |
+| 27 | [Word-stress classifier and native envelope: offline feasibility spike, GO/NO-GO (CTO decision 2026-11-24 + lit review; hand build; NO-GO, CTO accepted; report in docs PR #69, row goes Done once that merges)](27-stress-classifier-feasibility-spike.md) | Ready | 02, 06, 10, 22, 24, 25 (front end, branch factory/25-nucleus-anchored), 26 (detection grid, branch factory/26-nucleus-count-assignment) | 10 h (time box) | 1.5 h |
 | 15 | [Reference library: bundled starter phrases and native recordings](15-reference-library.md) | Done | 06, 10, 12 | 4–6 h | 1.5 h |
 | 16 | [Take store](16-take-store.md) | Done | 01, 12, 15 | 4–5 h | 1 h |
 | 14 | [Live microphone capture (macOS)](14-live-capture.md) | Done | 05 (the hand test needs spec 13) | 3–4 h | 1 h |
-| 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19, 27 (analysis gate; was 11, repointed 2026-11-24, CTO OK) | 6–8 h | 1.5 h |
+| 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19, 29, 28 (v3 result screen and scoring off; was 27, repointed 2026-11-24 after spike 27's NO-GO and Raph's v1 show-don't-judge decision) | 6–8 h | 1.5 h |
 | 13 | [Sandbox, microphone entitlement and usage string (by hand)](13-entitlements-mic-string.md) | Ready | 00 | – | 0.5 h |
-| 21 | [Coordinator-wired UI: record, compare, play back](21-coordinator-wired-ui.md) | Ready | 27 (analysis gate; was 11, repointed 2026-11-24, CTO OK), 12, 13, 14, 15, 16, 20 | 10–12 h | 2 h |
+| 21 | [Coordinator-wired UI: record, compare, play back](21-coordinator-wired-ui.md) | Ready | 29, 28 (v3 result screen and scoring off; was 27, repointed 2026-11-24 after spike 27's NO-GO and Raph's v1 show-don't-judge decision), 12, 13, 14, 15, 16, 20 | 10–12 h | 2 h |
 | 17 | [Clip import pipeline (no UI)](17-clip-import.md) | Done | 03, 06, 12, 15, 16 | 4–5 h | 1 h |

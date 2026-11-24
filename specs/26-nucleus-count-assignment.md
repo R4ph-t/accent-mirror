@@ -1,8 +1,13 @@
 # 26: Nucleus count and edge-robust assignment (stacks on spec 25)
 
-Status: Ready · Branch: factory/26-nucleus-count-assignment (hand build, from cd1855b) · Depends on: 07, 08, 12, 23, 25 (stacked on the unmerged branch
+Status: Replaced by 28 · Branch: factory/26-nucleus-count-assignment (hand build, from cd1855b) · Depends on: 07, 08, 12, 23, 25 (stacked on the unmerged branch
 `factory/25-nucleus-anchored` at cd1855b and its report `nucleus-jitter-acb3910a`; see CTO decision 6) · Estimate:
 6–8 h agent run + 1.5 h Raph review · Risk: high
+
+**Superseded 2026-11-24 (v1 show-don't-judge).** Spike 27 came back NO-GO (CTO accepted; report
+`docs/agreement/reports/spike27-69675122.md`, docs PR #69) and Raph decided at 18:42 Europe/Paris to ship v1 without
+verdicts. This spec's verdict gate is superseded and its row reads `Replaced by 28` (scoring off). Its branch stays
+unmerged as history and data for Milestone 2. Nothing below is built further.
 
 Risk: high. It changes `Packages/AccentKit/Sources/AMCore/Thresholds.swift` (nucleus keys chosen on the pre-declared
 grid), adds an `UnavailableReason` to the contract, and bumps `thresholdsVersion` and `algorithmVersion`. CTO approved this spec on 2026-11-24 at 16:02 Europe/Paris with
