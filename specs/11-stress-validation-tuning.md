@@ -1,8 +1,8 @@
 # 11: Stress validation and threshold tuning ("03b")
 
 Status: Ready · Branch: – · Depends on: 02 (harness, folds, tuning API), 10 (verdict path), 12 (pipeline for
-held-out pairs), 22 (synthetic references, end-to-end check ii; spec 23's harness and b2 for the re-run gate, 23 in
-review; Done only when the analysis gate in §7 passes) · Estimate: 9–12 h agent run + 2.5 h Raph review
+held-out pairs), 22 (synthetic references, end-to-end check ii), 23 (b2 and its `DownstreamHarness` on main for §4a and the
+guard; #27 merges as measurement-only; Done only when the analysis gate in §7 passes) · Estimate: 9–12 h agent run + 2.5 h Raph review
 · Risk: high
 
 Risk: high. This spec changes `Packages/AccentKit/Sources/AMCore/Thresholds.swift` (a risky path) and
@@ -16,7 +16,9 @@ decision rule for #27's b2 aligner. Spec 08's l2-shared numbers and spec 10's Op
 report (`docs/agreement/reports/word-boundaries-diagnostics-2026-11-23.md`, on branch
 `factory/23-word-boundary-refinement`): control 13.7% (> 2%), so CTO's rule's first branch applies. CTO's additions
 of 2026-11-23 (relayed by Accent Mirror Lead): the b2 gate re-run, the jitter test, the anti-inconclusive guard and
-the pre-declared fallback (§4–§4c below).
+the pre-declared fallback (§4–§4c below). CTO's rulings of 2026-11-24 09:20 (relayed by Accent Mirror Lead): the
+±40 ms jitter target joins the guard, small syllable groups are reported but not gated, the control is checked only
+on the final tuned thresholds, and the L2 false-flag split (§3).
 
 ## Goal
 
@@ -70,6 +72,12 @@ bound to `sourceTreeHash` and `configDigest` (§6.6):
   speaker ≤ 10% (the 74 speakers with ≥ 10 words), upper bound, adults and children separately. The 1,868-word set
   is reported as supplementary. Whisper-substituted words are counted and listed on their own line (they never
   reach the detector).
+- **L2 false-flag split (reported, not gated; CTO, 2026-11-24).** The first release report splits the L2 false flags
+  on the clean 1,400 into three groups, each with its count, its denominator and its rate (with Wilson interval), on
+  both the initial and the tuned thresholds: **Whisper-substituted words**, **words with low ASR confidence** (Whisper word
+  confidence c_w below `Thresholds.confidence.levelMedium`, 0.45 today), and **clean matched words** (the rest). CTO's reason: spec 08's 93
+  substitutions on L2 may be a real share of today's 10.7%, and that would be an ASR fix, not a threshold fix. The
+  gate's own number is unchanged by the split.
 - **Unintelligible words (157):** 0 placement diffs, every one inconclusive or unscored. One violation fails the
   release gate.
 - **End-to-end check (ii)** (spec 22's path): in each outer fold both paths run with the same fold-trained config;
@@ -82,8 +90,9 @@ bound to `sourceTreeHash` and `configDigest` (§6.6):
 ### 4. CTO's timing-sensitivity control (required, reported)
 
 On the synthetic set, run the verdict diff between two good references, **TTS markers vs MFA** (about 25 ms apart),
-on the tuned thresholds, and print it next to spec 23's limits (≤ 2% of words change verdict; inconclusive rate
-rises ≤ 2 points). Also print it on the initial thresholds, so the effect of tuning is visible. Break the flips down
+on the **final tuned thresholds** (the shipped config) only; it is never checked per grid point or used to pick one.
+A FAIL there (> 2%) triggers the FALLBACK (§4c). Print it next to spec 23's limits (≤ 2% of words change
+verdict; inconclusive rate rises ≤ 2 points). Also print it on the initial thresholds, so the effect of tuning is visible. Break the flips down
 by cue (duration, intensity, pitch), by syllable count, by transition type (feedback↔close vs anything↔inconclusive)
 and by the word's own boundary error; Whisper-substituted words are counted separately and kept out of the diff.
 Spec 23's diagnostic gives the baseline to print alongside: 13.7% (42 / 307) on the initial thresholds, with 2–3
@@ -109,21 +118,27 @@ syllable words flipping far more than monosyllables (control 43.1% / 66.7% vs 3.
   clamped to the neighbouring words and the clip), and re-run the same segmenter and verdict on the tuned thresholds
   (and the initial ones, for comparison).
 - Report the verdict flip rate against the unjittered oracle by syllable count (**1, 2, 3, 4+**), per set, with n and
-  Wilson intervals, plus the inconclusive rise per bucket. **Target: ≤ 2% flips at ±40 ms**, printed as MET / NOT
-  MET. It measures how much syllable verdicts depend on exact word edges, whatever the aligner.
+  Wilson intervals, plus the inconclusive rise per bucket. **Pass condition (CTO, 2026-11-24): ≤ 2% flips at ±40 ms**
+  on the tuned thresholds, pooled over all syllable counts, on each set separately, printed as MET / NOT MET. It is
+  part of the guard (§4c). ±20 ms and ±80 ms are reported only. CTO's reason: b2's real median boundary error is
+  40–50 ms, so ±40 ms is the error the segmenter must tolerate. It measures how much syllable verdicts depend on
+  exact word edges, whatever the aligner.
 
 ### 4c. Anti-inconclusive guard and the pre-declared fallback
 
 - **Spec 11 passes only if**, on the tuned thresholds:
   1. the TTS-vs-MFA control (§4) is **≤ 2%**;
   2. the inconclusive rate stays inside the **≤ 10% budget** (`agreement.inconclusivePairsMax`);
-  3. the b2 gate (§4a) meets **both** ≤ 2% verdict flips and ≤ 2 points of inconclusive rise.
+  3. the b2 gate (§4a) meets **both** ≤ 2% verdict flips and ≤ 2 points of inconclusive rise;
+  4. the jitter test (§4b) is **≤ 2% flips at ±40 ms** on each set (CTO, 2026-11-24).
 - **Gaming guard:** a point that gets to ≤ 2% flips by sending 2–3-syllable words to inconclusive doesn't count. In
   each syllable-count bucket (2 and 3 separately), the inconclusive rate may rise at most 2 points over the oracle
-  (Open question 4). Flips are counted with anything↔inconclusive transitions included, never excluded.
+  (Open question 4). Each group prints its n (words) and the Wilson interval of its inconclusive rate under the
+  oracle and the candidate. A group with **fewer than 30 words** is printed but not gated, and is marked
+  `reported (n < 30)` (CTO, 2026-11-24). Flips are counted with anything↔inconclusive transitions included, never excluded.
 - During tuning (§2), a grid point is **feasible** only if it also meets the guard on tuning data: b2 vs MFA and the
-  jitter test on the VCTK tuning speakers, plus the 10% budget. The synthetic-set control isn't tuning data, so it is
-  checked only on the shipped config (Open question 5).
+  jitter test (±40 ms) on the VCTK tuning speakers, plus the 10% budget. The synthetic-set control isn't tuning data, so it
+  is checked only on the final tuned thresholds, and a FAIL there is the FALLBACK (Open question 5).
 - **Pre-declared fallback.** If no grid point is feasible under the guard, or the shipped config fails the guard on
   held-out data, **stop tuning**: `Thresholds.swift` doesn't change, there's no retuning and no constraint is relaxed.
   The report and `docs/agreement/tuning-log.md` record the outcome "FALLBACK: nucleus-anchored syllable segmentation
@@ -169,9 +184,11 @@ only when the analysis is proven on real voices.
   2. every positive-set gate row reads PASS, none FAIL or NOT EVALUATED, and the rows named above are all present
      (a missing row fails, so a dimension can't drop out silently);
   3. every negative-set (L2) gate row reads PASS;
-  4. `Spec 11 guard` reads MET.
-  Reported-only lines (synthetic set, end-to-end check ii, `referenceAnomaly`, 3-take stability, §4b jitter) are
-  printed and not asserted.
+  4. `Spec 11 guard` reads MET, and the report's guard rows include all four conditions of §4c, the ±40 ms jitter
+     row among them, each MET (a missing condition fails);
+  5. every gated syllable group (n ≥ 30) meets its ≤ 2-point inconclusive rise; groups with n < 30 are skipped.
+  Reported-only lines (synthetic set, end-to-end check ii, `referenceAnomaly`, 3-take stability, §4b at ±20 / ±80 ms,
+  the L2 false-flag split) are printed and not asserted.
 - **If the gates don't pass, CI stays red and the PR doesn't merge**, so this row isn't Done and 20 and 21 stay
   blocked. That includes FALLBACK (§4c) and spec 23 not being on main (§4a). The PR still commits the report and
   says it goes to CTO. Fix rounds may fix bugs in the pipeline or the harness, never a gate, a tolerance, a
@@ -205,19 +222,21 @@ only when the analysis is proven on real voices.
 ## Open question (built with the default)
 
 1. **Does spec 11 count as Done if the gates or the guard are NOT MET?** Decided (Raph, 2026-11-24): no. Spec 11
-   is Done only when §7's analysis gate passes (positive set and L2 gates PASS, guard MET), enforced by
+   is Done only when §7's analysis gate passes (positive set and L2 gates PASS, guard MET with the ±40 ms jitter), enforced by
    `AnalysisGateTests` in CI. FALLBACK or a FAIL keeps the PR open with its report, for CTO. The full release gate
    (§6.7, including the reported-only lines) still blocks a release, not later specs.
 2. **3-take stability** (v1: "ship only if the same speaker scores the same way on 3 takes in a row"). VCTK and
    speechocean762 have one take per speaker per phrase, so there may be no repeated takes. Default: the flags stay
    on, stability prints NOT EVALUATED (no repeated takes) with the reason, and the call goes to CPO. Never turn a
    flag off without a measurement.
-3. **Is the jitter target part of the guard?** CTO's guard lists three conditions and doesn't name it. Default: §4b
-   prints MET / NOT MET and feeds the tuning-side feasibility check, but the held-out pass is the three conditions.
+3. **Is the jitter target part of the guard?** Decided (CTO, 2026-11-24): yes. ≤ 2% flips at ±40 ms is guard
+   condition 4; ±20 ms and ±80 ms are reported only.
 4. **How "sending 2–3-syllable words to inconclusive" is measured.** Default: ≤ 2 points of inconclusive rise over the
-   oracle in the 2-syllable and 3-syllable buckets separately, on top of spec 23's overall ≤ 2-point limit.
+   oracle in the 2-syllable and 3-syllable buckets separately, on top of spec 23's overall ≤ 2-point limit. Kept by
+   CTO (2026-11-24), with n and Wilson intervals per group; a group under 30 words is reported, not gated.
 5. **The synthetic-set control during tuning.** The plan keeps synthetic audio out of tuning (rev 4). Default: the
-   control is checked on the shipped config only, never per grid point; if it fails, that's the FALLBACK.
+   control is checked on the final tuned thresholds only, never per grid point; if it fails, that's the FALLBACK.
+   Confirmed by CTO (2026-11-24).
 
 ## How to test (Raph)
 
