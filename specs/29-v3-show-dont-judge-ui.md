@@ -1,6 +1,6 @@
 # 29: v3/v3.1 show-don't-judge UI (YOUR TAKE, Play Both, strip, inspector, earlier takes; fixture-driven)
 
-Status: Ready · Branch: – · Depends on: 28 (scoring off, expected stress, descriptive measures), 19 (fixture-driven UI shell; builds on top of PR #29, the specs 18–19 fixes round 5, which must be merged first and isn't folded in here) · Estimate: 8–10 h agent run + 2 h Raph review
+Status: Done · Branch: factory/29-v3-ui (PR #75) · Depends on: 28 (scoring off, expected stress, descriptive measures), 19 (fixture-driven UI shell; builds on top of PR #29, the specs 18–19 fixes round 5, which must be merged first and isn't folded in here) · Estimate: 8–10 h agent run + 2 h Raph review
 
 Source: Designer spec v3 (Notion "Accent Mirror v1: show, don't judge", https://app.notion.com/p/4220d0d4459281d39d67d6fdc5d50dfc; mockups in `v3/` of the design folder: `mockup-result-{light,dark}-v3@2x.png`, `mockup-error-{light,dark}-v3@2x.png`, `inspector-this-take-{light,dark}-v3@2x.png`). v3 wins over Designer spec v2 and addenda r2–r6, and replaces v2's result design while keeping the rest. **The v3.1 addendum** ("Addendum 2026-11-24 (v3.1)", V1–V6, at the end of the same page) wins over v3. Its mockups are `mockup-result-{light,dark}-v3.1@2x.png`, `mockup-error-{light,dark}-v3.1@2x.png` and `inspector-this-take-{light,dark}-v3.1@2x.png` in the design folder's `v3/`, and they replace the v3 mockups for this spec. The plan: https://app.notion.com/p/4220d0d4459281399adef9364a99bb69.
 
