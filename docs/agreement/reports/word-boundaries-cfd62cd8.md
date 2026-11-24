@@ -1,5 +1,7 @@
 # Word-boundary refinement (spec 23): downstream gate FAIL, ship FAIL
 
+> **Measurement-only (CTO ruling, 2026-11-24).** b2 (`ctc-w2v2b960-1`) is not shipped; the shipped aligner is `whisper`. Per the CTO's ruling, the gate re-runs on spec 11's tuned thresholds.
+
 Generated 2026-11-23T13:27:43Z. Refined WhisperKit word boundaries against the MFA word baseline (Montreal Forced Aligner 3.4.4, english_mfa.zip) on 155 VCTK 0.92 clips. **No stress claims.**
 
 ## Decision (CTO ruling 2026-11-23 14:05)

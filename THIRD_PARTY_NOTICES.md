@@ -138,6 +138,20 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
+## wav2vec2-base-960h (Apache-2.0): evaluation tooling only
+
+Evaluation tooling only; not distributed in the app; weights fetched by SHA-256 pin, never committed. Spec 23's b2
+aligner (`ctc-w2v2b960-1`) is measurement-only (CTO ruling 2026-11-24): it lives in the tooling-only
+`AMAlignmentCTC` target, which nothing the app links depends on, and the shipped aligner is `whisper`.
+`scripts/fetch-ctc.sh` fetches the model into the git-ignored `.cache/models/` for local tooling and tests only; the
+app build and CI never run it. The pinned manifest, `LICENSE` and `NOTICE` are in `fixtures/models/wav2vec2-base-960h/`.
+
+- Model: `facebook/wav2vec2-base-960h` at commit `22aad52d435eb6dbaf354bdad9b0da84ce7d6156`, model card
+  https://huggingface.co/facebook/wav2vec2-base-960h/blob/22aad52d435eb6dbaf354bdad9b0da84ce7d6156/README.md,
+  licence Apache-2.0.
+- Conversion: `coremltools` 8.3.0 (BSD-3-Clause), pinned in `tools/ctc-requirements.txt` and run only by
+  `scripts/fetch-ctc.sh` in a git-ignored venv to convert the model to Core ML. Never linked into the app.
+
 ## VCTK (CC BY 4.0)
 
 Not yet bundled; notice added by spec 02.

@@ -1,5 +1,7 @@
 # Word-boundary gate diagnostics (spec 23, CTO decision on #27, 2026-11-23)
 
+> **Measurement-only (CTO ruling, 2026-11-24).** b2 (`ctc-w2v2b960-1`) is not shipped; the shipped aligner is `whisper`. Per the CTO's ruling, the gate re-runs on spec 11's tuned thresholds.
+
 Generated 2026-11-23T21:55:16Z from commit `fe6a0db86e03` (clean tree: yes). **Measures only**: no shipped behaviour, threshold or aligner decision changes. Same harness (`DownstreamHarness`: spec 07's `SyllableSegmenter` with `ACFVoicing`, spec 06's bundled selector), same verdict function (`WordVerdict`), same thresholds (`ctcConfidenceMin` 0.5, untuned), same sets and comparability rules as the gate in `docs/agreement/reports/word-boundaries-cfd62cd8.json`. Machine-readable: `word-boundaries-diagnostics-2026-11-23.json`.
 
 Verdict parts are listed inconclusive / syllableCount / longestSyllable / loudestSyllable; a word counts once per part that differs.
