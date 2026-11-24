@@ -127,7 +127,7 @@ public final class AnalysisCoordinator {
         let record = TakeRecord(
             takeID: result.takeID, phraseID: result.phraseID, recording: submission.voice,
             recordedAt: result.recordedAt, audioSHA256: submission.take.sha256, samples: submission.take.samples,
-            derived: run.derived)
+            derived: run.derived, identity: response.identity)
         let store = self.store
         let previous = saving
         saving = Task { [continuation] in
