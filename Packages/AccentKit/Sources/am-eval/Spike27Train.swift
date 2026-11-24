@@ -135,7 +135,8 @@ enum SpikeTrain {
         for take in takes {
             let selection = TakeScoring.select(take.measured, words: take.words, arm: arm, source: .oracle,
                                                classifier: nil, tau: 0)
-            for (j, result) in selection {
+            // Sorted: dictionary order is per-process random, and row order changes the fitted floats.
+            for (j, result) in selection.sorted(by: { $0.key < $1.key }) {
                 let word = take.words[j]
                 if take.kind == .negative && word.index != take.negativeWord { continue }
                 switch result {
@@ -255,7 +256,7 @@ enum SpikeTrain {
             guard let f = fold(clip), let processed = identity[clip.id], let words = clip.words(.oracle) else { continue }
             let raw = TakeScoring.select(clip.measured, words: words, arm: arm, source: .oracle, classifier: nil, tau: 0)
             let pro = TakeScoring.select(processed, words: words, arm: arm, source: .oracle, classifier: nil, tau: 0)
-            for (j, r) in raw {
+            for (j, r) in raw.sorted(by: { $0.key < $1.key }) {
                 guard case .success(let a) = r, case .success(let b)? = pro[j] else { continue }
                 for row in Features.rows(a.map { clip.measured.nuclei[$0] }, variant: variant) { rows.append((f, row, false)) }
                 for row in Features.rows(b.map { processed.nuclei[$0] }, variant: variant) { rows.append((f, row, true)) }
@@ -378,7 +379,8 @@ func spike27Train(_ env: SpikeEnvironment) async throws {
         var signalWords = 0
         for clip in tuning {
             guard let words = clip.words(.oracle) else { continue }
-            for (j, r) in TakeScoring.select(clip.measured, words: words, arm: arm, source: .oracle, classifier: nil, tau: 0) {
+            for (j, r) in TakeScoring.select(clip.measured, words: words, arm: arm, source: .oracle, classifier: nil, tau: 0)
+                .sorted(by: { $0.key < $1.key }) {
                 guard case .success(let list) = r, let target = words[j].target else { continue }
                 let n = list.map { clip.measured.nuclei[$0] }
                 signalWords += 1
