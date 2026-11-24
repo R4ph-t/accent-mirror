@@ -305,4 +305,93 @@ Every step is run by the build agent and repeated by the reviewer.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+**Result: `Spike 27: NO-GO`** (report `docs/agreement/reports/spike27-69675122.{json,md}`, clean tree, identity check OK).
+Partial: word stress (arm B, runtime) NO-GO; phrase monotone NOT EVALUATED (NO-GO); final direction NOT EVALUATED
+(NO-GO); nPVI shown only. No `Thresholds` key, app, AMPipeline or version change; configDigest is spec 26's (69675122).
+
+**Where it lives.**
+- `AMSpike27` is a new evaluation-only library target. Its only consumers are `am-eval` and `Spike27Tests`; it isn't
+  in `modules` and isn't linked by the app or AMPipeline. It holds the front-end measures, the TD-PSOLA, the swap,
+  features, logistic regression, boosted trees, arms A/B/C, the envelopes, the guards and the speechocean762 rule.
+  I split it out of `am-eval` because tests can't link an executable target cleanly.
+- `am-eval spike27 --stage prepare|negatives|train|evaluate|all` lives in `Sources/am-eval/Spike27*.swift`.
+- Run it with `scripts/spike27.sh` or `scripts/agreement.sh --suite spike27 [--write-report]`. It runs niced with
+  3 jobs and writes its work files and `listen/` outside the worktree.
+- Two small additions in eval tooling:
+  - `am-eval record-timings --set tts-references`, so the TTS references get Whisper word times for the synthetic
+    set's runtime jitter. ASR ran locally once; never in CI.
+  - `CTCAligner.logProbabilities` is now public, for arm C.
+
+**What was built (tuning side only; `Spike27Guard` refuses held-out VCTK, L2, speechocean762 and held-out speakers;
+tested).**
+- **Front end:** spec 25's detector at spec 26's frozen grid.
+  - Per nucleus: d (region), e (±30 ms), f0 residual from a least-squares line over the take's voiced frames, and
+    spectral balance (100–1,000 Hz minus 1,000–4,000 Hz).
+  - Runtime known text goes through spec 03's shipped aligner. Present and substituted prompt words take the heard
+    span; with LCS-only matching, 124 instead of 69 of the 134 are placed.
+- **PSOLA** is written from Moulines & Charpentier.
+  - The identity pass reproduces the input exactly, because overlap-add is normalised by the summed windows.
+  - Each swap stretch is widened by up to 30 ms toward its valleys. Without this, the vowel tails outside the
+    9 dB region stayed loud and split the shortened syllable (caught by the pulse-train test).
+- **Negatives:** 1,739 source words gave 493 negatives. Dropped: 1,103 where the front end found fewer than N nuclei
+  in the MFA span, 91 for clipping, 52 for pitch-mark coverage. 163 kept swaps have a duration factor outside
+  [0.5, 2].
+- **CV:** the manifest's 6 speaker folds. Per arm: 2 families × 4 variants.
+  - τ is the smallest grid value with CV false flags at point ≤ 1% and Wilson upper ≤ 2%.
+  - Boosted trees were run because logistic regression missed gate 2 on the first evaluation pass. Family and
+    variant were still chosen on tuning CV only.
+  - Arm B was picked on the tuning side: logistic regression, f0 variant, τ 0.42, tuning jitter 33/1,667.
+- **Artefact control:** processed-vs-raw AUC 0.500 for both arms (MET). This is trivial by construction, because the
+  identity pass is exact; the report says so.
+  - Extra, reported control: round trip (swap, then swap back) vs raw. AUC 0.468 for arm B; 0.604 for arm A's tree
+    model, which is above 0.6, so swap artefacts look learnable there.
+- **Front-end signal check** (raw tuning natives, arm B, 583 words): the dictionary-stressed syllable has the
+  largest d 49.9% of the time, f0 residual 52.3%, intensity 64.2% and flattest spectrum 70.2%. The first-syllable
+  prior alone is 80.8%. The measures carry less information than the position prior, which is why the classifier
+  can't separate swapped from natural words.
+
+**Key numbers (arm B, runtime; full rows in the report header and in `_cache-27/logs/result.txt`).**
+- Gate 1, held-out VCTK native false flags: 48/532 (9.0%), NOT EVALUATED because n < 600. Clean 1,400: 55/760
+  (7.2%), NOT MET. speechocean762 correctly stressed: 171/2,266 (7.5%), NOT MET.
+- Gate 2: 9/134 vs B1 27/134; McNemar discordant 2 vs 20, p = 0.00012 in B1's favour. NOT MET. ASR-transcript
+  variant: 4/134. Coverage of the 134: 60 (known text), 25 (ASR).
+- Gate 3: held-out pooled 25/948 (2.6%), NOT MET; synthetic 4/72 (5.6%), NOT MET.
+- Gate 4 coverage: held-out candidates 56%; starter words × bundled voices 41%.
+- PR curve: even at τ = 0, recall is 23% against 50% native false flags (no discrimination). Precision at the
+  operating point is 3.8% at 5% prevalence and 7.6% at 10%.
+- Arm A is NOT MET everywhere. Arm C (report-only, b2 CTC vowel groups with arm B's classifier) is NOT MET (3/134;
+  speechocean762 false flags 3.0%).
+- Phrase envelopes: 12 of 14 prompts have ≥ 30 natural takes; vctk-005 and vctk-015 are NOT EVALUATED.
+  - No quantile pair meets the CV ≤ 5% bar for monotone; the widest gives 5.9%.
+  - No prompt reaches 80% final-direction agreement, so the committed list is empty.
+  - Held-out VCTK has at most 16 takes per prompt, so every per-prompt verdict row is NOT EVALUATED (n < 30). That
+    makes both phrase claims NOT EVALUATED (NO-GO).
+
+**Spec gaps (least-committal reading taken).**
+- **Oracle L2 is NOT EVALUATED:** there's no MFA alignment of speechocean762 in the caches (MFA cache is read-only).
+  The oracle source can therefore never pass, so `NO-GO (oracle-only)` can't occur here.
+- **speechocean762 recall is NOT EVALUATED:** under the fixed label rule, only 4 misplaced (stress 5) words survive,
+  and none has Whisper times.
+- **The ambiguity check is defined by the classifier's verdict:** arm A's `assignmentAmbiguous` reads the
+  classifier's own verdict, so training rows skip it; CV and evaluation apply it.
+- **Arm A abstains when count ≠ context:** an assigned count in N_w that isn't the context count can't map the
+  stress index, so it abstains.
+- **CV envelopes are exempt from the 30-take rule:** CV builds them from the other folds' takes, since 5/6 of a prompt
+  is under 30. The rule still gates which prompts are evaluated.
+- **Final-direction verdict definition:** flag when the slope is outside the envelope and the class isn't the
+  dominant one.
+- **nPVI is read on assigned nucleus regions** (spec 25's `.nucleus` d).
+- **Gate 2 isn't defined for phrase metrics:** there are no L2 phrase labels.
+- **Arm C details:**
+  - It uses arm B's frozen classifier and τ.
+  - The word-boundary jitter can't move it, so its gate 3 is NOT EVALUATED.
+  - Words whose vowel-letter groups ≠ N abstain.
+- **Gate 3 uses the point estimate,** as spec 11 §4b does.
+
+**How to test.**
+1. `swift test --filter Spike27Tests`: 11 tests pass. This covers the eight listed checks, plus the decision/AUC
+   check, arm C, and phrase rows under 30 being NOT EVALUATED.
+2. `scripts/agreement.sh --suite spike27 --write-report`: run on a clean tree; it ends `Spike 27: NO-GO`. Two runs
+   from scratch give byte-identical negatives and training files and identical gate lines.
+3. The 20 spot-check negatives are in `~/dev/accent-mirror-wt/_cache-27/listen/` (`index.md`). Taste call (Raph).
+4. `scripts/check-report-identity.sh docs/agreement/reports/spike27-69675122.json <commit>`: OK.
