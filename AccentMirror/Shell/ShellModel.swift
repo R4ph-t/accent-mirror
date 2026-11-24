@@ -49,8 +49,22 @@ final class ShellModel {
     var detail: DetailPresentation?
     /// The fixture on screen, if the shell came from one. Samples ▸ checks it.
     private(set) var fixtureName: String?
+    /// The loaded fixture, so View ▸ Show Earlier Takes can redraw it.
+    private(set) var loaded: LoadedFixture?
+    /// View ▸ Show Earlier Takes (⇧⌘G): on by default, remembered.
+    private(set) var showEarlierTakes: Bool
+    /// Play Model, Play You or Play Both on `clock`; nil when nothing plays. Spec 21 wires the audio.
+    private(set) var playback: PlaybackRun?
+    /// The word a label click is looping ("Looping "harder" · Esc to stop").
+    private(set) var loopingWord: String?
+    /// The playback clock. A fixture with `playBoth` swaps in a frozen one.
+    private var clock: any PlaybackClock = SystemPlaybackClock()
+    @ObservationIgnored private let preference: EarlierTakesPreference
 
-    init(manifest: LibraryManifest, sidebar: SidebarState, toolbar: ToolbarState, detail: DetailPresentation? = nil) {
+    init(manifest: LibraryManifest, sidebar: SidebarState, toolbar: ToolbarState, detail: DetailPresentation? = nil,
+         defaults: UserDefaults = .standard) {
+        preference = EarlierTakesPreference(defaults: defaults)
+        showEarlierTakes = preference.isOn
         self.manifest = manifest
         self.sidebar = sidebar
         self.toolbar = toolbar
@@ -68,8 +82,78 @@ final class ShellModel {
         manifest = loaded.fixture.manifest ?? .stub
         sidebar = loaded.fixture.sidebar ?? .stub
         toolbar = ShellPresenter.toolbar(for: loaded)
-        detail = ShellPresenter.detail(for: loaded)
+        detail = ShellPresenter.detail(for: loaded, showEarlierTakes: showEarlierTakes)
         inspectorVisible = loaded.fixture.inspectorOpen ?? false
         fixtureName = loaded.fixture.name
+        self.loaded = loaded
+        playback = nil
+        loopingWord = nil
+        clock = SystemPlaybackClock()
+        if let frame = loaded.fixture.playBoth {
+            // The fixture freezes Play Both at `elapsed` on an injected clock.
+            let frozen = FrozenPlaybackClock(now: 0)
+            clock = frozen
+            playback = PlaybackRun(.both(model: frame.modelSeconds, you: frame.youSeconds), clock: frozen)
+            frozen.now = frame.elapsed
+        }
+        if ShellPresenter.isResult(loaded) {
+            AccessibilityAnnouncer.announce(Copy.resultReady)
+        }
+    }
+
+    // MARK: View ▸ Show Earlier Takes
+
+    func toggleEarlierTakes() {
+        showEarlierTakes = preference.toggle()
+        if let loaded { detail = ShellPresenter.detail(for: loaded, showEarlierTakes: showEarlierTakes) }
+    }
+
+    // MARK: Take ▸ Play
+
+    var canPlay: Bool { loaded.map(ShellPresenter.isResult) ?? false }
+
+    func play(_ schedule: (Double, Double) -> PlaybackSchedule) {
+        guard let loaded, canPlay else { return }
+        let seconds = ShellPresenter.playbackSeconds(loaded)
+        start(schedule(seconds.model, seconds.you))
+    }
+
+    private func start(_ schedule: PlaybackSchedule) {
+        if clock is FrozenPlaybackClock { clock = SystemPlaybackClock() }
+        loopingWord = nil
+        playback = PlaybackRun(schedule, clock: clock)
+    }
+
+    /// Clicking a word or syllable label (v3 §3.5).
+    func loop(word index: Int) {
+        guard let loaded, let loop = ShellPresenter.loopSchedule(loaded, word: index) else { return }
+        start(loop.schedule)
+        loopingWord = loop.word
+    }
+
+    func playModel() { play { model, _ in .model(model) } }
+    func playYou() { play { _, you in .you(you) } }
+    func playBoth() { play { model, you in .both(model: model, you: you) } }
+
+    /// Esc.
+    func stopPlaying() {
+        playback?.stop()
+        playback = nil
+        loopingWord = nil
+    }
+
+    /// Where the playhead is now, or nil.
+    var playbackPhase: PlaybackSchedule.Phase? {
+        guard let playback else { return nil }
+        let phase = playback.phase
+        return phase == .finished ? nil : phase
+    }
+}
+
+/// Posts a VoiceOver announcement (v3 §5: "Result ready. Your take is drawn over the model's.").
+@MainActor
+enum AccessibilityAnnouncer {
+    static func announce(_ text: String) {
+        AccessibilityNotification.Announcement(text).post()
     }
 }

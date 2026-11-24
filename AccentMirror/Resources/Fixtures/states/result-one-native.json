@@ -1,0 +1,69 @@
+{
+  "name": "result-one-native",
+  "summary": "An imported clip with one native take: the inspector shows that take’s values.",
+  "phrase": "photography",
+  "phase": "showingTake",
+  "savedTakes": [
+    3
+  ],
+  "take": "photography-take03",
+  "analysis": {
+    "verdict": {
+      "notScored": {}
+    },
+    "timing": "good",
+    "comparableCoverage": 0.96,
+    "describe": {
+      "you": {
+        "lengthSeconds": {
+          "value": 2.4
+        },
+        "syllablesPerSecond": {
+          "value": 4.2
+        },
+        "pitchRangeSemitones": {
+          "value": 4
+        },
+        "rhythmNPVI": {
+          "value": 38
+        },
+        "finalSlope": {
+          "value": 6.1
+        },
+        "endingDirection": "rise"
+      },
+      "native": {
+        "voices": 1,
+        "lengthSeconds": {
+          "min": 2.1,
+          "max": 2.1,
+          "count": 1
+        },
+        "syllablesPerSecond": {
+          "min": 4.8,
+          "max": 4.8,
+          "count": 1
+        },
+        "pitchRangeSemitones": {
+          "min": 7,
+          "max": 7,
+          "count": 1
+        },
+        "rhythmNPVI": {
+          "min": 55,
+          "max": 55,
+          "count": 1
+        },
+        "endingDirections": {
+          "fall": 1
+        }
+      }
+    }
+  },
+  "earlierTakes": [],
+  "modelRecording": {
+    "voice": "From demo-talk.m4a",
+    "attribution": "Your recording",
+    "voices": []
+  }
+}

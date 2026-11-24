@@ -154,4 +154,77 @@ The fixture-driven app shows v3's result screen. Your pitch and timing are drawn
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Hand build (Claude Code, 2026-11-24, on Raph's "go merge / no ci / just yolo"). CI, `make test-vm` and the UI/screenshot
+tests (`make test-ui-vm`) were skipped on Raph's instruction. `make build`, `make check-corpus` and
+`make check-ui-frameworks` pass on the host, and the named unit tests pass there (`_cache-29/gate.sh`, 42 tests).
+`AccentMirrorScreenshots` (app-hosted) compiles with `build-for-testing` but wasn't run.
+
+**Where things live**
+- `AccentMirror/Fixtures/ResultLogic.swift` holds the v3/v3.1 rules as pure functions of fixture values, with no SwiftUI and
+  no AMCore: `StressMarks` (the dot and caps go on the word's single context-resolved primary from `expectedStress`,
+  and a word without one is ambiguous), `ResultQuietLine` (coverage, then timing, then insertions),
+  `EarlierTakes` (30/20/12 %, at most 3, never unalignable) and `EarlierTakesPreference` (UserDefaults key
+  `ShowEarlierTakes`, on by default). It also has `PlaybackSchedule`, `PlaybackRun` and `PlaybackClock` (Play Model,
+  Play You, Play Both, and the label loop, all on an injected clock), plus `TimingConnectors` and `ThisTake` (the
+  inspector table). `AccentMirrorTests/ResultLogic.swift` is a **symlink** to it, so the unhosted test target compiles
+  the same file without a `project.yml` change (see Hand follow-up).
+- `ShellPresenter` now has card 1's result row (overlay icon, Play Both) with at most one quiet line. The strip has
+  neutral bars, native dots and caps, your plain labels and connectors. The pitch card has earlier takes, a plain
+  baseline and no stressed spans. The inspector is now a struct (`InspectorPresentation`). Low coverage means below
+  `Thresholds.current.decision.minComparableCoverage`: the presenter imports `AMCore` (already linked through
+  `AMPipeline`) and adds no second coverage field.
+- `ShellModel` holds the loaded fixture, the ⇧⌘G state, the playback run and the looping word, and posts the VoiceOver
+  announcement "Result ready. Your take is drawn over the model's." when a result is applied. Menus: View ▸ Show
+  Earlier Takes (⇧⌘G), and Take ▸ Play Model (⌘L), Play You (⇧⌘L), Play Model, Then You (⌥⌘L) and Stop (Esc).
+- Views: `CardOneView` (overlay glyph, Play Both ghost button, quiet line), `StripCard` ("Dictionary stress" legend,
+  `StressDot`, `Connectors`, `Playhead`, label click to loop, missing word click to play the model, no strike-through),
+  `PitchCard` (legend, earlier takes, plain hairline baseline, `AXChartDescriptor` with Native range, You and Earlier
+  takes) and `InspectorContent` (THIS TAKE grid, ALIGNMENT, MODEL RECORDING, TAKE).
+- `VerdictSentences.swift` and `VerdictPresentation.swift` are deleted, and so are the fixture model's
+  `DiffRow`, `MeasureState`, `StressLine`, `Inconclusive`, `QuietNotes` and the `mistake` label. `Verdict` decodes
+  `notScored` only.
+
+**Fixtures**: the 20 named retired states, every `inc-*` (8) and every `ncd-*` (6) are deleted. `feedback-insertions` and
+`feedback-two-insertions` are renamed `result-*`. The new states are `result`, `result-earlier-takes-off`,
+`result-timing-rough`, `result-coverage-low`, `result-one-native`, `playing-both` and `stress-dot-short-bar` (phrase
+`photography-looks-short`: only LOOKS's envelope drops, to 0.2, below the undotted syllables'). The new takes are
+`photography-take02` and `photography-take01`: synthetic earlier takes, take 03's pitch flattened. Every analysed state
+is `{"notScored": {}}` (`result-no-verdict` keeps no verdict) and carries `describe`. Phrases carry `expectedStress`
+(from the old caps labels; ambiguous words get none), and syllables lose `stressed` and `label`. Takes and phrases
+that no state uses any more are deleted. The schema is in `Fixtures/SCHEMA.md`.
+
+**Tests**: `AccentMirrorTests/ShowDontJudgeTests.swift` has `V3FixtureTests`, `BannedWordTests` (string literals in every
+app Swift file against v3 §5 plus target, should and outside, no `.mistake` outside the token file, no `"triangle`
+symbol, strike-through or underline, no hard-coded colours), `StressDotTests`, `QuietLineTests`, `EarlierTakesTests`
+(with relaunch persistence through a fresh `UserDefaults` suite), `PlayBothTests`, `ConnectorTests` and
+`ThisTakeTests`. `FixtureLibraryTests` checks that every analysed fixture is not scored. `ShellContractTests` (app-hosted)
+is rewritten for v3, and its verdict-era tests are deleted.
+
+**Spec gaps (least-committal defaults)**
+1. `inferenceFailed`'s v2 frame "Something went wrong inside Accent Mirror while {stage}" breaks the ban on "wrong".
+   It now reads "Accent Mirror ran into a problem while {stage}. This isn't about your take." Designer to confirm.
+2. The note under THIS TAKE for a single native take has no copy ("8 native voices" doesn't fit one), so it's left
+   out and the column shows that take's values.
+3. The tooltip reasons for a missing measure ("—") have no written copy. These were written, neutral:
+   "No pitch was found where this measure reads.", "This needs at least 3 syllables.", "Too little pitch at the end
+   of the take to read its direction." and "None of the phrase's words were heard."
+4. There's no `highlight` token on main (r6 E3 was never built) and no new tokens are allowed, so label hover and the
+   loop box aren't drawn, and neither is r6 E4's outline on the syllable being played. The loop itself works (model
+   slice, 0.4 s, your slice, until Esc), with its caption at the strip's top right.
+5. Hovering a take in the open take menu to preview it: `EarlierTakes.preview` exists, but the toolbar's SwiftUI
+   `Menu` gives no item hover, so it isn't wired (spec 21's live take menu).
+6. INPUT and PHRASE (r6) were never built in this shell, so they aren't added. The MODEL RECORDING voice pop-up is a
+   fixture-only menu that lists the voices.
+7. Inspector row names follow the v3.1 mockup ("Pitch range"), not the spec text's "Pitch range (P10–P90)".
+8. Substituted words get connectors, since only missing and inserted words are excluded. Words with
+   `referenceAnomaly` have no `expectedStress`, so they get no dot and show the ambiguous tooltip.
+9. The playhead is a 2 pt `text.primary` line on the row that is playing (Lime is reserved; no token is named).
+10. `stripBarYou` is unused now (V1) but stays in the token table. `mistake` stays reserved.
+11. `result-not-scored` and `result-no-verdict` (spec 28) stay. They show the v3 result too.
+
+**Hand follow-up for Raph**
+- `project.yml`: add `AccentMirror/Fixtures/ResultLogic.swift` to the `AccentMirrorTests` sources and delete the
+  `AccentMirrorTests/ResultLogic.swift` symlink. Also delete the `Fixture result-feedback`,
+  `Fixture inc-requiredMeasureUnavailable-lowConfidence` and `Fixture ncd-insertionsPresent` schemes, whose fixtures
+  are retired (maybe add `Fixture result`).
+- Run `make test-ui-vm` for the screenshots (light, dark, Reduce Motion) and the app-hosted `ShellContractTests`.

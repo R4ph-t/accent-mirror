@@ -15,33 +15,25 @@
           "text": "pho",
           "start": 0.003,
           "end": 0.121,
-          "prominence": 0.35,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.35
         },
         {
           "text": "tog",
           "start": 0.128,
           "end": 0.222,
-          "prominence": 1.0,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 1.0
         },
         {
           "text": "ra",
           "start": 0.227,
           "end": 0.312,
-          "prominence": 0.35,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.35
         },
         {
           "text": "phy",
           "start": 0.316,
           "end": 0.403,
-          "prominence": 0.38,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.38
         }
       ]
     },
@@ -55,9 +47,7 @@
           "text": "is",
           "start": 0.411,
           "end": 0.479,
-          "prominence": 0.32,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.32
         }
       ]
     },
@@ -71,17 +61,13 @@
           "text": "har",
           "start": 0.486,
           "end": 0.593,
-          "prominence": 0.9,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.9
         },
         {
           "text": "der",
           "start": 0.599,
           "end": 0.687,
-          "prominence": 0.3,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.3
         }
       ]
     },
@@ -95,9 +81,7 @@
           "text": "than",
           "start": 0.695,
           "end": 0.762,
-          "prominence": 0.3,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.3
         }
       ]
     },
@@ -111,9 +95,7 @@
           "text": "it",
           "start": 0.769,
           "end": 0.832,
-          "prominence": 0.26,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.26
         }
       ]
     },
@@ -127,9 +109,7 @@
           "text": "looks",
           "start": 0.839,
           "end": 0.995,
-          "prominence": 0.95,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.95
         }
       ]
     }

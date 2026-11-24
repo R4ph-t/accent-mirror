@@ -1,15 +1,17 @@
+import AMCore
 import Foundation
 
 // What the shell shows for a contract state. Pure value types, no SwiftUI: the views only draw these.
-// Spec 28 (show-don't-judge v1): nothing here reads a verdict, a diff row, a stress line or a measure state. An analysed
-// take, scored legacy takes included, shows card 1 "YOUR TAKE" with no rows; spec 29 adds the v3 result row.
+// Show-don't-judge v1 (specs 28 and 29): nothing here reads a verdict, a diff row, a stress line or a measure state. An
+// analysed take shows card 1 "YOUR TAKE" with the v3 result row, the strip with neutral bars and the native row's
+// dictionary-stress dots, the pitch card with earlier takes, and the inspector's plain measures.
 
 struct DetailPresentation: Sendable {
     var banner: BannerPresentation?
     var card: CardPresentation
     var strip: StripPresentation
     var pitch: PitchPresentation
-    var inspector: [InspectorSection]
+    var inspector: InspectorPresentation
 }
 
 struct BannerPresentation: Sendable, Equatable {
@@ -22,21 +24,25 @@ struct BannerPresentation: Sendable, Equatable {
 struct CardPresentation: Sendable {
     var title: String
     var rows: [CardRow]
-    /// Geist 12 secondary lines with info.circle, under the rows; they don't count toward the 3 rows.
-    var infoLines: [Sentence]
+    /// The one quiet line (Geist 12 secondary, info.circle) under the result row; never counted as a row.
+    var quietLine: Sentence?
 }
 
 struct CardRow: Sendable {
+    enum Icon: Sendable, Equatable {
+        case symbol(String)
+        /// The result row's 16 pt overlay glyph: two waves, one soft and one thin (v3 §3.1).
+        case overlay
+    }
+
     enum Trailing: Sendable, Equatable {
         case none
-        /// Plays the model then you for that word (visual only in this shell).
-        case play
+        /// The result row's Play Both ghost button (⌥⌘L).
+        case playBoth
         case button(String)
     }
 
-    var icon: String?
-    /// The too-quiet icon is mistake blue (§11.1); every other card 1 icon is secondary.
-    var iconIsMistake: Bool
+    var icon: Icon?
     var sentence: Sentence
     var trailing: Trailing
 }
@@ -44,6 +50,8 @@ struct CardRow: Sendable {
 struct StripPresentation: Sendable {
     var native: [StripCluster]
     var you: YouRow
+    /// Native syllable to your matching syllable; empty unless your row shows labelled bars.
+    var connectors: [TimingConnector]
 
     enum YouRow: Sendable {
         /// Dashed placeholder, "Your take appears here."
@@ -51,7 +59,7 @@ struct StripPresentation: Sendable {
         /// Live bars in strip.bar up to a 2 pt Lime playhead.
         case recording(clusters: [StripCluster], playhead: Double)
         /// A take problem with audio (§7.1): the take drawn as a waveform grouped by syllable, in strip.bar, no
-        /// labels, no Lime, shaped by the problem, with a Geist 12 secondary caption naming it when there is one.
+        /// labels, shaped by the problem, with a Geist 12 secondary caption naming it when there is one.
         case takeProblem(clusters: [StripCluster], shape: TakeProblemShape, caption: String?)
         /// Bars; labels hidden for analysing and unalignable takes.
         case bars(clusters: [StripCluster], slots: [MissingSlot], showsLabels: Bool)
@@ -68,43 +76,30 @@ enum TakeProblemShape: Sendable, Equatable {
     case plain
 }
 
+/// One syllable's bars and label. Every bar in both rows is `strip.bar` at the recording's own envelope (v3.1 V1).
 struct StripCluster: Sendable, Equatable {
-    /// Bar colour role. Stressed bars are Lime; your other bars are darker than the native row's (Designer
-    /// review of PR #4, fix 3), except heard-only words, take problems and in-flight takes, which stay strip.bar.
-    enum Fill: Sendable, Equatable {
-        /// Measured as stressed: the vertical Lime bar gradient.
-        case stressed
-        /// strip.bar: the native row, and your grey bars (recording, analysing, unalignable, inserted,
-        /// substituted, take problems).
-        case neutral
-        /// strip.you: your unstressed bars in a result.
-        case yours
-    }
-
     var start: Double
     var end: Double
     var prominence: Double
-    var fill: Fill
     var label: ClusterLabel?
+    /// The Lime dictionary-stress dot under the label (native row only, v3.1 V2).
+    var dot: Bool
+    /// The phrase word this syllable belongs to (index into the phrase's words): clicking its label loops that word.
+    /// Nil for an inserted word.
+    var word: Int? = nil
     /// Stable seed so the bar texture is the same on every render.
     var seed: Int
     var tooltip: String?
 }
 
-/// A syllable of your take, by word and index within the word.
-struct FlaggedSyllable: Hashable, Sendable {
-    var word: String
-    var index: Int
-}
-
 struct ClusterLabel: Sendable, Equatable {
     enum Style: Sendable, Equatable {
-        /// Bold caps, primary.
+        /// Native, dictionary-stressed: bold caps, primary, with the dot.
         case caps
-        /// Lowercase, secondary.
+        /// Native, the rest: lowercase, secondary.
         case lower
-        /// Blue caps, triangle, dotted underline.
-        case mistake
+        /// Your row (v3.1 V3): lowercase, regular, tertiary.
+        case yours
         /// A heard word, italics, secondary ("photograph" in quotes, or "+ so").
         case heard
     }
@@ -122,19 +117,35 @@ struct PitchPresentation: Sendable {
     var rangeSemitones: Double
     var band: [BandSegment]
     var you: [PitchSegment]
+    /// Up to 3 earlier takes, 1 pt in pitch.you at 30/20/12%; empty when off (⇧⌘G) or when your line isn't drawn.
+    var earlier: [EarlierTakeLine]
     var message: String?
     /// Native words under the baseline (model time). Target words always keep their label when the plot is
     /// narrow; the others are hidden first (fixes round 5, `LabelLayout`).
     var words: [(text: String, start: Double, end: Double, isTarget: Bool)]
-    /// Lime marks on the baseline: the native's stressed syllables.
-    var stressedSpans: [(start: Double, end: Double)]
     /// Native syllables, for the faint waveform texture behind the plot.
     var texture: [StripCluster]
 }
 
-struct InspectorSection: Sendable, Equatable {
+/// The Details inspector (v3 §4).
+struct InspectorPresentation: Sendable, Equatable {
+    var measures: [MeasureRow]
+    var measuresNote: String?
+    /// "Clear" or "Rough"; nil with nothing analysed.
+    var alignment: String?
+    var model: ModelRecordingPresentation?
+    /// "Not saved" lines for the take.
+    var takeStatus: String?
+
+    static let empty = InspectorPresentation(measures: [], measuresNote: nil, alignment: nil, model: nil, takeStatus: nil)
+}
+
+struct ModelRecordingPresentation: Sendable, Equatable {
+    /// "p225 · Southern England".
     var title: String
-    var lines: [String]
+    var attribution: String
+    var voices: [String]
+    var selected: String
 }
 
 @MainActor
@@ -181,12 +192,12 @@ enum ShellPresenter {
 
     // MARK: Detail
 
-    static func detail(for loaded: LoadedFixture) -> DetailPresentation {
+    static func detail(for loaded: LoadedFixture, showEarlierTakes: Bool = true) -> DetailPresentation {
         DetailPresentation(
             banner: banner(loaded.fixture),
             card: card(loaded),
             strip: strip(loaded),
-            pitch: pitch(loaded),
+            pitch: pitch(loaded, showEarlierTakes: showEarlierTakes),
             inspector: inspector(loaded)
         )
     }
@@ -214,47 +225,69 @@ enum ShellPresenter {
         return TakeProblem.allCases.first(where: problems.contains)
     }
 
+    /// A take drawn over the model: analysed, aligned, no take problem, no app problem.
+    static func isResult(_ loaded: LoadedFixture) -> Bool {
+        loaded.fixture.phase == .showingTake && loaded.fixture.operationalError == nil
+            && loaded.fixture.analysis != nil && loaded.take?.alignment == .aligned && loaded.take?.hasAudio == true
+            && firstTakeProblem(loaded) == nil
+    }
+
+    // MARK: Card 1 (v3 §3.1)
+
     static func card(_ loaded: LoadedFixture) -> CardPresentation {
         let fixture = loaded.fixture
         switch fixture.phase {
         case .empty:
             return CardPresentation(title: Copy.yourTake, rows: [
-                CardRow(icon: "mic", iconIsMistake: false, sentence: [.plain(Copy.emptyPrompt)], trailing: .none),
-            ], infoLines: [])
+                CardRow(icon: .symbol("mic"), sentence: [.plain(Copy.emptyPrompt)], trailing: .none),
+            ])
         case .recording:
             return CardPresentation(title: Copy.yourTake, rows: [
-                CardRow(icon: "mic.fill", iconIsMistake: false, sentence: [.plain(Copy.recordingPrompt)], trailing: .none),
-            ], infoLines: [])
+                CardRow(icon: .symbol("mic.fill"), sentence: [.plain(Copy.recordingPrompt)], trailing: .none),
+            ])
         case .analysing:
             return CardPresentation(title: Copy.yourTake, rows: [
-                CardRow(icon: nil, iconIsMistake: false, sentence: [.plain(Copy.analysing)], trailing: .none),
-            ], infoLines: [])
+                CardRow(icon: nil, sentence: [.plain(Copy.analysing)], trailing: .none),
+            ])
         case .showingTake:
             break
         }
 
         if loaded.take?.alignment == .unalignable {
             return CardPresentation(title: Copy.yourTake, rows: [
-                CardRow(icon: "text.badge.minus", iconIsMistake: false, sentence: [.plain(Copy.unalignable)], trailing: .none),
-            ], infoLines: [])
+                CardRow(icon: .symbol("text.badge.minus"), sentence: [.plain(Copy.unalignable)], trailing: .none),
+            ])
         }
 
         if let problem = firstTakeProblem(loaded) {
+            // The too-quiet icon is text.secondary like every other card 1 icon (v3 §5).
             return CardPresentation(title: Copy.yourTake, rows: [
                 CardRow(
-                    icon: takeProblemIcon(problem), iconIsMistake: problem == .tooQuiet,
+                    icon: .symbol(takeProblemIcon(problem)),
                     sentence: [.plain(Copy.takeProblem(problem))],
                     trailing: Copy.takeProblemButton(problem).map(CardRow.Trailing.button) ?? .none
                 ),
-            ], infoLines: [])
+            ])
         }
 
-        guard fixture.analysis != nil else {
-            // An operational error with nothing analysed keeps the empty state.
+        guard let analysis = fixture.analysis, fixture.operationalError == nil else {
+            // An operational error with nothing shown keeps the empty state.
             return card(LoadedFixture(fixture: with(fixture) { $0.phase = .empty }, phrase: loaded.phrase, take: nil))
         }
-        // Spec 28: an analysed take is drawn, never judged. No rows, no sentence about stress or closeness.
-        return CardPresentation(title: Copy.yourTake, rows: [], infoLines: [])
+        let quiet = quietLine(analysis, take: loaded.take)
+        return CardPresentation(title: Copy.yourTake, rows: [
+            CardRow(icon: .overlay, sentence: [.plain(Copy.resultRow)], trailing: .playBoth),
+        ], quietLine: quiet.map(Copy.quietLine))
+    }
+
+    /// Coverage, then timing, then insertions; the coverage floor is the decision procedure's own threshold.
+    static func quietLine(_ analysis: Analysis, take: TakeFixture?) -> ResultQuietLine? {
+        ResultQuietLine.first(
+            comparableCoverage: analysis.comparableCoverage,
+            minimumCoverage: Thresholds.current.decision.minComparableCoverage,
+            timing: analysis.timing,
+            insertions: ResultQuietLine.insertedWords(take)
+        )
     }
 
     static func takeProblemIcon(_ problem: TakeProblem) -> String {
@@ -268,78 +301,69 @@ enum ShellPresenter {
         }
     }
 
-    // MARK: Strip
+    // MARK: Strip (v3 §3.2, v3.1 V1–V3)
 
     static func nativeClusters(_ phrase: PhraseFixture) -> [StripCluster] {
         var seed = 1
-        return phrase.words.flatMap { word in
-            let unchecked = word.stressCheck == .expectedAmbiguous || word.stressCheck == .referenceAnomaly
-            return word.syllables.map { syllable in
+        return phrase.words.enumerated().flatMap { wordIndex, word in
+            let dotted = StressMarks.dottedSyllable(word)
+            let ambiguous = StressMarks.isAmbiguous(word)
+            return word.syllables.enumerated().map { index, syllable in
                 seed += 1
+                let isDotted = dotted == index
                 return StripCluster(
                     start: syllable.start, end: syllable.end, prominence: syllable.prominence,
-                    fill: syllable.stressed ? .stressed : .neutral,
                     label: ClusterLabel(
-                        text: unchecked || syllable.label == .lower ? syllable.text.lowercased() : syllable.text.uppercased(),
-                        style: unchecked || syllable.label == .lower ? .lower : .caps
+                        text: isDotted ? syllable.text.uppercased() : syllable.text.lowercased(),
+                        style: isDotted ? .caps : .lower
                     ),
+                    dot: isDotted,
+                    word: wordIndex,
                     seed: seed,
-                    tooltip: unchecked ? Copy.ambiguousTooltip : nil
+                    tooltip: ambiguous ? Copy.ambiguousTooltip : nil
                 )
             }
         }
     }
 
-    /// Your row. `flagged` holds the only syllables that may carry the mistake marker (see `flaggedSyllables`);
-    /// any other `mistake` label in the take is drawn as a plain lowercase label.
-    static func yourClusters(_ take: TakeFixture, allGrey: Bool, flagged: Set<FlaggedSyllable> = [])
+    /// Your row: neutral bars and lowercase tertiary labels (v3.1 V3); heard words in italics; missing words as slots.
+    static func yourClusters(_ take: TakeFixture, labelled: Bool, phrase: PhraseFixture? = nil)
         -> (clusters: [StripCluster], slots: [MissingSlot]) {
         var clusters: [StripCluster] = []
         var slots: [MissingSlot] = []
         var seed = 101
-        for pair in take.words {
+        let words = phrase.map { TimingConnectors.nativeWordIndices(phrase: $0, take: take) }
+            ?? Array(repeating: nil, count: take.words.count)
+        for (pair, wordIndex) in zip(take.words, words) {
             switch pair.kind {
             case .missing:
                 if let position = pair.slot { slots.append(MissingSlot(position: position, expected: pair.expected ?? "")) }
             case .present:
-                let unchecked = pair.stressCheck == .expectedAmbiguous || pair.stressCheck == .referenceAnomaly
-                let word = (pair.expected ?? pair.heard ?? "").lowercased()
-                for (index, syllable) in pair.syllables.enumerated() {
+                for syllable in pair.syllables {
                     seed += 1
-                    let style: ClusterLabel.Style
-                    if unchecked { style = .lower } else {
-                        switch syllable.label {
-                        case .caps: style = .caps
-                        case .lower: style = .lower
-                        case .mistake:
-                            style = flagged.contains(FlaggedSyllable(word: word, index: index)) ? .mistake : .lower
-                        }
-                    }
                     clusters.append(StripCluster(
                         start: syllable.start, end: syllable.end, prominence: syllable.prominence,
-                        fill: syllable.stressed ? .stressed : .yours,
-                        label: ClusterLabel(text: style == .lower ? syllable.text.lowercased() : syllable.text.uppercased(), style: style),
-                        seed: seed, tooltip: unchecked ? Copy.ambiguousTooltip : nil
+                        label: ClusterLabel(text: syllable.text.lowercased(), style: .yours),
+                        dot: false, word: wordIndex, seed: seed, tooltip: nil
                     ))
                 }
             case .substituted, .inserted:
-                // Grey bars (never Lime, no stress comparison) and one italic label for the heard word.
+                // One italic label for the heard word, on its middle syllable.
                 let heard = pair.heard ?? ""
                 let label = pair.kind == .inserted ? "+ \(heard)" : "\u{201C}\(heard)\u{201D}"
-                let tooltip = pair.kind == .substituted ? Copy.substitutedTooltip(heard: heard, expected: pair.expected ?? "") : nil
+                let tooltip = pair.kind == .substituted ? Copy.substitutedTooltip(heard: heard) : nil
                 for (index, syllable) in pair.syllables.enumerated() {
                     seed += 1
-                    let isMiddle = index == pair.syllables.count / 2
                     clusters.append(StripCluster(
-                        start: syllable.start, end: syllable.end, prominence: syllable.prominence, fill: .neutral,
-                        label: isMiddle ? ClusterLabel(text: label, style: .heard) : nil,
-                        seed: seed, tooltip: tooltip
+                        start: syllable.start, end: syllable.end, prominence: syllable.prominence,
+                        label: index == pair.syllables.count / 2 ? ClusterLabel(text: label, style: .heard) : nil,
+                        dot: false, word: wordIndex, seed: seed, tooltip: tooltip
                     ))
                 }
             }
         }
-        if allGrey {
-            clusters = clusters.map { var c = $0; c.label = nil; c.fill = .neutral; return c }
+        if !labelled {
+            clusters = clusters.map { var c = $0; c.label = nil; c.tooltip = nil; return c }
         }
         return (clusters, slots)
     }
@@ -348,14 +372,15 @@ enum ShellPresenter {
         let native = nativeClusters(loaded.phrase)
         let fixture = loaded.fixture
         let you: StripPresentation.YouRow
+        var connectors: [TimingConnector] = []
         switch fixture.phase {
         case .empty:
             you = .placeholder
         case .recording:
-            let clusters = loaded.take.map { yourClusters($0, allGrey: true).clusters } ?? []
+            let clusters = loaded.take.map { yourClusters($0, labelled: false).clusters } ?? []
             you = .recording(clusters: clusters, playhead: fixture.recording?.playhead ?? 0)
         case .analysing:
-            let parts = loaded.take.map { yourClusters($0, allGrey: true) }
+            let parts = loaded.take.map { yourClusters($0, labelled: false) }
             you = .bars(clusters: parts?.clusters ?? [], slots: [], showsLabels: false)
         case .showingTake:
             guard let take = loaded.take else { you = .placeholder; break }
@@ -363,22 +388,22 @@ enum ShellPresenter {
                 // No microphone, mic denied, no speech: nothing was recorded.
                 you = .placeholder
             } else if take.alignment == .unalignable {
-                you = .bars(clusters: yourClusters(take, allGrey: true).clusters, slots: [], showsLabels: false)
+                you = .bars(clusters: yourClusters(take, labelled: false).clusters, slots: [], showsLabels: false)
             } else if let problem = firstTakeProblem(loaded) {
                 you = .takeProblem(
-                    clusters: yourClusters(take, allGrey: true).clusters,
+                    clusters: yourClusters(take, labelled: false).clusters,
                     shape: takeProblemShape(problem),
                     caption: Copy.takeProblemCaption(problem)
                 )
             } else if fixture.analysis == nil {
                 you = .placeholder
             } else {
-                // Spec 28: no mistake marker (it named the syllable a placement row judged).
-                let parts = yourClusters(take, allGrey: false)
+                let parts = yourClusters(take, labelled: true, phrase: loaded.phrase)
                 you = .bars(clusters: parts.clusters, slots: parts.slots, showsLabels: true)
+                connectors = TimingConnectors.connectors(phrase: loaded.phrase, take: take)
             }
         }
-        return StripPresentation(native: native, you: you)
+        return StripPresentation(native: native, you: you, connectors: connectors)
     }
 
     /// Too short and words don't match use the too-quiet treatment (Designer answer 3, round 3).
@@ -390,70 +415,105 @@ enum ShellPresenter {
         }
     }
 
-    // MARK: Pitch
+    // MARK: Pitch (v3 §3.3, v3.1 V4–V5)
 
-    /// The manifest's `targets` for this phrase, normalised (spec 28: card 1 names no words, so these are the only
-    /// named targets).
+    /// The manifest's `targets` for this phrase, normalised.
     static func namedTargetWords(_ loaded: LoadedFixture) -> Set<String> {
         let manifest = loaded.fixture.manifest ?? .stub
         let targets = manifest.packs.flatMap(\.phrases).first { $0.id == loaded.phrase.id }?.targets ?? []
         return Set(targets.map(normalizedWord)).intersection(Set(loaded.phrase.words.map { normalizedWord($0.text) }))
     }
 
-    /// A target word under the pitch plot (Addendum r4 C6): one that carries a stressed native syllable (it has a
-    /// Lime mark on the baseline), or one named in `named`. Its label always shows; the other words' labels give
-    /// way first when the plot is narrow.
+    /// A target word under the pitch plot (Addendum r4 C6, v3 §11): one with a dictionary-stressed syllable, or one
+    /// named in the manifest. Its label always shows; the others give way first when the plot is narrow.
     static func isTargetWord(_ word: NativeWord, named: Set<String>) -> Bool {
-        word.syllables.contains(where: \.stressed) || named.contains(normalizedWord(word.text))
+        StressMarks.dottedSyllable(word) != nil || named.contains(normalizedWord(word.text))
     }
 
     static func normalizedWord(_ text: String) -> String {
         text.lowercased().trimmingCharacters(in: .punctuationCharacters)
     }
 
-    static func pitch(_ loaded: LoadedFixture) -> PitchPresentation {
+    static func pitch(_ loaded: LoadedFixture, showEarlierTakes: Bool = true) -> PitchPresentation {
         let phrase = loaded.phrase
         var you: [PitchSegment] = []
+        var earlier: [EarlierTakeLine] = []
         var message: String?
-        let showsYou = loaded.fixture.phase == .showingTake && loaded.take?.alignment == .aligned
-            && firstTakeProblem(loaded) == nil && loaded.fixture.analysis != nil
-        if showsYou, let take = loaded.take {
+        if isResult(loaded), let take = loaded.take {
             // A stretch shorter than 3 frames isn't drawn (§13.7).
             you = take.pitch.filter { $0.points.count >= 3 }
             if you.isEmpty { message = Copy.noPitch }
+            earlier = EarlierTakes.lines(loaded.earlierTakes,
+                                         visible: loaded.fixture.earlierTakesVisible ?? showEarlierTakes)
         }
-        let stressed = phrase.words.flatMap(\.syllables).filter(\.stressed).map { (start: $0.start, end: $0.end) }
         let named = namedTargetWords(loaded)
         return PitchPresentation(
             rangeSemitones: phrase.rangeSemitones,
             band: phrase.band,
             you: you,
+            earlier: earlier,
             message: message,
             words: phrase.words.map { word in
                 (text: word.text, start: word.start, end: word.end, isTarget: isTargetWord(word, named: named))
             },
-            stressedSpans: stressed,
             texture: nativeClusters(phrase)
         )
     }
 
-    // MARK: Inspector (§14)
+    // MARK: Playback
 
-    /// Spec 28: no measure states, no STRESS lines, no verdict reasons. Quiet notes and the take's save status only.
-    static func inspector(_ loaded: LoadedFixture) -> [InspectorSection] {
-        var sections: [InspectorSection] = []
-        let analysis = loaded.fixture.analysis
-        let quiet = Copy.quietLines(analysis?.notes).map(\.plain)
-        if !quiet.isEmpty {
-            sections.append(InspectorSection(title: "NOTES", lines: quiet))
+    /// Seconds to play for each side: the fixture's own, else the described lengths, else a nominal phrase.
+    static func playbackSeconds(_ loaded: LoadedFixture) -> (model: Double, you: Double) {
+        if let frame = loaded.fixture.playBoth { return (frame.modelSeconds, frame.youSeconds) }
+        let describe = loaded.fixture.analysis?.describe
+        let model = describe?.native.lengthSeconds.min ?? nominalPhraseSeconds
+        let you = describe?.you.lengthSeconds.value ?? nominalPhraseSeconds
+        return (model, you)
+    }
+
+    /// Clicking a word's label (v3 §3.5): the model's slice of that word, 0.4 s, then yours, looping until Esc. A
+    /// missing word loops the model only. Returns the schedule and the word as the caption names it.
+    static func loopSchedule(_ loaded: LoadedFixture, word index: Int) -> (schedule: PlaybackSchedule, word: String)? {
+        guard isResult(loaded), let take = loaded.take, loaded.phrase.words.indices.contains(index) else { return nil }
+        let word = loaded.phrase.words[index]
+        guard let first = word.syllables.first, let last = word.syllables.last else { return nil }
+        let seconds = playbackSeconds(loaded)
+        let model = (from: first.start, to: last.end, seconds: (last.end - first.start) * seconds.model)
+        let indices = TimingConnectors.nativeWordIndices(phrase: loaded.phrase, take: take)
+        var you: (from: Double, to: Double, seconds: Double)?
+        if let pairIndex = indices.firstIndex(of: index), take.words[pairIndex].kind != .missing,
+           let a = take.words[pairIndex].syllables.first, let b = take.words[pairIndex].syllables.last {
+            you = (from: a.start, to: b.end, seconds: (b.end - a.start) * seconds.you)
         }
-        if loaded.fixture.phase == .showingTake, let take = loaded.take {
-            let status = loaded.fixture.persistence ?? (take.number == nil ? .notSaved : .saved)
-            if let line = Copy.persistence(status) {
-                sections.append(InspectorSection(title: "TAKE", lines: [line]))
+        return (.loop(model: model, you: you), normalizedWord(word.text))
+    }
+
+    /// Fixture-only stand-in for a clip's length until spec 21 plays real audio.
+    static let nominalPhraseSeconds = 2.0
+
+    // MARK: Inspector (v3 §4, v3.1 V4)
+
+    static func inspector(_ loaded: LoadedFixture) -> InspectorPresentation {
+        var result = InspectorPresentation.empty
+        let fixture = loaded.fixture
+        if isResult(loaded), let analysis = fixture.analysis {
+            if let describe = analysis.describe {
+                result.measures = ThisTake.rows(describe)
+                result.measuresNote = ThisTake.note(describe)
             }
+            result.alignment = analysis.timing.map(ThisTake.alignment)
         }
-        return sections
+        if let model = fixture.modelRecording {
+            result.model = ModelRecordingPresentation(
+                title: [model.voice, model.region].compactMap { $0 }.joined(separator: " \u{00B7} "),
+                attribution: model.attribution, voices: model.voices, selected: model.voice
+            )
+        }
+        if fixture.phase == .showingTake, let take = loaded.take {
+            let status = fixture.persistence ?? (take.number == nil ? .notSaved : .saved)
+            result.takeStatus = Copy.persistence(status)
+        }
+        return result
     }
 
     private static func with<T>(_ value: T, _ change: (inout T) -> Void) -> T {

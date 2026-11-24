@@ -11,49 +11,70 @@
   "take": "photography-take03-substituted",
   "analysis": {
     "verdict": {
-      "kind": "inconclusive",
-      "inconclusive": {
-        "reason": "targetWordsMissing",
-        "words": [
-          "photography"
-        ]
-      }
+      "notScored": {}
     },
-    "measures": [
-      {
-        "measure": "stressPlacement",
-        "state": "evaluated"
+    "timing": "good",
+    "describe": {
+      "you": {
+        "lengthSeconds": {
+          "value": 2.4
+        },
+        "syllablesPerSecond": {
+          "value": 4.2
+        },
+        "pitchRangeSemitones": {
+          "value": 4
+        },
+        "rhythmNPVI": {
+          "value": 38
+        },
+        "finalSlope": {
+          "value": 6.1
+        },
+        "endingDirection": "rise"
       },
-      {
-        "measure": "contrast",
-        "state": "evaluated",
-        "value": 1.04
-      },
-      {
-        "measure": "reduction",
-        "state": "evaluated",
-        "value": 0.93
-      },
-      {
-        "measure": "rhythm",
-        "state": "evaluated",
-        "value": 0.91
-      },
-      {
-        "measure": "pitchShape",
-        "state": "evaluated",
-        "value": 0.82
-      },
-      {
-        "measure": "range",
-        "state": "evaluated",
-        "value": 0.95
-      },
-      {
-        "measure": "finalDirection",
-        "state": "evaluated"
+      "native": {
+        "voices": 8,
+        "lengthSeconds": {
+          "min": 1.9,
+          "max": 2.3,
+          "count": 8
+        },
+        "syllablesPerSecond": {
+          "min": 4.3,
+          "max": 5.1,
+          "count": 8
+        },
+        "pitchRangeSemitones": {
+          "min": 6,
+          "max": 9,
+          "count": 8
+        },
+        "rhythmNPVI": {
+          "min": 52,
+          "max": 61,
+          "count": 8
+        },
+        "endingDirections": {
+          "fall": 5,
+          "rise": 3
+        }
       }
-    ],
-    "timing": "good"
+    }
+  },
+  "modelRecording": {
+    "voice": "p225",
+    "region": "Southern England",
+    "attribution": "VCTK 0.92 · CC BY 4.0",
+    "voices": [
+      "p225",
+      "p226",
+      "p227",
+      "p228",
+      "p229",
+      "p230",
+      "p231",
+      "p232"
+    ]
   }
 }

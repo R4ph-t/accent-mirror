@@ -17,7 +17,7 @@ struct FixtureLibraryTests {
         #expect(names.allSatisfy { !$0.hasSuffix(".json") })
     }
 
-    @Test(arguments: ["empty", "close-all", "analysing"])
+    @Test(arguments: ["empty", "result", "analysing"])
     func includesCoreStates(_ name: String) throws {
         #expect(try library.allNames().contains(name))
     }
@@ -30,8 +30,7 @@ struct FixtureLibraryTests {
     }
 }
 
-/// Spec 28: the fixture schema accepts `{"notScored": {}}` and a missing verdict, and the existing verdict fixtures
-/// still decode.
+/// Spec 28: the fixture schema accepts `{"notScored": {}}` and a missing verdict.
 struct NotScoredFixtureTests {
     private let library = FixtureLibrary(root: URL(filePath: #filePath)
         .deletingLastPathComponent()
@@ -54,9 +53,12 @@ struct NotScoredFixtureTests {
         #expect(verdict.kind == .notScored)
     }
 
-    @Test(arguments: ["result-feedback", "close-all", "ncd-timingRough", "inc-timingUnreliable"])
-    func legacyVerdictFixturesStillDecode(_ name: String) throws {
-        #expect(try library.load(name).fixture.analysis?.verdict != nil)
+    /// Spec 29: every fixture's analysed state is `.notScored` (or carries no verdict at all).
+    @Test func everyAnalysedFixtureIsNotScored() throws {
+        for name in try library.allNames() {
+            let analysis = try library.load(name).fixture.analysis
+            #expect(analysis?.verdict == nil || analysis?.verdict?.kind == .notScored, "\(name)")
+        }
     }
 }
 
@@ -67,7 +69,7 @@ struct PresenterSourceTests {
         .deletingLastPathComponent()
         .appending(path: "AccentMirror/Fixtures", directoryHint: .isDirectory)
 
-    @Test(arguments: ["ShellPresenter.swift", "Copy.swift"])
+    @Test(arguments: ["ShellPresenter.swift", "Copy.swift", "ResultLogic.swift"])
     func noVerdictTypes(_ file: String) throws {
         let text = try String(contentsOf: fixtures.appending(path: file), encoding: .utf8)
         #expect(text.contains("enum"), "the scan must read the file")

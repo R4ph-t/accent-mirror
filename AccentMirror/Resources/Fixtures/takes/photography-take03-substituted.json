@@ -15,25 +15,19 @@
           "text": "pho",
           "start": 0.003,
           "end": 0.121,
-          "prominence": 0.9,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.9
         },
         {
           "text": "to",
           "start": 0.128,
           "end": 0.24,
-          "prominence": 0.5,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.5
         },
         {
           "text": "graph",
           "start": 0.246,
           "end": 0.403,
-          "prominence": 0.55,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.55
         }
       ]
     },
@@ -47,9 +41,7 @@
           "text": "is",
           "start": 0.411,
           "end": 0.479,
-          "prominence": 0.45,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.45
         }
       ]
     },
@@ -63,17 +55,13 @@
           "text": "har",
           "start": 0.486,
           "end": 0.593,
-          "prominence": 0.85,
-          "stressed": true,
-          "label": "caps"
+          "prominence": 0.85
         },
         {
           "text": "der",
           "start": 0.599,
           "end": 0.687,
-          "prominence": 0.5,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.5
         }
       ]
     },
@@ -87,9 +75,7 @@
           "text": "than",
           "start": 0.695,
           "end": 0.762,
-          "prominence": 0.45,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.45
         }
       ]
     },
@@ -103,9 +89,7 @@
           "text": "it",
           "start": 0.769,
           "end": 0.832,
-          "prominence": 0.4,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.4
         }
       ]
     },
@@ -119,9 +103,7 @@
           "text": "looks",
           "start": 0.839,
           "end": 0.995,
-          "prominence": 0.75,
-          "stressed": true,
-          "label": "caps"
+          "prominence": 0.75
         }
       ]
     }

@@ -11,97 +11,81 @@
   "take": "photography-take03",
   "analysis": {
     "verdict": {
-      "kind": "feedback",
-      "rows": [
-        {
-          "kind": "placement",
-          "word": "photography",
-          "syllables": [
-            "pho",
-            "tog",
-            "ra",
-            "phy"
-          ],
-          "acceptedIndex": 1,
-          "heardIndex": 0
-        },
-        {
-          "kind": "contrast",
-          "targets": [
-            "HAR",
-            "LOOKS"
-          ]
-        },
-        {
-          "kind": "reduction",
-          "targets": [
-            "ra",
-            "phy",
-            "der",
-            "than"
-          ]
-        }
-      ]
+      "notScored": {}
     },
-    "measures": [
-      {
-        "measure": "stressPlacement",
-        "state": "evaluated"
-      },
-      {
-        "measure": "contrast",
-        "state": "evaluated",
-        "value": 0.58
-      },
-      {
-        "measure": "reduction",
-        "state": "evaluated",
-        "value": 0.64
-      },
-      {
-        "measure": "rhythm",
-        "state": "evaluated",
-        "value": 0.71
-      },
-      {
-        "measure": "pitchShape",
-        "state": "evaluated",
-        "value": 0.62
-      },
-      {
-        "measure": "range",
-        "state": "unavailable",
-        "reason": "lowConfidence"
-      },
-      {
-        "measure": "finalDirection",
-        "state": "notApplicable",
-        "reason": "noFinalVoicing"
-      }
-    ],
     "timing": "good",
-    "stress": [
-      {
-        "word": "harder",
-        "outcome": "matchesDictionary",
-        "pattern": "HARder"
+    "describe": {
+      "you": {
+        "lengthSeconds": {
+          "value": 2.4
+        },
+        "syllablesPerSecond": {
+          "value": 4.2
+        },
+        "pitchRangeSemitones": {
+          "value": 4
+        },
+        "rhythmNPVI": {
+          "value": 38
+        },
+        "finalSlope": {
+          "value": 6.1
+        },
+        "endingDirection": "rise"
       },
-      {
-        "word": "looks",
-        "outcome": "matchesDictionary",
-        "pattern": "LOOKS"
-      },
-      {
-        "word": "photography",
-        "outcome": "outsideAccepted",
-        "pattern": "phoTOGraphy"
+      "native": {
+        "voices": 8,
+        "lengthSeconds": {
+          "min": 1.9,
+          "max": 2.3,
+          "count": 8
+        },
+        "syllablesPerSecond": {
+          "min": 4.3,
+          "max": 5.1,
+          "count": 8
+        },
+        "pitchRangeSemitones": {
+          "min": 6,
+          "max": 9,
+          "count": 8
+        },
+        "rhythmNPVI": {
+          "min": 52,
+          "max": 61,
+          "count": 8
+        },
+        "endingDirections": {
+          "fall": 5,
+          "rise": 3
+        }
       }
-    ]
+    },
+    "comparableCoverage": 0.96
   },
   "inspectorOpen": true,
   "persistence": "notSaved",
   "window": {
     "width": 960,
     "height": 680
-  }
+  },
+  "modelRecording": {
+    "voice": "p225",
+    "region": "Southern England",
+    "attribution": "VCTK 0.92 · CC BY 4.0",
+    "voices": [
+      "p225",
+      "p226",
+      "p227",
+      "p228",
+      "p229",
+      "p230",
+      "p231",
+      "p232"
+    ]
+  },
+  "earlierTakes": [
+    "photography-take02",
+    "photography-take01"
+  ]
 }

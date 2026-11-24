@@ -1,4 +1,4 @@
-# UI fixtures (spec 19)
+# UI fixtures (spec 19, v3 in spec 29)
 
 Each UI state is a JSON file. The app renders it with `-UIFixture <name>`, and `make screenshots` renders every
 fixture in light and dark. The decoding types are in `AccentMirror/Fixtures/FixtureModel.swift`. The names follow
@@ -32,28 +32,33 @@ time.
 | `persistence` | string? | `saved` \| `notSaved` \| `saveFailed` \| `savedPruneFailed` |
 | `outcome` | string? | Coordinator outcome with no UI trace (`cancelled`) |
 | `inspectorOpen` | bool? | Opens the Details inspector |
+| `earlierTakes` | string[]? | `takes/<id>.json` of earlier saved takes, newest first: up to 3 aligned ones draw faintly behind your line (v3 §3.3) |
+| `earlierTakesVisible` | bool? | View ▸ Show Earlier Takes for this state (`result-earlier-takes-off`); nil keeps the remembered choice, on by default |
+| `playBoth` | object? | `{elapsed, modelSeconds, youSeconds}`: Play Both frozen on an injected clock at `elapsed` s (`playing-both`) |
+| `modelRecording` | object? | The inspector's MODEL RECORDING: `{voice, region?, attribution, voices[]}` (voices feed the pop-up) |
 | `window` | object? | `{width, height}` in points: the window size the screenshot runner uses. Defaults to 1200 × 800. At least the 960 × 680 minimum |
 
 ### analysis
 
+Show-don't-judge v1 (specs 28–29): no verdict rows, measure states, stress lines or quiet notes. The views read none.
+
 | Field | Type | Meaning |
 |---|---|---|
 | `takeProblems` | string[]? | `noMicrophone`, `micDenied`, `noSpeech`, `tooShort`, `tooQuiet`, `clipped`, `wordsDontMatch`. Only the first in that order shows |
-| `verdict` | object? | Optional (spec 28): a missing verdict is accepted. `{"notScored": {}}` (the contract's canonical form) or `{kind: notScored}` is a take analysed with scoring off. The views read no verdict since spec 28: any analysed take shows card 1 "YOUR TAKE" with no rows, scored or not; spec 29 retires the verdict fixtures |
-| `verdict.kind` | `feedback` \| `close` \| `noClearDifference` \| `inconclusive` \| `notScored` | |
-| `verdict.rows` | DiffRow[]? | feedback: `{kind: roughTiming \| placement \| contrast \| reduction \| range \| finalDirection \| tooMuchContrast, word?, syllables?, acceptedIndex?, heardIndex?, likeVoice?, targets?, direction?}`. Shown in §10 order, at most 3 |
-| `verdict.reasons` | string[]? | noClearDifference: `pitchShapeBelowClose`, `optionalMeasuresUnavailable`, `mediumConfidenceOnly`, `timingRough`, `nonTargetWordsIncomplete`, `insertionsPresent` |
-| `verdict.inconclusive` | object? | `{reason: targetWordsMissing \| timingUnreliable \| comparableCoverageLow \| requiredMeasureUnavailable \| noApplicableStressMeasure, words?, coverage?, cause?: lowConfidence}` |
-| `measures` | MeasureState[]? | `{measure: stressPlacement \| contrast \| reduction \| rhythm \| pitchShape \| range \| finalDirection, state: evaluated \| unavailable \| notApplicable, value?, reason?}`. `contrast` notApplicable with `oneWordTwoSyllables` or `tooFewExpectedUnstressed` gives the placement-only line |
-| `timing` | `good` \| `rough` | |
-| `notes` | object? | A6 quiet notes: `{insertions?: [word], nonTargetWordsIncomplete?: bool, partial?: {compared, total}}` |
-| `stress` | StressLine[]? | Inspector STRESS lines: `{word, outcome: matchesVoice \| matchesDictionary \| differsButAccepted \| outsideAccepted \| lowConfidence \| referenceAnomaly \| notChecked, pattern?, voice?, selectedVoice?}` |
+| `verdict` | object? | `{"notScored": {}}` (or `{kind: notScored}`) on every analysed fixture; a missing verdict is accepted. Never read by a view |
+| `timing` | `good` \| `rough` | Inspector ALIGNMENT reads Clear / Rough; rough gives card 1's timing quiet line |
+| `comparableCoverage` | number? | `AnalysisResult.comparableCoverage`: below `Thresholds.decision.minComparableCoverage`, card 1's coverage quiet line |
+| `describe` | object? | `AnalysisResult.describe` (spec 28 §4a): `{you: {lengthSeconds, syllablesPerSecond, pitchRangeSemitones, rhythmNPVI: {value} \| {reason}, endingDirection?: rise \| fall \| level}, native: {voices, lengthSeconds, syllablesPerSecond, pitchRangeSemitones, rhythmNPVI: {min, max, count}, endingDirections: {fall: 5, rise: 3}}}`. The inspector's THIS TAKE |
+
+Card 1's quiet line is the first of: low coverage, rough timing, inserted words (the take's `inserted` pairs).
 
 ## phrases/<id>.json
 
 `{id, text, subtitle, rangeSemitones, words[], band[]}`
 
-- `words[]`: `{text, stressCheck?: checked | expectedAmbiguous | referenceAnomaly, start, end, syllables[]}`.
+- `words[]`: `{text, stressCheck?: checked | expectedAmbiguous | referenceAnomaly, expectedStress?, start, end, syllables[]}`.
+  `expectedStress` is spec 28's context-resolved stress, one of `primary | secondary | unstressed` per syllable. The
+  single `primary` gets the Lime dot and bold caps on the native row (v3.1 V2); a word without it is ambiguous.
 - `band[]`: one segment per stretch between pauses over 250 ms. Each is `{points: [{t, st, half}]}`, where `st` is
   semitones re your median and `half` is half the P10 to P90 width.
 
@@ -70,10 +75,7 @@ time.
 
 ## Syllable
 
-`{text, start, end, prominence (0…1), stressed (measured: Lime bars), label: caps | lower | mistake}`
+`{text, start, end, prominence (0…1)}`
 
-The label carries dictionary or accepted stress (caps). The bars carry measured prominence (height, Lime).
-`mistake` draws blue caps with a triangle and a dotted underline, but only on the syllable named after "not" in a
-placement row that card 1 shows (your stress outside the accepted set at high confidence, §8, §13 item 5).
-`ShellPresenter` enforces it: in any other state a `mistake` label is drawn lowercase, and the contract tests fail
-on a fixture that carries one. Low confidence, close, noClearDifference and inconclusive never show the marker.
+Bars are each recording's real envelope, all `strip.bar` in both rows (v3.1 V1). Nothing about stress lives on a
+syllable: the dot comes from the native word's `expectedStress`, and your labels are always plain lowercase (V3).

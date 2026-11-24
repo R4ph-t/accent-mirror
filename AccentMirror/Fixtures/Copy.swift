@@ -4,10 +4,6 @@ import Foundation
 struct Segment: Equatable, Sendable {
     enum Role: Equatable, Sendable {
         case plain
-        /// Accepted stressed syllable or word: bold caps in lime.text.
-        case stressed
-        /// The wrong syllable: bold caps in mistake blue (the caps and word order also say it).
-        case mistake
         /// A heard word (insertions, substitutions): italics.
         case heard
     }
@@ -16,8 +12,6 @@ struct Segment: Equatable, Sendable {
     var role: Role
 
     static func plain(_ text: String) -> Segment { Segment(text: text, role: .plain) }
-    static func stressed(_ text: String) -> Segment { Segment(text: text, role: .stressed) }
-    static func mistake(_ text: String) -> Segment { Segment(text: text, role: .mistake) }
     static func heard(_ text: String) -> Segment { Segment(text: text, role: .heard) }
 }
 
@@ -27,10 +21,9 @@ extension Array where Element == Segment {
     var plain: String { map(\.text).joined() }
 }
 
-/// Every user-facing sentence of the fixture-driven shell, from Designer spec v2 §10, §11.1, §13 and Addendum r2.
-/// Pure functions of contract values, so the copy is testable without UI. Spec 28: nothing here reads a verdict, a
-/// diff row, a stress line or a measure state; that copy waits, unused by the views, in `VerdictSentences.swift` for spec
-/// 29 to delete with its banned-word test.
+/// Every user-facing sentence of the fixture-driven shell: Designer spec v2 §11.1 and §13 where v3 keeps them, and
+/// v3 §5 / v3.1 word for word. Pure functions of contract values. Show, don't judge: no string here (or in any view)
+/// may use a word from `AccentMirrorTests/BannedWordTests.swift`'s list.
 enum Copy {
     // MARK: Card 1 titles
 
@@ -47,33 +40,68 @@ enum Copy {
     static let tooShortToMeasure = "Too short to measure"
     static let wordsDidntMatch = "Words didn't match the phrase"
     static let noPitch = "No pitch to show for this take"
-    static let unalignable = "This take was recorded for the old wording, so it can't be compared."
+    static let unalignable = "This take was recorded for the old wording, so it can't be lined up with the new one."
     static let notComparable = "NOT COMPARABLE"
     static let notComparableTooltip = "Recorded for the old wording, so it can't be lined up with the new one."
 
-    // MARK: Quiet lines (A6)
+    // MARK: Result (v3 §3.1)
 
-    /// All quiet lines in priority order: insertions, then incomplete non-target words, then the count.
-    static func quietLines(_ notes: QuietNotes?) -> [Sentence] {
-        guard let notes else { return [] }
-        var lines: [Sentence] = []
-        if let insertions = notes.insertions, !insertions.isEmpty {
+    static let resultRow = "Your take is drawn over the model\u{2019}s. Play them back to back, then try another take."
+    static let playBoth = "Play Both"
+    static let playBothTooltip = "Play the model, then your take"
+    /// VoiceOver, once a result is on screen.
+    static let resultReady = "Result ready. Your take is drawn over the model\u{2019}s."
+
+    /// Card 1's one quiet line.
+    static func quietLine(_ line: ResultQuietLine) -> Sentence {
+        switch line {
+        case .lowCoverage:
+            return [.plain("Only part of your take lined up with the model, so some of it isn\u{2019}t drawn.")]
+        case .roughTiming:
+            return [.plain("The timing match is rough, so syllables may not line up exactly.")]
+        case .insertions(let words):
             var line: Sentence = [.plain("You added ")]
-            for (index, word) in insertions.enumerated() {
-                if index > 0 { line.append(.plain(index == insertions.count - 1 ? " and " : ", ")) }
+            for (index, word) in words.enumerated() {
+                if index > 0 { line.append(.plain(index == words.count - 1 ? " and " : ", ")) }
                 line.append(.heard("\u{201C}\(word)\u{201D}"))
             }
-            line.append(.plain(insertions.count == 1 ? ". It's left out of the comparison." : "."))
-            lines.append(line)
+            line.append(.plain(words.count == 1 ? ". It isn\u{2019}t drawn on the pitch chart." : "."))
+            return line
         }
-        if notes.nonTargetWordsIncomplete == true {
-            lines.append([.plain("Some words weren't clear enough to compare. Feedback covers the rest.")])
-        }
-        if let partial = notes.partial {
-            lines.append([.plain("Feedback covers \(partial.compared) of \(partial.total) words.")])
-        }
-        return lines
     }
+
+    // MARK: Menus
+
+    static let takeMenu = "Take"
+    static let playModel = "Play Model"
+    static let playYou = "Play You"
+    static let playModelThenYou = "Play Model, Then You"
+    static let stopPlaying = "Stop"
+    static let showEarlierTakes = "Show Earlier Takes"
+
+    // MARK: Strip and pitch legends (v3 §3.2–3.3, v3.1 V2, V4)
+
+    static let dictionaryStress = "Dictionary stress"
+    static let legendYou = "You"
+    static let legendNativeRange = "Native range"
+    static let legendEarlierTakes = "Earlier takes"
+    /// The pitch chart's end label names the native line (v3.1 V4).
+    static let endLabelNative = "NATIVE"
+    static let endLabelYou = "YOU"
+
+    static func looping(_ word: String) -> String {
+        "Looping \u{201C}\(word)\u{201D} \u{00B7} Esc to stop"
+    }
+
+    /// Edit Transcript (r6 E2, v3 §5).
+    static func editTranscriptNote(takes: Int) -> String {
+        "Your \(takes) takes will be lined up with the new wording again. Takes that don\u{2019}t fit stay in the menu as not comparable."
+    }
+
+    // MARK: Inspector (v3 §4)
+
+    static let modelRecording = "MODEL RECORDING"
+    static let voice = "Voice"
 
     // MARK: Take problems (§11.1)
 
@@ -82,7 +110,7 @@ enum Copy {
         case .noMicrophone: "No microphone found. Connect one to record a take."
         case .micDenied: "Accent Mirror needs the microphone to hear your take."
         case .noSpeech: "No speech heard. Move a little closer to the mic and try again."
-        case .tooShort: "That take was too short to compare. Say the whole phrase."
+        case .tooShort: "That take was too short to line up with the model. Say the whole phrase."
         case .tooQuiet: "That take was too quiet to hear clearly. Move closer to the mic or speak up."
         case .clipped: "That take was too loud and distorted. Move back a little or lower the input level."
         case .wordsDontMatch: "Some words didn't match the phrase. Read it exactly as written, then try again."
@@ -113,7 +141,7 @@ enum Copy {
     static func banner(_ error: OperationalError) -> (sentence: String, button: String) {
         switch error.kind {
         case .modelUnavailable:
-            ("Accent Mirror couldn't load its speech model, so this take wasn't checked. This isn't about your take.", "Retry")
+            ("Accent Mirror couldn't load its speech model, so this take can't be shown. This isn't about your take.", "Retry")
         case .inferenceFailed:
             (inferenceFailed(error.stage ?? .comparing), "Retry")
         case .referenceCacheCorrupt:
@@ -125,17 +153,18 @@ enum Copy {
         }
     }
 
-    /// §13.2: "Something went wrong inside Accent Mirror while {stage}. This isn't about your take." No ellipsis.
+    /// §13.2's frame, reworded because v3 §5 bans "wrong" in every v1 string (spec gap): "Accent Mirror ran into a
+    /// problem while {stage}. This isn't about your take." No ellipsis.
     static func inferenceFailed(_ stage: OperationalError.Stage) -> String {
-        "Something went wrong inside Accent Mirror while \(inferenceStage(stage)). This isn't about your take."
+        "Accent Mirror ran into a problem while \(inferenceStage(stage)). This isn't about your take."
     }
 
     static func inferenceStage(_ stage: OperationalError.Stage) -> String {
         switch stage {
         case .findingWords: "finding your words"
         case .measuringPitch: "measuring your pitch"
-        case .measuringStress: "measuring stress"
-        case .comparing: "comparing with the model"
+        case .measuringStress: "measuring your syllables"
+        case .comparing: "lining your take up with the model"
         }
     }
 
@@ -144,8 +173,8 @@ enum Copy {
 
     // MARK: Words (§8.1, §8.2, §13.4)
 
-    static func substitutedTooltip(heard: String, expected: String) -> String {
-        "You said \u{201C}\(heard)\u{201D} here, not \u{201C}\(expected)\u{201D}."
+    static func substitutedTooltip(heard: String) -> String {
+        "Heard \u{201C}\(heard)\u{201D} here."
     }
 
     static let missingTooltip = "Not in your take."
@@ -166,11 +195,6 @@ enum Copy {
         }
     }
 
-    /// VoiceOver for the mistake marker on a strip label (the triangle and underline are not read).
-    static func mistakeLabelAccessibility(_ syllable: String) -> String {
-        "\(syllable), stressed differently from the model"
-    }
-
     /// VoiceOver for a whole line of labels (a strip row's syllables or the pitch plot's words). It reads every
     /// label, including those hidden because the window is too narrow to show them all (fixes round 5).
     static func labelLine(_ labels: [String]) -> String {
@@ -182,9 +206,11 @@ enum Copy {
         guard let note, !note.isEmpty else { return label }
         return "\(label). \(note)"
     }
-    static let ambiguousTooltip = "Stress isn't checked on this word. It can be said more than one way."
+    static let ambiguousTooltip = "This word can be said more than one way."
+    /// VoiceOver for a native label with the dot (the dot itself isn't read on its own).
+    static func dictionaryStressLabel(_ syllable: String) -> String { "\(syllable), dictionary stress" }
 
-    // MARK: Inspector (§14)
+    // MARK: Inspector take status
 
     static func persistence(_ status: PersistenceStatus) -> String? {
         switch status {

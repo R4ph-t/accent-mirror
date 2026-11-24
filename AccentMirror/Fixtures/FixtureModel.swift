@@ -1,8 +1,8 @@
 import Foundation
 
-// Fixture schema for the UI shell (spec 19). Field names follow the plan v2 contract (verdict kinds `feedback`,
-// `close`, `noClearDifference`, `inconclusive`, and spec 28's `notScored`; take problems; operational errors; `MeasureState`;
-// `AlignedWordPair`; `PersistenceStatus`). AMCore does not define these types yet (spec 01); when it does, the
+// Fixture schema for the UI shell (spec 19, v3 in spec 29). Field names follow the contract (spec 28's `notScored`,
+// `comparableCoverage`, `describe` and `expectedStress`; take problems; operational errors; `AlignedWordPair`;
+// `PersistenceStatus`). AMCore does not define these types yet (spec 01); when it does, the
 // fixtures and this decoding layer follow it instead of growing a parallel model. See `Fixtures/SCHEMA.md`.
 // UI-free on purpose: no SwiftUI here.
 
@@ -27,8 +27,31 @@ struct UIFixture: Decodable, Sendable {
     /// Coordinator outcome that leaves no trace in the UI (`cancelled`).
     var outcome: String?
     var inspectorOpen: Bool?
+    /// Earlier saved takes drawn faintly behind yours, newest first (`takes/<id>.json`).
+    var earlierTakes: [String]?
+    /// View ▸ Show Earlier Takes for this state; nil keeps the remembered choice (on by default).
+    var earlierTakesVisible: Bool?
+    /// Play Both on the injected clock: the fixture freezes the sequence at `elapsed` seconds.
+    var playBoth: PlayBothFrame?
+    /// The inspector's MODEL RECORDING.
+    var modelRecording: ModelRecording?
     /// The window size the screenshot runner renders this state at, in points. Nil: the default 1200 × 800.
     var window: WindowSize?
+
+    struct PlayBothFrame: Decodable, Sendable {
+        var elapsed: Double
+        var modelSeconds: Double
+        var youSeconds: Double
+    }
+
+    struct ModelRecording: Decodable, Sendable {
+        /// "p225", or "From demo-talk.m4a" for a clip.
+        var voice: String
+        var region: String?
+        var attribution: String
+        /// The voice pop-up's choices (spec 15); empty for a clip.
+        var voices: [String]
+    }
 
     struct WindowSize: Decodable, Sendable, Equatable {
         var width: Double
@@ -68,6 +91,9 @@ struct PhraseFixture: Decodable, Sendable {
 struct NativeWord: Decodable, Sendable {
     var text: String
     var stressCheck: StressCheck?
+    /// One entry per syllable, from the starter override or the part-of-speech variant saved at import (spec 28).
+    /// Nil: the word is ambiguous (out of vocabulary, or no single context pronunciation).
+    var expectedStress: [SyllableStress]?
     var start: Double
     var end: Double
     var syllables: [Syllable]
@@ -84,27 +110,18 @@ struct BandPoint: Decodable, Sendable {
     var half: Double
 }
 
-/// A syllable cluster on a speaker's own timeline (0…1).
+/// A syllable cluster on a speaker's own timeline (0…1). Bars are the recording's envelope only (v3.1 V1): nothing
+/// about stress lives here.
 struct Syllable: Decodable, Sendable {
     var text: String
     var start: Double
     var end: Double
-    /// Measured prominence, normalised within the take (0…1): drives bar height.
+    /// Envelope height, normalised within the take (0…1).
     var prominence: Double
-    /// Measured as stressed (observed primary or secondary peak): drawn in Lime.
-    var stressed: Bool
-    /// Dictionary / accepted stress shown in the label (caps), or the mistake marker.
-    var label: LabelStyle
-
-    enum LabelStyle: String, Decodable, Sendable {
-        /// Bold caps: accepted stress.
-        case caps
-        /// Lowercase secondary.
-        case lower
-        /// Blue caps with a triangle and a dotted underline: stressed outside the accepted set.
-        case mistake
-    }
 }
+
+/// AMCore's `SyllableStress`: the phrase's context-resolved stress (spec 28 `WordSpan.expectedStress`).
+enum SyllableStress: String, Decodable, Sendable { case primary, secondary, unstressed }
 
 /// How a word's stress is checked (§8.1).
 enum StressCheck: String, Decodable, Sendable {
@@ -171,11 +188,13 @@ struct PitchPoint: Decodable, Sendable {
 
 struct Analysis: Decodable, Sendable {
     var takeProblems: [TakeProblem]?
+    /// Decoded so a fixture can say `.notScored`; no view or presenter reads it (spec 28).
     var verdict: Verdict?
-    var measures: [MeasureState]?
     var timing: Timing?
-    var notes: QuietNotes?
-    var stress: [StressLine]?
+    /// `AnalysisResult.comparableCoverage` (spec 28): comparable syllables over the model's. Nil for older takes.
+    var comparableCoverage: Double?
+    /// `AnalysisResult.describe` (spec 28 §4a): you, and the range across the phrase's native voices.
+    var describe: Describe?
 
     enum Timing: String, Decodable, Sendable { case good, rough }
 }
@@ -185,20 +204,14 @@ enum TakeProblem: String, Decodable, Sendable, CaseIterable {
     case noMicrophone, micDenied, noSpeech, tooShort, tooQuiet, clipped, wordsDontMatch
 }
 
-/// The verdict a fixture carries. Spec 28: the views never read it (show-don't-judge v1); it is decoded so the existing
-/// fixtures still load, and spec 29 retires the verdict fixtures. `{"notScored": {}}` (the contract's canonical form)
-/// and `{"kind": "notScored"}` both decode as `.notScored`; a missing verdict is `nil` on `Analysis`.
+/// Show-don't-judge v1: every analysed fixture is `.notScored`. `{"notScored": {}}` (the contract's canonical form)
+/// and `{"kind": "notScored"}` both decode; the presenter never reads it.
 struct Verdict: Decodable, Sendable {
     var kind: Kind
-    var rows: [DiffRow]?
-    var reasons: [NoClearDifferenceReason]?
-    var inconclusive: Inconclusive?
 
-    enum Kind: String, Decodable, Sendable {
-        case feedback, close, noClearDifference, inconclusive, notScored
-    }
+    enum Kind: String, Decodable, Sendable { case notScored }
 
-    enum CodingKeys: String, CodingKey { case kind, rows, reasons, inconclusive, notScored }
+    enum CodingKeys: String, CodingKey { case kind, notScored }
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -207,93 +220,50 @@ struct Verdict: Decodable, Sendable {
             return
         }
         kind = try container.decode(Kind.self, forKey: .kind)
-        rows = try container.decodeIfPresent([DiffRow].self, forKey: .rows)
-        reasons = try container.decodeIfPresent([NoClearDifferenceReason].self, forKey: .reasons)
-        inconclusive = try container.decodeIfPresent(Inconclusive.self, forKey: .inconclusive)
     }
 }
 
-struct DiffRow: Decodable, Sendable {
-    var kind: Kind
-    /// Placement: the word, its syllables, the accepted stressed index, the heard (wrong) index.
-    var word: String?
-    var syllables: [String]?
-    var acceptedIndex: Int?
-    var heardIndex: Int?
-    /// Placement: the voice that says the nearest accepted pattern, when it isn't the selected voice.
-    var likeVoice: String?
-    /// Contrast, reduction, too much contrast: the syllables named in the sentence.
-    var targets: [String]?
-    /// Final direction: "lower" or "higher".
-    var direction: String?
+/// Mirrors AMCore's `DescribedMeasures` (spec 28 §4a): plain values, never a verdict.
+struct Describe: Decodable, Sendable, Equatable {
+    var you: Speaker
+    var native: Native
 
-    enum Kind: String, Decodable, Sendable, CaseIterable {
-        // Display order (§10).
-        case roughTiming, placement, contrast, reduction, range, finalDirection, tooMuchContrast
-    }
-}
-
-enum NoClearDifferenceReason: String, Decodable, Sendable, CaseIterable {
-    // Display order (§13.1, then A6).
-    case pitchShapeBelowClose, optionalMeasuresUnavailable, mediumConfidenceOnly, timingRough
-    case nonTargetWordsIncomplete, insertionsPresent
-}
-
-struct Inconclusive: Decodable, Sendable {
-    var reason: Reason
-    var words: [String]?
-    /// comparableCoverageLow: the share of the take that lined up (0…1).
-    var coverage: Double?
-    /// requiredMeasureUnavailable: "lowConfidence" when that is the only cause.
-    var cause: String?
-
-    enum Reason: String, Decodable, Sendable {
-        case targetWordsMissing, timingUnreliable, comparableCoverageLow, requiredMeasureUnavailable
-        case noApplicableStressMeasure
-    }
-}
-
-/// `MeasureState`: evaluated with a value, or unavailable / notApplicable with a reason.
-struct MeasureState: Decodable, Sendable {
-    var measure: Measure
-    var state: State
-    var value: Double?
-    var reason: String?
-
-    enum Measure: String, Decodable, Sendable, CaseIterable {
-        case stressPlacement, contrast, reduction, rhythm, pitchShape, range, finalDirection
+    struct Speaker: Decodable, Sendable, Equatable {
+        var lengthSeconds: Value
+        var syllablesPerSecond: Value
+        var pitchRangeSemitones: Value
+        var rhythmNPVI: Value
+        var endingDirection: Direction?
     }
 
-    enum State: String, Decodable, Sendable { case evaluated, unavailable, notApplicable }
-}
-
-/// A6 quiet notes. Only the most specific shows in card 1; the inspector lists all.
-struct QuietNotes: Decodable, Sendable {
-    var insertions: [String]?
-    var nonTargetWordsIncomplete: Bool?
-    var partial: Partial?
-
-    struct Partial: Decodable, Sendable {
-        var compared: Int
-        var total: Int
+    struct Native: Decodable, Sendable, Equatable {
+        /// Native voices measured (one for an imported clip).
+        var voices: Int
+        var lengthSeconds: Range
+        var syllablesPerSecond: Range
+        var pitchRangeSemitones: Range
+        var rhythmNPVI: Range
+        /// How many voices end rising, falling and level.
+        var endingDirections: [String: Int]
     }
-}
 
-/// One inspector STRESS line (§13.5, A5).
-struct StressLine: Decodable, Sendable {
-    var word: String
-    var outcome: Outcome
-    /// The pattern shown in brackets, e.g. "phoTOGraphy".
-    var pattern: String?
-    /// The voice you match.
-    var voice: String?
-    /// The selected voice, when your pattern differs from it but is accepted.
-    var selectedVoice: String?
-
-    enum Outcome: String, Decodable, Sendable {
-        case matchesVoice, matchesDictionary, differsButAccepted, outsideAccepted, lowConfidence, referenceAnomaly
-        case notChecked
+    /// `{"value": 2.4}` or `{"reason": "noVoicedFrames"}`.
+    struct Value: Decodable, Sendable, Equatable {
+        var value: Double?
+        var reason: MissingReason?
     }
+
+    struct Range: Decodable, Sendable, Equatable {
+        var min: Double?
+        var max: Double?
+        var count: Int
+    }
+
+    enum MissingReason: String, Decodable, Sendable, CaseIterable {
+        case noVoicedFrames, tooFewSyllables, tooFewFinalFrames, noWords
+    }
+
+    enum Direction: String, Decodable, Sendable, CaseIterable { case rise, fall, level }
 }
 
 struct OperationalError: Decodable, Sendable {
