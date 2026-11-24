@@ -1,0 +1,2866 @@
+{
+  "folds" : {
+    "comparisons" : [
+      {
+        "first" : "shared-detector",
+        "firstWins" : 0,
+        "pValue" : 9.536743164062499e-07,
+        "second" : "B1",
+        "secondWins" : 21
+      },
+      {
+        "first" : "shared-detector",
+        "firstWins" : 1,
+        "pValue" : 5.722045898437537e-06,
+        "second" : "B2",
+        "secondWins" : 22
+      },
+      {
+        "first" : "B1",
+        "firstWins" : 8,
+        "pValue" : 1,
+        "second" : "B2",
+        "secondWins" : 8
+      }
+    ],
+    "folds" : [
+      {
+        "configDigest" : "4fc683ef4fee3c0d5c2aa632f56b0e12cdc13e73c8f256d932ba48dc6b13bab6",
+        "heldOutSpeakers" : [
+          "0024",
+          "0036",
+          "0048",
+          "0053",
+          "1292",
+          "1407",
+          "1503",
+          "2061",
+          "2116",
+          "2402",
+          "2538",
+          "6099",
+          "6902",
+          "9600",
+          "9631"
+        ],
+        "index" : 0,
+        "results" : {
+          "B1" : {
+            "000240289#5" : true,
+            "000360161#0" : false,
+            "000480015#5" : false,
+            "000530003#3" : false,
+            "012920007#5" : false,
+            "014070304#7" : true,
+            "014070341#2" : true,
+            "015030027#5" : false,
+            "020610174#4" : false,
+            "021160249#5" : true,
+            "024020291#6" : true,
+            "025380251#5" : true,
+            "060990059#5" : true,
+            "069020155#1" : false,
+            "096000002#4" : false,
+            "096000018#8" : false,
+            "096000021#8" : false,
+            "096310009#2" : false,
+            "096310011#1" : false
+          },
+          "B2" : {
+            "000240289#5" : true,
+            "000360161#0" : false,
+            "000480015#5" : false,
+            "000530003#3" : false,
+            "012920007#5" : false,
+            "014070304#7" : false,
+            "014070341#2" : true,
+            "015030027#5" : true,
+            "020610174#4" : true,
+            "021160249#5" : true,
+            "024020291#6" : true,
+            "025380251#5" : false,
+            "060990059#5" : false,
+            "069020155#1" : false,
+            "096000002#4" : true,
+            "096000018#8" : false,
+            "096000021#8" : false,
+            "096310009#2" : false,
+            "096310011#1" : false
+          },
+          "shared-detector" : {
+            "000240289#5" : false,
+            "000360161#0" : false,
+            "000480015#5" : false,
+            "000530003#3" : false,
+            "012920007#5" : false,
+            "014070304#7" : true,
+            "014070341#2" : true,
+            "015030027#5" : false,
+            "020610174#4" : false,
+            "021160249#5" : false,
+            "024020291#6" : false,
+            "025380251#5" : false,
+            "060990059#5" : false,
+            "069020155#1" : false,
+            "096000002#4" : false,
+            "096000018#8" : false,
+            "096000021#8" : false,
+            "096310009#2" : false,
+            "096310011#1" : false
+          }
+        }
+      },
+      {
+        "configDigest" : "4fc683ef4fee3c0d5c2aa632f56b0e12cdc13e73c8f256d932ba48dc6b13bab6",
+        "heldOutSpeakers" : [
+          "0133",
+          "0145",
+          "0457",
+          "0567",
+          "1419",
+          "2430",
+          "7001",
+          "9101",
+          "9118",
+          "9608",
+          "9616",
+          "9619",
+          "9624",
+          "9634",
+          "9645"
+        ],
+        "index" : 1,
+        "results" : {
+          "B1" : {
+            "001330143#4" : false,
+            "001450171#4" : true,
+            "004570010#7" : true,
+            "005670155#5" : false,
+            "005670320#5" : true,
+            "014190062#2" : false,
+            "014190073#2" : false,
+            "024300099#1" : false,
+            "070010005#0" : false,
+            "070010012#0" : false,
+            "070010014#0" : false,
+            "070010014#5" : false,
+            "091010055#4" : false,
+            "091010063#4" : false,
+            "091180133#3" : true,
+            "096080010#4" : true,
+            "096080013#9" : false,
+            "096080023#1" : false,
+            "096080024#5" : false,
+            "096080027#9" : false,
+            "096160006#6" : false,
+            "096160010#1" : false,
+            "096190009#7" : false,
+            "096190019#3" : false,
+            "096240001#2" : true,
+            "096340016#4" : true,
+            "096450002#6" : false,
+            "096450010#3" : false,
+            "096450010#4" : false,
+            "096450010#5" : false,
+            "096450016#4" : false,
+            "096450019#1" : false,
+            "096450020#6" : false
+          },
+          "B2" : {
+            "001330143#4" : false,
+            "001450171#4" : true,
+            "004570010#7" : true,
+            "005670155#5" : false,
+            "005670320#5" : false,
+            "014190062#2" : false,
+            "014190073#2" : false,
+            "024300099#1" : true,
+            "070010005#0" : false,
+            "070010012#0" : false,
+            "070010014#0" : false,
+            "070010014#5" : false,
+            "091010055#4" : false,
+            "091010063#4" : false,
+            "091180133#3" : false,
+            "096080010#4" : true,
+            "096080013#9" : false,
+            "096080023#1" : false,
+            "096080024#5" : false,
+            "096080027#9" : false,
+            "096160006#6" : false,
+            "096160010#1" : false,
+            "096190009#7" : false,
+            "096190019#3" : false,
+            "096240001#2" : false,
+            "096340016#4" : true,
+            "096450002#6" : false,
+            "096450010#3" : false,
+            "096450010#4" : false,
+            "096450010#5" : true,
+            "096450016#4" : false,
+            "096450019#1" : false,
+            "096450020#6" : false
+          },
+          "shared-detector" : {
+            "001330143#4" : false,
+            "001450171#4" : false,
+            "004570010#7" : false,
+            "005670155#5" : false,
+            "005670320#5" : false,
+            "014190062#2" : false,
+            "014190073#2" : false,
+            "024300099#1" : false,
+            "070010005#0" : false,
+            "070010012#0" : false,
+            "070010014#0" : false,
+            "070010014#5" : false,
+            "091010055#4" : false,
+            "091010063#4" : false,
+            "091180133#3" : false,
+            "096080010#4" : true,
+            "096080013#9" : false,
+            "096080023#1" : false,
+            "096080024#5" : false,
+            "096080027#9" : false,
+            "096160006#6" : false,
+            "096160010#1" : false,
+            "096190009#7" : false,
+            "096190019#3" : false,
+            "096240001#2" : false,
+            "096340016#4" : false,
+            "096450002#6" : false,
+            "096450010#3" : false,
+            "096450010#4" : false,
+            "096450010#5" : false,
+            "096450016#4" : false,
+            "096450019#1" : false,
+            "096450020#6" : false
+          }
+        }
+      },
+      {
+        "configDigest" : "4fc683ef4fee3c0d5c2aa632f56b0e12cdc13e73c8f256d932ba48dc6b13bab6",
+        "heldOutSpeakers" : [
+          "0120",
+          "0306",
+          "0461",
+          "1109",
+          "1228",
+          "1435",
+          "1447",
+          "1502",
+          "2036",
+          "3068",
+          "8002",
+          "9609",
+          "9629",
+          "9640"
+        ],
+        "index" : 2,
+        "results" : {
+          "B1" : {
+            "001200016#6" : false,
+            "003060337#1" : false,
+            "004610227#2" : false,
+            "011090154#0" : false,
+            "011090154#6" : false,
+            "012280016#0" : false,
+            "012280016#4" : false,
+            "014350127#3" : false,
+            "014470048#0" : false,
+            "015020022#0" : false,
+            "020360055#4" : true,
+            "030680162#4" : true,
+            "080020001#2" : false,
+            "080020001#4" : false,
+            "080020003#8" : false,
+            "080020017#4" : false,
+            "080020019#1" : false,
+            "096090021#5" : false,
+            "096090025#8" : false,
+            "096090026#4" : false,
+            "096290005#5" : false,
+            "096400001#4" : false,
+            "096400001#9" : true,
+            "096400018#1" : false,
+            "096400024#4" : false
+          },
+          "B2" : {
+            "001200016#6" : false,
+            "003060337#1" : false,
+            "004610227#2" : true,
+            "011090154#0" : false,
+            "011090154#6" : false,
+            "012280016#0" : false,
+            "012280016#4" : false,
+            "014350127#3" : false,
+            "014470048#0" : false,
+            "015020022#0" : false,
+            "020360055#4" : true,
+            "030680162#4" : true,
+            "080020001#2" : false,
+            "080020001#4" : false,
+            "080020003#8" : false,
+            "080020017#4" : false,
+            "080020019#1" : false,
+            "096090021#5" : false,
+            "096090025#8" : false,
+            "096090026#4" : false,
+            "096290005#5" : false,
+            "096400001#4" : false,
+            "096400001#9" : true,
+            "096400018#1" : false,
+            "096400024#4" : false
+          },
+          "shared-detector" : {
+            "001200016#6" : false,
+            "003060337#1" : false,
+            "004610227#2" : false,
+            "011090154#0" : false,
+            "011090154#6" : false,
+            "012280016#0" : false,
+            "012280016#4" : false,
+            "014350127#3" : false,
+            "014470048#0" : false,
+            "015020022#0" : false,
+            "020360055#4" : false,
+            "030680162#4" : false,
+            "080020001#2" : false,
+            "080020001#4" : false,
+            "080020003#8" : false,
+            "080020017#4" : false,
+            "080020019#1" : false,
+            "096090021#5" : false,
+            "096090025#8" : false,
+            "096090026#4" : false,
+            "096290005#5" : false,
+            "096400001#4" : false,
+            "096400001#9" : false,
+            "096400018#1" : false,
+            "096400024#4" : false
+          }
+        }
+      },
+      {
+        "configDigest" : "4fc683ef4fee3c0d5c2aa632f56b0e12cdc13e73c8f256d932ba48dc6b13bab6",
+        "heldOutSpeakers" : [
+          "0049",
+          "0122",
+          "0149",
+          "0739",
+          "0960",
+          "1362",
+          "2007",
+          "2380",
+          "3023",
+          "8581",
+          "9604",
+          "9610",
+          "9613",
+          "9647"
+        ],
+        "index" : 3,
+        "results" : {
+          "B1" : {
+            "000490102#0" : false,
+            "001220101#2" : false,
+            "001490002#4" : false,
+            "007390228#5" : false,
+            "009600335#4" : true,
+            "013620106#6" : false,
+            "020070065#0" : false,
+            "023800186#5" : false,
+            "030230092#7" : true,
+            "085810038#8" : true,
+            "096040014#5" : false,
+            "096040023#8" : false,
+            "096100003#3" : false,
+            "096100006#5" : true,
+            "096100010#2" : true,
+            "096100016#1" : false,
+            "096130001#1" : false,
+            "096130005#3" : false,
+            "096130014#3" : false,
+            "096470022#2" : false
+          },
+          "B2" : {
+            "000490102#0" : false,
+            "001220101#2" : false,
+            "001490002#4" : false,
+            "007390228#5" : true,
+            "009600335#4" : true,
+            "013620106#6" : false,
+            "020070065#0" : true,
+            "023800186#5" : false,
+            "030230092#7" : true,
+            "085810038#8" : true,
+            "096040014#5" : false,
+            "096040023#8" : false,
+            "096100003#3" : false,
+            "096100006#5" : false,
+            "096100010#2" : true,
+            "096100016#1" : false,
+            "096130001#1" : false,
+            "096130005#3" : false,
+            "096130014#3" : false,
+            "096470022#2" : false
+          },
+          "shared-detector" : {
+            "000490102#0" : false,
+            "001220101#2" : false,
+            "001490002#4" : false,
+            "007390228#5" : false,
+            "009600335#4" : false,
+            "013620106#6" : false,
+            "020070065#0" : false,
+            "023800186#5" : false,
+            "030230092#7" : false,
+            "085810038#8" : false,
+            "096040014#5" : false,
+            "096040023#8" : false,
+            "096100003#3" : false,
+            "096100006#5" : false,
+            "096100010#2" : true,
+            "096100016#1" : false,
+            "096130001#1" : false,
+            "096130005#3" : false,
+            "096130014#3" : false,
+            "096470022#2" : false
+          }
+        }
+      },
+      {
+        "configDigest" : "4fc683ef4fee3c0d5c2aa632f56b0e12cdc13e73c8f256d932ba48dc6b13bab6",
+        "heldOutSpeakers" : [
+          "0813",
+          "1064",
+          "1076",
+          "1135",
+          "1501",
+          "3060",
+          "6010",
+          "9556",
+          "9606",
+          "9615",
+          "9626",
+          "9643",
+          "9646",
+          "9649"
+        ],
+        "index" : 4,
+        "results" : {
+          "B1" : {
+            "008130346#3" : true,
+            "010640082#5" : true,
+            "010640280#6" : false,
+            "010760097#0" : false,
+            "011350215#0" : false,
+            "015010145#0" : false,
+            "030600004#4" : true,
+            "060100037#3" : true,
+            "095560008#2" : false,
+            "096060001#8" : false,
+            "096150006#9" : false,
+            "096150020#3" : false,
+            "096260005#5" : false,
+            "096260006#6" : false,
+            "096260011#2" : false,
+            "096260016#5" : false,
+            "096430004#5" : false,
+            "096430007#2" : false,
+            "096430009#1" : false,
+            "096430009#4" : false,
+            "096430010#3" : false,
+            "096430011#1" : false,
+            "096430012#2" : false,
+            "096430013#4" : false,
+            "096430015#3" : false,
+            "096430018#4" : false,
+            "096460003#5" : false,
+            "096460008#4" : false,
+            "096460012#3" : false,
+            "096460021#1" : false,
+            "096490002#2" : false,
+            "096490002#4" : false,
+            "096490002#5" : false,
+            "096490004#5" : false,
+            "096490005#7" : false,
+            "096490006#4" : false,
+            "096490016#1" : false
+          },
+          "B2" : {
+            "008130346#3" : true,
+            "010640082#5" : true,
+            "010640280#6" : false,
+            "010760097#0" : false,
+            "011350215#0" : false,
+            "015010145#0" : false,
+            "030600004#4" : true,
+            "060100037#3" : false,
+            "095560008#2" : false,
+            "096060001#8" : false,
+            "096150006#9" : false,
+            "096150020#3" : false,
+            "096260005#5" : false,
+            "096260006#6" : false,
+            "096260011#2" : false,
+            "096260016#5" : false,
+            "096430004#5" : false,
+            "096430007#2" : false,
+            "096430009#1" : false,
+            "096430009#4" : false,
+            "096430010#3" : false,
+            "096430011#1" : false,
+            "096430012#2" : false,
+            "096430013#4" : false,
+            "096430015#3" : false,
+            "096430018#4" : false,
+            "096460003#5" : false,
+            "096460008#4" : false,
+            "096460012#3" : false,
+            "096460021#1" : false,
+            "096490002#2" : false,
+            "096490002#4" : false,
+            "096490002#5" : false,
+            "096490004#5" : false,
+            "096490005#7" : false,
+            "096490006#4" : false,
+            "096490016#1" : false
+          },
+          "shared-detector" : {
+            "008130346#3" : true,
+            "010640082#5" : false,
+            "010640280#6" : false,
+            "010760097#0" : false,
+            "011350215#0" : false,
+            "015010145#0" : false,
+            "030600004#4" : false,
+            "060100037#3" : false,
+            "095560008#2" : false,
+            "096060001#8" : false,
+            "096150006#9" : false,
+            "096150020#3" : false,
+            "096260005#5" : false,
+            "096260006#6" : false,
+            "096260011#2" : false,
+            "096260016#5" : false,
+            "096430004#5" : false,
+            "096430007#2" : false,
+            "096430009#1" : false,
+            "096430009#4" : false,
+            "096430010#3" : false,
+            "096430011#1" : false,
+            "096430012#2" : false,
+            "096430013#4" : false,
+            "096430015#3" : false,
+            "096430018#4" : false,
+            "096460003#5" : false,
+            "096460008#4" : false,
+            "096460012#3" : false,
+            "096460021#1" : false,
+            "096490002#2" : false,
+            "096490002#4" : false,
+            "096490002#5" : false,
+            "096490004#5" : false,
+            "096490005#7" : false,
+            "096490006#4" : false,
+            "096490016#1" : false
+          }
+        }
+      }
+    ],
+    "pooled" : {
+      "B1" : {
+        "hits" : 26,
+        "n" : 134
+      },
+      "B2" : {
+        "hits" : 26,
+        "n" : 134
+      },
+      "shared-detector" : {
+        "hits" : 5,
+        "n" : 134
+      }
+    }
+  },
+  "generatedAt" : "2026-11-24T15:21:05Z",
+  "identity" : {
+    "cleanTree" : true,
+    "config" : {
+      "algorithmVersion" : 1,
+      "aligner" : "whisper",
+      "alignerModelSHA256" : "none",
+      "asrModelID" : "replayed-word-timings",
+      "contractVersion" : 2,
+      "pitchTrackerID" : "pyin-1",
+      "thresholdsVersion" : 8,
+      "voicingID" : "acf-1"
+    },
+    "configDigest" : "4fc683ef4fee3c0d5c2aa632f56b0e12cdc13e73c8f256d932ba48dc6b13bab6",
+    "corpusManifestHash" : "3297cc445e6e46a9012f06c6b82cc4314298b0e36321bea0349c7e94ec0ce3ac",
+    "evaluatedCommit" : "a99d7ac0bb9a5c0b03c42ea95d8047cd7068303c",
+    "labelHash" : "11f6e133d91d53f45347d13319d997152573e0e2b179d7a508cd8aef81caa040",
+    "macOSVersion" : "Version 26.3 (Build 25D125)",
+    "runnerImage" : "local",
+    "sourceTreeHash" : "006733fbe28860e1a99ff0b5e477a7f98785500c8589f9dce5c02a4e38295d0c",
+    "splitManifestHash" : "cd021cf29163d619c8515e9e6b9eb5aa0d513435dce3bfcf47c5331a670d78d0",
+    "splitSeed" : 20261125,
+    "swiftVersion" : "Apple Swift version 6.2.3 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)",
+    "syntheticReference" : "mac-premium-fallback (no key; no Premium English voice installed: NOT EVALUATED)",
+    "xcodeVersion" : "Xcode 26.2"
+  },
+  "limitations" : [
+    "The shipped config's L2 recall is never measured on unseen speakers; the only L2 recall number is the CV estimate of the tuning procedure."
+  ],
+  "metrics" : [
+    {
+      "accounting" : {
+        "lostPairs" : 18,
+        "lostReasons" : {
+          "noUsableReference" : 18
+        },
+        "pairs" : 281,
+        "prompts" : 21,
+        "referenceSpeakers" : 6
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.8,
+        "direction" : "atLeast",
+        "key" : "agreement.bandCoverageMedianMin"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 281,
+      "name" : "Band coverage, median over pairs (spec 09)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.5294117647058824,
+      "worstSpeaker" : {
+        "id" : "p323",
+        "n" : 15,
+        "value" : 0.24375
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 18,
+        "lostReasons" : {
+          "noUsableReference" : 18
+        },
+        "pairs" : 281,
+        "prompts" : 21,
+        "referenceSpeakers" : 6
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.05,
+        "direction" : "atMost",
+        "key" : "agreement.anyDiffPairsMax"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.28191288488180594,
+          "upper" : 0.3915897000823339
+        },
+        {
+          "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+          "lower" : 0.1790419884169884,
+          "upper" : 0.47815524929385256
+        }
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 281,
+      "name" : "Any-diff pairs (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.33451957295373663,
+      "worstPhrase" : {
+        "id" : "008",
+        "n" : 1,
+        "value" : 1
+      },
+      "worstSpeaker" : {
+        "id" : "p270",
+        "n" : 18,
+        "value" : 0.5555555555555556
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 18,
+        "lostReasons" : {
+          "noUsableReference" : 18
+        },
+        "pairs" : 281,
+        "prompts" : 21,
+        "referenceSpeakers" : 6
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.15,
+        "direction" : "atMost",
+        "key" : "agreement.anyDiffWorstSpeakerMax"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 281,
+      "name" : "Any-diff pairs, worst speaker (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.5555555555555556,
+      "worstPhrase" : {
+        "id" : "008",
+        "n" : 1,
+        "value" : 1
+      },
+      "worstSpeaker" : {
+        "id" : "p270",
+        "n" : 18,
+        "value" : 0.5555555555555556
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 18,
+        "lostReasons" : {
+          "noUsableReference" : 18
+        },
+        "pairs" : 281,
+        "prompts" : 21,
+        "referenceSpeakers" : 6
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.3,
+        "direction" : "atMost",
+        "key" : "agreement.anyDiffWorstPhraseMax"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 281,
+      "name" : "Any-diff pairs, worst phrase (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 1,
+      "worstPhrase" : {
+        "id" : "008",
+        "n" : 1,
+        "value" : 1
+      },
+      "worstSpeaker" : {
+        "id" : "p270",
+        "n" : 18,
+        "value" : 0.5555555555555556
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 18,
+        "lostReasons" : {
+          "noUsableReference" : 18
+        },
+        "pairs" : 281,
+        "prompts" : 21,
+        "referenceSpeakers" : 6
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.02,
+        "direction" : "atMost",
+        "key" : "agreement.placementDiffPairsMax"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.009821824876703137,
+          "upper" : 0.0457931789443039
+        },
+        {
+          "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+          "lower" : 0,
+          "upper" : 0.06181995854308557
+        }
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 281,
+      "name" : "Placement-diff pairs (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.021352313167259787,
+      "worstPhrase" : {
+        "id" : "022",
+        "n" : 4,
+        "value" : 0.5
+      },
+      "worstSpeaker" : {
+        "id" : "p301",
+        "n" : 20,
+        "value" : 0.1
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 18,
+        "lostReasons" : {
+          "noUsableReference" : 18
+        },
+        "pairs" : 281,
+        "prompts" : 21,
+        "referenceSpeakers" : 6
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.07,
+        "direction" : "atMost",
+        "key" : "agreement.placementDiffWorstSpeakerMax"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 281,
+      "name" : "Placement-diff pairs, worst speaker (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.1,
+      "worstPhrase" : {
+        "id" : "022",
+        "n" : 4,
+        "value" : 0.5
+      },
+      "worstSpeaker" : {
+        "id" : "p301",
+        "n" : 20,
+        "value" : 0.1
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 18,
+        "lostReasons" : {
+          "noUsableReference" : 18
+        },
+        "pairs" : 281,
+        "prompts" : 21,
+        "referenceSpeakers" : 6
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.1,
+        "direction" : "atMost",
+        "key" : "agreement.inconclusivePairsMax"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.32597720430077576,
+          "upper" : 0.43880422787769063
+        },
+        {
+          "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+          "lower" : 0.19219711795054262,
+          "upper" : 0.6000162337662336
+        }
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 281,
+      "name" : "Inconclusive pairs (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.3807829181494662,
+      "worstPhrase" : {
+        "id" : "002",
+        "n" : 16,
+        "value" : 1
+      },
+      "worstSpeaker" : {
+        "id" : "p336",
+        "n" : 17,
+        "value" : 0.5882352941176471
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 18,
+        "lostReasons" : {
+          "noUsableReference" : 18
+        },
+        "pairs" : 281,
+        "prompts" : 21,
+        "referenceSpeakers" : 6
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.9,
+        "direction" : "atLeast",
+        "key" : "agreement.evaluationCoverageMin"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 265,
+      "name" : "Evaluation coverage (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.5877862595419847
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 145,
+        "lostReasons" : {
+          "contrast not applicable (tooFewExpectedUnstressed)" : 19,
+          "contrast unavailable (lowConfidence)" : 108,
+          "noUsableReference" : 18
+        },
+        "pairs" : 154,
+        "prompts" : 12,
+        "referenceSpeakers" : 4
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.9,
+        "direction" : "atLeast",
+        "key" : "agreement.contrastRatioWithinShareMin"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.544723972153564,
+          "upper" : 0.6960239294681988
+        },
+        {
+          "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+          "lower" : 0.4696732954545455,
+          "upper" : 0.7750480769230768
+        }
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 154,
+      "name" : "Contrast ratio within tolerance (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.6233766233766234,
+      "worstPhrase" : {
+        "id" : "021-a",
+        "n" : 5,
+        "value" : 0.2
+      },
+      "worstSpeaker" : {
+        "id" : "p323",
+        "n" : 8,
+        "value" : 0.375
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 145,
+        "lostReasons" : {
+          "noUsableReference" : 18,
+          "weakLength not applicable (tooFewExpectedUnstressed)" : 19,
+          "weakLength unavailable (lowConfidence)" : 108
+        },
+        "pairs" : 154,
+        "prompts" : 12,
+        "referenceSpeakers" : 4
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 15,
+        "direction" : "atMost",
+        "key" : "agreement.weakLengthMaxDeltaPoints"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 154,
+      "name" : "Weak length, largest |Δ| (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 72.93790546802586,
+      "worstPhrase" : {
+        "id" : "006",
+        "n" : 1,
+        "value" : 72.93790546802586
+      },
+      "worstSpeaker" : {
+        "id" : "p314",
+        "n" : 1,
+        "value" : 72.93790546802586
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 95,
+        "lostReasons" : {
+          "noUsableReference" : 18,
+          "rhythm unavailable (lowConfidence)" : 77
+        },
+        "pairs" : 204,
+        "prompts" : 18,
+        "referenceSpeakers" : 6
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 15,
+        "direction" : "atMost",
+        "key" : "agreement.npviMaxDelta"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 204,
+      "name" : "nPVI, largest |Δ| (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 34.87819958448145,
+      "worstPhrase" : {
+        "id" : "010",
+        "n" : 1,
+        "value" : 34.87819958448145
+      },
+      "worstSpeaker" : {
+        "id" : "p310",
+        "n" : 1,
+        "value" : 34.87819958448145
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 82,
+        "lostReasons" : {
+          "noUsableReference" : 18,
+          "pitchRange unavailable (lowConfidence)" : 64
+        },
+        "pairs" : 217,
+        "prompts" : 20,
+        "referenceSpeakers" : 5
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.95,
+        "direction" : "atLeast",
+        "key" : "agreement.pitchRangeRatioShareMin"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.7140738597803888,
+          "upper" : 0.8247742380154994
+        },
+        {
+          "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+          "lower" : 0.5942028985507246,
+          "upper" : 0.9034967265402047
+        }
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 217,
+      "name" : "Pitch range ratio at or above minimum (spec 10)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.7741935483870968,
+      "worstPhrase" : {
+        "id" : "008",
+        "n" : 1,
+        "value" : 0
+      },
+      "worstSpeaker" : {
+        "id" : "p271",
+        "n" : 5,
+        "value" : 0.2
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 185,
+        "lostReasons" : {
+          "finalDirection not applicable (modelHasNoFinalVoicing)" : 134,
+          "finalDirection unavailable (lowConfidence)" : 31,
+          "finalDirection unavailable (wordMissing)" : 2,
+          "noUsableReference" : 18
+        },
+        "pairs" : 114,
+        "prompts" : 10,
+        "referenceSpeakers" : 3
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.9,
+        "direction" : "atLeast",
+        "key" : "agreement.finalDirectionAgreementMin"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 114,
+      "name" : "Final direction agreement (spec 10)",
+      "status" : {
+        "notEvaluated" : {
+          "minimum" : 150,
+          "n" : 114
+        }
+      }
+    },
+    {
+      "accounting" : {
+        "lostPairs" : 299,
+        "lostReasons" : {
+          "no verified synthetic reference (spec 22)" : 281,
+          "noUsableReference" : 18
+        },
+        "pairs" : 0,
+        "prompts" : 0,
+        "referenceSpeakers" : 0
+      },
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.02,
+        "direction" : "atMost",
+        "key" : "agreement.placementDiffPairsMax"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 0,
+      "name" : "Positive-set placement false positives (synthetic references) (spec 22)",
+      "status" : {
+        "notEvaluated" : {
+          "minimum" : 150,
+          "n" : 0
+        }
+      }
+    },
+    {
+      "dependsOnPositiveSet" : true,
+      "gate" : {
+        "bound" : 0.2,
+        "direction" : "atMost",
+        "key" : "agreement.referenceAnomalyReviewShare"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 281,
+      "name" : "Reference anomaly rate, worst phrase (reported) (spec 10)",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 1,
+      "worstPhrase" : {
+        "id" : "008",
+        "n" : 1,
+        "value" : 1
+      }
+    },
+    {
+      "gate" : {
+        "bound" : 0.02,
+        "direction" : "atMost",
+        "key" : "agreement.l2FalsePositiveMax"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.0920028215570915,
+          "upper" : 0.12443291405363627
+        }
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 1400,
+      "name" : "L2 false positives, clean 1,400, after suppression",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.10714285714285714,
+      "worstSpeaker" : {
+        "id" : "3214",
+        "n" : 7,
+        "value" : 0.42857142857142855
+      }
+    },
+    {
+      "gate" : {
+        "bound" : 0.1,
+        "direction" : "atMost",
+        "key" : "agreement.l2FalsePositiveWorstSpeakerMax"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 74,
+      "name" : "L2 false positives, clean 1,400, worst speaker (≥ 10 words)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.2727272727272727,
+      "worstSpeaker" : {
+        "id" : "9612",
+        "n" : 11,
+        "value" : 0.2727272727272727
+      }
+    },
+    {
+      "gate" : {
+        "bound" : 0,
+        "direction" : "atMost",
+        "key" : "agreement.unintelligiblePlacementDiffsMax"
+      },
+      "intervals" : [
+
+      ],
+      "layer" : "shippedConfigCheck",
+      "n" : 157,
+      "name" : "Unintelligible words with a placement diff (count)",
+      "status" : {
+        "pass" : {
+
+        }
+      },
+      "value" : 0
+    },
+    {
+      "gate" : {
+        "bound" : 0.8,
+        "direction" : "atLeast",
+        "key" : "agreement.l2RecallMin"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.016041511340777796,
+          "upper" : 0.08437427748730814
+        }
+      ],
+      "layer" : "cvEstimate",
+      "n" : 134,
+      "name" : "L2 recall, CV estimate, after suppression",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.03731343283582089,
+      "worstSpeaker" : {
+        "id" : "9643",
+        "n" : 10,
+        "value" : 0
+      }
+    },
+    {
+      "gate" : {
+        "bound" : 0.7,
+        "direction" : "atLeast",
+        "key" : "agreement.l2RecallWilsonLowerMin"
+      },
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.016041511340777796,
+          "upper" : 0.08437427748730814
+        }
+      ],
+      "layer" : "cvEstimate",
+      "n" : 134,
+      "name" : "L2 recall, CV estimate, Wilson lower bound",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : 0.016041511340777796
+    },
+    {
+      "intervals" : [
+        {
+          "label" : "paired speaker-clustered bootstrap, 2000 resamples",
+          "lower" : -0.23685325602140947,
+          "upper" : -0.09588836026576984
+        }
+      ],
+      "layer" : "cvEstimate",
+      "n" : 134,
+      "name" : "L2 recall, CV estimate, §6.5 baseline rule (best of B1, B2)",
+      "status" : {
+        "fail" : {
+
+        }
+      },
+      "value" : -0.15671641791044777
+    },
+    {
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.07814139605224796,
+          "upper" : 0.12253762074643118
+        }
+      ],
+      "layer" : "descriptive",
+      "n" : 693,
+      "name" : "L2 false positives, clean 1,400, adults",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 0.09812409812409813,
+      "worstSpeaker" : {
+        "id" : "9612",
+        "n" : 11,
+        "value" : 0.2727272727272727
+      }
+    },
+    {
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.09442792326860046,
+          "upper" : 0.14168866326132395
+        }
+      ],
+      "layer" : "descriptive",
+      "n" : 707,
+      "name" : "L2 false positives, clean 1,400, childs",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 0.11598302687411598,
+      "worstSpeaker" : {
+        "id" : "3214",
+        "n" : 7,
+        "value" : 0.42857142857142855
+      }
+    },
+    {
+      "intervals" : [
+
+      ],
+      "layer" : "descriptive",
+      "n" : 1400,
+      "name" : "Clean 1,400: Whisper-substituted or deleted words (never reach the detector)",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 306
+    },
+    {
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.08780815760103139,
+          "upper" : 0.11511579038118902
+        }
+      ],
+      "layer" : "descriptive",
+      "n" : 1868,
+      "name" : "L2 false positives, supplementary 1,868, after suppression",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 0.1006423982869379,
+      "worstSpeaker" : {
+        "id" : "9629",
+        "n" : 1,
+        "value" : 1
+      }
+    },
+    {
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.11718348574039014,
+          "upper" : 0.24440191278276766
+        }
+      ],
+      "layer" : "cvEstimate",
+      "n" : 134,
+      "name" : "L2 recall, CV estimate, before suppression",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 0.17164179104477612
+    },
+    {
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.019934815414942943,
+          "upper" : 0.1038248258365625
+        }
+      ],
+      "layer" : "cvEstimate",
+      "n" : 108,
+      "name" : "L2 recall, CV estimate, adults",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 0.046296296296296294,
+      "worstSpeaker" : {
+        "id" : "1407",
+        "n" : 2,
+        "value" : 1
+      }
+    },
+    {
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0,
+          "upper" : 0.1287289218592153
+        }
+      ],
+      "layer" : "cvEstimate",
+      "n" : 26,
+      "name" : "L2 recall, CV estimate, children",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 0,
+      "worstSpeaker" : {
+        "id" : "1419",
+        "n" : 2,
+        "value" : 0
+      }
+    },
+    {
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.02459040987330592,
+          "upper" : 0.19009426801158313
+        }
+      ],
+      "layer" : "cvEstimate",
+      "n" : 42,
+      "name" : "L2 recall, CV estimate, ≥ 4 of 5 raters",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 0.07142857142857142,
+      "worstSpeaker" : {
+        "id" : "0813",
+        "n" : 1,
+        "value" : 1
+      }
+    },
+    {
+      "intervals" : [
+        {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.009875190978303097,
+          "upper" : 0.25757300781872594
+        }
+      ],
+      "layer" : "cvEstimate",
+      "n" : 18,
+      "name" : "L2 recall, CV estimate, final syllable lengthening-exposed",
+      "status" : {
+        "reported" : {
+
+        }
+      },
+      "value" : 0.05555555555555555,
+      "worstSpeaker" : {
+        "id" : "1407",
+        "n" : 1,
+        "value" : 1
+      }
+    }
+  ],
+  "notes" : [
+    "pipeline: spec 12 Analyzer, word timings replayed from openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631, pYIN pitch, spec 10 scoring; references: fixtures/vctk/reference-lists.json (§3a), first listed reference usable for every phrase word; natives (A(w), band) = the phrase's analysed references but the take's speaker",
+    "references serving pairs: p225 207, p226 55, p227 3, p232 1, p233 13, p334 2",
+    "references skipped before the one used (first unusable word's reason): asrSubstitution 75, lowAsrConfidence 34",
+    "reference list short (§3a minimum 3): 019: 2 references (< 3): only 2 non-held-out speakers have a kept 2–6 s take",
+    "evaluation coverage, stressPlacement: 1.000 of 265 applicable",
+    "evaluation coverage, contrast: 0.588 of 262 applicable",
+    "evaluation coverage, tooMuchContrast: 0.588 of 262 applicable",
+    "evaluation coverage, weakLength: 0.588 of 262 applicable",
+    "override review (referenceAnomaly ≥ 20%): 008, 021-b, 024",
+    "pairs measured: scoring 281, band coverage 281 of 299 held-out takes (feedback 94, inconclusive 107, noClearDifference 76, takeProblem(wordsDontMatch) 4); thresholds digest 4fc683ef",
+    "not scored: 18 noUsableReference"
+  ],
+  "positiveSet" : {
+    "evaluable" : {
+
+    }
+  },
+  "release" : true,
+  "spec11" : {
+    "conditions" : [
+      {
+        "checks" : [
+          {
+            "detail" : "42 of 307 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.10283131642909672,
+              "upper" : 0.1797611638467233
+            },
+            "limit" : 0.02,
+            "n" : 307,
+            "name" : "TTS-vs-MFA control",
+            "set" : "synthetic",
+            "status" : "NOT MET",
+            "value" : 0.13680781758957655
+          },
+          {
+            "detail" : "inconclusive 5.2% → 5.9%",
+            "n" : 307,
+            "name" : "TTS-vs-MFA control, inconclusive rise",
+            "set" : "synthetic",
+            "status" : "REPORTED",
+            "value" : 0.006515
+          },
+          {
+            "detail" : "oracle 9/234 [0.020, 0.071], candidate 11/234 [0.026, 0.082]; flips 8/234",
+            "n" : 234,
+            "name" : "TTS-vs-MFA control, 1-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "REPORTED",
+            "value" : 0.008547
+          },
+          {
+            "detail" : "oracle 2/51 [0.011, 0.132], candidate 3/51 [0.020, 0.159]; flips 22/51",
+            "limit" : 0.02,
+            "n" : 51,
+            "name" : "TTS-vs-MFA control, 2-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "MET",
+            "value" : 0.019608
+          },
+          {
+            "detail" : "oracle 1/15 [0.012, 0.298], candidate 1/15 [0.012, 0.298]; flips 10/15",
+            "limit" : 0.02,
+            "n" : 15,
+            "name" : "TTS-vs-MFA control, 3-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "reported (n < 30)",
+            "value" : 0
+          },
+          {
+            "detail" : "oracle 4/7 [0.250, 0.842], candidate 3/7 [0.158, 0.750]; flips 2/7",
+            "n" : 7,
+            "name" : "TTS-vs-MFA control, 4+-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "REPORTED",
+            "value" : -0.142857
+          }
+        ],
+        "met" : false,
+        "name" : "TTS-vs-MFA control ≤ 2% (§4)",
+        "number" : 1
+      },
+      {
+        "checks" : [
+          {
+            "detail" : "agreement.inconclusivePairsMax",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.32597720430077576,
+              "upper" : 0.43880422787769063
+            },
+            "limit" : 0.1,
+            "n" : 281,
+            "name" : "inconclusive pairs, positive set",
+            "set" : "vctk-held-out",
+            "status" : "NOT MET",
+            "value" : 0.3807829181494662
+          }
+        ],
+        "met" : false,
+        "name" : "inconclusive rate inside the 10% budget",
+        "number" : 2
+      },
+      {
+        "checks" : [
+          {
+            "detail" : "69 of 307 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.18162896511327062,
+              "upper" : 0.27468551545450326
+            },
+            "limit" : 0.02,
+            "n" : 307,
+            "name" : "b2 vs oracle",
+            "set" : "synthetic",
+            "status" : "NOT MET",
+            "value" : 0.2247557003257329
+          },
+          {
+            "detail" : "inconclusive 5.2% → 16.3%",
+            "limit" : 0.02,
+            "n" : 307,
+            "name" : "b2 vs oracle, inconclusive rise",
+            "set" : "synthetic",
+            "status" : "NOT MET",
+            "value" : 0.110749
+          },
+          {
+            "detail" : "oracle 9/234 [0.020, 0.071], candidate 24/234 [0.070, 0.148]; flips 15/234",
+            "n" : 234,
+            "name" : "b2 vs oracle, 1-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "REPORTED",
+            "value" : 0.064103
+          },
+          {
+            "detail" : "oracle 2/51 [0.011, 0.132], candidate 10/51 [0.110, 0.325]; flips 35/51",
+            "limit" : 0.02,
+            "n" : 51,
+            "name" : "b2 vs oracle, 2-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "NOT MET",
+            "value" : 0.156863
+          },
+          {
+            "detail" : "oracle 1/15 [0.012, 0.298], candidate 10/15 [0.417, 0.848]; flips 13/15",
+            "limit" : 0.02,
+            "n" : 15,
+            "name" : "b2 vs oracle, 3-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "reported (n < 30)",
+            "value" : 0.6
+          },
+          {
+            "detail" : "oracle 4/7 [0.250, 0.842], candidate 6/7 [0.487, 0.974]; flips 6/7",
+            "n" : 7,
+            "name" : "b2 vs oracle, 4+-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "REPORTED",
+            "value" : 0.285714
+          },
+          {
+            "detail" : "915 of 3890 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.22215535293933977,
+              "upper" : 0.24880410399142586
+            },
+            "limit" : 0.02,
+            "n" : 3890,
+            "name" : "b2 vs oracle",
+            "set" : "vctk-held-out",
+            "status" : "NOT MET",
+            "value" : 0.2352185089974293
+          },
+          {
+            "detail" : "inconclusive 9.3% → 17.1%",
+            "limit" : 0.02,
+            "n" : 3890,
+            "name" : "b2 vs oracle, inconclusive rise",
+            "set" : "vctk-held-out",
+            "status" : "NOT MET",
+            "value" : 0.078663
+          },
+          {
+            "detail" : "oracle 243/2921 [0.074, 0.094], candidate 346/2921 [0.107, 0.131]; flips 301/2921",
+            "n" : 2921,
+            "name" : "b2 vs oracle, 1-syllable inconclusive rise",
+            "set" : "vctk-held-out",
+            "status" : "REPORTED",
+            "value" : 0.035262
+          },
+          {
+            "detail" : "oracle 44/639 [0.052, 0.091], candidate 121/639 [0.161, 0.222]; flips 343/639",
+            "limit" : 0.02,
+            "n" : 639,
+            "name" : "b2 vs oracle, 2-syllable inconclusive rise",
+            "set" : "vctk-held-out",
+            "status" : "NOT MET",
+            "value" : 0.120501
+          },
+          {
+            "detail" : "oracle 33/213 [0.112, 0.210], candidate 111/213 [0.454, 0.587]; flips 172/213",
+            "limit" : 0.02,
+            "n" : 213,
+            "name" : "b2 vs oracle, 3-syllable inconclusive rise",
+            "set" : "vctk-held-out",
+            "status" : "NOT MET",
+            "value" : 0.366197
+          },
+          {
+            "detail" : "oracle 40/117 [0.262, 0.432], candidate 88/117 [0.667, 0.822]; flips 99/117",
+            "n" : 117,
+            "name" : "b2 vs oracle, 4+-syllable inconclusive rise",
+            "set" : "vctk-held-out",
+            "status" : "REPORTED",
+            "value" : 0.410256
+          }
+        ],
+        "met" : false,
+        "name" : "b2 vs oracle ≤ 2% flips and ≤ 2 points of inconclusive rise (§4a)",
+        "number" : 3
+      },
+      {
+        "checks" : [
+          {
+            "detail" : "25 of 307 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.055764807109640546,
+              "upper" : 0.1174471544638381
+            },
+            "limit" : 0.02,
+            "n" : 307,
+            "name" : "jitter ±40 ms",
+            "set" : "synthetic",
+            "status" : "NOT MET",
+            "value" : 0.08143322475570032
+          },
+          {
+            "detail" : "9 of 51 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.09572403469126317,
+              "upper" : 0.3025414252430807
+            },
+            "limit" : 0.02,
+            "n" : 51,
+            "name" : "jitter ±40 ms, 2-syllable flips",
+            "set" : "synthetic",
+            "status" : "NOT MET",
+            "value" : 0.17647058823529413
+          },
+          {
+            "detail" : "5 of 15 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.1517632443971473,
+              "upper" : 0.5828645226148023
+            },
+            "limit" : 0.02,
+            "n" : 15,
+            "name" : "jitter ±40 ms, 3-syllable flips",
+            "set" : "synthetic",
+            "status" : "reported (n < 30)",
+            "value" : 0.3333333333333333
+          },
+          {
+            "detail" : "4 of 7 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.2504583645276572,
+              "upper" : 0.8417801447485302
+            },
+            "limit" : 0.02,
+            "n" : 7,
+            "name" : "jitter ±40 ms, 4+-syllable flips",
+            "set" : "synthetic",
+            "status" : "reported (n < 30)",
+            "value" : 0.5714285714285714
+          },
+          {
+            "detail" : "inconclusive 5.2% → 8.5%",
+            "n" : 307,
+            "name" : "jitter ±40 ms, inconclusive rise",
+            "set" : "synthetic",
+            "status" : "REPORTED",
+            "value" : 0.032573
+          },
+          {
+            "detail" : "oracle 9/234 [0.020, 0.071], candidate 16/234 [0.043, 0.108]; flips 7/234",
+            "n" : 234,
+            "name" : "jitter ±40 ms, 1-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "REPORTED",
+            "value" : 0.029915
+          },
+          {
+            "detail" : "oracle 2/51 [0.011, 0.132], candidate 4/51 [0.031, 0.185]; flips 9/51",
+            "limit" : 0.02,
+            "n" : 51,
+            "name" : "jitter ±40 ms, 2-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "NOT MET",
+            "value" : 0.039216
+          },
+          {
+            "detail" : "oracle 1/15 [0.012, 0.298], candidate 1/15 [0.012, 0.298]; flips 5/15",
+            "limit" : 0.02,
+            "n" : 15,
+            "name" : "jitter ±40 ms, 3-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "reported (n < 30)",
+            "value" : 0
+          },
+          {
+            "detail" : "oracle 4/7 [0.250, 0.842], candidate 5/7 [0.359, 0.918]; flips 4/7",
+            "n" : 7,
+            "name" : "jitter ±40 ms, 4+-syllable inconclusive rise",
+            "set" : "synthetic",
+            "status" : "REPORTED",
+            "value" : 0.142857
+          },
+          {
+            "detail" : "453 of 3890 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.10674865342328335,
+              "upper" : 0.12691300651914605
+            },
+            "limit" : 0.02,
+            "n" : 3890,
+            "name" : "jitter ±40 ms",
+            "set" : "vctk-held-out",
+            "status" : "NOT MET",
+            "value" : 0.11645244215938304
+          },
+          {
+            "detail" : "78 of 639 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.09891755987099343,
+              "upper" : 0.1497307757760673
+            },
+            "limit" : 0.02,
+            "n" : 639,
+            "name" : "jitter ±40 ms, 2-syllable flips",
+            "set" : "vctk-held-out",
+            "status" : "NOT MET",
+            "value" : 0.12206572769953052
+          },
+          {
+            "detail" : "38 of 213 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.13282599792141822,
+              "upper" : 0.23537600207856754
+            },
+            "limit" : 0.02,
+            "n" : 213,
+            "name" : "jitter ±40 ms, 3-syllable flips",
+            "set" : "vctk-held-out",
+            "status" : "NOT MET",
+            "value" : 0.1784037558685446
+          },
+          {
+            "detail" : "22 of 117 words",
+            "interval" : {
+              "label" : "descriptive (ignores clustering)",
+              "lower" : 0.12758198294157508,
+              "upper" : 0.2683207087967116
+            },
+            "limit" : 0.02,
+            "n" : 117,
+            "name" : "jitter ±40 ms, 4+-syllable flips",
+            "set" : "vctk-held-out",
+            "status" : "NOT MET",
+            "value" : 0.18803418803418803
+          },
+          {
+            "detail" : "inconclusive 9.3% → 17.7%",
+            "n" : 3890,
+            "name" : "jitter ±40 ms, inconclusive rise",
+            "set" : "vctk-held-out",
+            "status" : "REPORTED",
+            "value" : 0.084062
+          },
+          {
+            "detail" : "oracle 243/2921 [0.074, 0.094], candidate 548/2921 [0.174, 0.202]; flips 315/2921",
+            "n" : 2921,
+            "name" : "jitter ±40 ms, 1-syllable inconclusive rise",
+            "set" : "vctk-held-out",
+            "status" : "REPORTED",
+            "value" : 0.104416
+          },
+          {
+            "detail" : "oracle 44/639 [0.052, 0.091], candidate 56/639 [0.068, 0.112]; flips 78/639",
+            "limit" : 0.02,
+            "n" : 639,
+            "name" : "jitter ±40 ms, 2-syllable inconclusive rise",
+            "set" : "vctk-held-out",
+            "status" : "MET",
+            "value" : 0.018779
+          },
+          {
+            "detail" : "oracle 33/213 [0.112, 0.210], candidate 39/213 [0.137, 0.240]; flips 38/213",
+            "limit" : 0.02,
+            "n" : 213,
+            "name" : "jitter ±40 ms, 3-syllable inconclusive rise",
+            "set" : "vctk-held-out",
+            "status" : "NOT MET",
+            "value" : 0.028169
+          },
+          {
+            "detail" : "oracle 40/117 [0.262, 0.432], candidate 44/117 [0.294, 0.466]; flips 22/117",
+            "n" : 117,
+            "name" : "jitter ±40 ms, 4+-syllable inconclusive rise",
+            "set" : "vctk-held-out",
+            "status" : "REPORTED",
+            "value" : 0.034188
+          }
+        ],
+        "met" : false,
+        "name" : "jitter ±40 ms ≤ 2% flips on each set, pooled and per multi-syllable group (§4b)",
+        "number" : 4
+      }
+    ],
+    "falseFlagSplit" : [
+      {
+        "flagged" : 0,
+        "group" : "Whisper-substituted or deleted",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 8.673617379884035e-19,
+          "upper" : 0.012398143345036292
+        },
+        "thresholds" : "initial",
+        "words" : 306
+      },
+      {
+        "flagged" : 0,
+        "group" : "low ASR confidence",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0,
+          "upper" : 0.05202306241026692
+        },
+        "thresholds" : "initial",
+        "words" : 70
+      },
+      {
+        "flagged" : 150,
+        "group" : "clean matched",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.12652342346392856,
+          "upper" : 0.1699531253774216
+        },
+        "thresholds" : "initial",
+        "words" : 1021
+      },
+      {
+        "flagged" : 0,
+        "group" : "Whisper-substituted or deleted",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 8.673617379884035e-19,
+          "upper" : 0.012398143345036292
+        },
+        "thresholds" : "tuned (FALLBACK: the initial thresholds ship)",
+        "words" : 306
+      },
+      {
+        "flagged" : 0,
+        "group" : "low ASR confidence",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0,
+          "upper" : 0.05202306241026692
+        },
+        "thresholds" : "tuned (FALLBACK: the initial thresholds ship)",
+        "words" : 70
+      },
+      {
+        "flagged" : 150,
+        "group" : "clean matched",
+        "interval" : {
+          "label" : "descriptive (ignores clustering)",
+          "lower" : 0.12652342346392856,
+          "upper" : 0.1699531253774216
+        },
+        "thresholds" : "tuned (FALLBACK: the initial thresholds ship)",
+        "words" : 1021
+      }
+    ],
+    "guardLine" : "NOT MET (FALLBACK)",
+    "guardMet" : false,
+    "lowAsrConfidenceBelow" : 0.45,
+    "negativeRows" : [
+      "L2 false positives, clean 1,400, after suppression",
+      "L2 false positives, clean 1,400, worst speaker (≥ 10 words)",
+      "Unintelligible words with a placement diff (count)",
+      "L2 recall, CV estimate, after suppression",
+      "L2 recall, CV estimate, Wilson lower bound",
+      "L2 recall, CV estimate, §6.5 baseline rule (best of B1, B2)"
+    ],
+    "reportedLines" : [
+      "Whisper-substituted or deleted words on the clean 1,400: 306: 000030067#4 SWIMMING, 000030079#0 LAYLA, 000030119#1 TINA, 000440021#0 MANDY, 000440021#4 AUSTRALIAN, 000440082#0 LILLY, 000440089#0 SANDY, 000440104#1 LAYLA, 000440126#0 TEDDY, 000440126#3 CUMBER, 000440132#0 ANDY, 000440147#0 LILLY, 000440147#3 CAIRO, 000920009#1 ALICE, 000920055#2 LANTERN, 000920074#0 SANDY, 000920092#2 LYNDA'S, 000920129#4 POTATO, 000920173#2 MANY, 000930005#0 BILLY, 000930051#3 ZERO, 000930089#0 DORA, 000930099#0 JACKIE, 000930101#2 MARY'S, 000930111#0 BOBBY, 000930148#4 USUAL, 000930155#2 ANY, 000930162#3 PARROT, 000940012#0 LILLY, 000940021#0 LYNDA, 000940074#2 ROWING, 000940102#3 RAINCOAT, 000940133#0 JAYME, 000960002#0 LISA, 000960066#1 LILLY, 000960066#4 BASEBALL, 000960071#0 ANDY, 000960071#2 HANDBALL, 000960073#0 SANDY, 000960084#2 PETER, 001110056#2 SCIENTIST, 001110114#2 WALKING, 001110114#4 BATHROOM, 001110122#1 ANDY, 001110122#5 RESTROOM, 001110135#0 DORA, 001110137#0 ALICE, 001110137#5 POLICE, 001110141#0 ANDY, 001110141#4 FRIDAY, 001120013#0 LAYLA, 001120063#0 TURKEYS, 001120063#1 HOLIDAY, 001120119#1 ALICE, 001120119#3 INTO, 001120119#5 LIVING, 001120130#0 ANDY, 001120141#2 TODAY, 001130019#4 ZEBRA, 001130023#0 ANDY, …",
+      "Clean-1,400 FP after suppression: 10.7% (150 of 1400) on the shipped config, next to spec 08's 10.7% (150 of 1,400) on the initial thresholds",
+      "L2 split (initial): 3 words have no A(w) and get no decision (never flagged)",
+      "L2 split (tuned (FALLBACK: the initial thresholds ship)): 3 words have no A(w) and get no decision (never flagged)",
+      "§1 baseline B1: recall 26/134 (0.194); detector vs B1 paired: 0 wins, 21 losses, McNemar p = 0.0000",
+      "§1 baseline B2: recall 26/134 (0.194); detector vs B2 paired: 1 wins, 22 losses, McNemar p = 0.0000",
+      "§6.5 rule (best baseline B1): FAIL: D below B* − 0.03; paired bootstrap lower bound of D − B* below -0.05; B* below the ceiling and D − B* below min(lift cap, (1 − B*)/2) = 0.1",
+      "jitter ±20 ms, synthetic: n=307 value 0.0358 [0.0201, 0.0630] Wilson 95% (no limit): REPORTED; 11 of 307 words",
+      "jitter ±20 ms, vctk-held-out: n=3890 value 0.0578 [0.0509, 0.0656] Wilson 95% (no limit): REPORTED; 225 of 3890 words",
+      "jitter ±80 ms, synthetic: n=307 value 0.1238 [0.0915, 0.1653] Wilson 95% (no limit): REPORTED; 38 of 307 words",
+      "jitter ±80 ms, vctk-held-out: n=3890 value 0.1589 [0.1477, 0.1707] Wilson 95% (no limit): REPORTED; 618 of 3890 words",
+      "shipped thresholds, synthetic, control: 42 of 307 words differ (13.7%), inconclusive 16 → 18; spec 23 on the initial thresholds: 13.7% (42 / 307)",
+      "  synthetic control by cue (duration = longestSyllable, intensity = loudestSyllable; pitch is not a spec 07 verdict part): inconclusive 10 (only 8), longestSyllable 27 (only 18), loudestSyllable 15 (only 6), syllableCount 0 (only 0)",
+      "  synthetic control by syllables: 1: 8/234, inconclusive 9 → 11; 2: 22/51, inconclusive 2 → 3; 3: 10/15, inconclusive 1 → 1; 4+: 2/7, inconclusive 4 → 3",
+      "  synthetic control by transition: feedback↔close (decided↔decided) 29, anything↔inconclusive 13",
+      "  synthetic control by boundary error: 0–20 ms 3/35; 20–40 ms 23/183; 40–80 ms 9/68; 80–160 ms 1/2; >160 ms 6/19",
+      "shipped thresholds, synthetic, b2: 69 of 307 words differ (22.5%), inconclusive 16 → 50; spec 23: 22.5%, +11.1 points",
+      "  synthetic b2 by cue (duration = longestSyllable, intensity = loudestSyllable; pitch is not a spec 07 verdict part): inconclusive 34 (only 20), longestSyllable 29 (only 11), loudestSyllable 34 (only 13), syllableCount 0 (only 0)",
+      "  synthetic b2 by syllables: 1: 15/234, inconclusive 9 → 24; 2: 35/51, inconclusive 2 → 10; 3: 13/15, inconclusive 1 → 10; 4+: 6/7, inconclusive 4 → 6",
+      "  synthetic b2 by transition: feedback↔close (decided↔decided) 30, anything↔inconclusive 39",
+      "  synthetic b2 by boundary error: 0–20 ms 1/17; 20–40 ms 6/44; 40–80 ms 18/135; 80–160 ms 18/61; >160 ms 26/50",
+      "  synthetic b2 inconclusive rise 34 words: from the CTC confidence gate 3, from the margins 31 (11 words gated)",
+      "shipped thresholds, synthetic, jitter-20: 11 of 307 words differ (3.6%), inconclusive 16 → 19",
+      "shipped thresholds, synthetic, jitter-40: 25 of 307 words differ (8.1%), inconclusive 16 → 26",
+      "  synthetic jitter-40 by cue (duration = longestSyllable, intensity = loudestSyllable; pitch is not a spec 07 verdict part): inconclusive 10 (only 8), longestSyllable 9 (only 6), loudestSyllable 10 (only 8), syllableCount 0 (only 0)",
+      "  synthetic jitter-40 by syllables: 1: 7/234, inconclusive 9 → 16; 2: 9/51, inconclusive 2 → 4; 3: 5/15, inconclusive 1 → 1; 4+: 4/7, inconclusive 4 → 5",
+      "  synthetic jitter-40 by transition: feedback↔close (decided↔decided) 13, anything↔inconclusive 12",
+      "  synthetic jitter-40 by boundary error: 0–20 ms 5/165; 20–40 ms 20/142; 40–80 ms 0/0; 80–160 ms 0/0; >160 ms 0/0",
+      "shipped thresholds, synthetic, jitter-80: 38 of 307 words differ (12.4%), inconclusive 16 → 35",
+      "shipped thresholds, synthetic: Whisper-substituted 5, deleted 0 (kept out of every diff); 20 clips",
+      "shipped thresholds, vctk-held-out, b2: 915 of 3890 words differ (23.5%), inconclusive 360 → 666; spec 23 (bundled starter clips): 22.5%, +10.2 points",
+      "  vctk-held-out b2 by cue (duration = longestSyllable, intensity = loudestSyllable; pitch is not a spec 07 verdict part): inconclusive 544 (only 378), longestSyllable 385 (only 151), loudestSyllable 341 (only 82), syllableCount 0 (only 0)",
+      "  vctk-held-out b2 by syllables: 1: 301/2921, inconclusive 243 → 346; 2: 343/639, inconclusive 44 → 121; 3: 172/213, inconclusive 33 → 111; 4+: 99/117, inconclusive 40 → 88",
+      "  vctk-held-out b2 by transition: feedback↔close (decided↔decided) 318, anything↔inconclusive 597",
+      "  vctk-held-out b2 by boundary error: 0–20 ms 13/190; 20–40 ms 96/650; 40–80 ms 212/1298; 80–160 ms 309/1165; >160 ms 285/587",
+      "  vctk-held-out b2 inconclusive rise 306 words: from the CTC confidence gate 30, from the margins 276 (74 words gated)",
+      "shipped thresholds, vctk-held-out, jitter-20: 225 of 3890 words differ (5.8%), inconclusive 360 → 523",
+      "shipped thresholds, vctk-held-out, jitter-40: 453 of 3890 words differ (11.6%), inconclusive 360 → 687",
+      "  vctk-held-out jitter-40 by cue (duration = longestSyllable, intensity = loudestSyllable; pitch is not a spec 07 verdict part): inconclusive 341 (only 329), longestSyllable 71 (only 44), loudestSyllable 74 (only 50), syllableCount 0 (only 0)",
+      "  vctk-held-out jitter-40 by syllables: 1: 315/2921, inconclusive 243 → 548; 2: 78/639, inconclusive 44 → 56; 3: 38/213, inconclusive 33 → 39; 4+: 22/117, inconclusive 40 → 44",
+      "  vctk-held-out jitter-40 by transition: feedback↔close (decided↔decided) 82, anything↔inconclusive 371",
+      "  vctk-held-out jitter-40 by boundary error: 0–20 ms 97/2043; 20–40 ms 356/1847; 40–80 ms 0/0; 80–160 ms 0/0; >160 ms 0/0",
+      "shipped thresholds, vctk-held-out, jitter-80: 618 of 3890 words differ (15.9%), inconclusive 360 → 759",
+      "shipped thresholds, vctk-held-out: Whisper-substituted 102, deleted 2 (kept out of every diff); 299 clips",
+      "End-to-end check (ii): NOT EVALUATED (no verified synthetic reference: no ElevenLabs key, and no Premium English voice installed for the Mac fallback; spec 22 never downloads voices)",
+      "Synthetic set which-syllable accuracy and controls: NOT EVALUATED (spec 22's synthetic negative set needs a verified synthetic reference)",
+      "3-take stability (weak length, pitch range, final direction): NOT EVALUATED (speechocean762: 0 speaker × utterance texts with 3 or more takes among the labelled utterances; VCTK: one take per speaker per prompt); the flags stay on, the call goes to CPO",
+      "referenceAnomaly: Reference anomaly rate, worst phrase (reported) (spec 10): n 281, value 1.000, gate ≤ 0.2, interval –, worst speaker –, worst phrase 008 1.000 (n 1): REPORTED (no gate)",
+      "VCTK CV estimate, not shipped (6 folds over the tuning speakers): placement diffs 9/476, any-diff 140/476, inconclusive 207/476; 6 of 6 folds had no feasible point (initial thresholds)"
+    ],
+    "tuningLines" : [
+      "§2 fit: 634238748 grid points; 0 meet the selection rule, 0 also the 10% budget, 0 also the guard on tuning data; outcome: FALLBACK (no grid point meets the selection rule's constraints on the tuning pool; the guard on tuning data (b2 vs MFA, ±40 ms jitter) is not met, and no tuned key reaches spec 07's verdicts)",
+      "pool: correctWords 1705, recallWords 134, vctkPairs 476, vctkTuningSpeakers 24",
+      "initial point on the pool: w=(0.4, 0.3, 0.3) λ=1.6 τ=(0.25, 0.50) (0.25, 0.50) (0.25, 0.50): recall 5/134, VCTK placement FP 9/476, any-diff 140/476, shared FP 159/1705, inconclusive 207/476, violation 0.6692",
+      "closest by constraint violation: w=(0.4, 0.5, 0.1) λ=1.8 τ=(0.10, 0.85) (0.10, 1.00) (0.40, 1.00): recall 2/134, VCTK placement FP 6/476, any-diff 140/476, shared FP 75/1705, inconclusive 207/476, violation 0.6170",
+      "closest by constraint violation: w=(0.4, 0.5, 0.1) λ=1.8 τ=(0.10, 0.85) (0.10, 1.00) (0.45, 1.00): recall 2/134, VCTK placement FP 6/476, any-diff 140/476, shared FP 75/1705, inconclusive 207/476, violation 0.6170",
+      "closest by constraint violation: w=(0.4, 0.5, 0.1) λ=1.8 τ=(0.10, 0.85) (0.10, 1.00) (0.50, 1.00): recall 2/134, VCTK placement FP 6/476, any-diff 140/476, shared FP 75/1705, inconclusive 207/476, violation 0.6170",
+      "closest by constraint violation: w=(0.4, 0.5, 0.1) λ=1.8 τ=(0.10, 0.85) (0.15, 1.00) (0.40, 1.00): recall 2/134, VCTK placement FP 6/476, any-diff 140/476, shared FP 75/1705, inconclusive 207/476, violation 0.6170",
+      "closest by constraint violation: w=(0.4, 0.5, 0.1) λ=1.8 τ=(0.10, 0.85) (0.15, 1.00) (0.45, 1.00): recall 2/134, VCTK placement FP 6/476, any-diff 140/476, shared FP 75/1705, inconclusive 207/476, violation 0.6170",
+      "guard on tuning data: b2 vs MFA, vctk-tuning: n=6824 value 0.2343 [0.2244, 0.2445] Wilson 95% (≤ 0.02): NOT MET; 1599 of 6824 words",
+      "guard on tuning data: b2 vs MFA, inconclusive rise, vctk-tuning: n=6824 value 0.0826 (≤ 0.02): NOT MET; inconclusive 10.5% → 18.8%",
+      "guard on tuning data: b2 vs MFA, 1-syllable inconclusive rise, vctk-tuning: n=5126 value 0.0412 (no limit): REPORTED; oracle 472/5126 [0.084, 0.100], candidate 683/5126 [0.124, 0.143]; flips 559/5126",
+      "guard on tuning data: b2 vs MFA, 2-syllable inconclusive rise, vctk-tuning: n=1139 value 0.1185 (≤ 0.02): NOT MET; oracle 85/1139 [0.061, 0.091], candidate 220/1139 [0.171, 0.217]; flips 597/1139",
+      "guard on tuning data: b2 vs MFA, 3-syllable inconclusive rise, vctk-tuning: n=373 value 0.4075 (≤ 0.02): NOT MET; oracle 77/373 [0.168, 0.250], candidate 229/373 [0.564, 0.662]; flips 292/373",
+      "guard on tuning data: b2 vs MFA, 4+-syllable inconclusive rise, vctk-tuning: n=186 value 0.3548 (no limit): REPORTED; oracle 85/186 [0.387, 0.529], candidate 151/186 [0.750, 0.861]; flips 151/186",
+      "guard on tuning data: jitter ±40 ms, vctk-tuning: n=6824 value 0.1216 [0.1141, 0.1296] Wilson 95% (≤ 0.02): NOT MET; 830 of 6824 words",
+      "guard on tuning data: jitter ±40 ms, 2-syllable flips, vctk-tuning: n=1139 value 0.1484 [0.1289, 0.1702] Wilson 95% (≤ 0.02): NOT MET; 169 of 1139 words",
+      "guard on tuning data: jitter ±40 ms, 3-syllable flips, vctk-tuning: n=373 value 0.2198 [0.1808, 0.2646] Wilson 95% (≤ 0.02): NOT MET; 82 of 373 words",
+      "guard on tuning data: jitter ±40 ms, 4+-syllable flips, vctk-tuning: n=186 value 0.2312 [0.1764, 0.2968] Wilson 95% (≤ 0.02): NOT MET; 43 of 186 words",
+      "guard on tuning data: jitter ±40 ms, inconclusive rise, vctk-tuning: n=6824 value 0.0844 (no limit): REPORTED; inconclusive 10.5% → 19.0%",
+      "guard on tuning data: jitter ±40 ms, 1-syllable inconclusive rise, vctk-tuning: n=5126 value 0.0999 (no limit): REPORTED; oracle 472/5126 [0.084, 0.100], candidate 984/5126 [0.181, 0.203]; flips 536/5126",
+      "guard on tuning data: jitter ±40 ms, 2-syllable inconclusive rise, vctk-tuning: n=1139 value 0.0299 (≤ 0.02): NOT MET; oracle 85/1139 [0.061, 0.091], candidate 119/1139 [0.088, 0.124]; flips 169/1139",
+      "guard on tuning data: jitter ±40 ms, 3-syllable inconclusive rise, vctk-tuning: n=373 value 0.0670 (≤ 0.02): NOT MET; oracle 77/373 [0.168, 0.250], candidate 102/373 [0.231, 0.321]; flips 82/373",
+      "guard on tuning data: jitter ±40 ms, 4+-syllable inconclusive rise, vctk-tuning: n=186 value 0.0269 (no limit): REPORTED; oracle 85/186 [0.387, 0.529], candidate 90/186 [0.413, 0.555]; flips 43/186",
+      "guard on tuning data: guard on tuning data: NOT MET",
+      "§1 fold 0 (15 speakers): 0 feasible; no feasible point: initial thresholds (FALLBACK); config 4fc683ef",
+      "§1 fold 1 (15 speakers): 0 feasible; no feasible point: initial thresholds (FALLBACK); config 4fc683ef",
+      "§1 fold 2 (14 speakers): 0 feasible; no feasible point: initial thresholds (FALLBACK); config 4fc683ef",
+      "§1 fold 3 (14 speakers): 0 feasible; no feasible point: initial thresholds (FALLBACK); config 4fc683ef",
+      "§1 fold 4 (14 speakers): 0 feasible; no feasible point: initial thresholds (FALLBACK); config 4fc683ef",
+      "verification: initial point, recall: table flags 5 after / 23 before suppression; shared-detector run 5 / 23: identical",
+      "verification: initial point, tuning-correct: table flags 159 after / 865 before suppression; shared-detector run 159 / 865: identical",
+      "verification: initial point, VCTK pairs: rescoring reproduces the analyzer's diff/inconclusive outcome on 476 of 476 pairs",
+      "verification: 60 random grid points evaluated directly: 915 of 915 unit outcomes match the tables",
+      "verification: §1 out-of-fold flags: tables and the real shared-detector path with each fold's config agree on all 134 words"
+    ]
+  },
+  "suite" : "release",
+  "summary" : {
+    "gated" : [
+      {
+        "accounting" : {
+          "lostPairs" : 18,
+          "lostReasons" : {
+            "noUsableReference" : 18
+          },
+          "pairs" : 281,
+          "prompts" : 21,
+          "referenceSpeakers" : 6
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.8,
+          "direction" : "atLeast",
+          "key" : "agreement.bandCoverageMedianMin"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 281,
+        "name" : "Band coverage, median over pairs (spec 09)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.5294117647058824,
+        "worstSpeaker" : {
+          "id" : "p323",
+          "n" : 15,
+          "value" : 0.24375
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 18,
+          "lostReasons" : {
+            "noUsableReference" : 18
+          },
+          "pairs" : 281,
+          "prompts" : 21,
+          "referenceSpeakers" : 6
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.05,
+          "direction" : "atMost",
+          "key" : "agreement.anyDiffPairsMax"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.28191288488180594,
+            "upper" : 0.3915897000823339
+          },
+          {
+            "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+            "lower" : 0.1790419884169884,
+            "upper" : 0.47815524929385256
+          }
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 281,
+        "name" : "Any-diff pairs (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.33451957295373663,
+        "worstPhrase" : {
+          "id" : "008",
+          "n" : 1,
+          "value" : 1
+        },
+        "worstSpeaker" : {
+          "id" : "p270",
+          "n" : 18,
+          "value" : 0.5555555555555556
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 18,
+          "lostReasons" : {
+            "noUsableReference" : 18
+          },
+          "pairs" : 281,
+          "prompts" : 21,
+          "referenceSpeakers" : 6
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.15,
+          "direction" : "atMost",
+          "key" : "agreement.anyDiffWorstSpeakerMax"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 281,
+        "name" : "Any-diff pairs, worst speaker (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.5555555555555556,
+        "worstPhrase" : {
+          "id" : "008",
+          "n" : 1,
+          "value" : 1
+        },
+        "worstSpeaker" : {
+          "id" : "p270",
+          "n" : 18,
+          "value" : 0.5555555555555556
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 18,
+          "lostReasons" : {
+            "noUsableReference" : 18
+          },
+          "pairs" : 281,
+          "prompts" : 21,
+          "referenceSpeakers" : 6
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.3,
+          "direction" : "atMost",
+          "key" : "agreement.anyDiffWorstPhraseMax"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 281,
+        "name" : "Any-diff pairs, worst phrase (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 1,
+        "worstPhrase" : {
+          "id" : "008",
+          "n" : 1,
+          "value" : 1
+        },
+        "worstSpeaker" : {
+          "id" : "p270",
+          "n" : 18,
+          "value" : 0.5555555555555556
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 18,
+          "lostReasons" : {
+            "noUsableReference" : 18
+          },
+          "pairs" : 281,
+          "prompts" : 21,
+          "referenceSpeakers" : 6
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.02,
+          "direction" : "atMost",
+          "key" : "agreement.placementDiffPairsMax"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.009821824876703137,
+            "upper" : 0.0457931789443039
+          },
+          {
+            "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+            "lower" : 0,
+            "upper" : 0.06181995854308557
+          }
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 281,
+        "name" : "Placement-diff pairs (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.021352313167259787,
+        "worstPhrase" : {
+          "id" : "022",
+          "n" : 4,
+          "value" : 0.5
+        },
+        "worstSpeaker" : {
+          "id" : "p301",
+          "n" : 20,
+          "value" : 0.1
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 18,
+          "lostReasons" : {
+            "noUsableReference" : 18
+          },
+          "pairs" : 281,
+          "prompts" : 21,
+          "referenceSpeakers" : 6
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.07,
+          "direction" : "atMost",
+          "key" : "agreement.placementDiffWorstSpeakerMax"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 281,
+        "name" : "Placement-diff pairs, worst speaker (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.1,
+        "worstPhrase" : {
+          "id" : "022",
+          "n" : 4,
+          "value" : 0.5
+        },
+        "worstSpeaker" : {
+          "id" : "p301",
+          "n" : 20,
+          "value" : 0.1
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 18,
+          "lostReasons" : {
+            "noUsableReference" : 18
+          },
+          "pairs" : 281,
+          "prompts" : 21,
+          "referenceSpeakers" : 6
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.1,
+          "direction" : "atMost",
+          "key" : "agreement.inconclusivePairsMax"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.32597720430077576,
+            "upper" : 0.43880422787769063
+          },
+          {
+            "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+            "lower" : 0.19219711795054262,
+            "upper" : 0.6000162337662336
+          }
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 281,
+        "name" : "Inconclusive pairs (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.3807829181494662,
+        "worstPhrase" : {
+          "id" : "002",
+          "n" : 16,
+          "value" : 1
+        },
+        "worstSpeaker" : {
+          "id" : "p336",
+          "n" : 17,
+          "value" : 0.5882352941176471
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 18,
+          "lostReasons" : {
+            "noUsableReference" : 18
+          },
+          "pairs" : 281,
+          "prompts" : 21,
+          "referenceSpeakers" : 6
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.9,
+          "direction" : "atLeast",
+          "key" : "agreement.evaluationCoverageMin"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 265,
+        "name" : "Evaluation coverage (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.5877862595419847
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 145,
+          "lostReasons" : {
+            "contrast not applicable (tooFewExpectedUnstressed)" : 19,
+            "contrast unavailable (lowConfidence)" : 108,
+            "noUsableReference" : 18
+          },
+          "pairs" : 154,
+          "prompts" : 12,
+          "referenceSpeakers" : 4
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.9,
+          "direction" : "atLeast",
+          "key" : "agreement.contrastRatioWithinShareMin"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.544723972153564,
+            "upper" : 0.6960239294681988
+          },
+          {
+            "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+            "lower" : 0.4696732954545455,
+            "upper" : 0.7750480769230768
+          }
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 154,
+        "name" : "Contrast ratio within tolerance (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.6233766233766234,
+        "worstPhrase" : {
+          "id" : "021-a",
+          "n" : 5,
+          "value" : 0.2
+        },
+        "worstSpeaker" : {
+          "id" : "p323",
+          "n" : 8,
+          "value" : 0.375
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 145,
+          "lostReasons" : {
+            "noUsableReference" : 18,
+            "weakLength not applicable (tooFewExpectedUnstressed)" : 19,
+            "weakLength unavailable (lowConfidence)" : 108
+          },
+          "pairs" : 154,
+          "prompts" : 12,
+          "referenceSpeakers" : 4
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 15,
+          "direction" : "atMost",
+          "key" : "agreement.weakLengthMaxDeltaPoints"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 154,
+        "name" : "Weak length, largest |Δ| (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 72.93790546802586,
+        "worstPhrase" : {
+          "id" : "006",
+          "n" : 1,
+          "value" : 72.93790546802586
+        },
+        "worstSpeaker" : {
+          "id" : "p314",
+          "n" : 1,
+          "value" : 72.93790546802586
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 95,
+          "lostReasons" : {
+            "noUsableReference" : 18,
+            "rhythm unavailable (lowConfidence)" : 77
+          },
+          "pairs" : 204,
+          "prompts" : 18,
+          "referenceSpeakers" : 6
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 15,
+          "direction" : "atMost",
+          "key" : "agreement.npviMaxDelta"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 204,
+        "name" : "nPVI, largest |Δ| (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 34.87819958448145,
+        "worstPhrase" : {
+          "id" : "010",
+          "n" : 1,
+          "value" : 34.87819958448145
+        },
+        "worstSpeaker" : {
+          "id" : "p310",
+          "n" : 1,
+          "value" : 34.87819958448145
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 82,
+          "lostReasons" : {
+            "noUsableReference" : 18,
+            "pitchRange unavailable (lowConfidence)" : 64
+          },
+          "pairs" : 217,
+          "prompts" : 20,
+          "referenceSpeakers" : 5
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.95,
+          "direction" : "atLeast",
+          "key" : "agreement.pitchRangeRatioShareMin"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.7140738597803888,
+            "upper" : 0.8247742380154994
+          },
+          {
+            "label" : "two-way clustered bootstrap (speakers × source prompts), 2000 resamples",
+            "lower" : 0.5942028985507246,
+            "upper" : 0.9034967265402047
+          }
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 217,
+        "name" : "Pitch range ratio at or above minimum (spec 10)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.7741935483870968,
+        "worstPhrase" : {
+          "id" : "008",
+          "n" : 1,
+          "value" : 0
+        },
+        "worstSpeaker" : {
+          "id" : "p271",
+          "n" : 5,
+          "value" : 0.2
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 185,
+          "lostReasons" : {
+            "finalDirection not applicable (modelHasNoFinalVoicing)" : 134,
+            "finalDirection unavailable (lowConfidence)" : 31,
+            "finalDirection unavailable (wordMissing)" : 2,
+            "noUsableReference" : 18
+          },
+          "pairs" : 114,
+          "prompts" : 10,
+          "referenceSpeakers" : 3
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.9,
+          "direction" : "atLeast",
+          "key" : "agreement.finalDirectionAgreementMin"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 114,
+        "name" : "Final direction agreement (spec 10)",
+        "status" : {
+          "notEvaluated" : {
+            "minimum" : 150,
+            "n" : 114
+          }
+        }
+      },
+      {
+        "accounting" : {
+          "lostPairs" : 299,
+          "lostReasons" : {
+            "no verified synthetic reference (spec 22)" : 281,
+            "noUsableReference" : 18
+          },
+          "pairs" : 0,
+          "prompts" : 0,
+          "referenceSpeakers" : 0
+        },
+        "dependsOnPositiveSet" : true,
+        "gate" : {
+          "bound" : 0.02,
+          "direction" : "atMost",
+          "key" : "agreement.placementDiffPairsMax"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 0,
+        "name" : "Positive-set placement false positives (synthetic references) (spec 22)",
+        "status" : {
+          "notEvaluated" : {
+            "minimum" : 150,
+            "n" : 0
+          }
+        }
+      },
+      {
+        "gate" : {
+          "bound" : 0.02,
+          "direction" : "atMost",
+          "key" : "agreement.l2FalsePositiveMax"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.0920028215570915,
+            "upper" : 0.12443291405363627
+          }
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 1400,
+        "name" : "L2 false positives, clean 1,400, after suppression",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.10714285714285714,
+        "worstSpeaker" : {
+          "id" : "3214",
+          "n" : 7,
+          "value" : 0.42857142857142855
+        }
+      },
+      {
+        "gate" : {
+          "bound" : 0.1,
+          "direction" : "atMost",
+          "key" : "agreement.l2FalsePositiveWorstSpeakerMax"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 74,
+        "name" : "L2 false positives, clean 1,400, worst speaker (≥ 10 words)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.2727272727272727,
+        "worstSpeaker" : {
+          "id" : "9612",
+          "n" : 11,
+          "value" : 0.2727272727272727
+        }
+      },
+      {
+        "gate" : {
+          "bound" : 0,
+          "direction" : "atMost",
+          "key" : "agreement.unintelligiblePlacementDiffsMax"
+        },
+        "intervals" : [
+
+        ],
+        "layer" : "shippedConfigCheck",
+        "n" : 157,
+        "name" : "Unintelligible words with a placement diff (count)",
+        "status" : {
+          "pass" : {
+
+          }
+        },
+        "value" : 0
+      },
+      {
+        "gate" : {
+          "bound" : 0.8,
+          "direction" : "atLeast",
+          "key" : "agreement.l2RecallMin"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.016041511340777796,
+            "upper" : 0.08437427748730814
+          }
+        ],
+        "layer" : "cvEstimate",
+        "n" : 134,
+        "name" : "L2 recall, CV estimate, after suppression",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.03731343283582089,
+        "worstSpeaker" : {
+          "id" : "9643",
+          "n" : 10,
+          "value" : 0
+        }
+      },
+      {
+        "gate" : {
+          "bound" : 0.7,
+          "direction" : "atLeast",
+          "key" : "agreement.l2RecallWilsonLowerMin"
+        },
+        "intervals" : [
+          {
+            "label" : "descriptive (ignores clustering)",
+            "lower" : 0.016041511340777796,
+            "upper" : 0.08437427748730814
+          }
+        ],
+        "layer" : "cvEstimate",
+        "n" : 134,
+        "name" : "L2 recall, CV estimate, Wilson lower bound",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : 0.016041511340777796
+      },
+      {
+        "intervals" : [
+          {
+            "label" : "paired speaker-clustered bootstrap, 2000 resamples",
+            "lower" : -0.23685325602140947,
+            "upper" : -0.09588836026576984
+          }
+        ],
+        "layer" : "cvEstimate",
+        "n" : 134,
+        "name" : "L2 recall, CV estimate, §6.5 baseline rule (best of B1, B2)",
+        "status" : {
+          "fail" : {
+
+          }
+        },
+        "value" : -0.15671641791044777
+      }
+    ],
+    "negativeSet" : {
+      "fail" : {
+
+      }
+    },
+    "positiveSet" : {
+      "evaluable" : {
+
+      }
+    }
+  },
+  "summaryLines" : [
+    "Negative set: FAIL (5 of 6 rows not PASS)",
+    "Positive set: FAIL (14 of 14 rows not PASS)",
+    "Spec 11 guard: NOT MET (FALLBACK)",
+    "Release gate: NOT MET"
+  ]
+}
