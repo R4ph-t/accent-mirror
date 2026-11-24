@@ -1,9 +1,11 @@
 import SwiftUI
 
-/// Card 1, "WHAT TO CHANGE" or "YOUR TAKE" (§3: 16 title + 16 + 4 + 40 per row + 4; §10 rows).
+/// Card 1, always "YOUR TAKE" (v3 §3.1: 16 title + 16 + 4 + 40 per row + 4), with at most one quiet line.
 struct CardOneView: View {
     @Environment(\.palette) private var palette
     var card: CardPresentation
+    /// Play Both (⌥⌘L): the model, 0.4 s, then your take.
+    var playBoth: () -> Void = {}
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -16,11 +18,10 @@ struct CardOneView: View {
                 if index > 0 {
                     Hairline()
                         .padding(.leading, 24)
-                        .padding(.trailing, row.trailing == .play ? 36 : 0)
                 }
-                CardRowView(row: row)
+                CardRowView(row: row, playBoth: playBoth)
             }
-            ForEach(Array(card.infoLines.enumerated()), id: \.offset) { _, line in
+            if let line = card.quietLine {
                 InfoLine(sentence: line)
             }
         }
@@ -35,14 +36,20 @@ struct CardOneView: View {
 private struct CardRowView: View {
     @Environment(\.palette) private var palette
     var row: CardRow
+    var playBoth: () -> Void
 
     var body: some View {
         HStack(spacing: 8) {
             Group {
-                if let icon = row.icon {
-                    Image(systemName: icon)
+                switch row.icon {
+                case .symbol(let name):
+                    Image(systemName: name)
                         .font(.system(size: 14, weight: .regular))
-                        .foregroundStyle(row.iconIsMistake ? palette.mistake : palette.textSecondary)
+                        .foregroundStyle(palette.textSecondary)
+                case .overlay:
+                    OverlayGlyph()
+                case nil:
+                    EmptyView()
                 }
             }
             .frame(width: 16, height: 16)
@@ -55,16 +62,22 @@ private struct CardRowView: View {
             switch row.trailing {
             case .none:
                 EmptyView()
-            case .play:
-                // Plays the model then you for that word; visual only in this shell.
-                FocusRingButton(cornerRadius: Metrics.controlRadius, action: {}) { _ in
-                    Image(systemName: "play.fill")
-                        .font(.system(size: 10))
-                        .foregroundStyle(palette.textSecondary)
-                        .frame(width: Metrics.controlHeight, height: Metrics.controlHeight)
-                        .surface(palette.surfaceWell, cornerRadius: Metrics.controlRadius)
+            case .playBoth:
+                // The ghost button: surface.well, 28 tall, radius 6, play glyph (v3 §3.1).
+                FocusRingButton(cornerRadius: Metrics.controlRadius, action: playBoth) { _ in
+                    HStack(spacing: 6) {
+                        Image(systemName: "play.fill")
+                            .font(.system(size: 10))
+                        Text(Copy.playBoth)
+                            .typeRole(.body)
+                    }
+                    .foregroundStyle(palette.textPrimary)
+                    .padding(.horizontal, 12)
+                    .frame(height: Metrics.controlHeight)
+                    .surface(palette.surfaceWell, cornerRadius: Metrics.controlRadius)
                 }
-                .accessibilityLabel("Play the model, then you")
+                .help(Copy.playBothTooltip)
+                .accessibilityHint(Copy.playBothTooltip)
             case .button(let title):
                 FocusRingButton(cornerRadius: Metrics.controlRadius, action: {}) { _ in
                     Text(title)
@@ -98,8 +111,33 @@ private struct InfoLine: View {
     }
 }
 
-/// A sentence whose runs carry their own roles: stressed caps in lime.text, the wrong syllable in mistake
-/// blue, heard words in italics.
+/// The result row's 16 pt overlay icon: two waves in text.secondary, one soft (wide, faint) and one thin.
+private struct OverlayGlyph: View {
+    @Environment(\.palette) private var palette
+
+    var body: some View {
+        Canvas { context, size in
+            func wave(phase: CGFloat) -> Path {
+                var path = Path()
+                let midY = size.height / 2
+                for step in 0...32 {
+                    let x = CGFloat(step) / 32 * size.width
+                    let y = midY + sin((x / size.width) * 2 * .pi + phase) * size.height * 0.2
+                    if step == 0 { path.move(to: CGPoint(x: x, y: y)) } else { path.addLine(to: CGPoint(x: x, y: y)) }
+                }
+                return path
+            }
+            let style = StrokeStyle(lineCap: .round)
+            var soft = style; soft.lineWidth = 2.5
+            var thin = style; thin.lineWidth = 1
+            context.stroke(wave(phase: 0.5), with: .color(palette.textSecondary.opacity(0.4)), style: soft)
+            context.stroke(wave(phase: 0), with: .color(palette.textSecondary), style: thin)
+        }
+        .frame(width: 16, height: 16)
+    }
+}
+
+/// A sentence whose runs carry their own roles: heard words in italics.
 struct SentenceText: View {
     @Environment(\.palette) private var palette
     var sentence: Sentence
@@ -116,12 +154,6 @@ struct SentenceText: View {
             switch segment.role {
             case .plain:
                 run.font = role.font
-            case .stressed:
-                run.font = TypeRole.bodyBold.fontSized(role.size)
-                run.foregroundColor = palette.limeText
-            case .mistake:
-                run.font = TypeRole.bodyBold.fontSized(role.size)
-                run.foregroundColor = palette.mistake
             case .heard:
                 run.font = role.italicFont
             }

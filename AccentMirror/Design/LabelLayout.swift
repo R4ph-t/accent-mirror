@@ -6,7 +6,7 @@ import Foundation
 ///
 /// Rules:
 /// - Neighbouring labels that show keep at least `minimumGap` (4 pt) between their edges.
-/// - `.always` labels (stressed syllables, the mistake marker, target words) always show, even if two of them
+/// - `.always` labels (dictionary-stressed native syllables, target words) always show, even if two of them
 ///   would touch.
 /// - Otherwise `.high` labels (heard and missing words) are placed before `.low` ones (unstressed syllables,
 ///   non-target words), and within a priority left to right: a label shows
@@ -16,7 +16,7 @@ enum LabelLayout {
     static let minimumGap: Double = 4
 
     enum Priority: Int, Sendable, CaseIterable {
-        /// Stressed syllables, the mistake marker, target words.
+        /// Dictionary-stressed native syllables (bold caps), target words.
         case always
         /// Heard words and missing-word labels: hidden only after every `.low` label that would collide.
         case high
@@ -48,19 +48,17 @@ enum LabelLayout {
         return shown
     }
 
-    /// A strip syllable label's priority (Addendum r4 C6): stressed (bold caps or a measured-stressed bar) and the
-    /// mistake marker always show; heard words (a substitution in quotes, "+ so") give way after unstressed
-    /// syllables; unstressed syllables give way first.
-    static func syllablePriority(_ style: ClusterLabel.Style, stressedBar: Bool) -> Priority {
-        if stressedBar { return .always }
+    /// A strip syllable label's priority (Addendum r4 C6, v3.1): the dotted bold caps always show; heard words (a
+    /// substitution in quotes, "+ so") give way after plain syllables; plain syllables (yours included) give way first.
+    static func syllablePriority(_ style: ClusterLabel.Style) -> Priority {
         switch style {
-        case .caps, .mistake: return .always
-        case .heard: return .high
-        case .lower: return .low
+        case .caps: .always
+        case .heard: .high
+        case .lower, .yours: .low
         }
     }
 
-    /// A missing word's struck-through label gives way after unstressed syllables, like a heard word.
+    /// A missing word's label gives way after unstressed syllables, like a heard word.
     static let missingWordPriority = Priority.high
 
     /// A pitch word label: target words always show, the others give way first.

@@ -1,5 +1,5 @@
 {
-  "id": "photography-harder-anomaly",
+  "id": "photography-looks-short",
   "text": "Photography is harder than it looks.",
   "subtitle": "My Phrases · From demo-talk.m4a",
   "rangeSemitones": 12,
@@ -14,34 +14,32 @@
           "text": "pho",
           "start": 0.003,
           "end": 0.07,
-          "prominence": 0.22,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.22
         },
         {
           "text": "tog",
           "start": 0.076,
           "end": 0.232,
-          "prominence": 1.0,
-          "stressed": true,
-          "label": "caps"
+          "prominence": 1.0
         },
         {
           "text": "ra",
           "start": 0.237,
           "end": 0.29,
-          "prominence": 0.2,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.2
         },
         {
           "text": "phy",
           "start": 0.296,
           "end": 0.379,
-          "prominence": 0.25,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.25
         }
+      ],
+      "expectedStress": [
+        "unstressed",
+        "primary",
+        "unstressed",
+        "unstressed"
       ]
     },
     {
@@ -54,15 +52,16 @@
           "text": "is",
           "start": 0.385,
           "end": 0.444,
-          "prominence": 0.22,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.22
         }
+      ],
+      "expectedStress": [
+        "unstressed"
       ]
     },
     {
       "text": "harder",
-      "stressCheck": "referenceAnomaly",
+      "stressCheck": "checked",
       "start": 0.451,
       "end": 0.665,
       "syllables": [
@@ -70,18 +69,18 @@
           "text": "har",
           "start": 0.451,
           "end": 0.593,
-          "prominence": 0.9,
-          "stressed": true,
-          "label": "caps"
+          "prominence": 0.9
         },
         {
           "text": "der",
           "start": 0.598,
           "end": 0.665,
-          "prominence": 0.2,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.2
         }
+      ],
+      "expectedStress": [
+        "primary",
+        "unstressed"
       ]
     },
     {
@@ -94,10 +93,11 @@
           "text": "than",
           "start": 0.671,
           "end": 0.715,
-          "prominence": 0.18,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.18
         }
+      ],
+      "expectedStress": [
+        "unstressed"
       ]
     },
     {
@@ -110,10 +110,11 @@
           "text": "it",
           "start": 0.722,
           "end": 0.76,
-          "prominence": 0.15,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.15
         }
+      ],
+      "expectedStress": [
+        "unstressed"
       ]
     },
     {
@@ -126,10 +127,11 @@
           "text": "looks",
           "start": 0.767,
           "end": 0.996,
-          "prominence": 1.0,
-          "stressed": true,
-          "label": "caps"
+          "prominence": 0.2
         }
+      ],
+      "expectedStress": [
+        "primary"
       ]
     }
   ],

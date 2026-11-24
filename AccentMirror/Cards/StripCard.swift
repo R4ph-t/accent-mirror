@@ -1,10 +1,20 @@
 import SwiftUI
 
-/// "STRESS AND RHYTHM" (§8): NATIVE above, YOU below, mirrored waveform bars per syllable on each speaker's own
-/// timeline. 216 pt tall: 16 + 16 title + 8 + (56 row + 24 labels) + 4 + (56 + 24) + 12.
+/// "STRESS AND RHYTHM" (§8, v3 §3.2, v3.1 V1–V3): NATIVE above, YOU below, mirrored waveform bars per syllable on
+/// each speaker's own timeline, all in strip.bar. The native row's dictionary-stressed syllables get bold caps and a
+/// Lime dot; your labels are plain. Timing connectors join each native syllable to yours. 216 pt tall:
+/// 16 + 16 title + 8 + (56 row + 24 labels) + 4 + (56 + 24) + 12.
 struct StripCard: View {
     @Environment(\.palette) private var palette
     var strip: StripPresentation
+    /// The playhead while something plays (Play Model, Play You, Play Both).
+    var playhead: PlaybackSchedule.Phase? = nil
+    /// Clicking a missing word plays the model only.
+    var playModel: () -> Void = {}
+    /// Clicking a label loops that word (v3 §3.5) until Esc.
+    var loop: (Int) -> Void = { _ in }
+    /// The word being looped, for the caption.
+    var loopingWord: String? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -13,9 +23,15 @@ struct StripCard: View {
                     .typeRole(.mono)
                     .foregroundStyle(palette.textSecondary)
                 Spacer()
+                if let loopingWord {
+                    Text(Copy.looping(loopingWord))
+                        .typeRole(.small)
+                        .foregroundStyle(palette.textPrimary)
+                        .padding(.trailing, 16)
+                }
                 HStack(spacing: 6) {
-                    LimeBarsGlyph(heights: LimeBarsGlyph.legendHeights, barWidth: 2, pitch: 3.5)
-                    Text("Stressed")
+                    StressDot()
+                    Text(Copy.dictionaryStress)
                         .typeRole(.small)
                         .foregroundStyle(palette.textSecondary)
                 }
@@ -24,14 +40,22 @@ struct StripCard: View {
             .frame(height: 16)
             .padding(.bottom, 8)
 
-            StripRow(label: "NATIVE") {
-                BarsCanvas(clusters: strip.native, rowHeight: 56)
-            } labels: {
-                ClusterLabels(clusters: strip.native, slots: [])
-            }
-            .padding(.bottom, 4)
+            VStack(alignment: .leading, spacing: 0) {
+                StripRow(label: "NATIVE") {
+                    ZStack {
+                        BarsCanvas(clusters: strip.native, rowHeight: 56)
+                        Playhead(progress: progress(.model))
+                    }
+                } labels: {
+                    ClusterLabels(clusters: strip.native, slots: [], playModel: playModel, loop: loop)
+                }
+                .padding(.bottom, StripGeometry.rowGap)
 
-            StripRow(label: "YOU") { youRow } labels: { youLabels }
+                StripRow(label: "YOU") { youRow } labels: { youLabels }
+            }
+            .overlay(alignment: .topLeading) {
+                Connectors(connectors: strip.connectors)
+            }
         }
         .padding(.horizontal, Metrics.outer)
         .padding(.top, Metrics.outer)
@@ -39,6 +63,11 @@ struct StripCard: View {
         .frame(height: 216, alignment: .top)
         .frame(maxWidth: .infinity)
         .surface(palette.surfaceCard, cornerRadius: Metrics.cardRadius)
+    }
+
+    private func progress(_ side: PlaybackSchedule.Side) -> Double? {
+        if case .playing(side, let progress) = playhead { return progress }
+        return nil
     }
 
     @ViewBuilder private var youRow: some View {
@@ -58,7 +87,8 @@ struct StripCard: View {
         case .bars(let clusters, let slots, _):
             ZStack {
                 BarsCanvas(clusters: clusters, rowHeight: 56)
-                MissingSlots(slots: slots)
+                MissingSlots(slots: slots, playModel: playModel)
+                Playhead(progress: progress(.you))
             }
         }
     }
@@ -66,10 +96,86 @@ struct StripCard: View {
     @ViewBuilder private var youLabels: some View {
         switch strip.you {
         case .bars(let clusters, let slots, let showsLabels) where showsLabels:
-            ClusterLabels(clusters: clusters, slots: slots)
+            ClusterLabels(clusters: clusters, slots: slots, playModel: playModel, loop: loop)
         default:
             Color.clear
         }
+    }
+}
+
+/// Vertical positions inside the two rows (v3.1 V2), from the top of the NATIVE row.
+enum StripGeometry {
+    static let rowHeight: CGFloat = 56
+    static let labelRowHeight: CGFloat = 24
+    static let rowGap: CGFloat = 4
+    /// The 16 pt label box is centred in the 24 pt label row.
+    static let labelTop: CGFloat = rowHeight + (labelRowHeight - 16) / 2
+    /// The dot's centre is 19 pt below the label's top (3 pt under the 16 pt box).
+    static let dotCentre: CGFloat = 19
+    static let dotDiameter: CGFloat = 4
+    /// A connector starts 17 pt below the label's top, or 23 (4 pt below the dot) under a dotted label.
+    static let connectorStart: CGFloat = 17
+    static let connectorStartUnderDot: CGFloat = 23
+    /// …and ends just inside the top of your row.
+    static let youRowTop: CGFloat = rowHeight + labelRowHeight + rowGap
+    static let connectorEndInset: CGFloat = 6
+}
+
+/// The 4 pt Lime dictionary-stress dot (v3.1 V2), also the legend's glyph.
+struct StressDot: View {
+    @Environment(\.palette) private var palette
+
+    var body: some View {
+        Circle()
+            .fill(palette.lime1)
+            .frame(width: StripGeometry.dotDiameter, height: StripGeometry.dotDiameter)
+            .accessibilityHidden(true)
+    }
+}
+
+/// 1 pt lines in text.tertiary at 50% (100% with Increase Contrast) from each native syllable to your matching one.
+private struct Connectors: View {
+    @Environment(\.palette) private var palette
+    @Environment(\.colorSchemeContrast) private var contrast
+    var connectors: [TimingConnector]
+
+    var body: some View {
+        GeometryReader { proxy in
+            let plotWidth = proxy.size.width - Metrics.rowLabelWidth - Metrics.inner - Metrics.endLabelWidth
+            Canvas { context, _ in
+                var path = Path()
+                for connector in connectors {
+                    let start = StripGeometry.labelTop
+                        + (connector.fromDot ? StripGeometry.connectorStartUnderDot : StripGeometry.connectorStart)
+                    let end = StripGeometry.youRowTop + StripGeometry.connectorEndInset
+                    path.move(to: CGPoint(x: Metrics.rowLabelWidth + CGFloat(connector.native) * plotWidth, y: start))
+                    path.addLine(to: CGPoint(x: Metrics.rowLabelWidth + CGFloat(connector.you) * plotWidth, y: end))
+                }
+                context.stroke(path, with: .color(palette.textTertiary.opacity(contrast == .increased ? 1 : 0.5)),
+                               lineWidth: 1)
+            }
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+}
+
+/// The 2 pt playhead on the row that is playing, in text.primary (Lime is kept for recording, A3).
+private struct Playhead: View {
+    @Environment(\.palette) private var palette
+    var progress: Double?
+
+    var body: some View {
+        GeometryReader { proxy in
+            if let progress {
+                Rectangle()
+                    .fill(palette.textPrimary)
+                    .frame(width: 2, height: proxy.size.height + 4)
+                    .offset(x: CGFloat(progress) * proxy.size.width - 1, y: -2)
+            }
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 }
 
@@ -137,18 +243,8 @@ struct BarsCanvas: View {
                 for bar in clusterBars(cluster, width: size.width, maxHeight: rowHeight - 4)
                 where bar.x < CGFloat(clipAt) * size.width {
                     let rect = CGRect(x: bar.x, y: midY - bar.height / 2, width: 1.5, height: bar.height)
-                    let path = Path(roundedRect: rect, cornerRadius: 0.75)
-                    switch cluster.fill {
-                    case .stressed:
-                        context.fill(path, with: .linearGradient(
-                            Gradient(colors: [palette.lime2, palette.lime1, palette.lime2]),
-                            startPoint: CGPoint(x: 0, y: rect.minY), endPoint: CGPoint(x: 0, y: rect.maxY)
-                        ))
-                    case .neutral:
-                        context.fill(path, with: .color(palette.stripBar))
-                    case .yours:
-                        context.fill(path, with: .color(palette.stripBarYou))
-                    }
+                    // Every bar is strip.bar at the recording's own envelope: no Lime, no stress scaling (v3.1 V1).
+                    context.fill(Path(roundedRect: rect, cornerRadius: 0.75), with: .color(palette.stripBar))
                 }
             }
         }
@@ -240,6 +336,7 @@ private struct TakeProblemRow: View {
 private struct MissingSlots: View {
     @Environment(\.palette) private var palette
     var slots: [MissingSlot]
+    var playModel: () -> Void
 
     var body: some View {
         GeometryReader { proxy in
@@ -248,6 +345,8 @@ private struct MissingSlots: View {
                 RoundedRectangle(cornerRadius: Metrics.markRadius, style: .continuous)
                     .strokeBorder(palette.textTertiary, style: StrokeStyle(lineWidth: 1, dash: [3, 2]))
                     .frame(width: 24, height: 28)
+                    .contentShape(Rectangle())
+                    .onTapGesture(perform: playModel)
                     .position(x: CGFloat(slot.position) * proxy.size.width, y: proxy.size.height / 2)
                     .help(Copy.missingTooltip)
             }
@@ -257,17 +356,19 @@ private struct MissingSlots: View {
 
 // MARK: - Labels
 
-/// One row's labels: a syllable label centred under each cluster, and the struck-through expected word over each
-/// missing slot. When they don't all fit with 4 pt between them, `LabelLayout` hides unstressed syllables first;
-/// stressed syllables and the mistake marker always show. A hidden label keeps a tooltip over its syllable, and the
+/// One row's labels: a syllable label centred under each cluster (with the Lime dot under a dotted native label), and
+/// the expected word, tertiary and never struck through, over each missing slot. When they don't all fit with 4 pt
+/// between them, `LabelLayout` hides plain syllables first; dotted caps always show. A hidden label keeps a tooltip over its syllable, and the
 /// row's accessibility label reads every label (fixes round 5).
 private struct ClusterLabels: View {
     @Environment(\.palette) private var palette
     var clusters: [StripCluster]
     var slots: [MissingSlot]
+    var playModel: () -> Void
+    var loop: (Int) -> Void
 
     private enum Content {
-        case syllable(ClusterLabel, tooltip: String?)
+        case syllable(ClusterLabel, tooltip: String?, word: Int?)
         case missing(String)
     }
 
@@ -280,6 +381,7 @@ private struct ClusterLabels: View {
         var priority: LabelLayout.Priority
         var spoken: String
         var tooltip: String
+        var dot: Bool = false
     }
 
     var body: some View {
@@ -291,6 +393,9 @@ private struct ClusterLabels: View {
             ForEach(Array(entries.enumerated()), id: \.offset) { index, entry in
                 if shown[index] {
                     label(entry).position(x: entry.center, y: proxy.size.height / 2)
+                    if entry.dot {
+                        StressDot().position(x: entry.center, y: (proxy.size.height - 16) / 2 + StripGeometry.dotCentre)
+                    }
                 } else {
                     Color.clear
                         .frame(width: max(8, min(entry.width, entry.span)), height: proxy.size.height)
@@ -306,18 +411,19 @@ private struct ClusterLabels: View {
 
     @ViewBuilder private func label(_ entry: Entry) -> some View {
         switch entry.content {
-        case .syllable(let label, let tooltip):
+        case .syllable(let label, let tooltip, let word):
             LabelView(label: label)
                 .fixedSize()
                 .help(tooltip ?? "")
+                .onTapGesture { if let word { loop(word) } }
         case .missing(let expected):
-            // The expected word, struck through, in tertiary: only for missing words.
+            // The expected word in tertiary, no strike-through (v3 §3.4). Clicking it plays the model only.
             Text(expected)
                 .typeRole(.small)
-                .strikethrough(true, color: palette.textTertiary)
                 .foregroundStyle(palette.textTertiary)
                 .fixedSize()
                 .help(Copy.missingTooltip)
+                .onTapGesture(perform: playModel)
         }
     }
 
@@ -326,13 +432,14 @@ private struct ClusterLabels: View {
         let syllables: [Entry] = clusters.compactMap { cluster in
             guard let label = cluster.label else { return nil }
             return Entry(
-                content: .syllable(label, tooltip: cluster.tooltip),
+                content: .syllable(label, tooltip: cluster.tooltip, word: cluster.word),
                 center: CGFloat((cluster.start + cluster.end) / 2) * width,
                 span: CGFloat(cluster.end - cluster.start) * width,
                 width: LabelView.width(label),
-                priority: LabelLayout.syllablePriority(label.style, stressedBar: cluster.fill == .stressed),
-                spoken: label.style == .mistake ? Copy.mistakeLabelAccessibility(label.text) : label.text,
-                tooltip: Copy.hiddenLabelTooltip(label.text, note: cluster.tooltip)
+                priority: LabelLayout.syllablePriority(label.style),
+                spoken: cluster.dot ? Copy.dictionaryStressLabel(label.text) : label.text,
+                tooltip: Copy.hiddenLabelTooltip(label.text, note: cluster.tooltip),
+                dot: cluster.dot
             )
         }
         let missing: [Entry] = slots.map { slot in
@@ -364,51 +471,23 @@ private struct LabelView: View {
             Text(label.text)
                 .typeRole(.small)
                 .foregroundStyle(palette.textSecondary)
+        case .yours:
+            Text(label.text)
+                .typeRole(.small)
+                .foregroundStyle(palette.textTertiary)
         case .heard:
             Text(label.text)
                 .typeRole(.small, italic: true)
                 .foregroundStyle(palette.textSecondary)
-        case .mistake:
-            // Always three cues together: blue, a filled triangle, a 2 pt dotted underline 3 pt below (§4.3).
-            HStack(spacing: 4) {
-                Image(systemName: "triangle.fill")
-                    .font(.system(size: 8, weight: .bold))
-                Text(label.text)
-                    .typeRole(.smallBold)
-                    .overlay(alignment: .bottom) {
-                        DottedUnderline()
-                            .frame(height: 2)
-                            .offset(y: 5)
-                    }
-            }
-            .foregroundStyle(palette.mistake)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(Copy.mistakeLabelAccessibility(label.text))
         }
     }
 
-    /// The label's drawn width, for `LabelLayout`: the mistake marker adds its 8 pt triangle and 4 pt spacing.
+    /// The label's drawn width, for `LabelLayout`.
     static func width(_ label: ClusterLabel) -> CGFloat {
         switch label.style {
         case .caps: TextMeasure.width(label.text, role: .smallBold)
-        case .lower: TextMeasure.width(label.text, role: .small)
+        case .lower, .yours: TextMeasure.width(label.text, role: .small)
         case .heard: TextMeasure.width(label.text, role: .small, italic: true)
-        case .mistake: TextMeasure.width(label.text, role: .smallBold) + mistakeGlyphWidth + 4
-        }
-    }
-
-    /// The bold 8 pt `triangle.fill` symbol is about 9 pt wide.
-    static let mistakeGlyphWidth: CGFloat = 9
-}
-
-private struct DottedUnderline: View {
-    var body: some View {
-        Canvas { context, size in
-            var x: CGFloat = 0
-            while x < size.width {
-                context.fill(Path(ellipseIn: CGRect(x: x, y: 0, width: 2, height: 2)), with: .foreground)
-                x += 3.5
-            }
         }
     }
 }

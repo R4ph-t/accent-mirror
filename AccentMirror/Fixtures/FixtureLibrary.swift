@@ -5,6 +5,8 @@ struct LoadedFixture: Sendable {
     var fixture: UIFixture
     var phrase: PhraseFixture
     var take: TakeFixture?
+    /// `fixture.earlierTakes`, resolved, newest first.
+    var earlierTakes: [TakeFixture] = []
 }
 
 /// Loads the committed JSON fixtures from the app bundle (`Contents/Resources/Fixtures/`). Bundle only:
@@ -39,7 +41,8 @@ struct FixtureLibrary: Sendable {
         guard fixture.name == name else { throw FixtureError.nameMismatch(file: name, declared: fixture.name) }
         let phrase: PhraseFixture = try decode("phrases", fixture.phrase)
         let take: TakeFixture? = try fixture.take.map { try decode("takes", $0) }
-        return LoadedFixture(fixture: fixture, phrase: phrase, take: take)
+        let earlier: [TakeFixture] = try (fixture.earlierTakes ?? []).map { try decode("takes", $0) }
+        return LoadedFixture(fixture: fixture, phrase: phrase, take: take, earlierTakes: earlier)
     }
 
     private func decode<T: Decodable>(_ folder: String, _ name: String) throws -> T {

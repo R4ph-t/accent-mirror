@@ -15,33 +15,25 @@
           "text": "pho",
           "start": 0.003,
           "end": 0.11,
-          "prominence": 0.95,
-          "stressed": true,
-          "label": "mistake"
+          "prominence": 0.95
         },
         {
           "text": "tog",
           "start": 0.116,
           "end": 0.2,
-          "prominence": 0.55,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.55
         },
         {
           "text": "ra",
           "start": 0.205,
           "end": 0.282,
-          "prominence": 0.5,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.5
         },
         {
           "text": "phy",
           "start": 0.286,
           "end": 0.365,
-          "prominence": 0.5,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.5
         }
       ]
     },
@@ -55,9 +47,7 @@
           "text": "is",
           "start": 0.371,
           "end": 0.431,
-          "prominence": 0.45,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.45
         }
       ]
     },
@@ -69,9 +59,7 @@
           "text": "so",
           "start": 0.438,
           "end": 0.5,
-          "prominence": 0.45,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.45
         }
       ]
     },
@@ -85,17 +73,13 @@
           "text": "har",
           "start": 0.507,
           "end": 0.603,
-          "prominence": 0.85,
-          "stressed": true,
-          "label": "caps"
+          "prominence": 0.85
         },
         {
           "text": "der",
           "start": 0.608,
           "end": 0.688,
-          "prominence": 0.5,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.5
         }
       ]
     },
@@ -109,9 +93,7 @@
           "text": "than",
           "start": 0.695,
           "end": 0.762,
-          "prominence": 0.45,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.45
         }
       ]
     },
@@ -125,9 +107,7 @@
           "text": "it",
           "start": 0.769,
           "end": 0.832,
-          "prominence": 0.4,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.4
         }
       ]
     },
@@ -141,9 +121,7 @@
           "text": "looks",
           "start": 0.839,
           "end": 0.995,
-          "prominence": 0.75,
-          "stressed": true,
-          "label": "caps"
+          "prominence": 0.75
         }
       ]
     }

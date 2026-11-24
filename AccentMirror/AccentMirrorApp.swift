@@ -45,6 +45,25 @@ struct AccentMirrorApp: App {
                     model.sidebarVisible.toggle()
                 }
                 .keyboardShortcut("s", modifiers: [.control, .command])
+                // ⇧⌘G (v3 §3.3): on by default, remembered.
+                Toggle(Copy.showEarlierTakes, isOn: Binding(
+                    get: { model.showEarlierTakes },
+                    set: { _ in model.toggleEarlierTakes() }
+                ))
+                .keyboardShortcut("g", modifiers: [.shift, .command])
+            }
+            CommandMenu(Copy.takeMenu) {
+                Button(Copy.playModel) { model.playModel() }
+                    .keyboardShortcut("l", modifiers: [.command])
+                Button(Copy.playYou) { model.playYou() }
+                    .keyboardShortcut("l", modifiers: [.shift, .command])
+                Button(Copy.playModelThenYou) { model.playBoth() }
+                    .keyboardShortcut("l", modifiers: [.option, .command])
+                    .disabled(!model.canPlay)
+                Divider()
+                Button(Copy.stopPlaying) { model.stopPlaying() }
+                    .keyboardShortcut(.escape, modifiers: [])
+                    .disabled(model.playback == nil)
             }
             SamplesCommands(model: model, library: library, names: sampleNames)
         }

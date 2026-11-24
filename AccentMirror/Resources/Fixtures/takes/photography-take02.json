@@ -1,6 +1,6 @@
 {
-  "id": "photography-take04-insertion",
-  "number": 4,
+  "id": "photography-take02",
+  "number": 2,
   "hasAudio": true,
   "alignment": "aligned",
   "level": "normal",
@@ -14,34 +14,26 @@
         {
           "text": "pho",
           "start": 0.003,
-          "end": 0.11,
-          "prominence": 0.35,
-          "stressed": false,
-          "label": "lower"
+          "end": 0.121,
+          "prominence": 0.95
         },
         {
           "text": "tog",
-          "start": 0.116,
-          "end": 0.2,
-          "prominence": 1.0,
-          "stressed": true,
-          "label": "caps"
+          "start": 0.128,
+          "end": 0.222,
+          "prominence": 0.55
         },
         {
           "text": "ra",
-          "start": 0.205,
-          "end": 0.282,
-          "prominence": 0.35,
-          "stressed": false,
-          "label": "lower"
+          "start": 0.227,
+          "end": 0.312,
+          "prominence": 0.5
         },
         {
           "text": "phy",
-          "start": 0.286,
-          "end": 0.365,
-          "prominence": 0.38,
-          "stressed": false,
-          "label": "lower"
+          "start": 0.316,
+          "end": 0.403,
+          "prominence": 0.5
         }
       ]
     },
@@ -53,25 +45,9 @@
       "syllables": [
         {
           "text": "is",
-          "start": 0.371,
-          "end": 0.431,
-          "prominence": 0.32,
-          "stressed": false,
-          "label": "lower"
-        }
-      ]
-    },
-    {
-      "kind": "inserted",
-      "heard": "so",
-      "syllables": [
-        {
-          "text": "so",
-          "start": 0.438,
-          "end": 0.5,
-          "prominence": 0.45,
-          "stressed": false,
-          "label": "lower"
+          "start": 0.411,
+          "end": 0.479,
+          "prominence": 0.45
         }
       ]
     },
@@ -83,19 +59,15 @@
       "syllables": [
         {
           "text": "har",
-          "start": 0.507,
-          "end": 0.603,
-          "prominence": 0.9,
-          "stressed": true,
-          "label": "caps"
+          "start": 0.486,
+          "end": 0.593,
+          "prominence": 0.85
         },
         {
           "text": "der",
-          "start": 0.608,
-          "end": 0.688,
-          "prominence": 0.3,
-          "stressed": false,
-          "label": "lower"
+          "start": 0.599,
+          "end": 0.687,
+          "prominence": 0.5
         }
       ]
     },
@@ -109,9 +81,7 @@
           "text": "than",
           "start": 0.695,
           "end": 0.762,
-          "prominence": 0.3,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.45
         }
       ]
     },
@@ -125,9 +95,7 @@
           "text": "it",
           "start": 0.769,
           "end": 0.832,
-          "prominence": 0.26,
-          "stressed": false,
-          "label": "lower"
+          "prominence": 0.4
         }
       ]
     },
@@ -141,9 +109,7 @@
           "text": "looks",
           "start": 0.839,
           "end": 0.995,
-          "prominence": 0.95,
-          "stressed": true,
-          "label": "caps"
+          "prominence": 0.75
         }
       ]
     }
@@ -153,59 +119,55 @@
       "points": [
         {
           "t": 0.014,
-          "st": 0.3
+          "st": -0.19
         },
         {
           "t": 0.053,
-          "st": 3.7
+          "st": 2.19
         },
         {
           "t": 0.146,
-          "st": 2.1
+          "st": 1.07
         },
         {
           "t": 0.224,
-          "st": 1.6
+          "st": 0.72
         },
         {
           "t": 0.323,
-          "st": 0.4
+          "st": -0.12
         },
         {
           "t": 0.395,
-          "st": -1.1
-        }
-      ]
-    },
-    {
-      "points": [
+          "st": -1.17
+        },
         {
           "t": 0.454,
-          "st": 0.4
+          "st": -0.12
         },
         {
           "t": 0.526,
-          "st": 2.7
+          "st": 1.49
         },
         {
           "t": 0.591,
-          "st": 1.6
+          "st": 0.72
         },
         {
           "t": 0.683,
-          "st": -0.8
+          "st": -0.96
         },
         {
           "t": 0.749,
-          "st": -1.0
+          "st": -1.1
         },
         {
           "t": 0.847,
-          "st": -0.8
+          "st": -0.96
         },
         {
           "t": 0.986,
-          "st": 0.9
+          "st": 0.23
         }
       ]
     }

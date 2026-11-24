@@ -1,7 +1,8 @@
 import SwiftUI
 
-/// "PITCH" (§9): model time on x, semitones re your median on y. Native band as a soft ribbon (at least 7 pt),
-/// your line 2 pt, bridged frames lighter and thinner, breaks only where the fixture's segments break. The pitch
+/// "PITCH" (§9, v3 §3.3, v3.1 V4–V5): model time on x, semitones re your median on y. Native band as a soft ribbon
+/// (at least 7 pt, display-only), your line 2 pt in one colour, bridged frames lighter and thinner, breaks only where
+/// the fixture's segments break, earlier takes as faint 1 pt lines behind. The baseline is a plain hairline. The pitch
 /// card takes whatever height is left.
 struct PitchCard: View {
     @Environment(\.palette) private var palette
@@ -9,11 +10,15 @@ struct PitchCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("PITCH")
-                .typeRole(.mono)
-                .foregroundStyle(palette.textSecondary)
-                .frame(height: 16)
-                .padding(.bottom, 8)
+            HStack {
+                Text("PITCH")
+                    .typeRole(.mono)
+                    .foregroundStyle(palette.textSecondary)
+                Spacer()
+                PitchLegend(showsEarlier: !pitch.earlier.isEmpty)
+            }
+            .frame(height: 16)
+            .padding(.bottom, 8)
             GeometryReader { proxy in
                 PitchPlot(pitch: pitch, size: proxy.size)
             }
@@ -38,6 +43,39 @@ struct PitchCard: View {
                     ))
             }
         }
+    }
+}
+
+/// Words beside the chart instead of axes (v3 §3.3): a 2 pt line "You", a soft ribbon "Native range" and a faint 1 pt
+/// line "Earlier takes". Told apart by words and thickness, not colour.
+private struct PitchLegend: View {
+    @Environment(\.palette) private var palette
+    var showsEarlier: Bool
+
+    var body: some View {
+        HStack(spacing: 14) {
+            item(Copy.legendYou) {
+                Capsule().fill(palette.pitchYou).frame(width: 14, height: 2)
+            }
+            item(Copy.legendNativeRange) {
+                Capsule().fill(palette.pitchNative).frame(width: 14, height: 6)
+            }
+            if showsEarlier {
+                item(Copy.legendEarlierTakes) {
+                    Rectangle().fill(palette.pitchYou.opacity(EarlierTakes.opacities[0])).frame(width: 14, height: 1)
+                }
+            }
+        }
+        .typeRole(.small)
+        .foregroundStyle(palette.textSecondary)
+    }
+
+    private func item(_ text: String, @ViewBuilder glyph: () -> some View) -> some View {
+        HStack(spacing: 6) {
+            glyph().accessibilityHidden(true)
+            Text(text)
+        }
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -124,10 +162,10 @@ private struct PitchPlot: View {
 
             let ends = endLabelPositions(frame: frame)
             if let y = ends.native {
-                endLabel("NATIVE", color: palette.textSecondary, frame: frame, y: y)
+                endLabel(Copy.endLabelNative, color: palette.textSecondary, frame: frame, y: y)
             }
             if let y = ends.you {
-                endLabel("YOU", color: palette.textPrimary, frame: frame, y: y)
+                endLabel(Copy.endLabelYou, color: palette.textPrimary, frame: frame, y: y)
             }
             if let message = pitch.message {
                 // No backing, centred, its baseline 8 pt above the bottom of the plot (Designer answer 2, round 3).
@@ -144,7 +182,8 @@ private struct PitchPlot: View {
         }
         .frame(width: size.width, height: size.height)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(pitch.you.isEmpty ? "Pitch, native only" : "Pitch, native band and your line")
+        .accessibilityLabel(pitch.you.isEmpty ? "Pitch, native only" : "Pitch, native range and your line")
+        .accessibilityChartDescriptor(PitchChartDescriptor(pitch: pitch))
     }
 
     /// Each end label sits at its line's last point; when the two would overlap they are pushed apart evenly,
@@ -185,15 +224,8 @@ private struct PitchPlot: View {
             }
         }
 
-        // Baseline, with a short Lime segment under each stressed native syllable.
+        // Baseline: a plain hairline (v3.1 V5). Dictionary stress has one mark, the strip dot.
         context.fill(Path(CGRect(x: frame.plotX, y: frame.baselineY, width: frame.plotWidth, height: 1)), with: .color(palette.baseline))
-        for span in pitch.stressedSpans {
-            let rect = CGRect(x: frame.x(span.start), y: frame.baselineY - 1, width: frame.x(span.end) - frame.x(span.start), height: 3)
-            context.fill(Path(roundedRect: rect, cornerRadius: 1.5), with: .linearGradient(
-                Gradient(colors: [palette.lime1, palette.lime2]),
-                startPoint: CGPoint(x: rect.minX, y: 0), endPoint: CGPoint(x: rect.maxX, y: 0)
-            ))
-        }
 
         // Native band: P10 to P90 ribbon, at least 7 pt thick, round ends.
         for segment in pitch.band {
@@ -211,6 +243,17 @@ private struct PitchPlot: View {
             line.addLines(centre)
             let minimum = line.strokedPath(StrokeStyle(lineWidth: 7, lineCap: .round, lineJoin: .round))
             context.fill(ribbon.union(minimum), with: .color(palette.pitchNative))
+        }
+
+        // Earlier takes: 1 pt in pitch.you at 30/20/12%, oldest first so the newest sits on top.
+        for take in pitch.earlier.reversed() {
+            for points in take.segments {
+                let curve = smooth(points.map { CGPoint(x: frame.x($0.t), y: frame.y($0.st, range: range)) })
+                var path = Path()
+                path.addLines(curve)
+                context.stroke(path, with: .color(palette.pitchYou.opacity(take.opacity)),
+                               style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
+            }
         }
 
         // Your line: 2 pt, round caps; frames bridged across unvoiced stretches at 45%, 1.5 pt.
@@ -259,5 +302,33 @@ private struct PitchPlot: View {
             let f = position - CGFloat(lower)
             return values[lower] * (1 - f) + values[upper] * f
         }
+    }
+}
+
+/// AXChartDescriptor (v3 §3.3): series Native range, You and Earlier takes, on model time.
+private struct PitchChartDescriptor: AXChartDescriptorRepresentable {
+    var pitch: PitchPresentation
+
+    func makeChartDescriptor() -> AXChartDescriptor {
+        let x = AXNumericDataAxisDescriptor(title: "Time", range: 0...1, gridlinePositions: []) { value in
+            "\(Int((value * 100).rounded()))% of the phrase"
+        }
+        let r = pitch.rangeSemitones
+        let y = AXNumericDataAxisDescriptor(title: "Pitch", range: -r...r, gridlinePositions: [0]) { value in
+            "\(Int(value.rounded())) semitones"
+        }
+        var series = [
+            AXDataSeriesDescriptor(name: Copy.legendNativeRange, isContinuous: true, dataPoints:
+                pitch.band.flatMap(\.points).map { AXDataPoint(x: $0.t, y: $0.st) }),
+        ]
+        if !pitch.you.isEmpty {
+            series.append(AXDataSeriesDescriptor(name: Copy.legendYou, isContinuous: true, dataPoints:
+                pitch.you.flatMap(\.points).map { AXDataPoint(x: $0.t, y: $0.st) }))
+        }
+        if let newest = pitch.earlier.first {
+            series.append(AXDataSeriesDescriptor(name: Copy.legendEarlierTakes, isContinuous: true, dataPoints:
+                newest.segments.flatMap { $0 }.map { AXDataPoint(x: $0.t, y: $0.st) }))
+        }
+        return AXChartDescriptor(title: "Pitch", summary: nil, xAxis: x, yAxis: y, additionalAxes: [], series: series)
     }
 }
