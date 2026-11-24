@@ -146,9 +146,19 @@ public struct StressPlacementDetector: Sendable {
                 start: range.start, end: range.end, probability: Self.probability(of: range, in: take.heard))
         }
         let pronunciations = Dictionary(uniqueKeysWithValues: take.words.map { ($0.index, $0.pronunciation) })
+        // Spec 26 §2: N_w as a set, `.nucleus` only (`.span` keeps the context count).
+        var allowed: [WordIndex: AllowedSyllableCounts] = [:]
+        if thresholds.prominence.measurement == .nucleus {
+            let dictionary = try PronouncingDictionary.bundled(), reduced = try ReducedForms.bundled()
+            for word in take.words {
+                allowed[word.index] = AllowedSyllableCounts.of(
+                    word: word.text, context: word.pronunciation, dictionary: dictionary, reducedForms: reduced)
+            }
+        }
         return try SyllableSegmenter(voicing: voicing ?? self.voicing, thresholds: thresholds).segment(.init(
             samples: take.samples, sampleRate: take.sampleRate, alignment: alignment, pronunciations: pronunciations,
-            spans: spans, l0Key: take.l0Key, transcriptRevision: transcriptRevision, pitch: pitch))
+            spans: spans, l0Key: take.l0Key, transcriptRevision: transcriptRevision, pitch: pitch,
+            allowedCounts: allowed))
     }
 
     /// Spec 08: prominence over the present words' syllables, observed stress and each decided word's placement.

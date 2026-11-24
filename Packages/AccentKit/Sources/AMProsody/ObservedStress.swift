@@ -28,7 +28,11 @@ public struct ComparableSyllable: Sendable, Hashable, Codable {
         in segmentation: SyllableSegmentation, pitch: PitchTrack,
         thresholds: Thresholds.Prominence = Thresholds.current.prominence
     ) -> [ComparableSyllable] {
-        segmentation.words.filter { $0.kind == .present && !$0.isNucleusShort }.flatMap(\.syllables).map {
+        // Spec 26: an assignment-ambiguous word leaves too, and in `.nucleus` a syllable with no nucleus (dropped by
+        // a reduced form or a CMUdict alternate) isn't measured; the others keep their context indices.
+        segmentation.words.filter { $0.kind == .present && !$0.lacksNucleusVerdict }.flatMap(\.syllables).filter {
+            segmentation.measurement != .nucleus || $0.nucleus != nil
+        }.map {
             ComparableSyllable(
                 word: $0.phraseWord, indexInWord: $0.indexInWord,
                 features: ProminenceFeatures($0, pitch: pitch, thresholds: thresholds), level: $0.level)

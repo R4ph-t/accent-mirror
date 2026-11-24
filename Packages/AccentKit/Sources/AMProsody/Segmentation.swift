@@ -85,6 +85,13 @@ public struct SegmentedWord: Sendable, Hashable, Codable {
     /// features (placement and contrast unavailable, low confidence).
     public var isNucleusShort: Bool { nucleusAssignment?.short == true }
 
+    /// Spec 26 §3: the word's verdict depends on how a peak near its edge is assigned. Placement and contrast are
+    /// `.unavailable(.assignmentAmbiguous)` for it; it leaves the comparable set like a nucleus-short word.
+    public var isAssignmentAmbiguous: Bool { nucleusAssignment?.ambiguous == true }
+
+    /// No stress verdict from this word's nuclei: nucleus-short or assignment-ambiguous.
+    public var lacksNucleusVerdict: Bool { isNucleusShort || isAssignmentAmbiguous }
+
     public init(
         phraseWord: WordIndex, kind: Kind, range: TimeRange, injected: SyllableSegmenter.WordSpan,
         searchWindow: TimeRange, spanSanity: Double, confidence: Double, split: SyllableSplit?,

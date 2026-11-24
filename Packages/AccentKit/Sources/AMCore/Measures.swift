@@ -53,6 +53,9 @@ public enum NotApplicableReason: String, Sendable, Hashable, Codable, CaseIterab
 
 public enum UnavailableReason: String, Sendable, Hashable, Codable, CaseIterable {
     case wordMissing, wordSubstituted, lowConfidence, noVoicedFrames, tooFewOverlappingFrames, zeroVariance, coverageLow
+    /// Spec 26 §3: the word's stress verdict changes with how a nucleus near its edge is assigned. Shown like
+    /// `lowConfidence` (CTO decision 3); its own copy is an open item for Designer.
+    case assignmentAmbiguous
 }
 
 /// Take-level timing (first v2 §5): share of comparable syllables at medium or above.

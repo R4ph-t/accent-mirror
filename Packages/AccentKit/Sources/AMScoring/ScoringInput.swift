@@ -48,11 +48,15 @@ public struct ScoringTake: Sendable, Hashable {
     public let pitch: [PitchSegment]
     /// The edges of each present word, by phrase word: the take's comparable material.
     public let words: [WordIndex: TimeRange]
+    /// Spec 26 §3: present words whose nucleus assignment is ambiguous (`.nucleus` only; out of `syllables`).
+    public let ambiguousWords: Set<WordIndex>
 
-    public init(syllables: [ComparableSyllable], pitch: [PitchSegment], words: [WordIndex: TimeRange]) {
+    public init(syllables: [ComparableSyllable], pitch: [PitchSegment], words: [WordIndex: TimeRange],
+                ambiguousWords: Set<WordIndex> = []) {
         self.syllables = syllables
         self.pitch = pitch
         self.words = words
+        self.ambiguousWords = ambiguousWords
     }
 
     /// Voiced frames anywhere in the take.

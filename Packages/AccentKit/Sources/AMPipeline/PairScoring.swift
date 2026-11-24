@@ -64,7 +64,8 @@ public enum PairScoring {
                 pitch: analysis.pitch.segments,
                 words: Dictionary(
                     analysis.segmentation.words.filter { $0.kind == .present }.map { ($0.phraseWord, $0.range) },
-                    uniquingKeysWith: { a, _ in a }))
+                    uniquingKeysWith: { a, _ in a }),
+                ambiguousWords: Set(analysis.segmentation.words.filter(\.isAssignmentAmbiguous).map(\.phraseWord)))
         }
 
         let present = Set(you.alignment.pairs.compactMap { if case .present(let w, _) = $0 { w } else { nil } })

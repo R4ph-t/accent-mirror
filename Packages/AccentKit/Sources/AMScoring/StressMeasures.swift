@@ -146,6 +146,9 @@ struct StressMeasures {
             let statuses = eligible.map { input.status(of: $0.index) }
             if statuses.contains(.missing) { return .unavailable(.wordMissing) }
             if statuses.contains(.substituted) { return .unavailable(.wordSubstituted) }
+            if eligible.contains(where: { input.you.ambiguousWords.contains($0.index) }) {
+                return .unavailable(.assignmentAmbiguous)
+            }
             return .unavailable(.lowConfidence)
         }
         let confidence = placements.map(\.yours.confidence).min()!

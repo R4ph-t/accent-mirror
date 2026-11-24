@@ -139,6 +139,8 @@ them would be a later spec on the tuning pool only.
 | Nucleus region drop | `nucleus.regionDropDB` | 6 | dB | spec 25 §1, Open question 4 | 25 | Region: contiguous voiced frames within this of the peak, never past a valley; d is its length |
 | Nucleus skip cost | `nucleus.skipCostMs` | 60 | ms | spec 25 §2 | 25 | Assignment cost of leaving a nucleus unassigned; a nucleus costs its distance outside the word span (0 inside), and can't go further out than `alignment.asrPaddingMs` |
 | Nucleus intensity window | `nucleus.windowMs` | 30 | ± ms | spec 25 §3 | 25 | e: full-band RMS around the peak, clamped to the region |
+| Nucleus voicing tolerance | `nucleus.voicedWithinMs` | 0 | ± ms | spec 26 §1 | 26 | A candidate peak is voiced when a pYIN-voiced frame lies within this of it (0: the peak frame itself, spec 25's rule); the region still holds voiced frames only. Grid {0, 30, 60} (§1a: real pYIN lag) |
+| Nucleus ambiguity edge | `nucleus.ambiguityEdgeMs` | 40 | ms | spec 26 §3 | 26 | A word is edge-exposed when an assigned or candidate nucleus peak lies within this of either edge; verdicts under both assignments of that peak must agree, else `.assignmentAmbiguous`. The ±40 ms jitter radius; not tuned |
 
 ## Applicability
 

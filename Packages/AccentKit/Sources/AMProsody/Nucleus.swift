@@ -79,14 +79,32 @@ public struct NucleusWordAssignment: Sendable, Hashable, Codable {
     public let dictionaryCount: Int
     /// Fewer than N_w nuclei could be assigned: no stress features, placement and contrast unavailable.
     public let short: Bool
-    /// s_w: `splitExact` − `splitPerMismatch` · |P − N_w|, floored at 0 (spec 07's rule, unchanged).
+    /// s_w: `splitExact` − `splitPerMismatch` · |P − N|, floored at 0, N the allowed count closest to P (spec 07's
+    /// rule; spec 26 §2).
     public let confidence: Double
+    /// Spec 26 §2: N_w as a set (context count, CMUdict alternates, reduced forms); nil when it is the context count
+    /// alone.
+    public let allowed: [Int]?
+    /// Spec 26 §2: the count the assignment gave the word, when it isn't the context count.
+    public let assignedCount: Int?
+    /// Spec 26 §3: the word's verdict differs between the two candidate assignments of a peak near its edge.
+    public let ambiguous: Bool?
 
-    public init(available: Int, dictionaryCount: Int, short: Bool, confidence: Double) {
+    public init(available: Int, dictionaryCount: Int, short: Bool, confidence: Double, allowed: [Int]? = nil,
+                assignedCount: Int? = nil, ambiguous: Bool? = nil) {
         self.available = available
         self.dictionaryCount = dictionaryCount
         self.short = short
         self.confidence = confidence
+        self.allowed = allowed
+        self.assignedCount = assignedCount
+        self.ambiguous = ambiguous
+    }
+
+    func with(ambiguous: Bool) -> NucleusWordAssignment {
+        NucleusWordAssignment(available: available, dictionaryCount: dictionaryCount, short: short,
+                              confidence: confidence, allowed: allowed, assignedCount: assignedCount,
+                              ambiguous: ambiguous ? true : nil)
     }
 }
 
@@ -116,16 +134,29 @@ public struct NucleusDetector: Sendable {
     }
 
     /// Detection on a precomputed smoothed envelope (dBFS per 10 ms cell) and per-cell voicing.
-    func detect(envelope: [Double], voiced: [Bool]) -> [Nucleus] {
+    public func detect(envelope: [Double], voiced: [Bool]) -> [Nucleus] {
         let settings = thresholds.nucleus
         let count = envelope.count
         guard count >= 3 else { return [] }
-        func isVoiced(_ frame: Int) -> Bool { frame < voiced.count && voiced[frame] }
+        func isVoiced(_ frame: Int) -> Bool { frame >= 0 && frame < voiced.count && voiced[frame] }
+        // Spec 26 §1: a peak is voiced when a voiced cell's centre lies within ± `voicedWithinMs` of the peak cell's
+        // centre (0: the peak cell itself, spec 25's rule).
+        let reach = Int((settings.voicedWithinMs / (voicingFrameDuration * 1000) + 1e-9).rounded(.down))
+        func nearestVoiced(_ frame: Int, lower: Int = Int.min, upper: Int = Int.max) -> Int? {
+            if isVoiced(frame) { return frame }
+            guard reach > 0 else { return nil }
+            for distance in 1...reach {
+                // pYIN's voicing lags the vowel onset (spec 26 §1a), so on a tie the later cell wins.
+                if frame + distance < upper && isVoiced(frame + distance) { return frame + distance }
+                if frame - distance > lower && isVoiced(frame - distance) { return frame - distance }
+            }
+            return nil
+        }
 
         // Candidates: voiced local maxima at or above the level floor.
         var peaks = (1..<(count - 1)).filter { frame in
-            envelope[frame] >= envelope[frame - 1] && envelope[frame] > envelope[frame + 1] && isVoiced(frame)
-                && envelope[frame] >= settings.minPeakDBFS
+            envelope[frame] >= envelope[frame - 1] && envelope[frame] > envelope[frame + 1]
+                && nearestVoiced(frame) != nil && envelope[frame] >= settings.minPeakDBFS
         }
         let separation = settings.minSeparationMs / 1000
 
@@ -166,14 +197,19 @@ public struct NucleusDetector: Sendable {
             let peak = peaks[index]
             let leftValley = valley(index > 0 ? peaks[index - 1] : 0, peak)
             let rightValley = valley(peak, index + 1 < peaks.count ? peaks[index + 1] : count - 1)
-            var runStart = peak, runEnd = peak
+            // The region grows from the voiced cell nearest the peak (the peak itself when it is voiced), inside the
+            // valleys; with no voiced cell there it is the peak cell alone.
+            let anchor = nearestVoiced(peak, lower: leftValley, upper: rightValley) ?? peak
+            var runStart = anchor, runEnd = anchor
             while runStart > 0 && isVoiced(runStart - 1) { runStart -= 1 }
             while runEnd + 1 < count && isVoiced(runEnd + 1) { runEnd += 1 }
             // The region: voiced, within `regionDropDB` of the peak, never reaching a valley to a neighbour.
             let floor = envelope[peak] - settings.regionDropDB
-            var first = peak, last = peak
-            while first - 1 > leftValley && isVoiced(first - 1) && envelope[first - 1] >= floor { first -= 1 }
-            while last + 1 < rightValley && isVoiced(last + 1) && envelope[last + 1] >= floor { last += 1 }
+            var first = anchor, last = anchor
+            if isVoiced(anchor) {
+                while first - 1 > leftValley && isVoiced(first - 1) && envelope[first - 1] >= floor { first -= 1 }
+                while last + 1 < rightValley && isVoiced(last + 1) && envelope[last + 1] >= floor { last += 1 }
+            }
             return Nucleus(
                 peakTime: Self.time(ofFrame: peak), peakDB: envelope[peak], prominenceDB: prominence[index],
                 leftValleyTime: Self.time(ofFrame: leftValley), rightValleyTime: Self.time(ofFrame: rightValley),
@@ -273,100 +309,226 @@ public enum NucleusAssigner {
         /// The unpadded injected span.
         public let start: Double
         public let end: Double
-        /// N_w, the dictionary syllable count.
+        /// The context pronunciation's syllable count.
         public let syllables: Int
+        /// Spec 26 §2: N_w, the allowed counts (sorted, holding `syllables`).
+        public let allowed: [Int]
 
-        public init(start: Double, end: Double, syllables: Int) {
+        public init(start: Double, end: Double, syllables: Int, allowed: [Int]? = nil) {
             self.start = start
             self.end = end
             self.syllables = syllables
+            self.allowed = Array(Set((allowed ?? []) + [syllables])).filter { $0 > 0 }.sorted()
         }
+
+        /// The ms by which `time` lies outside the span (0 inside).
+        func outsideMs(_ time: Double) -> Double { max(0, start - time, time - end) * 1000 }
     }
 
     public struct Result: Sendable, Hashable {
-        /// Per word, the indices of its N_w nuclei in order, or nil when nucleus-short.
+        /// Per word, the indices of its assigned nuclei in order (a count in N_w), or nil when nucleus-short.
         public let nuclei: [[Int]?]
         /// Per word, its assignment (P, short, s_w).
         public let words: [NucleusWordAssignment]
     }
 
-    /// The monotonic assignment: each word gets exactly N_w consecutive nuclei or is marked short. Cost of a nucleus in
-    /// a word: how far (ms) its peak lies outside the word's unpadded span; a nucleus further than
+    /// The monotonic assignment: each word gets a count in N_w of consecutive nuclei or is marked short. Cost of a
+    /// nucleus in a word: how far (ms) its peak lies outside the word's unpadded span; a nucleus further than
     /// `alignment.asrPaddingMs` outside can't be assigned to that word. Skipping a nucleus costs `nucleus.skipCostMs`.
-    /// The program minimises the number of short words first, then the cost; ties go to the earlier word.
+    /// The program minimises the number of short words first, then the cost, then the number of words given a count
+    /// other than their context count (spec 26 §2: ties go to the context count); remaining ties go to the earlier
+    /// word.
     public static func assign(_ nuclei: [Double], to words: [Word], thresholds: Thresholds = .current) -> Result {
         let n = nuclei.count, m = words.count
         let skip = thresholds.nucleus.skipCostMs
         let padding = thresholds.alignment.asrPaddingMs
 
-        /// The cost of word j taking nuclei i..<i+N_j; nil when one is out of reach or there are too few.
-        func take(_ i: Int, _ j: Int) -> Cost? {
-            let count = words[j].syllables
+        /// The cost of word j taking nuclei i..<i+count; nil when one is out of reach or there are too few.
+        func take(_ i: Int, _ j: Int, _ count: Int) -> Cost? {
             guard count > 0, i + count <= n else { return nil }
             var total = 0.0
             for k in i..<(i + count) {
-                let t = nuclei[k]
-                let outside = max(0, words[j].start - t, t - words[j].end) * 1000
+                let outside = words[j].outsideMs(nuclei[k])
                 guard outside <= padding + Cost.tolerance else { return nil }
                 total += outside
             }
-            return Cost(short: 0, ms: total)
+            return Cost(short: 0, ms: total, alternate: count == words[j].syllables ? 0 : 1)
         }
+        /// Context count first, then the others ascending: the forward pass prefers them in this order.
+        func counts(_ j: Int) -> [Int] { [words[j].syllables] + words[j].allowed.filter { $0 != words[j].syllables } }
 
         // best[i][j]: least cost to finish from nucleus i, word j.
-        var best = Array(repeating: Array(repeating: Cost(short: Int.max / 4, ms: 0), count: m + 1), count: n + 1)
+        var best = Array(repeating: Array(repeating: Cost(short: Int.max / 4, ms: 0, alternate: 0), count: m + 1),
+                         count: n + 1)
         for i in stride(from: n, through: 0, by: -1) {
             for j in stride(from: m, through: 0, by: -1) {
-                if i == n && j == m { best[i][j] = Cost(short: 0, ms: 0); continue }
+                if i == n && j == m { best[i][j] = Cost(short: 0, ms: 0, alternate: 0); continue }
                 var options: [Cost] = []
-                if j < m, let c = take(i, j) { options.append(c + best[i + words[j].syllables][j + 1]) }
-                if i < n { options.append(Cost(short: 0, ms: skip) + best[i + 1][j]) }
-                if j < m { options.append(Cost(short: 1, ms: 0) + best[i][j + 1]) }
+                if j < m {
+                    for count in counts(j) {
+                        if let c = take(i, j, count) { options.append(c + best[i + count][j + 1]) }
+                    }
+                }
+                if i < n { options.append(Cost(short: 0, ms: skip, alternate: 0) + best[i + 1][j]) }
+                if j < m { options.append(Cost(short: 1, ms: 0, alternate: 0) + best[i][j + 1]) }
                 best[i][j] = options.min()!
             }
         }
 
-        // Forward: at each state prefer giving the word its nuclei now, then skipping a nucleus, then short. Taking
-        // now gives a contested nucleus to the earlier word.
+        // Forward: at each state prefer giving the word its nuclei now (context count first), then skipping a
+        // nucleus, then short. Taking now gives a contested nucleus to the earlier word.
         var assigned = [[Int]?](repeating: nil, count: m)
         var i = 0, j = 0
         while i < n || j < m {
             let target = best[i][j]
-            if j < m, let c = take(i, j), c + best[i + words[j].syllables][j + 1] == target {
-                assigned[j] = Array(i..<(i + words[j].syllables))
-                i += words[j].syllables
+            if j < m, let count = counts(j).first(where: { count in
+                take(i, j, count).map { $0 + best[i + count][j + 1] == target } ?? false
+            }) {
+                assigned[j] = Array(i..<(i + count))
+                i += count
                 j += 1
-            } else if i < n, Cost(short: 0, ms: skip) + best[i + 1][j] == target {
+            } else if i < n, Cost(short: 0, ms: skip, alternate: 0) + best[i + 1][j] == target {
                 i += 1
             } else {
                 j += 1
             }
         }
+        return Result(nuclei: assigned, words: results(assigned, words: words, nucleusCount: n, thresholds: thresholds))
+    }
 
-        // P from the assignment (CTO markup 1): nuclei strictly between the neighbours' assigned nuclei.
+    /// P, short and s_w of every word under an assignment (CTO markup 1): P counts the nuclei strictly between the
+    /// nearest earlier and later words' assigned nuclei; s_w reads |P − N| with N the allowed count closest to P.
+    static func results(_ assigned: [[Int]?], words: [Word], nucleusCount n: Int, thresholds: Thresholds)
+        -> [NucleusWordAssignment]
+    {
         let confidence = thresholds.confidence
-        let results = (0..<m).map { j -> NucleusWordAssignment in
-            let previous = assigned[..<j].last { $0 != nil }??.last ?? -1
-            let next = assigned[(j + 1)...].first { $0 != nil }??.first ?? n
+        return words.indices.map { j -> NucleusWordAssignment in
+            let previous = assigned[..<j].last { $0?.isEmpty == false }??.last ?? -1
+            let next = assigned[(j + 1)...].first { $0?.isEmpty == false }??.first ?? n
             let available = max(0, next - previous - 1)
-            let count = words[j].syllables
+            let word = words[j]
+            let closest = word.allowed.min { a, b in
+                let da = abs(a - available), db = abs(b - available)
+                if da != db { return da < db }
+                if (a == word.syllables) != (b == word.syllables) { return a == word.syllables }
+                return a < b
+            } ?? word.syllables
+            let count = assigned[j]?.count
             return NucleusWordAssignment(
-                available: available, dictionaryCount: count, short: assigned[j] == nil,
-                confidence: max(0, confidence.splitExact - confidence.splitPerMismatch * Double(abs(available - count))))
+                available: available, dictionaryCount: word.syllables, short: assigned[j] == nil,
+                confidence: max(0, confidence.splitExact - confidence.splitPerMismatch * Double(abs(available - closest))),
+                allowed: word.allowed == [word.syllables] ? nil : word.allowed,
+                assignedCount: count.flatMap { $0 == word.syllables ? nil : $0 })
         }
-        return Result(nuclei: assigned, words: results)
     }
 }
 
-/// The assignment's cost: short words first, then ms. Costs within a microsecond tie.
+/// The assignment's cost: short words first, then ms, then words off their context count. Costs within a
+/// microsecond tie.
 private struct Cost: Comparable {
     var short: Int
     var ms: Double
+    var alternate: Int
     static let tolerance = 1e-6
 
-    static func < (a: Cost, b: Cost) -> Bool { a.short != b.short ? a.short < b.short : a.ms < b.ms - tolerance }
-    static func == (a: Cost, b: Cost) -> Bool { a.short == b.short && abs(a.ms - b.ms) <= tolerance }
-    static func + (a: Cost, b: Cost) -> Cost { Cost(short: a.short + b.short, ms: a.ms + b.ms) }
+    static func < (a: Cost, b: Cost) -> Bool {
+        if a.short != b.short { return a.short < b.short }
+        if abs(a.ms - b.ms) > tolerance { return a.ms < b.ms }
+        return a.alternate < b.alternate
+    }
+    static func == (a: Cost, b: Cost) -> Bool {
+        a.short == b.short && abs(a.ms - b.ms) <= tolerance && a.alternate == b.alternate
+    }
+    static func + (a: Cost, b: Cost) -> Cost {
+        Cost(short: a.short + b.short, ms: a.ms + b.ms, alternate: a.alternate + b.alternate)
+    }
+}
+
+// MARK: - Assignment stability (spec 26 §3)
+
+public enum NucleusAssignmentStability {
+    /// The words (indices into `words`) whose verdict differs between the DP's assignment and an alternative one.
+    ///
+    /// A word is edge-exposed when a nucleus peak (assigned or not) lies within `nucleus.ambiguityEdgeMs` of either of
+    /// its edges. For each such peak, the alternative moves it across that edge: from the word to its neighbour, from
+    /// the neighbour (or from no word) to the word, or, when the receiver can't take it under N_w (count, order or
+    /// reach), out of its owner (skipped). A word whose remaining count leaves N_w is nucleus-short in the
+    /// alternative. Every word the move touches is re-verdicted with `verdict` (given its index, its nuclei or nil when
+    /// short, and its assignment under that alternative); a word whose verdict differs is ambiguous. Words with no
+    /// peak near an edge are never ambiguous.
+    public static func ambiguousWords<Verdict: Equatable>(
+        peaks: [Double], words: [NucleusAssigner.Word], result: NucleusAssigner.Result, thresholds: Thresholds,
+        verdict: (_ word: Int, _ nuclei: [Int]?, _ assignment: NucleusWordAssignment) -> Verdict
+    ) -> Set<Int> {
+        let edge = thresholds.nucleus.ambiguityEdgeMs / 1000 + 1e-9
+        let padding = thresholds.alignment.asrPaddingMs
+        let base = result.nuclei
+        var owner: [Int: Int] = [:]
+        for (j, list) in base.enumerated() { for i in list ?? [] { owner[i] = j } }
+        var baseVerdicts: [Int: Verdict] = [:]
+        func baseVerdict(_ j: Int) -> Verdict {
+            if let v = baseVerdicts[j] { return v }
+            let v = verdict(j, base[j], result.words[j])
+            baseVerdicts[j] = v
+            return v
+        }
+
+        /// Whether word `j` can take nucleus `i` on top of `list` (nil: short, no nuclei): in reach, count in N_w,
+        /// and no other word's nucleus between them (monotonic).
+        func canTake(_ j: Int, _ i: Int, _ assigned: [[Int]?]) -> [Int]? {
+            let list = assigned[j] ?? []
+            guard words[j].outsideMs(peaks[i]) <= padding + 1e-6, words[j].allowed.contains(list.count + 1)
+            else { return nil }
+            let merged = (list + [i]).sorted()
+            let low = merged.first!, high = merged.last!
+            for (k, other) in assigned.enumerated() where k != j {
+                if (other ?? []).contains(where: { $0 > low && $0 < high }) { return nil }
+            }
+            return merged
+        }
+        func removing(_ i: Int, from j: Int, _ assigned: inout [[Int]?]) {
+            let rest = (assigned[j] ?? []).filter { $0 != i }
+            assigned[j] = words[j].allowed.contains(rest.count) ? rest : nil
+        }
+
+        var ambiguous = Set<Int>()
+        for j in words.indices {
+            for i in peaks.indices {
+                let nearStart = abs(peaks[i] - words[j].start) <= edge
+                let nearEnd = abs(peaks[i] - words[j].end) <= edge
+                guard nearStart || nearEnd else { continue }
+                var neighbours: [Int] = []
+                if nearStart && j > 0 { neighbours.append(j - 1) }
+                if nearEnd && j + 1 < words.count { neighbours.append(j + 1) }
+                if neighbours.isEmpty { neighbours = [-1] }
+                for neighbour in neighbours {
+                    var alternative = base
+                    var touched: Set<Int> = [j]
+                    if neighbour >= 0 { touched.insert(neighbour) }
+                    let from = owner[i]
+                    if from == j {
+                        removing(i, from: j, &alternative)
+                        if neighbour >= 0, let taken = canTake(neighbour, i, alternative) { alternative[neighbour] = taken }
+                    } else if let from, from == neighbour {
+                        removing(i, from: from, &alternative)
+                        if let taken = canTake(j, i, alternative) { alternative[j] = taken }
+                    } else if from == nil {
+                        guard let taken = canTake(j, i, alternative) else { continue }
+                        alternative[j] = taken
+                    } else {
+                        continue
+                    }
+                    if let from { touched.insert(from) }
+                    let altResults = NucleusAssigner.results(
+                        alternative, words: words, nucleusCount: peaks.count, thresholds: thresholds)
+                    for k in touched where verdict(k, alternative[k], altResults[k]) != baseVerdict(k) {
+                        ambiguous.insert(k)
+                    }
+                }
+            }
+        }
+        return ambiguous
+    }
 }
 
 // MARK: - Measurement (§3)

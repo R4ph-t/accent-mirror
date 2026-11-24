@@ -65,12 +65,16 @@ public struct SyllableSegmenter: Sendable {
         public var transcriptRevision: Int
         /// Spec 04's track of the take: its voicing finds the nuclei and its F0 gives p. Needed in `.nucleus` mode.
         public var pitch: PitchTrack?
+        /// Spec 26 §2: N_w per present word (CMUdict alternates and reduced forms, with index mapping). A word with no
+        /// entry allows its context count only (spec 25). `.nucleus` only.
+        public var allowedCounts: [WordIndex: AllowedSyllableCounts]
 
         public init(
             samples: [Float], sampleRate: Double = 16_000, alignment: WordAlignment,
             pronunciations: [WordIndex: Pronunciation], spans: [WordIndex: WordSpan], l0Key: String,
-            transcriptRevision: Int, pitch: PitchTrack? = nil
+            transcriptRevision: Int, pitch: PitchTrack? = nil, allowedCounts: [WordIndex: AllowedSyllableCounts] = [:]
         ) {
+            self.allowedCounts = allowedCounts
             self.samples = samples
             self.sampleRate = sampleRate
             self.alignment = alignment
@@ -146,7 +150,7 @@ public struct SyllableSegmenter: Sendable {
         if measurement == .nucleus, let pitch = input.pitch {
             let detected = NucleusDetector(thresholds: thresholds).detect(
                 samples: input.samples, sampleRate: input.sampleRate, pitch: pitch)
-            words = measureNuclei(words, nuclei: detected, take: take, pitch: pitch)
+            words = measureNuclei(words, nuclei: detected, take: take, pitch: pitch, allowed: input.allowedCounts)
             nuclei = detected
         }
         words = markExposure(words, timed: timed)
@@ -259,40 +263,84 @@ public struct SyllableSegmenter: Sendable {
     // MARK: Nuclei (spec 25 §2–§3)
 
     /// Replaces each present word's d, e and confidence with its nuclei's, or marks it nucleus-short. The spans
-    /// (`range`) stay for display.
-    private func measureNuclei(_ words: [SegmentedWord], nuclei: [Nucleus], take: TakeSignal, pitch: PitchTrack)
-        -> [SegmentedWord]
-    {
+    /// (`range`) stay for display. Spec 26: a word may take any count in N_w; its k-th nucleus goes to the context
+    /// syllable the count's mapping names (a context syllable with none is dropped: no nucleus, out of the comparable
+    /// set), and a word whose verdict changes when a peak near its edge is assigned the other way is ambiguous (§3).
+    private func measureNuclei(
+        _ words: [SegmentedWord], nuclei: [Nucleus], take: TakeSignal, pitch: PitchTrack,
+        allowed: [WordIndex: AllowedSyllableCounts]
+    ) -> [SegmentedWord] {
         // `words` are in your-time order; only present words with syllables take part. Substituted words get no
         // nuclei, so theirs are skipped.
         let present = words.indices.filter { words[$0].kind == .present && !words[$0].syllables.isEmpty }
-        let assignment = NucleusAssigner.assign(
-            nuclei.map(\.peakTime),
-            to: present.map {
-                NucleusAssigner.Word(
-                    start: words[$0].injected.start, end: words[$0].injected.end, syllables: words[$0].syllables.count)
-            },
-            thresholds: thresholds)
+        let counts = present.map { index -> AllowedSyllableCounts in
+            let word = words[index]
+            let set = allowed[word.phraseWord]
+            return set?.context == word.syllables.count ? set! : .contextOnly(word.syllables.count)
+        }
+        let assignerWords = present.enumerated().map { position, index in
+            NucleusAssigner.Word(start: words[index].injected.start, end: words[index].injected.end,
+                                 syllables: words[index].syllables.count, allowed: counts[position].counts)
+        }
+        let assignment = NucleusAssigner.assign(nuclei.map(\.peakTime), to: assignerWords, thresholds: thresholds)
+
+        var measured: [Int: NucleusMeasurement] = [:]
+        func measure(_ index: Int) -> NucleusMeasurement {
+            if let known = measured[index] { return known }
+            let value = NucleusMeasurement.measure(index, of: nuclei, take: take, pitch: pitch, thresholds: thresholds)
+            measured[index] = value
+            return value
+        }
+        /// Context syllable → its nucleus index, for a word's assigned nuclei.
+        func contextNuclei(_ position: Int, _ list: [Int]) -> [Int: Int] {
+            guard let form = counts[position].form(for: list.count) else { return [:] }
+            var out: [Int: Int] = [:]
+            for (k, nucleus) in list.enumerated() { if let c = form.contextIndex[k] { out[c] = nucleus } }
+            return out
+        }
+        let levels = thresholds.confidence
+        let ambiguous = NucleusAssignmentStability.ambiguousWords(
+            peaks: nuclei.map(\.peakTime), words: assignerWords, result: assignment, thresholds: thresholds
+        ) { position, list, result -> StabilityVerdict in
+            guard let list else { return .short }
+            let low = Self.level(of: min(words[present[position]].confidence, result.confidence), thresholds: levels) == .low
+            let byContext = contextNuclei(position, list).sorted { $0.key < $1.key }
+            func first(_ value: (NucleusMeasurement) -> Double) -> Int? {
+                guard let best = byContext.map({ value(measure($0.value)) }).max() else { return nil }
+                return byContext.first { value(measure($0.value)) == best }?.key
+            }
+            return StabilityVerdict(short: false, low: low, longest: first(\.duration), loudest: first(\.energyDBFS))
+        }
+
         var out = words
         for (position, index) in present.enumerated() {
             let word = words[index]
-            let result = assignment.words[position]
-            let assigned = assignment.nuclei[position]
+            var result = assignment.words[position]
+            if ambiguous.contains(position) { result = result.with(ambiguous: true) }
+            let assigned = assignment.nuclei[position].map { contextNuclei(position, $0) }
             let syllableConfidence = assigned == nil ? 0 : min(word.confidence, result.confidence)
             let syllables = word.syllables.enumerated().map { k, syllable in
-                let measured = assigned.map {
-                    NucleusMeasurement.measure($0[k], of: nuclei, take: take, pitch: pitch, thresholds: thresholds)
-                }
+                let nucleus = assigned?[k].map(measure)
                 return SegmentedSyllable(
                     phraseWord: syllable.phraseWord, indexInWord: syllable.indexInWord, phones: syllable.phones,
-                    stress: syllable.stress, range: syllable.range, duration: measured?.duration ?? syllable.duration,
-                    energyDBFS: measured?.energyDBFS ?? syllable.energyDBFS,
+                    stress: syllable.stress, range: syllable.range, duration: nucleus?.duration ?? syllable.duration,
+                    energyDBFS: nucleus?.energyDBFS ?? syllable.energyDBFS,
                     lengtheningExposed: syllable.lengtheningExposed, confidence: syllableConfidence,
-                    level: Self.level(of: syllableConfidence, thresholds: thresholds.confidence), nucleus: measured)
+                    level: Self.level(of: syllableConfidence, thresholds: thresholds.confidence), nucleus: nucleus)
             }
             out[index] = word.with(syllables: syllables, nucleusAssignment: result)
         }
         return out
+    }
+
+    /// The per-word verdict the stability check compares (spec 26 §3): the spec 11 gate's word verdict on context
+    /// indices (nucleus-short; low confidence; longest and loudest syllable, the first on a tie).
+    struct StabilityVerdict: Equatable {
+        var short: Bool
+        var low: Bool
+        var longest: Int?
+        var loudest: Int?
+        static let short = StabilityVerdict(short: true, low: true, longest: nil, loudest: nil)
     }
 
     // MARK: Exposure (spec 25 §3, CTO markup 2)

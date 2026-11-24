@@ -167,7 +167,32 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public var skipCostMs = 60.0
         /// Intensity e is read over ± this around the peak, clamped to the nucleus region.
         public var windowMs = 30.0
+        /// Spec 26 §1 (CTO markup 1): a candidate peak counts as voiced when a pYIN-voiced frame lies within ± this of
+        /// it (0: the peak frame itself must be voiced, spec 25's rule). The region still holds voiced frames only.
+        public var voicedWithinMs = 0.0
+        /// Spec 26 §3: a word is edge-exposed when an assigned or candidate nucleus peak lies within this of either of
+        /// its edges; its verdict is then checked under both candidate assignments of that peak.
+        public var ambiguityEdgeMs = 40.0
         public init() {}
+
+        enum CodingKeys: String, CodingKey {
+            case minPeakDBFS, minProminenceDB, minSeparationMs, regionDropDB, skipCostMs, windowMs, voicedWithinMs,
+                 ambiguityEdgeMs
+        }
+
+        /// Records written before spec 26 (spec 25's runs and reports) have no `voicedWithinMs` or `ambiguityEdgeMs`:
+        /// they read as spec 25's rule (0) and the default edge.
+        public init(from decoder: any Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            minPeakDBFS = try c.decode(Double.self, forKey: .minPeakDBFS)
+            minProminenceDB = try c.decode(Double.self, forKey: .minProminenceDB)
+            minSeparationMs = try c.decode(Double.self, forKey: .minSeparationMs)
+            regionDropDB = try c.decode(Double.self, forKey: .regionDropDB)
+            skipCostMs = try c.decode(Double.self, forKey: .skipCostMs)
+            windowMs = try c.decode(Double.self, forKey: .windowMs)
+            voicedWithinMs = try c.decodeIfPresent(Double.self, forKey: .voicedWithinMs) ?? 0
+            ambiguityEdgeMs = try c.decodeIfPresent(Double.self, forKey: .ambiguityEdgeMs) ?? 40
+        }
     }
 
     /// A margin per take-length bucket n ∈ {2–4, 5–8, ≥ 9} syllables (plan §2).
