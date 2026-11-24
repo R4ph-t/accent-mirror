@@ -133,8 +133,10 @@ extension AMTimestamps {
                     nucleiMoved += 1
                 } else {
                     sameNuclei += 1
-                    let why = w.exposureChanged == true ? "exposure" : w.availableChanged == true
-                        ? "P, s_w or c_w (word timing)" : "other"
+                    let ambiguityChanged = (w.oracleReason == "assignmentAmbiguous") != (w.candidateReason == "assignmentAmbiguous")
+                    let why = w.exposureChanged == true ? "exposure"
+                        : ambiguityChanged ? "assignmentAmbiguous flag (edge exposure read on the jittered edges)"
+                        : w.availableChanged == true ? "P, s_w or c_w (word timing)" : "other"
                     sameNucleiBy[why, default: 0] += 1
                 }
             }

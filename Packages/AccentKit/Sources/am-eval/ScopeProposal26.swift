@@ -69,7 +69,7 @@ struct Scope26Rows: Codable {
 /// The suite-based rows of both shapes (L2, positive set, starter phrases), cached per configDigest.
 func scope26SuiteRows(root: URL) async throws -> Scope26Rows {
     let digest = try configDigest(harnessConfig())
-    let cache = cacheURL(root, "eval-cache/nucleus-jitter/scope26-\(digest.prefix(8)).json")
+    let cache = cacheURL(root, "eval-cache/nucleus-jitter/scope26-v2-\(digest.prefix(8)).json")
     if let data = try? Data(contentsOf: cache), let rows = try? JSONDecoder().decode(Scope26Rows.self, from: data),
        rows.configDigest == digest {
         print("scope26: reusing \(cache.path)")
@@ -95,7 +95,9 @@ func scope26SuiteRows(root: URL) async throws -> Scope26Rows {
                 phrase: phrase, recording: recording, audio: root.appendingPathComponent("Resources/Starter/\(recording.audio)"),
                 timings: root.appendingPathComponent("Resources/Starter/\(recording.timings)"), asrModelID: manifest.asrModelID)
             let record = try await references.analyse(source)
-            guard let l1 = DerivedCoding.value(L1Analysis.self, in: record, key: record.key) else { continue }
+            guard let l1 = DerivedCoding.value(NativeAnalysis.self, in: record, key: record.key)?.l1 else {
+                throw CLIError.failed("scope26: \(recording.id.rawValue): the native analysis didn't decode")
+            }
             let segmented = Dictionary(l1.analysis.segmentation.words.map { ($0.phraseWord, $0) }, uniquingKeysWith: { x, _ in x })
             for word in words {
                 applicable += 1
@@ -128,11 +130,16 @@ func scope26SuiteRows(root: URL) async throws -> Scope26Rows {
         let subset = SharedDetectorRunner(
             detector: SubsetPlacementDetector(base: base), corpus: corpus,
             dictionary: SelectorPrimaryLookup(selector: try .bundled()))
+        let whole = SharedDetectorRunner(
+            detector: base, corpus: corpus, dictionary: SelectorPrimaryLookup(selector: try .bundled()))
         for (name, words) in [("L2 recall (the stress-wrong words)", sets.recall),
                               ("L2 false positives, clean 1,400", sets.cleanFalsePositive)] {
             let results = try await subset.run(words, config: config)
             let flagged = results.rows.filter { $0.outcome?.flaggedAfterSuppression == true }
-            a.append("\(name), `.nucleus` with the subset, after suppression: \(share(flagged.count, words.count))")
+            let all = try await whole.run(words, config: config)
+            let flaggedAll = all.rows.filter { $0.outcome?.flaggedAfterSuppression == true }
+            a.append("\(name), `.nucleus` with the subset, after suppression: \(share(flagged.count, words.count)) "
+                + "(context: `.nucleus` without the subset \(share(flaggedAll.count, words.count)))")
             print("scope26: \(a.last!)")
         }
     } else {
