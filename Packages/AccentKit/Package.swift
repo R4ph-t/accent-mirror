@@ -65,9 +65,9 @@ let package = Package(
     } + [
         // The agreement harness's command-line runner (spec 02), called by scripts/agreement.sh and friends. Tool
         // only: the app target depends on AMPipeline alone and never links this or AMEvaluation.
+        // Pinned to the verdict scorer (spec 28): evaluation always runs `VerdictScorer()` (EvaluationConfig).
         .executableTarget(
             name: "am-eval",
-            // Pinned to the verdict scorer (spec 28): evaluation always runs `VerdictScorer()`.
             dependencies: [.target(name: "AMPipeline"), .target(name: "AMEvaluation"), .target(name: "AMVerdicts")],
             path: "Sources/am-eval"
         ),

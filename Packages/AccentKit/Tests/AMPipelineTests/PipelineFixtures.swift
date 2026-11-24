@@ -80,10 +80,11 @@ enum PipelineFixtures {
 
     static func analyzer(
         _ world: World, timestamper: (any WordTimestamper)? = nil, pitch: (any PitchTracker)? = nil,
-        beforeStage: (@Sendable (Stage) async throws -> Void)? = nil
+        beforeStage: (@Sendable (Stage) async throws -> Void)? = nil, scorer: (any PairScorer)? = nil
     ) throws -> Analyzer {
         var configuration = try Analyzer.Configuration.shipped()
         if let pitch { configuration.pitchTracker = pitch }
+        if let scorer { configuration.scorer = scorer }
         configuration.beforeStage = beforeStage
         return Analyzer(speech: SpeechModelHost(ready: timestamper ?? world.timings), configuration: configuration)
     }

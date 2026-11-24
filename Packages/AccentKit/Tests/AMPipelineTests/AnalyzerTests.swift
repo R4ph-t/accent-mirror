@@ -15,10 +15,11 @@ import Testing
 @Suite("Analyzer (spec 12)") struct AnalyzerTests {
     static let golden = SmokePlacementGoldenTests.root.appendingPathComponent("fixtures/pipeline/analysis-golden.json")
 
+    /// Pinned to `VerdictScorer` (spec 28): the scored end-to-end golden, so the verdict path stays covered.
     @Test("a fixture take and a fixture reference give the committed AnalysisResult JSON")
     func endToEndGolden() async throws {
         let world = try await PipelineFixtures.world()
-        let analyzer = try PipelineFixtures.analyzer(world)
+        let analyzer = try PipelineFixtures.analyzer(world, scorer: VerdictScorer())
         let response = await analyzer.analyse(
             take: world.you, phrase: world.phrase, reference: world.reference,
             voice: PipelineFixtures.voice(PipelineFixtures.modelItem))
