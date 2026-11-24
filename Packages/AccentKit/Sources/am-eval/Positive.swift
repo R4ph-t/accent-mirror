@@ -199,9 +199,15 @@ struct PositiveRun {
                 case .takeProblem(let problem):
                     run.unscored["take problem before scoring (\(problem.rawValue))", default: 0] += 1
                 case .failed(.inferenceFailed(stage: .mapTime)):
-                    // The usual cause: the reference reader's recognised words miss or substitute a phrase word, so it
-                    // can't serve as the model (PairScoring.Failure.modelIncomplete).
-                    run.unscored["failed at mapTime (reference \(pair.reference) incomplete for \(pair.phrase))", default: 0] += 1
+                    // Either the reference reader's recognised words miss or substitute a phrase word, so it can't
+                    // serve as the model (PairScoring.Failure.modelIncomplete), or your take's time map can't be built.
+                    let model = natives[input.id]?.first { $0.voice == pair.reference }
+                        .flatMap { DerivedCoding.native(in: $0.analysis) }
+                    let present = Set(model?.l1.analysis.segmentation.words.filter { $0.kind == .present }.map(\.phraseWord) ?? [])
+                    let complete = input.words.allSatisfy { present.contains($0.index) }
+                    run.unscored[complete
+                        ? "failed at mapTime: your take's time map (\(pair.phrase))"
+                        : "failed at mapTime: reference \(pair.reference) incomplete for \(pair.phrase)", default: 0] += 1
                 case .failed(let error):
                     run.unscored["failed: \(error)", default: 0] += 1
                 default:
