@@ -1,4 +1,5 @@
 import Foundation
+import Synchronization
 import Testing
 import AMCore
 import AMAlignment
@@ -65,21 +66,44 @@ struct CTCForcedAlignmentTests {
 
 @Suite("CancellableWork (spec 23 b2 cancellation)")
 struct CancellableWorkTests {
-    @Test("a cancel 100 ms in returns CancellationError at once while uninterruptible work runs on")
+    @Test("a cancel while uninterruptible work runs returns CancellationError at once; the work runs on")
     func cancelReturnsPromptly() async throws {
+        // The work stands in for one Core ML prediction, which can't stop part-way. It signals once it is running
+        // and then blocks until the test releases it, so the cancel always lands mid-work, however loaded the
+        // machine is (a fixed sleep raced an 800 ms usleep and lost under parallel CI load).
+        let started = DispatchSemaphore(value: 0), release = DispatchSemaphore(value: 0)
+        let ended = DispatchSemaphore(value: 0)
+        let workFinished = Mutex(false)
         let task = Task {
             try await CancellableWork.run { () -> Int in
-                usleep(800_000)  // stands in for one Core ML prediction, which can't stop part-way
+                started.signal()
+                Self.block(on: release)  // like the Core ML call, this holds its thread
+                workFinished.withLock { $0 = true }
+                ended.signal()
                 return 1
             }
         }
-        try await Task.sleep(for: .milliseconds(100))
+        #expect(await wait(for: started), "the work never started")
         let clock = ContinuousClock()
         let cancelledAt = clock.now
         task.cancel()
         let result = await task.result
         #expect(cancelledAt.duration(to: clock.now) <= .milliseconds(300))
         if case .failure(let error) = result { #expect(error is CancellationError) } else { Issue.record("no cancel") }
+        #expect(workFinished.withLock { $0 } == false, "the caller waited for the work instead of returning")
+        // Let the work finish so no blocked thread outlives the test.
+        release.signal()
+        #expect(await wait(for: ended), "the work never finished")
+    }
+
+    /// Blocks the calling thread until `semaphore` is signalled, up to 30 s.
+    private static func block(on semaphore: DispatchSemaphore) { _ = semaphore.wait(timeout: .now() + 30) }
+
+    /// Waits off the cooperative pool for `semaphore`, up to 10 s.
+    private func wait(for semaphore: DispatchSemaphore) async -> Bool {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global().async { continuation.resume(returning: semaphore.wait(timeout: .now() + 10) == .success) }
+        }
     }
 
     @Test("without a cancel the work's value and errors come through") func passesThrough() async throws {
