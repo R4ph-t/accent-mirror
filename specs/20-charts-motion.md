@@ -160,4 +160,21 @@ None. Addendum r6 E9 confirmed the live-bar time scale and dropping ⇧⌘G.
 
 ## Implementation notes
 
-_(filled in by the agent)_
+- `AccentMirror/Charts/ChartModel.swift`: `ChartInputs` (playback, time map, hover, loop, ghost change, menu preview,
+  voice switch) and `ChartModel.make(detail, inputs, now, reduceMotion)`, which returns one value per card
+  (`StripChart`, `PitchChart`). The views draw only these. `ChartMotion.swift` holds the UI-free parts: the eases
+  (smoothstep; 120 ms boxes and ⇧⌘G, 150 ms saved take and voice switch), `GhostBlend`, `PitchAxis` (6 st steps up to
+  ±24, never below the phrase's floor), `RecordingEnvelope` / `EnvelopeBins` / `RecordingScale` for the live row,
+  `PlayheadPlacement`, `PlayingSyllable` and `VoiceBlend`.
+- The playhead maps through spec 09's `TimeWarp` (`WarpTimeMap.swift`, the only file that imports AMWarp), built
+  from the fixture's words in seconds. Playing your take across a youOnly stretch, the native row has no playhead
+  and the pitch playhead holds at the end of the last mapped word before it.
+- `ShellModel` owns the inputs and a motion clock. A fixture with a `chart` block freezes that clock at `clockMs`; the
+  cards sit in one `TimelineView` that runs only while something plays or a fade runs.
+- New fixtures: `recording-live-{500,2000,19500}ms`, `playback-model`, `playback-you`, `playback-you-gap`,
+  `playing-syllable-{model,you}`, `word-loop`, `label-hover`, `ghosts-saved-75ms`, `ghosts-toggled-off-60ms`,
+  `ghosts-menu-preview`, `voice-switch-{pending,75ms,done}`. The screenshot runner renders each with Reduce Motion as
+  well. Under the v1 block, `row-hover` became `label-hover` (no diff rows) and `ghosts-hover` became the two
+  ghost-fade frames (ghosts are on by default, with no hover reveal).
+- Left to spec 21: calling `ShellModel.previewTake(_:)` from the real take menu (it needs the take store's takes),
+  `earlierTakesChanged(to:)` on save, and `voiceSelected` / `voiceArrived` from the voice pop-up.
