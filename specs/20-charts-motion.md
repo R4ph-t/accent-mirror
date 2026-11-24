@@ -1,6 +1,7 @@
 # 20: Charts: live strip, playhead, earlier takes and voice-switch ease
 
-Status: Ready · Branch: – · Depends on: 19 (fixture-driven UI shell) · Estimate: 6–8 h agent run + 1.5 h Raph review
+Status: Ready · Branch: – · Depends on: 19 (fixture-driven UI shell), 11 (analysis gate: Done only when spec 11's release report shows
+every positive-set gate PASS; Raph 2026-11-24) · Estimate: 6–8 h agent run + 1.5 h Raph review
 
 Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)") §7 (recording and analysing rows of the state
 table), §8 (strip), §9 (pitch: earlier takes on hover, playhead), §6 (take-menu hover preview), §13 items 7 and 9

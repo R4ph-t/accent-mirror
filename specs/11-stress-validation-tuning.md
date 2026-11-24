@@ -2,7 +2,7 @@
 
 Status: Ready · Branch: – · Depends on: 02 (harness, folds, tuning API), 10 (verdict path), 12 (pipeline for
 held-out pairs), 22 (synthetic references, end-to-end check ii; spec 23's harness and b2 for the re-run gate, 23 in
-review) · Estimate: 9–12 h agent run + 2.5 h Raph review
+review; Done only when the analysis gate in §7 passes) · Estimate: 9–12 h agent run + 2.5 h Raph review
 · Risk: high
 
 Risk: high. This spec changes `Packages/AccentKit/Sources/AMCore/Thresholds.swift` (a risky path) and
@@ -145,6 +145,40 @@ NOT EVALUATED (n=…, min=…), then the §4–§4b rows, `Negative set: …`, `
 (FALLBACK)` and `Release gate: MET | NOT MET`. PR CI keeps
 running the smoke set; its goldens are re-recorded for the new `thresholdsVersion`.
 
+### 7. Analysis gate: the build proves it, CI enforces it (Raph, 2026-11-24)
+
+Raph, 09:08: validate the principles and core workings of the audio analysis before more UI work; 09:09: the
+validation runs through the factory, with no hand runs. Specs 20 and 21 depend on this row, so this spec is Done
+only when the analysis is proven on real voices.
+
+- **The build runs the release suite itself.** On the Mac, the agent fetches what's missing with the existing pinned
+  fetchers (`scripts/fetch-vctk.sh`, `fetch-vctk-eval.sh`, `fetch-speechocean762.sh`, `setup-mfa.sh`,
+  `mfa-align.sh`), records any missing word timings with `am-eval record-timings`, runs `scripts/tune.sh` and then
+  `scripts/agreement.sh --suite release`, and commits the report as
+  `docs/agreement/reports/release-<configDigest8>.{json,md}` (§6.6 identity). Nothing here is left for Raph to run.
+  A fetch, record or run failure is the build's to fix, or to report as `Blocked:` with what it tried.
+- **The report covers all three dimensions on real voices** (held-out VCTK positive set through spec 12's
+  pipeline): stress (placement-diff, contrast ratio), rhythm (nPVI, weak length, spec 09 band coverage) and pitch
+  (pitch range ratio, final direction), plus any-diff, inconclusive and evaluation coverage. Each row has n ≥ 150
+  measured pairs. The L2 rows (§1 CV recall, §3 clean-1,400 FP and worst speaker, unintelligible words) and the
+  §4c guard are in the same report.
+- **`AnalysisGateTests`** (new, in `AMEvaluationTests`; runs under `make test`, so CI's `build & test` check runs it
+  on every PR). It finds the repo root from `#filePath`, computes `configDigest` from `Thresholds` on the head
+  (AMCore `Identity`), loads `release-<configDigest8>.json`, and fails unless:
+  1. the report exists and its `configDigest` equals the computed one (a stale or hand-edited report fails);
+  2. every positive-set gate row reads PASS, none FAIL or NOT EVALUATED, and the rows named above are all present
+     (a missing row fails, so a dimension can't drop out silently);
+  3. every negative-set (L2) gate row reads PASS;
+  4. `Spec 11 guard` reads MET.
+  Reported-only lines (synthetic set, end-to-end check ii, `referenceAnomaly`, 3-take stability, §4b jitter) are
+  printed and not asserted.
+- **If the gates don't pass, CI stays red and the PR doesn't merge**, so this row isn't Done and 20 and 21 stay
+  blocked. That includes FALLBACK (§4c) and spec 23 not being on main (§4a). The PR still commits the report and
+  says it goes to CTO. Fix rounds may fix bugs in the pipeline or the harness, never a gate, a tolerance, a
+  minimum, the selection rule, the test's conditions or the report.
+- The test applies from this PR on: a later PR that changes `Thresholds` must commit a new release report that
+  passes, the same "never quietly" rule as the golden digest.
+
 ## Defaults
 
 - Tuning runs locally (`scripts/tune.sh`, the existing script) on cached L1 features, never in PR CI. The full
@@ -158,7 +192,7 @@ running the smoke set; its goldens are re-recorded for the new `thresholdsVersio
 
 - Never lower a gate, a tolerance or a minimum, and never relax the selection rule's constraints. A FAIL goes to CTO
   with the numbers.
-- NOT EVALUATED is never a pass and never a waiver.
+- NOT EVALUATED is never a pass and never a waiver, and `AnalysisGateTests` treats it as a failure.
 - No held-out VCTK speaker, test-half L2 word or synthetic audio in any tuning step (a test asserts the tuning pool's
   speaker set is disjoint from every held-out set).
 - No network at runtime; corpora come from the existing pinned fetchers and caches.
@@ -170,9 +204,10 @@ running the smoke set; its goldens are re-recorded for the new `thresholdsVersio
 
 ## Open question (built with the default)
 
-1. **Does spec 11 count as Done if the release gate or the guard is NOT MET?** Default: yes. Spec 11 is Done when
-   its tuned config (or the FALLBACK report, with `Thresholds.swift` unchanged) and its release report merge. The release gate result is printed, not
-   required to pass: it blocks a release, not later specs. Specs 21 and later build on whatever config is on main.
+1. **Does spec 11 count as Done if the gates or the guard are NOT MET?** Decided (Raph, 2026-11-24): no. Spec 11
+   is Done only when §7's analysis gate passes (positive set and L2 gates PASS, guard MET), enforced by
+   `AnalysisGateTests` in CI. FALLBACK or a FAIL keeps the PR open with its report, for CTO. The full release gate
+   (§6.7, including the reported-only lines) still blocks a release, not later specs.
 2. **3-take stability** (v1: "ship only if the same speaker scores the same way on 3 takes in a row"). VCTK and
    speechocean762 have one take per speaker per phrase, so there may be no repeated takes. Default: the flags stay
    on, stability prints NOT EVALUATED (no repeated takes) with the reason, and the call goes to CPO. Never turn a
@@ -186,6 +221,9 @@ running the smoke set; its goldens are re-recorded for the new `thresholdsVersio
 
 ## How to test (Raph)
 
+Every step below is run by the build agent and repeated by the reviewer. None needs Raph's hands for the spec to
+be Done.
+
 1. `make check` is green, including the re-recorded smoke goldens and the golden-digest check for the new
    `thresholdsVersion`.
 2. Read the diff of `Thresholds.swift` and `docs/thresholds.md`: only the tuned keys change, `thresholdsVersion` is 7,
@@ -198,6 +236,8 @@ running the smoke set; its goldens are re-recorded for the new `thresholdsVersio
 5. The output ends with `Spec 11 guard: MET` or `NOT MET (FALLBACK)`. On FALLBACK, `Thresholds.swift` is unchanged
    and the tuning log has the nucleus-anchored entry, marked for CTO.
 6. The committed reports' `sourceTreeHash` and `configDigest` match the PR head (`scripts/check-report-identity.sh`).
+7. `swift test --package-path Packages/AccentKit --filter AnalysisGateTests` passes on the head (CI's `build & test`
+   runs it too), and it fails if one positive-set row in a copy of the report is changed to NOT EVALUATED.
 
 ## Implementation notes
 

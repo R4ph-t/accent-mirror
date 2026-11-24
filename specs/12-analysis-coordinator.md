@@ -85,6 +85,11 @@ files on disk except the caches below.
   of NOT EVALUATED (n=0). Numbers are on the thresholds on main; a FAIL goes to CTO and nothing is tuned here.
 - Word timings for the eval-speaker clips are recorded once with the existing `am-eval record-timings` path on the
   Mac (real WhisperKit, local, never CI) into the git-ignored eval cache, the same way spec 08 recorded l2-shared.
+- **The build does this itself, with no hand run (Raph, 2026-11-24).** The agent fetches the corpora with the
+  existing pinned fetchers if the cache is missing, records the timings, runs `scripts/agreement.sh --suite
+  positive`, and commits the report under `docs/agreement/reports/positive-<configDigest8>.{json,md}` (identity as
+  in spec 02). A fetch or record failure is reported in the PR as a must-fix for the build, never left for Raph.
+  A gate FAIL here doesn't block this spec (thresholds are untuned); spec 11's gate does.
 
 ### Latency (first v2 §10, "as before")
 
@@ -134,7 +139,8 @@ files on disk except the caches below.
 3. An end-to-end golden: a fixture take and a fixture reference give the committed `AnalysisResult` JSON.
 4. On the Mac: `scripts/bench.sh` prints L_stop / L_speech / L2 recompute per length with medians, maxima and the
    limiting stage, and says PASS or FAIL against each budget.
-5. Local: `scripts/agreement.sh --suite positive` prints measured n for every spec 10 line (no longer n=0).
+5. Local: `scripts/agreement.sh --suite positive` prints measured n for every spec 10 line (no longer n=0). The
+   build ran it and committed the report; this step only re-reads it.
 
 ## Implementation notes
 

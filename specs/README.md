@@ -8,13 +8,29 @@ Specs 01–02 and 04–10 (contract, agreement harness, signal and text front en
 22 (synthetic native references, split out of 02 so ElevenLabs stays off the critical path) landed as Draft in spec PRs #5–#7 and are Ready
 (Raph waived spec approval on 2026-11-23: "once written go straight to building without asking"). Specs 11–17, 20 and 21 lead to the first build Raph can test (record a starter phrase, see it against the native
 recording): the pipeline and coordinator (12), the bundled starter library (15), tuning and the release report (11),
-the take store (16), live capture (14), the charts' motion (20), and the wiring (21). Their rows follow 22 in
-critical-path order. Spec 13 (sandbox, microphone entitlement and string) is by hand: Raph's, with no agent run, and
+the take store (16), live capture (14), the charts' motion (20), and the wiring (21). Their rows follow 22, with
+the analysis specs (12, 11) first (see "Analysis first" below). Spec 13 (sandbox, microphone entitlement and string) is by hand: Raph's, with no agent run, and
 21 waits for it. Spec 17 (clip import, no UI) is off the path: its sheets (Designer Addendum r6 E1–E2) are a later UI spec. Spec 11 must not start before the rev 4 evaluation protocol (Raph,
 09:56) is in place: it lands in 02 (speaker-isolated folds, the clean 1,400-word FP set, the matched-config fold
 runner, the tuning-only selection API) and 22 (TTS voices chosen on the 18 VCTK tuning speakers). Rows 18 and
 19 are built (PR #4) and Done after their fix batch (PR #11). Spec 03 does not wait on spec 11; Raph allowed
 the timestamp check to proceed after the skeleton.
+
+**Analysis first (Raph, 2026-11-24 09:08 and 09:09 Europe/Paris).** "Validate principles and core workings of the
+audio analysis before spending more cycles on UI", and the validation runs through the factory with no hand runs.
+So:
+
+- **20 and 21 are blocked until spec 11's release report shows every positive-set gate PASS**, with every
+  negative-set (L2) gate PASS and `Spec 11 guard: MET`. NOT EVALUATED is never a pass. The block is the index:
+  both rows list 11 in Depends on, and the picker takes them only once 11's row is Done on main.
+- **Spec 11 can only become Done when that is true.** Its build runs the release suite itself and commits the
+  report, and spec 11 adds `AnalysisGateTests` to AccentKit's tests (`make test`, so CI's `build & test` check runs
+  it). The test fails unless the committed report for the current `configDigest` shows the gates above (spec 11
+  §7). Red CI means the PR can't merge, so the row never reaches Done and 20 and 21 stay blocked. A FAIL goes to
+  CTO with the numbers; no gate is lowered to get past it. Nobody flips 20 or 21 by hand.
+- Spec 12's build likewise records the held-out word timings and commits the positive-suite report itself (spec
+  12, "Held-out pairs through the pipeline").
+- The queue puts the analysis specs first: 22, 12, 11, then the rest.
 
 | # | Spec | Status | Depends on | Agent run | Raph review |
 |---|---|---|---|---|---|
@@ -35,11 +51,11 @@ the timestamp check to proceed after the skeleton.
 | 10 | [Measures, verdict and diffs](10-measures-verdict-diffs.md) | Done | 02, 08, 09 | 4–5 h | 1.5 h |
 | 22 | [Synthetic native references (evaluation only)](22-synthetic-native-references.md) | Ready | 02, 10 | 4–6 h | 1.5 h |
 | 12 | [Analysis pipeline and coordinator](12-analysis-coordinator.md) | Ready | 03, 05, 10 | 6–8 h | 1.5 h |
-| 15 | [Reference library: bundled starter phrases and native recordings](15-reference-library.md) | Ready | 06, 10, 12 | 4–6 h | 1.5 h |
 | 11 | [Stress validation and threshold tuning](11-stress-validation-tuning.md) | Ready | 02, 10, 12, 22 (spec 23's b2 gate re-run) | 9–12 h | 2.5 h |
+| 15 | [Reference library: bundled starter phrases and native recordings](15-reference-library.md) | Ready | 06, 10, 12 | 4–6 h | 1.5 h |
 | 16 | [Take store](16-take-store.md) | Ready | 01, 12, 15 | 4–5 h | 1 h |
 | 14 | [Live microphone capture (macOS)](14-live-capture.md) | Ready | 05 (the hand test needs spec 13) | 3–4 h | 1 h |
-| 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19 | 6–8 h | 1.5 h |
+| 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Ready | 19, 11 (analysis gate) | 6–8 h | 1.5 h |
 | 13 | [Sandbox, microphone entitlement and usage string (by hand)](13-entitlements-mic-string.md) | Ready | 00 | – | 0.5 h |
-| 21 | [Coordinator-wired UI: record, compare, play back](21-coordinator-wired-ui.md) | Ready | 11, 12, 13, 14, 15, 16, 20 | 10–12 h | 2 h |
+| 21 | [Coordinator-wired UI: record, compare, play back](21-coordinator-wired-ui.md) | Ready | 11 (analysis gate), 12, 13, 14, 15, 16, 20 | 10–12 h | 2 h |
 | 17 | [Clip import pipeline (no UI)](17-clip-import.md) | Ready | 03, 06, 12, 15, 16 | 4–5 h | 1 h |
