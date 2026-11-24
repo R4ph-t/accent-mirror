@@ -1,8 +1,13 @@
 # 25: Nucleus-anchored syllable measurement (spec 11's FALLBACK)
 
-Status: Ready · Branch: factory/25-nucleus-anchored (hand build) · Depends on: 07 (segmenter, syllable counts), 08 (prominence), 12 (pipeline, caches), 23
+Status: Replaced by 28 · Branch: factory/25-nucleus-anchored (hand build) · Depends on: 07 (segmenter, syllable counts), 08 (prominence), 12 (pipeline, caches), 23
 (`DownstreamHarness`, b2, oracle sets) (also spec 11's FALLBACK report and harness: see Open question 1) · Estimate:
 6–8 h agent run + 1.5 h Raph review · Risk: high
+
+**Superseded 2026-11-24 (v1 show-don't-judge).** Spike 27 came back NO-GO (CTO accepted; report
+`docs/agreement/reports/spike27-69675122.md`, docs PR #69) and Raph decided at 18:42 Europe/Paris to ship v1 without
+verdicts. This spec's verdict gate is superseded and its row reads `Replaced by 28` (scoring off). Its branch stays
+unmerged as history and data for Milestone 2. Nothing below is built further.
 
 Risk: high. This spec adds keys to `Packages/AccentKit/Sources/AMCore/Thresholds.swift` (a risky path) and bumps
 `thresholdsVersion` and `algorithmVersion`. CTO approved this spec on 2026-11-24 at 15:04 Europe/Paris with four

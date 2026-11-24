@@ -1,7 +1,7 @@
 # 20: Charts: live strip, playhead, earlier takes and voice-switch ease
 
-Status: Ready · Branch: – · Depends on: 19 (fixture-driven UI shell), 11 (analysis gate: Done only when spec 11's release report shows
-every positive-set gate PASS; Raph 2026-11-24) · Estimate: 6–8 h agent run + 1.5 h Raph review
+Status: Ready · Branch: – · Depends on: 19 (fixture-driven UI shell), 28 (scoring off; was 11, then 27; repointed 2026-11-24 after spike 27's
+NO-GO and Raph's v1 show-don't-judge decision) · Estimate: 6–8 h agent run + 1.5 h Raph review
 
 Source: Designer spec v2 (Notion "Accent Mirror spec v2 (2026-11-23)") §7 (recording and analysing rows of the state
 table), §8 (strip), §9 (pitch: earlier takes on hover, playhead), §6 (take-menu hover preview), §13 items 7 and 9
@@ -13,6 +13,21 @@ playhead moving). Engineering review of spec v2 (Notion, 2026-11-23), proposed r
 19 left exactly these items to spec 20. Designer spec v2 Addendum r6 (Notion "Accent Mirror spec v2 (2026-11-23)", end of page; mockups `v2/specs11-21/specs11-21-board-{light,dark}@2x.png`): E3 (`highlight` token, hover and loop boxes), E4 (outline on the
 syllable being played, "Playing …" header), E9 (live-bar time scale and no ⇧⌘G confirmed). r6 wins over earlier
 text.
+
+**v1 show-don't-judge (re-scoped 2026-11-24).** Raph decided at 18:42 Europe/Paris (relayed by CPO) to ship v1 without
+stress or phrase verdicts; plan: Notion "Accent Mirror v1 show-don't-judge integration plan (2026-11-24)",
+https://app.notion.com/p/4220d0d4459281399adef9364a99bb69 (CTO approved). Spec 28 removes verdicts from the shipped
+app. Where this spec's text below conflicts with this block, this block wins:
+
+- **No diff rows exist in v1**, so the "Hover on a diff row" behaviour, its hover box and its How to test check are
+  out until Designer's neutral-comparison spec lands. The hover box on a **word click** and the looping slice stay.
+- **Strip Lime:** your row never gets Lime in a result (as during recording). The native row's Lime marks the
+  context-resolved expected stress spec 28 provides, never measured stress and never the raw dictionary primary;
+  no copy says the native "stressed" a syllable.
+- **The native band is display-only:** no colour change, copy, icon or motion implies pitch outside the band is
+  wrong; your line keeps one colour everywhere. The voice-switch ease re-times it as before.
+- **Playhead time mapping** uses `PartialTimeMap`'s inverse lookup as spec 28 leaves it (spec 28 investigates and
+  tests it); gaps show no playhead on the other row rather than interpolating.
 
 ## Goal
 
@@ -54,7 +69,7 @@ can feed them live data without touching the drawing. No audio, no microphone, n
 
 - New token **`highlight`**, neutral (never Lime or blue): `text.primary` at 5% (light) / 6% (dark) for hover, 9% /
   11% for a looping slice. It's added to spec 18's token set next to the others, with both appearances.
-- **Hover on a diff row** (card 1): the row gets a `surface.well` background (radius 6, 8 pt side inset; its play
+- *(Out in v1: no diff rows; see the v1 block above.)* **Hover on a diff row** (card 1): the row gets a `surface.well` background (radius 6, 8 pt side inset; its play
   button sits on `surface.card`). The row's word gets a **hover box**: one rounded rectangle (radius 4, 4 pt outset)
   behind its syllables across both strip rows, and the same fill as a full-height column in the pitch plot over that
   word's model time.
@@ -127,8 +142,8 @@ None. Addendum r6 E9 confirmed the live-bar time scale and dropping ⇧⌘G.
 2. `make test-ui-vm` renders every new fixture in light and dark (and Reduce Motion), and `scripts/check-screenshots.sh`
    finds no blank frame. Running it twice gives identical PNGs.
 3. In the screenshots: recording bars are `strip.bar` with Lime only on the playhead and the RECORDING label; the
-   voice-switch frame at 75 ms is between the two timelines and the band is drawn in every frame. `row-hover`,
-   `word-loop` and the two `playing-syllable` frames match the r6 board (sections 3 and 4): neutral boxes only, no
+   voice-switch frame at 75 ms is between the two timelines and the band is drawn in every frame. `word-loop` and
+   the two `playing-syllable` frames match (`row-hover` is out in v1: no diff rows) the r6 board (sections 3 and 4): neutral boxes only, no
    Lime or accent on the bars, the "Looping …" and "Playing …" labels in the strip header.
 4. Hand (Raph, any fixture via the Samples menu): hover the pitch card and hold Option to see earlier takes fade in;
    with Reduce Motion on, they appear at once.

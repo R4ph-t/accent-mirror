@@ -1,7 +1,7 @@
 # 21: Coordinator-wired UI: record, compare, play back
 
-Status: Ready · Branch: – · Depends on: 11 (tuned config; analysis gate: Done only when spec 11's release report shows every
-positive-set gate PASS; Raph 2026-11-24), 12 (pipeline, coordinator), 13 (entitlement, mic string;
+Status: Ready · Branch: – · Depends on: 28 (scoring off; was 11, then 27; repointed 2026-11-24 after spike 27's NO-GO and Raph's v1
+show-don't-judge decision), 12 (pipeline, coordinator), 13 (entitlement, mic string;
 by hand), 14 (live capture), 15 (starter library), 16 (take store), 20 (charts) · Estimate: 10–12 h agent run + 2 h
 Raph review · Risk: high
 
@@ -26,10 +26,25 @@ earlier text.
 and the F/M gender tag in E7's pop-up rows. They're built as Designer wrote them; if Raph overrules one in review, the
 agent changes that item only.
 
+**v1 show-don't-judge (re-scoped 2026-11-24).** Raph decided at 18:42 Europe/Paris (relayed by CPO) to ship v1 without
+stress or phrase verdicts; plan: Notion "Accent Mirror v1 show-don't-judge integration plan (2026-11-24)",
+https://app.notion.com/p/4220d0d4459281399adef9364a99bb69 (CTO approved). Spec 28 gates scoring out of the shipped app
+(`Verdict.notScored`). Where this spec's text below conflicts with this block, this block wins:
+
+- **Analysed result:** the strip, the pitch card and the inspector (timing match, model recording attribution).
+  **No card 1 "WHAT TO CHANGE"** (no rows, no close / noClearDifference / inconclusive sentence, no placement-only
+  line), **no inspector measures and no STRESS lines**, until Designer's neutral-comparison spec lands. Card 1 still
+  shows the recording row, the level meter and take problems ("YOUR TAKE", Try Again).
+- **No diff-row play button** (there are no rows). Play Model, Play You and word clicks stay.
+- VoiceOver announces "Result ready" for an analysed take, not a card-1 sentence.
+- **The native band is display-only** and the strip's Lime follows spec 28 (native row: context-resolved expected
+  stress; your row: none). Nothing in copy or colour says outside the band means wrong.
+- The 2 Compound Nouns starter phrases stay in the library and show the overlay like every other phrase.
+
 ## Goal
 
 The first build Raph can test: pick a starter phrase, listen to the native speaker, record a take, and see your take
-against the native recording (strip, pitch, what to change, inspector), then play both back, switch voices and go
+against the native recording (strip, pitch, inspector; no verdicts in v1), then play both back, switch voices and go
 through earlier takes. Everything on device.
 
 ## Behaviour
@@ -100,7 +115,7 @@ through earlier takes. Everything on device.
 
 - Play Model (⌘L) and Play You (⇧⌘L) play the whole phrase; the same button or Esc stops. The playhead (spec 20)
   follows. You is disabled when there's no audio (empty state, noSpeech, noMicrophone, micDenied).
-- A diff row's play button plays the model's slice, a 0.4 s pause, then yours, for that row's word (tooltip "Play the
+- *(Out in v1: no diff rows; see the v1 block.)* A diff row's play button plays the model's slice, a 0.4 s pause, then yours, for that row's word (tooltip "Play the
   model, then your take, for '{word}'"). Clicking a word label loops model slice, 0.4 s pause, your slice, until Esc,
   a click on empty space or another selection. A missing word plays the model only (tooltip "Plays the model only").
   Slices come from spec 09's playback lookup.
@@ -169,11 +184,10 @@ None. Addendum r6 E5–E8 answered the switching, level and "+ NEW PHRASE" quest
 4. Press Space: macOS asks for the microphone (first time). Allow. Say the phrase, stop talking: recording ends after
    about 1.2 s and the result appears within about 2 s. While you talk, the level meter moves; clap close to the
    mic and "Too loud" shows. **pass/fail**
-5. The result shows your strip under the native one, your pitch line on the band, 1–3 rows or a close/neutral row,
-   and the inspector's measures. **taste call (Raph)**
-6. Play Model, Play You, a row's play button and a word click play the right audio with the playhead, the outlined
-   syllable and the "Playing …" header; a word click shows "Looping …" until Esc. Hovering a row shows the neutral
-   box. **pass/fail**
+5. The result shows your strip under the native one and your pitch line on the band, with no WHAT TO CHANGE card, no
+   stress sentence and no inspector measures or STRESS lines (v1 show-don't-judge). **taste call (Raph)**
+6. Play Model, Play You and a word click play the right audio with the playhead, the outlined
+   syllable and the "Playing …" header; a word click shows "Looping …" until Esc. **pass/fail**
 7. Record two more takes; the take menu shows TAKE 03, ⌘[ shows TAKE 02's result, hovering the pitch card shows the
    earlier takes. Quit and relaunch: the takes are still there. **pass/fail**
 8. Switch Model Voice in the inspector (rows read "Southern England (English)  p225 · F"): the band stays drawn and
