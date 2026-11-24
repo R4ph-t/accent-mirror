@@ -219,7 +219,7 @@ struct ChartModelTests {
 
     @Test func recordingFixturesFeedTheEnvelope() throws {
         for (name, seconds) in [("recording-live-500ms", 0.5), ("recording-live-2000ms", 2.0), ("recording-live-19500ms", 19.5)] {
-            guard case .recording(let envelope) = try charts(name).strip.strip.you else { Issue.record(name); continue }
+            guard case .recording(let envelope) = try charts(name).strip.strip.you else { Issue.record("\(name): no live row"); continue }
             #expect(close(envelope.elapsed, seconds), "\(name)")
             #expect(try charts(name).pitch.pitch.you.isEmpty, "\(name): no live pitch")
         }
