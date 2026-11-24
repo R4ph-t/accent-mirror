@@ -15,7 +15,7 @@
           "text": "pho",
           "start": 0.003,
           "end": 0.075,
-          "prominence": 0.35,
+          "prominence": 0.22,
           "stressed": false,
           "label": "lower"
         },
@@ -31,7 +31,7 @@
           "text": "ra",
           "start": 0.24,
           "end": 0.295,
-          "prominence": 0.35,
+          "prominence": 0.2,
           "stressed": false,
           "label": "lower"
         },
@@ -39,7 +39,7 @@
           "text": "phy",
           "start": 0.3,
           "end": 0.385,
-          "prominence": 0.38,
+          "prominence": 0.25,
           "stressed": false,
           "label": "lower"
         }
@@ -95,7 +95,7 @@
           "text": "than",
           "start": 0.673,
           "end": 0.718,
-          "prominence": 0.3,
+          "prominence": 0.18,
           "stressed": false,
           "label": "lower"
         }

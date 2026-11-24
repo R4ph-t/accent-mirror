@@ -304,9 +304,11 @@ struct ShellContractTests {
             #expect(try pitchChanged(name), "\(name)")
         }
         // Bars only. Contrast changes only the named stressed bars; too much contrast also lowers their
-        // unstressed neighbours (r4 C4), never anything else.
+        // unstressed neighbours (r4 C4) and brings the small syllables it doesn't name to native's relative height
+        // (r5 D2), never anything else.
         #expect(try changedBars("rows-contrast") == ["har", "looks"])
-        #expect(try changedBars("rows-too-much-contrast").isSubset(of: stressed.union(["is", "der", "it"])))
+        #expect(try changedBars("rows-too-much-contrast")
+            .isSubset(of: stressed.union(["is", "der", "it", "pho", "ra", "phy", "than"])))
         for name in ["rows-contrast", "rows-too-much-contrast"] { #expect(try !pitchChanged(name), "\(name)") }
         let weak = prominences(try #require(try library.load("rows-contrast").take))
         let strong = prominences(try #require(try library.load("rows-too-much-contrast").take))
@@ -350,18 +352,44 @@ struct ShellContractTests {
         #expect(zip(fallSlopes, fallSlopes.dropFirst()).allSatisfy { $1 >= $0 }, "no kink: \(fallSlopes)")
     }
 
-    /// r4 C4: the too-much-contrast strip shows more contrast than the model. Named syllables stand at full height,
-    /// each unstressed neighbour of a named syllable is at most half as tall relative to it as the native's
-    /// neighbour is to the native's (the row's 2× rule), and syllables the row doesn't name keep native's relative
-    /// height (TOG) or are never shrunk.
+    /// The unstressed neighbours of the syllables a too-much-contrast row names that are lighter in your take than
+    /// the row's 2× rule allows next to native (r4 C4): the strip's "light neighbours".
+    private func lightNeighbours(_ loaded: LoadedFixture) throws -> Set<String> {
+        guard let row = loaded.fixture.analysis?.verdict?.rows?.first(where: { $0.kind == .tooMuchContrast }),
+              let take = loaded.take
+        else { return [] }
+        let native = loaded.phrase.words.flatMap(\.syllables)
+        let mine = take.words.flatMap(\.syllables)
+        guard native.count == mine.count else { return [] }
+        let named = Set((row.targets ?? []).map { $0.lowercased() })
+        var neighbours: Set<String> = []
+        for index in mine.indices where named.contains(mine[index].text.lowercased()) {
+            for other in [index - 1, index + 1] where mine.indices.contains(other) && !native[other].stressed {
+                let nativeRatio = native[other].prominence / native[index].prominence
+                let mineRatio = mine[other].prominence / mine[index].prominence
+                if mineRatio <= nativeRatio / 2 + 1e-9 { neighbours.insert(mine[other].text.lowercased()) }
+            }
+        }
+        return neighbours
+    }
+
+    /// r4 C4 and r5 D2: the too-much-contrast strip shows more contrast than the model, and nothing else.
+    /// - Named syllables stand at full height.
+    /// - Each unstressed neighbour of a named syllable is at most half as tall relative to it as the native's
+    ///   neighbour is to the native's (the row's 2× rule): a light neighbour.
+    /// - Every other syllable keeps native's relative height (±10%; TOG to 1%), except one a reduction row in the
+    ///   same take names, which may be heavier (`feedback-too-much-contrast-last`: ra, phy and than; pho is not
+    ///   named, so it stays at native's height).
     @Test(arguments: ["rows-too-much-contrast", "feedback-too-much-contrast-last"])
     func tooMuchContrastStripShowsMoreContrast(_ name: String) throws {
         let loaded = try library.load(name)
         let native = loaded.phrase.words.flatMap(\.syllables).map { (text: $0.text.lowercased(), prominence: $0.prominence) }
         let mine = try #require(loaded.take).words.flatMap(\.syllables).map { (text: $0.text.lowercased(), prominence: $0.prominence) }
         #expect(native.map(\.text) == mine.map(\.text))
-        let row = try #require(loaded.fixture.analysis?.verdict?.rows?.first { $0.kind == .tooMuchContrast })
+        let rows = loaded.fixture.analysis?.verdict?.rows ?? []
+        let row = try #require(rows.first { $0.kind == .tooMuchContrast })
         let named = Set((row.targets ?? []).map { $0.lowercased() })
+        let reductionNamed = Set(rows.filter { $0.kind == .reduction }.flatMap { $0.targets ?? [] }.map { $0.lowercased() })
         let nativeMax = native.map(\.prominence).max()!, mineMax = mine.map(\.prominence).max()!
         let stressed = Set(loaded.phrase.words.flatMap(\.syllables).filter(\.stressed).map { $0.text.lowercased() })
         var neighbours: Set<String> = []
@@ -374,17 +402,49 @@ struct ShellContractTests {
             }
         }
         #expect(neighbours == ["is", "der", "it"])
-        let close = prominences(try take("photography-take04-close"))
+        #expect(try lightNeighbours(loaded) == neighbours)
         for (index, syllable) in mine.enumerated() {
+            let nativeRelative = native[index].prominence / nativeMax
+            let mineRelative = syllable.prominence / mineMax
             if named.contains(syllable.text) {
                 #expect(syllable.prominence == mineMax, "\(syllable.text) at full height")
+            } else if neighbours.contains(syllable.text) {
+                continue
             } else if stressed.contains(syllable.text) {
-                #expect(abs(syllable.prominence / mineMax - native[index].prominence / nativeMax) < 0.01,
-                        "\(syllable.text) keeps native's relative height")
-            } else if !neighbours.contains(syllable.text) {
-                #expect(syllable.prominence >= close[syllable.text]!, "\(syllable.text) is never shrunk")
+                #expect(abs(mineRelative - nativeRelative) < 0.01, "\(syllable.text) keeps native's relative height")
+            } else if reductionNamed.contains(syllable.text) {
+                #expect(mineRelative >= nativeRelative, "\(syllable.text) is named by the reduction row: never lighter")
+            } else {
+                #expect(abs(mineRelative / nativeRelative - 1) <= 0.10,
+                        "\(syllable.text) isn't named: native's relative height (\(mineRelative) vs \(nativeRelative))")
             }
         }
+        if name == "rows-too-much-contrast" {
+            #expect(reductionNamed.isEmpty)
+        } else {
+            #expect(reductionNamed == ["ra", "phy", "than"])
+            let pho = try #require(mine.firstIndex { $0.text == "pho" })
+            #expect(abs((mine[pho].prominence / mineMax) / (native[pho].prominence / nativeMax) - 1) <= 0.10)
+        }
+    }
+
+    /// r5 D2: a syllable that is a light neighbour in a too-much-contrast row is never named in a reduction row,
+    /// in any fixture. `feedback-too-much-contrast-last` reads "ra, phy, than." with no "der".
+    @Test func lightNeighboursAreNeverNamedAsTooHeavy() throws {
+        var checked = 0
+        for name in try library.allNames() {
+            let loaded = try library.load(name)
+            let light = try lightNeighbours(loaded)
+            guard !light.isEmpty else { continue }
+            checked += 1
+            let reduction = (loaded.fixture.analysis?.verdict?.rows ?? []).filter { $0.kind == .reduction }
+            let reductionNamed = Set(reduction.flatMap { $0.targets ?? [] }.map { $0.lowercased() })
+            #expect(reductionNamed.isDisjoint(with: light), "\(name): \(reductionNamed.intersection(light))")
+        }
+        #expect(checked >= 2)
+        let rows = try sentences("feedback-too-much-contrast-last")
+        #expect(rows.first == "Keep the small syllables short and light: ra, phy, than.")
+        #expect(!rows.joined().contains("der"))
     }
 
     /// Round 4, Designer answer 1: "End higher" sits on a question whose native really rises at the end, and
