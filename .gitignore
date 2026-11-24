@@ -74,3 +74,6 @@ eval-local/
 
 # Local caches (spec 03): model weights, VCTK clips, MFA. Never committed.
 /.cache/
+
+# Synthetic native references (spec 22): generated TTS audio and reports, never committed
+/eval-cache/tts/

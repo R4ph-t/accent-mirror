@@ -15,10 +15,12 @@ public enum PairScoring {
         case modelIncomplete([WordIndex])
     }
 
-    /// Scores `you` against `model`, both analysed from `words` (the phrase, in order).
+    /// Scores `you` against `model`, both analysed from `words` (the phrase, in order). `natives` adds native
+    /// readers' observed stress to each word's A(w) (spec 08); empty by default. Spec 22's end-to-end check passes the
+    /// synthetic reference's own observed primaries here.
     public static func score(
         words: [PlacementTake.Word], you: PlacementAnalysis, model: PlacementAnalysis, modelVoice: String,
-        thresholds: Thresholds = .current
+        natives: [WordIndex: [NativeReading]] = [:], thresholds: Thresholds = .current
     ) throws -> Scoring {
         let modelWords = Dictionary(
             model.segmentation.words.filter { $0.kind == .present }.map { ($0.phraseWord, $0) },
@@ -49,7 +51,7 @@ public enum PairScoring {
             return ScoringWord(
                 index: word.index, syllableCount: expected.syllableCount, isTarget: expected.isTarget, isContent: true,
                 expectedPattern: expected.expectedPattern,
-                accepted: WordAcceptedSet(expected: expected, natives: []))
+                accepted: WordAcceptedSet(expected: expected, natives: natives[word.index] ?? []))
         }
 
         func take(_ analysis: PlacementAnalysis) -> ScoringTake {

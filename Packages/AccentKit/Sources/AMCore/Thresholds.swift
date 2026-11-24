@@ -254,6 +254,13 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public var l2FalsePositiveWorstSpeakerMax = 0.10
         public var whichSyllableAccuracyMin = 0.80
         public var syntheticControlDiffsMax = 0.02
+        /// Spec 22 voice verification: share of moved-stress items whose observed primary is the marked syllable at
+        /// medium confidence or better.
+        public var voiceMovedStressMin = 0.90
+        /// Spec 22 voice verification: share of correct-stress items whose observed primary is the expected one.
+        public var voiceCorrectStressMin = 0.95
+        /// Spec 22 synthetic negative set: the two DSPs' which-syllable accuracies agree within this (points).
+        public var syntheticDSPAgreementMaxPoints = 0.05
         public var unintelligiblePlacementDiffsMax = 0.0
         public var endToEndRecallWithinPoints = 0.10
         public var endToEndFalsePositiveMax = 0.02
