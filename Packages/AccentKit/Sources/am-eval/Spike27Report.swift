@@ -115,7 +115,8 @@ func spike27Report(_ env: SpikeEnvironment, training: TrainingFile, evaluation e
                                       splitPath: "fixtures/splits/vctk.json", splitSeed: env.split.foldSeed)
     let negatives = try? JSONDecoder().decode(NegativesFile.self, from: Data(contentsOf: env.file("negatives.json")))
     let report = Spike27Report(generatedAt: ISO8601DateFormatter().string(from: Date()), identity: identity,
-                               listen: env.listen.standardizedFileURL.path, listenFiles: negatives?.listen ?? [],
+                               listen: env.listen.standardizedFileURL.path.replacingOccurrences(
+                                   of: FileManager.default.homeDirectoryForCurrentUser.path, with: "~"), listenFiles: negatives?.listen ?? [],
                                training: training, evaluation: e, verdict: verdict)
     let acceptance = (try? String(contentsOf: URL(fileURLWithPath: NSString(string: "~/dev/accent-mirror-wt/_cache-26/logs/acceptance1.txt").expandingTildeInPath), encoding: .utf8)) ?? ""
     let markdown = spike27Markdown(report, acceptance: acceptance)
