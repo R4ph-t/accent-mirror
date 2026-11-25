@@ -20,7 +20,8 @@ struct ShellView: View {
         .frame(minWidth: Metrics.minimumWindow.width,
                minHeight: Metrics.minimumWindow.height - Metrics.toolbarHeight)
         .ignoresSafeArea()
-        .background(WindowChromeConfigurator())
+        .background(WindowChromeConfigurator { model.window = $0 })
+        .background(InspectorCollapseObserver(inspectorVisible: $model.inspectorVisible))
         .environment(\.inputPopoverState, model.inputPopover)
         .environment(\.inputPopoverSource, model.inputPopoverSource)
         .environment(\.closeInputPopover, {
@@ -49,7 +50,7 @@ struct DetailPane: View {
         VStack(spacing: 0) {
             ToolbarView(state: model.toolbar, isInputOpen: model.inputPopover != nil,
                         inspectorVisible: model.inspectorVisible,
-                        toggleInspector: { model.inspectorVisible.toggle() })
+                        toggleInspector: { model.toggleInspector() })
             if let banner = model.detail?.banner {
                 // §13.2: 8 pt below the toolbar, 40 tall; the cards move down by 48.
                 BannerView(banner: banner)

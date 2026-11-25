@@ -38,7 +38,7 @@ struct ToolbarView: View {
             HStack(spacing: ToolbarCompaction.ControlWidths.playbackSpacing) {
                 GhostButton(title: "Model", isEnabled: state.modelEnabled, showsTriangle: level < .wordsOnly,
                             action: actions.playModel)
-                RecordButton(state: state.record, showsTitle: level < .recordDot, action: actions.record)
+                RecordButton(state: state.record, showsTitle: true, action: actions.record)
                 GhostButton(title: "You", isEnabled: state.youEnabled, showsTriangle: level < .wordsOnly,
                             action: actions.playYou)
             }
@@ -159,8 +159,7 @@ struct GhostButton: View {
 struct RecordButton: View {
     @Environment(\.palette) private var palette
     var state: ToolbarState.RecordButton
-    /// False on a narrow toolbar (r4 C7 step 2): the dot (or Stop's square while recording) in the Lime button,
-    /// 40 wide; "Record (Space)" in the tooltip and for VoiceOver.
+    /// Always true (v3.7 K2): Record keeps its label; it never becomes a bare Lime dot.
     var showsTitle = true
     var action: @MainActor () -> Void = {}
 
