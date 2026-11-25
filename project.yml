@@ -72,6 +72,9 @@ targets:
         # Signing: automatic, no team. CI passes CODE_SIGNING_ALLOWED=NO (see Makefile).
         CODE_SIGN_STYLE: Automatic
         CODE_SIGN_IDENTITY: "-"
+        # Spec 13: App Sandbox, microphone, user-selected read-only files. CI builds unsigned, so it never embeds them.
+        CODE_SIGN_ENTITLEMENTS: AccentMirror/AccentMirror.entitlements
+        INFOPLIST_KEY_NSMicrophoneUsageDescription: "Accent Mirror listens while you record a take. Your voice is analysed on this Mac and never leaves it."
 
   # Unhosted unit tests for the app's fixture layer (the Samples menu's names). No TEST_HOST: the few UI-free
   # files they need are compiled in, so running them never launches the app or opens a window.
