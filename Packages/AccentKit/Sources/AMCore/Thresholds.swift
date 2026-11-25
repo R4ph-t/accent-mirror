@@ -27,6 +27,7 @@ public struct Thresholds: Sendable, Hashable, Codable {
     public var wordBoundaries = WordBoundaries()
     public var syllableBoundaries = SyllableBoundaries()
     public var performance = Performance()
+    public var soundJudging = SoundJudging()
 
     public init() {}
 
@@ -310,6 +311,14 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public var endToEndBudgetS = 2.0
         public var nonASRStagesMs = 500.0
         public var asrWarmMs = 900.0
+        public init() {}
+    }
+
+    /// Per-sound pronunciation judging (sound-judging plan, 2026-11-25), frozen from the judging spike: the
+    /// calibrated P(error) above which a sound is flagged. Picked as the best phone F1 on speechocean762 train only;
+    /// held-out LibriSpeech natives get 35/5,659 words flagged (0.62%).
+    public struct SoundJudging: Sendable, Hashable, Codable {
+        public var errorThreshold = 0.22
         public init() {}
     }
 }
