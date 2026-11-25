@@ -129,6 +129,9 @@ struct PitchPresentation: Sendable {
     var words: [(text: String, start: Double, end: Double, isTarget: Bool)]
     /// Native syllables, for the faint waveform texture behind the plot.
     var texture: [StripCluster]
+    /// The legend's "You" item: only with a take drawn over the model. A native-only card (before the first take,
+    /// recording, a take problem) shows the band swatch and "Native range" alone (v3.2 W1).
+    var showsYouLegend: Bool = true
 }
 
 /// The Details inspector (v3 §4).
@@ -502,7 +505,8 @@ enum ShellPresenter {
             words: phrase.words.map { word in
                 (text: word.text, start: word.start, end: word.end, isTarget: isTargetWord(word, named: named))
             },
-            texture: nativeClusters(phrase)
+            texture: nativeClusters(phrase),
+            showsYouLegend: isResult(loaded)
         )
     }
 
@@ -521,11 +525,16 @@ enum ShellPresenter {
     /// Clicking a word's label (v3 §3.5): the model's slice of that word, 0.4 s, then yours, looping until Esc. A
     /// missing word loops the model only. Returns the schedule and the word as the caption names it.
     static func loopSchedule(_ loaded: LoadedFixture, word index: Int) -> (schedule: PlaybackSchedule, word: String)? {
-        guard isResult(loaded), let take = loaded.take, loaded.phrase.words.indices.contains(index) else { return nil }
+        guard loaded.phrase.words.indices.contains(index) else { return nil }
         let word = loaded.phrase.words[index]
         guard let first = word.syllables.first, let last = word.syllables.last else { return nil }
         let seconds = playbackSeconds(loaded)
         let model = (from: first.start, to: last.end, seconds: (last.end - first.start) * seconds.model)
+        guard isResult(loaded), let take = loaded.take else {
+            // No analysed take on screen (v3.2 W1: before the first take, while recording, on a take problem):
+            // the model's slice only, with no pause and no You half.
+            return (.loopModel(model), normalizedWord(word.text))
+        }
         let indices = TimingConnectors.nativeWordIndices(phrase: loaded.phrase, take: take)
         var you: (from: Double, to: Double, seconds: Double)?
         if let pairIndex = indices.firstIndex(of: index), take.words[pairIndex].kind != .missing,
@@ -549,6 +558,17 @@ enum ShellPresenter {
                 result.measuresNote = ThisTake.note(describe)
             }
             result.alignment = analysis.timing.map(ThisTake.alignment)
+        } else if fixture.phase != .showingTake, fixture.operationalError == nil,
+                  let describe = fixture.analysis?.describe {
+            // No take of yours on screen (v3.2 W1): NATIVE RANGE still shows, display-only; You is an em dash and
+            // there's no ALIGNMENT (nothing was aligned).
+            result.measures = ThisTake.rows(describe).map {
+                var row = $0
+                row.you = ThisTake.missing
+                row.youTooltip = nil
+                return row
+            }
+            result.measuresNote = ThisTake.note(describe)
         }
         if let model = fixture.modelRecording {
             result.model = ModelRecordingPresentation(

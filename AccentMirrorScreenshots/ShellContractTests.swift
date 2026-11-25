@@ -18,6 +18,32 @@ struct ShellContractTests {
         for name in names { _ = try library.load(name) }
     }
 
+    /// Addendum v3.2 W1: before the first take the native model is drawn, You is a placeholder, and the inspector
+    /// shows the native range with You as an em dash and no ALIGNMENT. A word label loops the model only.
+    @Test func emptyShowsTheNativeModel() throws {
+        let empty = try library.load("empty")
+        let toolbar = ShellPresenter.toolbar(for: empty)
+        #expect(toolbar.modelEnabled && !toolbar.youEnabled)
+        #expect(toolbar.takeMenu == .takes)
+        let strip = ShellPresenter.strip(empty)
+        #expect(!strip.native.isEmpty && strip.native.contains { $0.dot })
+        guard case .placeholder = strip.you else { Issue.record("you row"); return }
+        #expect(strip.connectors.isEmpty)
+        let pitch = ShellPresenter.pitch(empty)
+        #expect(pitch.you.isEmpty && pitch.earlier.isEmpty && !pitch.band.isEmpty)
+        #expect(!pitch.showsYouLegend)
+        #expect(ShellPresenter.pitch(try library.load("result")).showsYouLegend)
+        let inspector = ShellPresenter.inspector(empty)
+        #expect(inspector.measures.count == 5)
+        #expect(inspector.measures.allSatisfy { $0.you == ThisTake.missing && $0.native != ThisTake.missing })
+        #expect(inspector.alignment == nil)
+        let index = try #require(empty.phrase.words.firstIndex { !$0.syllables.isEmpty })
+        let loop = try #require(ShellPresenter.loopSchedule(empty, word: index))
+        #expect(loop.schedule.repeats)
+        #expect(loop.schedule.steps.count == 1)
+        guard case .play(.model, _, _, _) = loop.schedule.steps.first else { Issue.record("model slice"); return }
+    }
+
     @Test func recordingToolbar() throws {
         let toolbar = ShellPresenter.toolbar(for: try library.load("recording"))
         #expect(toolbar.record == .stop)
