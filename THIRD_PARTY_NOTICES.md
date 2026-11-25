@@ -107,17 +107,8 @@ without it and reports sound judging as unavailable.
   compute and int8 per-channel weights. `coremltools` 9.0 (BSD-3-Clause) runs only in the fetch script's
   git-ignored venv; it is never linked into the app.
 
-### Sound judging calibration weights (fitted on speechocean762, CC BY 4.0)
-
-The sound judge ships a per-phone logistic calibration (81 weights: GOP, a 39-phone one-hot and their product) that
-turns a GOP score into P(error). The weights were fitted on the speechocean762 train split; no speechocean762 audio
-or labels ship with the app.
-
-- Attribution: Junbo Zhang et al., speechocean762, 2021 ("speechocean762: An Open-Source Non-native English Speech
-  Corpus For Pronunciation Assessment", Interspeech 2021; SpeechOcean). https://www.openslr.org/101/
-- Licence: Creative Commons Attribution 4.0 International (CC BY 4.0),
-  https://creativecommons.org/licenses/by/4.0/
-- Changes: only fitted model coefficients derived from the corpus's phone scores are distributed.
+The calibration weights the sound judge applies to this model's scores are listed under "Sound-judging calibration"
+below.
 
 ## CMUdict (BSD-style)
 
