@@ -156,17 +156,20 @@ struct ShippedAlignerTests {
             files += walker.compactMap { $0 as? URL }
         }
         #expect(files.count > 10)
+        // The CTC model is wav2vec2-base-960h. The sound judge's wav2vec2-lv-60-espeak-cv-ft is bundled on purpose,
+        // so the guard names the CTC model, not every wav2vec2.
+        let ctcModel = "wav2vec2-base-960h"
         let names = files.map { String($0.path.dropFirst(Self.repo.path.count)).lowercased() }.filter {
-            $0.contains("wav2vec") || $0.contains("ctc") || $0.hasSuffix(".mlpackage")
+            $0.contains(ctcModel) || $0.contains("ctc") || $0.hasSuffix(".mlpackage")
         }
         #expect(names == [], "CTC files where the app copies resources")
         for file in files where file.lastPathComponent == "manifest.json" {
             let text = try String(contentsOf: file, encoding: .utf8)
-            #expect(!text.contains("wav2vec2"), "\(file.path) names the CTC model")
+            #expect(!text.contains(ctcModel), "\(file.path) names the CTC model")
         }
         // The app's build spec never names the CTC model, its fetch script or its target.
         let spec = try String(contentsOf: Self.repo.appendingPathComponent("project.yml"), encoding: .utf8)
-        for name in ["wav2vec", "fetch-ctc", Self.ctcTarget] { #expect(!spec.contains(name), "project.yml: \(name)") }
+        for name in [ctcModel, "fetch-ctc", Self.ctcTarget] { #expect(!spec.contains(name), "project.yml: \(name)") }
     }
 }
 
