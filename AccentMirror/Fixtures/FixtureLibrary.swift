@@ -10,6 +10,8 @@ struct LoadedFixture: Sendable {
     /// Takes and phrases the `chart` block names (ghosts before a save, the menu preview, a voice switch), by id.
     var chartTakes: [String: TakeFixture] = [:]
     var chartPhrases: [String: PhraseFixture] = [:]
+    /// Spec 21: the live audio's lengths (the model's phrase window, your take's), for playback and the playhead.
+    var liveSeconds: (model: Double, you: Double)?
 }
 
 /// Loads the committed JSON fixtures from the app bundle (`Contents/Resources/Fixtures/`). Bundle only:

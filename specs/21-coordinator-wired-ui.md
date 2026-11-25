@@ -220,4 +220,68 @@ None. Addendum r6 E5–E8 answered the switching, level and "+ NEW PHRASE" quest
 
 ## Implementation notes
 
-_(filled in by the agent)_
+Hand build on Claude Code (Opus), 2026-11-25, branch `factory/21-coordinator-wired-ui`, on Raph's "Make it record". CI,
+`make test-vm` and the UI/screenshot tests were skipped on Raph's instruction.
+
+### Where things are
+
+| File | What |
+|---|---|
+| `AccentMirror/Live/AppModel.swift` | Builds the pipeline (coordinator, model host, starter library, take store, `MicRecorder`, playback), draws `LiveSession`'s state through the shell, menus' actions, Space key, app-active re-check, device list, E5 meter model |
+| `AccentMirror/Live/LiveSession.swift` | UI-free live flow: phrase and voice, record / stop / Esc, analysing after 0.4 s, coordinator events, saving, takes, ghosts, voice switch, banner actions, audio clips |
+| `AccentMirror/Live/LivePresenter.swift` | The one place AMCore names meet UI names: `AnalysisResult` → the fixture-shaped `PhraseFixture` / `TakeFixture` / `Analysis`, spec 01's drift table, voices and subtitle |
+| `AccentMirror/Live/AudioPlayback.swift` | `AVAudioEngine` player: renders a `PlaybackSchedule` into one 16 kHz buffer (Play Model / You / Both, word loops) |
+| `AccentMirror/Live/MenuTable.swift` | Every shortcut (v1 §10), read by the menus and the tests |
+| `AccentMirror/Shell/ShellActions.swift` | The controls' actions in the SwiftUI environment; the default does nothing, so fixture mode is untouched |
+| `project.yml` | "Bundle speech model" post-build phase; the test target compiles the four UI-free live files and links `AMPipeline` |
+| `AccentMirrorTests/LiveTests.swift` | The spec's named unit tests |
+
+### How it fits
+
+- Launch without `-UIFixture` is live; with it, fixture mode exactly as before (Samples ▸ still switches the window to a
+  fixture, and the live phrase waits for the next launch). Live state goes through `LivePresenter.loaded` into the same
+  `ShellModel.apply` the fixtures use (`applyLive` keeps the inspector open/closed), so every view draws live data with
+  no view-side AMCore types.
+- Drift (spec 01 table) handled in `LivePresenter`: one `TakeProblem` → `takeProblems: [..]`; `Stage` → the four copy
+  stages; `audioUnreadable` → `source: "take"`; `PersistenceStatus` payloads → bare names (`pending` shows nothing);
+  `TimingLevel.poor` → `rough`; `DescribedMeasures` → `Describe`; seconds → fractions of each speaker's timeline (model:
+  `modelAxis`; yours: first heard word to last). The v2-only rows (diff kinds, measure states, stress-line outcomes,
+  inconclusive causes) aren't shown in v1, so nothing maps them.
+- Record: Take ▸ Record Take / Stop Recording (⌘R), Space (an app-local key monitor; skipped while a text field has
+  focus), and the toolbar's Record button. Esc (Take ▸ Cancel) cancels a recording or an analysis, else stops playback.
+  Selecting another phrase while recording cancels the take (announced "Recording cancelled").
+- Analysed takes are saved by the coordinator; take problems, failures and cancels never are. A take problem with
+  audio stays playable with You and the take menu reads LAST TRY · NOT SAVED.
+- Voice switch: the subtitle names the voice at once; an unsaved result is re-submitted (analyzer cache: L2 only), a
+  saved take goes through `TakeStore.result` (spec 16, lazily); the new L2 arrives through `ShellModel.voiceArrived`
+  (spec 20's ease). The voice per phrase and the input device are remembered in `UserDefaults`.
+
+### Where the model loads from at runtime
+
+`Bundle.main.resourceURL/Models/openai_whisper-base.en/` (`AccentMirror.app/Contents/Resources/Models/…`), never the
+repo cache. The "Bundle speech model" phase (Debug and Release) runs `scripts/fetch-models.sh --verify` against
+`MODELS_CACHE` (default `.cache/models`), then copies `model/` and `tokenizer/` plus the committed
+`Resources/Models/openai_whisper-base.en/{manifest.json,LICENSE,NOTICE}` into that folder. The app reads the bundled
+copy of the manifest for `ModelManifest.verify` (WhisperKit's load verifies every SHA-256 first). Without a verified
+cache the phase prints a `note:` and exits 0; the app then starts with the modelUnavailable banner and never downloads.
+The model loads and warms up at launch in a detached task. `ENABLE_USER_SCRIPT_SANDBOXING` is already `NO` for the
+project, so nothing changed there. Takes live in the container through `TakeStore.applicationSupportRoot()`; the
+native references' rebuilt caches in the container's Caches folder.
+
+### Spec gaps
+
+1. Space and ⌘R: a menu item takes one key equivalent, so Take ▸ Record Take shows ⌘R and Space is caught by the window.
+2. Esc during an analysis: `InvalidationReason` has no user-cancel case; it uses `.newRecordingStarted` (AccentKit
+   unchanged).
+3. ⌘F: search behaviour isn't specified; Edit ▸ Find shows the sidebar (where the search well is).
+4. Before the first take of a phrase the native row and band are empty (words spread evenly): the native L1 isn't
+   mapped until a take is analysed against it.
+5. A capture that fails to start for a reason other than no device / denied (`inputFailed`) shows the
+   audioUnreadable (take) banner.
+6. E5's "Too loud" asks for Geist 12 / 500; no Geist Medium is bundled, so it uses Geist 12 with a medium weight.
+7. New fixtures `recording-level`, `recording-too-loud` and `voice-popup-open` aren't added: the meter is drawn only
+   from a live level (so every existing fixture renders as before), and the screenshot run was skipped.
+8. A saved take's You audio is read from its `audio.caf` in the store folder (`TakeStore` has no public reader).
+9. Switching voice on a saved take after a relaunch re-runs ASR through spec 16's recompute (the analyzer's memory
+   cache is empty then); in the same session it is L2 only.
+10. Try Again Saving re-submits the same take; the analyzer's cache answers and the coordinator saves it again.

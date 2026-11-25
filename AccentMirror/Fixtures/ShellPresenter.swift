@@ -40,6 +40,8 @@ struct CardRow: Sendable {
         /// The result row's Play Both ghost button (⌥⌘L).
         case playBoth
         case button(String)
+        /// The recording row's level meter (r6 E5): drawn only while a live take feeds it, so fixtures look as before.
+        case levelMeter
     }
 
     var icon: Icon?
@@ -245,7 +247,7 @@ enum ShellPresenter {
             ])
         case .recording:
             return CardPresentation(title: Copy.yourTake, rows: [
-                CardRow(icon: .symbol("mic.fill"), sentence: [.plain(Copy.recordingPrompt)], trailing: .none),
+                CardRow(icon: .symbol("mic.fill"), sentence: [.plain(Copy.recordingPrompt)], trailing: .levelMeter),
             ])
         case .analysing:
             return CardPresentation(title: Copy.yourTake, rows: [
@@ -508,6 +510,7 @@ enum ShellPresenter {
 
     /// Seconds to play for each side: the fixture's own, else the described lengths, else a nominal phrase.
     static func playbackSeconds(_ loaded: LoadedFixture) -> (model: Double, you: Double) {
+        if let live = loaded.liveSeconds { return live }
         if let frame = loaded.fixture.playBoth { return (frame.modelSeconds, frame.youSeconds) }
         let describe = loaded.fixture.analysis?.describe
         let model = describe?.native.lengthSeconds.min ?? nominalPhraseSeconds

@@ -79,6 +79,25 @@ enum Copy {
     static let stopPlaying = "Stop"
     static let showEarlierTakes = "Show Earlier Takes"
 
+    // MARK: Live app (spec 21: v1 §10 menus, r6 E5 and E8, v1 §11.1 announcements)
+
+    static let recordTake = "Record Take"
+    static let stopRecording = "Stop Recording"
+    static let cancel = "Cancel"
+    static let previousTake = "Previous Take"
+    static let nextTake = "Next Take"
+    static let previousPhrase = "Previous Phrase"
+    static let nextPhrase = "Next Phrase"
+    static let showDetails = "Show Details"
+    static let hideDetails = "Hide Details"
+    static let find = "Find"
+    static let input = "INPUT"
+    static let tooLoud = "Too loud"
+    static let voiceDisabledTooltip = "Stop recording to change the voice"
+    static let recordingAnnouncement = "Recording"
+    static let analysingAnnouncement = "Analysing"
+    static let recordingCancelled = "Recording cancelled"
+
     // MARK: Strip and pitch legends (v3 §3.2–3.3, v3.1 V2, V4)
 
     static let dictionaryStress = "Dictionary stress"

@@ -5,6 +5,7 @@ import SwiftUI
 /// menu, You, Record, Model. Play and Record are visual only in this shell: no microphone, no audio.
 struct ToolbarView: View {
     @Environment(\.palette) private var palette
+    @Environment(\.shellActions) private var actions
     var state: ToolbarState
     var toggleInspector: () -> Void
     /// The toolbar's width inside its side padding, measured; it picks the compaction level (r4 C7).
@@ -31,9 +32,11 @@ struct ToolbarView: View {
     private func controls(_ level: ToolbarCompaction.Level) -> some View {
         HStack(spacing: 0) {
             HStack(spacing: ToolbarCompaction.ControlWidths.playbackSpacing) {
-                GhostButton(title: "Model", isEnabled: state.modelEnabled, showsTriangle: level < .wordsOnly)
-                RecordButton(state: state.record, showsTitle: level < .recordDot)
-                GhostButton(title: "You", isEnabled: state.youEnabled, showsTriangle: level < .wordsOnly)
+                GhostButton(title: "Model", isEnabled: state.modelEnabled, showsTriangle: level < .wordsOnly,
+                            action: actions.playModel)
+                RecordButton(state: state.record, showsTitle: level < .recordDot, action: actions.record)
+                GhostButton(title: "You", isEnabled: state.youEnabled, showsTriangle: level < .wordsOnly,
+                            action: actions.playYou)
             }
             TakeMenu(label: state.takeMenu, note: state.takeMenuNote, savedTakes: state.savedTakes,
                      compact: level >= .menuChevron)
@@ -106,6 +109,7 @@ struct GhostButton: View {
     /// False on the narrowest toolbar (r4 C7 step 3): the word only, with 8 pt side padding. Model and You never
     /// become icon-only.
     var showsTriangle = true
+    var action: @MainActor () -> Void = {}
 
     static let sidePadding: Double = 12
     static let wordsOnlySidePadding: Double = 8
@@ -118,7 +122,7 @@ struct GhostButton: View {
     }
 
     var body: some View {
-        FocusRingButton(cornerRadius: Metrics.controlRadius, action: {}) { _ in
+        FocusRingButton(cornerRadius: Metrics.controlRadius, action: action) { _ in
             HStack(spacing: Self.glyphSpacing) {
                 if showsTriangle {
                     Image(systemName: "play.fill")
@@ -149,11 +153,12 @@ struct RecordButton: View {
     /// False on a narrow toolbar (r4 C7 step 2): the dot (or Stop's square while recording) in the Lime button,
     /// 40 wide; "Record (Space)" in the tooltip and for VoiceOver.
     var showsTitle = true
+    var action: @MainActor () -> Void = {}
 
     var body: some View {
         let isStop = state == .stop
         let isEnabled = state != .record(enabled: false)
-        FocusRingButton(cornerRadius: Metrics.controlRadius, action: {}) { _ in
+        FocusRingButton(cornerRadius: Metrics.controlRadius, action: action) { _ in
             HStack(spacing: 9) {
                 if isStop {
                     RoundedRectangle(cornerRadius: 2).frame(width: 10, height: 10)
@@ -192,6 +197,7 @@ struct RecordButton: View {
 /// "TAKE 03", "TAKES", or "LAST TRY · NOT SAVED" in Geist Mono with a chevron (spec 18, Addendum A7).
 struct TakeMenu: View {
     @Environment(\.palette) private var palette
+    @Environment(\.shellActions) private var actions
     var label: ToolbarState.TakeMenuLabel
     var note: String?
     var savedTakes: [Int]
@@ -234,7 +240,7 @@ struct TakeMenu: View {
                 Text("No takes yet")
             } else {
                 ForEach(savedTakes, id: \.self) { number in
-                    Button(Self.takeTitle(number).capitalized) {}
+                    Button(Self.takeTitle(number).capitalized) { actions.selectTake(number) }
                 }
             }
         } label: {

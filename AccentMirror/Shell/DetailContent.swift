@@ -55,6 +55,7 @@ extension DetailContent {
 /// MODEL RECORDING, and the take's save state when it isn't saved.
 struct InspectorContent: View {
     @Environment(\.palette) private var palette
+    @Environment(\.shellActions) private var actions
     var model: ShellModel
 
     var body: some View {
@@ -88,10 +89,20 @@ struct InspectorContent: View {
                 section(Copy.modelRecording) {
                     VStack(alignment: .leading, spacing: 4) {
                         if recording.voices.count > 1 {
-                            // The voice pop-up (r6 E7, spec 15): fixture-only, it shows the choice.
+                            // The voice pop-up (r6 E7, spec 15): rows in manifest order, "p225 · F" after each in
+                            // the live app; disabled while recording (E8).
                             Menu {
-                                ForEach(recording.voices, id: \.self) { voice in
-                                    Button(voice) {}
+                                ForEach(Array(recording.voices.enumerated()), id: \.offset) { index, voice in
+                                    Button {
+                                        actions.selectVoice(index)
+                                    } label: {
+                                        if actions.voiceTags.indices.contains(index) {
+                                            Text("\(voice)   \(Text(actions.voiceTags[index]).font(TypeRole.mono.fontSized(12)))")
+                                        } else {
+                                            Text(voice)
+                                        }
+                                        if index == actions.selectedVoice { Image(systemName: "checkmark") }
+                                    }
                                 }
                             } label: {
                                 Text(recording.title)
@@ -101,6 +112,8 @@ struct InspectorContent: View {
                             .typeRole(.body)
                             .foregroundStyle(palette.textPrimary)
                             .fixedSize()
+                            .disabled(actions.voiceDisabled)
+                            .help(actions.voiceDisabled ? Copy.voiceDisabledTooltip : "")
                             .accessibilityLabel("\(Copy.voice), \(recording.title)")
                         } else {
                             Text(recording.title)
@@ -111,6 +124,23 @@ struct InspectorContent: View {
                             .typeRole(.small)
                             .foregroundStyle(palette.textSecondary)
                     }
+                }
+            }
+            if actions.isLive, !actions.inputs.isEmpty {
+                // The Input pop-up (v1 §9): spec 14's devices, used for the next take and remembered. No level here
+                // (E5: the meter lives in the recording row only).
+                section(Copy.input) {
+                    Picker(Copy.input, selection: Binding(
+                        get: { actions.selectedInput ?? actions.inputs.first?.id ?? "" },
+                        set: { actions.selectInput($0) }
+                    )) {
+                        ForEach(actions.inputs, id: \.id) { input in
+                            Text(input.name).tag(input.id)
+                        }
+                    }
+                    .labelsHidden()
+                    .fixedSize()
+                    .disabled(actions.voiceDisabled)
                 }
             }
             if let status = inspector.takeStatus {
