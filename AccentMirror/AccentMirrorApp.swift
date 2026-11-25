@@ -61,7 +61,7 @@ struct AccentMirrorApp: App {
                 }
                 .shortcut(.showSidebar)
                 Button(model.inspectorVisible ? Copy.hideDetails : Copy.showDetails) {
-                    model.inspectorVisible.toggle()
+                    model.toggleInspector()
                 }
                 .shortcut(.showDetails)
                 // ⇧⌘G (v3 §3.3): on by default, remembered.

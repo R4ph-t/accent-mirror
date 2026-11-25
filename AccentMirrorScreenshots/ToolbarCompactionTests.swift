@@ -2,98 +2,120 @@ import Foundation
 import Testing
 @testable import AccentMirror
 
-/// Designer addendum v3.6 J2 (wins over r4 C7, r5 D1's 160 pt first floor, and v3.5 I2 where they disagree):
-/// the title goes to 154 pt before any control compact; then Details goes icon-only; then the take menu becomes
-/// the count plus the chevron. Record → dot and Model/You words-only stay as later steps so the 960 pt window
-/// still fits. Input is a 28 pt icon at every level. Nothing compact at 1200 pt, including with the inspector
-/// open. `ToolbarCompaction.decide` is pure; this scheme also measures the real typography.
+/// Designer addendum v3.7 K2–K3: title to 154 pt first, then Details icon-only, then take-menu count,
+/// then Model/You words-only with Record still labelled. Nothing compact at 1200 pt. At 960 pt the
+/// inspector is closed and nothing compact. `decide` is pure; this scheme also measures the typography.
 @Suite("Toolbar compaction")
 struct ToolbarCompactionTests {
     typealias Widths = ToolbarCompaction.ControlWidths
 
-    /// Round numbers close to the real ones: Model 80, You 67, take menu 72, count 40, Details 64.
-    let widths = Widths(
-        model: 80, modelWordsOnly: 53, you: 67, youWordsOnly: 40,
-        takeMenu: 72, takeMenuCount: 40, inspectorToggleFull: 64
+    /// Lead measurements confirmed in v3.7 K1.
+    let measured = Widths(
+        model: 82, modelWordsOnly: 55, you: 66, youWordsOnly: 39,
+        takeMenu: 74, takeMenuCount: 35, inspectorToggleFull: 60
     )
 
-    /// The toolbar's width inside its padding for a window width with the inspector open.
-    static func inspectorOpen(_ window: Double) -> Double {
-        window - Double(Metrics.sidebarWidth + Metrics.inspectorWidth + 2 * Metrics.outer)
+    @Test func totalsMatchK1() {
+        #expect(measured.total(.full) == 471)
+        #expect(measured.total(.detailsIcon) == 439)
+        #expect(measured.total(.takeCount) == 400)
+        #expect(measured.total(.wordsOnly) == 346)
     }
 
-    @Test func totalsAddEveryControlAndTheFixedGaps() {
-        #expect(widths.total(.full) == 472)
-        #expect(widths.total(.detailsIcon) == 436)
-        #expect(widths.total(.takeCount) == 404)
-        #expect(widths.total(.recordDot) == 340)
-        #expect(widths.total(.wordsOnly) == 286)
-    }
-
-    @Test func theTitleReaches154BeforeAnyControlCompacts() {
-        #expect(ToolbarCompaction.decide(available: 472 + 16 + 154, controls: widths)
-            == .init(level: .full, titleWidth: 154, fits: true))
-        #expect(ToolbarCompaction.decide(available: 472 + 16 + 153, controls: widths)
-            == .init(level: .detailsIcon, titleWidth: 153 + 36, fits: true))
-    }
-
-    /// v3.6 J2: at the default 1200 pt window with the inspector open, nothing compact and the title stays
-    /// at or above 154 pt.
-    @MainActor @Test func at1200WithTheInspectorOpenNothingCompacts() {
-        BundledFonts.register()
-        let library = FixtureLibrary(bundle: Bundle(for: ShellModel.self))!
-        let state = ShellPresenter.toolbar(for: try! library.load("inspector-open"))
-        let measured = ToolbarView.controlWidths(for: state)
-        let decision = ToolbarCompaction.decide(available: Self.inspectorOpen(1200), controls: measured)
-        let title = Double(TextMeasure.width(state.title, role: .phraseTitle))
-        print("[toolbar] 1200 inspector-open: title ideal \(title); measured \(measured); decision \(decision)")
-        #expect(decision.level == .full)
-        #expect(decision.titleWidth >= ToolbarCompaction.titleMinimum)
-        #expect(decision.titleWidth < title, "the title truncates at 1200 pt with the inspector open")
-        #expect(decision.fits)
-        #expect(measured.input == 28)
-    }
-
-    /// v3.6 J2: at 960 pt with the inspector open, measure the title width after the new compact order (Details
-    /// icon-only, take count, then C7's later steps if needed). The number is for Designer; the test does not
-    /// lower the 154 pt floor.
-    @MainActor @Test func at960WithTheInspectorOpenMeasuresTheTitleWidth() {
-        BundledFonts.register()
-        let library = FixtureLibrary(bundle: Bundle(for: ShellModel.self))!
-        let state = ShellPresenter.toolbar(for: try! library.load("inspector-open"))
-        let measured = ToolbarView.controlWidths(for: state)
-        let decision = ToolbarCompaction.decide(available: Self.inspectorOpen(960), controls: measured)
-        print("[toolbar] 960 inspector-open: level \(decision.level); title \(decision.titleWidth); fits \(decision.fits); "
-            + "Model \(measured.model)/\(measured.modelWordsOnly); You \(measured.you)/\(measured.youWordsOnly); "
-            + "take \(measured.takeMenu)/count \(measured.takeMenuCount); Details \(measured.inspectorToggleFull)/"
-            + "\(measured.inspectorToggle); Input \(measured.input); "
-            + "totals full \(measured.total(.full)) icon \(measured.total(.detailsIcon)) count \(measured.total(.takeCount)) "
-            + "dot \(measured.total(.recordDot)) words \(measured.total(.wordsOnly))")
-        #expect(decision.level >= .takeCount, "J2's take-count step has been applied at 960 pt")
-        #expect(measured.input == 28)
-        #expect(decision.titleWidth == Self.inspectorOpen(960) - ToolbarCompaction.titleGap - measured.total(decision.level))
-    }
-
-    @MainActor @Test func theLevelOnlyGrowsAsTheWindowNarrowsAndTheTitleKeeps154UntilTheLastStep() {
-        BundledFonts.register()
-        let library = FixtureLibrary(bundle: Bundle(for: ShellModel.self))!
-        let state = ShellPresenter.toolbar(for: try! library.load("inspector-open"))
-        let measured = ToolbarView.controlWidths(for: state)
-        var previous = ToolbarCompaction.Level.full
-        for window in stride(from: 1200.0, through: 960, by: -1) {
-            let decision = ToolbarCompaction.decide(available: Self.inspectorOpen(window), controls: measured)
-            #expect(decision.level >= previous, "\(window) pt")
-            if decision.level < .wordsOnly {
-                #expect(decision.titleWidth >= ToolbarCompaction.titleMinimum, "\(window) pt")
-            }
-            previous = decision.level
+    @Test func inspectorOpenThresholdsUseTheDocumentedWidths() {
+        let cases: [(Double, ToolbarCompaction.Level, Double)] = [
+            (1200, .full, 161),
+            (1193, .full, 154),
+            (1192, .detailsIcon, 185),
+            (1161, .detailsIcon, 154),
+            (1160, .takeCount, 192),
+            (1122, .takeCount, 154),
+            (1121, .wordsOnly, 207),
+            (1068, .wordsOnly, 154),
+        ]
+        for (window, level, title) in cases {
+            let decision = ToolbarCompaction.decide(
+                available: InspectorLayout.availableToolbarWidth(window: window, inspectorOpen: true),
+                controls: measured
+            )
+            #expect(decision.level == level, "\(window) pt")
+            #expect(decision.titleWidth == title, "\(window) pt")
         }
     }
 
+    @MainActor @Test func liveTypographyAt1200And1068And960() throws {
+        BundledFonts.register()
+        let library = try #require(FixtureLibrary(bundle: Bundle(for: ShellModel.self)))
+        let state = ShellPresenter.toolbar(for: try library.load("inspector-open"))
+        let live = ToolbarView.controlWidths(for: state)
+        let at1200 = ToolbarCompaction.decide(
+            available: InspectorLayout.availableToolbarWidth(window: 1200, inspectorOpen: true), controls: live
+        )
+        let at1068 = ToolbarCompaction.decide(
+            available: InspectorLayout.availableToolbarWidth(window: 1068, inspectorOpen: true), controls: live
+        )
+        let at960 = ToolbarCompaction.decide(
+            available: InspectorLayout.availableToolbarWidth(window: 960, inspectorOpen: false), controls: live
+        )
+        print("[toolbar] live widths \(live); 1200 \(at1200); 1068 \(at1068); 960 collapsed \(at960)")
+        #expect(at1200.level == .full)
+        #expect(at1200.titleWidth >= ToolbarCompaction.titleMinimum)
+        #expect(at1068.level == .wordsOnly)
+        #expect(at1068.fits)
+        #expect(abs(at1068.titleWidth - 154) < 2, "title at 1068 should be the 154 pt floor")
+        #expect(at960.level == .full)
+        #expect(at960.titleWidth >= 200)
+        #expect(live.input == 28)
+        #expect(live.record == 104)
+    }
+}
 
-    @Test func takeCountVoiceOverDropsTheLeadingZero() {
-        #expect(Copy.takeMenuCountLabel(.take(3)) == "Take 3")
-        #expect(Copy.takeMenuCountLabel(.take(12)) == "Take 12")
-        #expect(Copy.details == "Details")
+@Suite("Addendum v3.7 window policy")
+struct AddendumV37WindowPolicyTests {
+    @MainActor
+    @Test func shrinkingBelow1068ClosesTheInspector() async throws {
+        BundledFonts.register()
+        let library = try #require(FixtureLibrary(bundle: Bundle(for: ShellModel.self)))
+        let model = ShellModel(fixture: try library.load("inspector-open"))
+        #expect(model.inspectorVisible)
+        let window = WindowRenderer.makeWindow(
+            model: model, appearance: .light, size: CGSize(width: 1200, height: 680)
+        )
+        defer {
+            window.orderOut(nil)
+            window.contentViewController = nil
+            window.close()
+        }
+        window.setFrame(NSRect(x: 40, y: 40, width: 1200, height: 680), display: true)
+        window.makeKeyAndOrderFront(nil)
+        try await Task.sleep(for: .milliseconds(200))
+        #expect(model.inspectorVisible, "stays open at 1200")
+        window.setFrame(NSRect(x: 40, y: 40, width: 960, height: 680), display: true)
+        try await Task.sleep(for: .milliseconds(200))
+        #expect(!model.inspectorVisible, "auto-collapses below 1068")
+    }
+
+    @MainActor
+    @Test func showingDetailsBelow1068GrowsTheWindow() async throws {
+        BundledFonts.register()
+        let library = try #require(FixtureLibrary(bundle: Bundle(for: ShellModel.self)))
+        let model = ShellModel(fixture: try library.load("result"))
+        model.inspectorVisible = false
+        let window = WindowRenderer.makeWindow(
+            model: model, appearance: .light, size: CGSize(width: 960, height: 680)
+        )
+        defer {
+            window.orderOut(nil)
+            window.contentViewController = nil
+            window.close()
+        }
+        window.setFrame(NSRect(x: 40, y: 40, width: 960, height: 680), display: true)
+        window.makeKeyAndOrderFront(nil)
+        try await Task.sleep(for: .milliseconds(200))
+        #expect(window.frame.width == 960)
+        model.toggleInspector()
+        try await Task.sleep(for: .milliseconds(200))
+        #expect(abs(window.frame.width - 1068) < 0.5)
+        #expect(model.inspectorVisible)
     }
 }

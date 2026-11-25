@@ -8,6 +8,28 @@ final class ShellModel {
     var sidebarVisible = true
     /// The Details inspector is closed by default (spec 18 Defaults).
     var inspectorVisible = false
+
+    /// Opens or closes Details (v3.7 K3): opening below 1068 pt grows the window first so the inspector
+    /// can stay open at the 154 pt title floor.
+    func toggleInspector() {
+        if inspectorVisible {
+            inspectorVisible = false
+        } else {
+            showInspector()
+        }
+    }
+
+    /// The hosting window, set by `WindowChromeConfigurator`. Used so Show Details grows *this* window,
+    /// not some other visible app window.
+    @ObservationIgnored
+    weak var window: NSWindow?
+
+    func showInspector() {
+        if let window {
+            InspectorLayout.growForInspectorIfNeeded(window)
+        }
+        inspectorVisible = true
+    }
     /// The Input popover (v3.5 I2) when it's open: a fixture's frozen state, or the live app's `InputPanel`.
     var inputPopover: InputPopoverState?
     /// Which control the open popover is anchored to (v3.6 J3). Fixtures use the toolbar Input button.
