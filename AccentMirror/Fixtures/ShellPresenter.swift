@@ -40,8 +40,9 @@ struct CardRow: Sendable {
         /// The result row's Play Both ghost button (⌥⌘L).
         case playBoth
         case button(String)
-        /// The recording row's level meter (r6 E5): drawn only while a live take feeds it, so fixtures look as before.
-        case levelMeter
+        /// The recording row's level meter (r6 E5, v3.2 W2). nil reads the live meter, drawn only while a take feeds
+        /// it; a fixture passes its frozen frame (`recording-level`, `recording-too-loud`).
+        case levelMeter(LevelReading?)
     }
 
     var icon: Icon?
@@ -148,11 +149,17 @@ struct InspectorPresentation: Sendable, Equatable {
 }
 
 struct ModelRecordingPresentation: Sendable, Equatable {
-    /// "p225 · Southern England".
+    /// "p311 · Iowa", or the pop-up's closed state "Iowa · p311" (r6 E7, v3.3 X2).
     var title: String
     var attribution: String
     var voices: [String]
     var selected: String
+    /// Each row's "p311 · M" tag, in `voices` order; empty when the fixture gives none.
+    var tags: [String] = []
+    /// The checked row.
+    var selectedIndex: Int?
+    /// Drawn open (fixture only: a real menu can't be held open for a screenshot).
+    var isOpen = false
 }
 
 @MainActor
@@ -187,7 +194,7 @@ enum ShellPresenter {
 
         return ToolbarState(
             title: loaded.phrase.text,
-            subtitle: isRecording ? .recording(elapsed: fixture.recording?.elapsed ?? "0:00") : .source(loaded.phrase.subtitle),
+            subtitle: isRecording ? .recording(elapsed: fixture.recording?.elapsed ?? "0:00") : .source(fixture.subtitle ?? loaded.phrase.subtitle),
             modelEnabled: !isRecording,
             youEnabled: youEnabled,
             record: record,
@@ -250,7 +257,7 @@ enum ShellPresenter {
             ])
         case .recording:
             return CardPresentation(title: Copy.yourTake, rows: [
-                CardRow(icon: .symbol("mic.fill"), sentence: [.plain(Copy.recordingPrompt)], trailing: .levelMeter),
+                CardRow(icon: .symbol("mic.fill"), sentence: [.plain(Copy.recordingPrompt)], trailing: .levelMeter(fixture.recording?.level)),
             ])
         case .analysing:
             return CardPresentation(title: Copy.yourTake, rows: [
@@ -573,7 +580,8 @@ enum ShellPresenter {
         if let model = fixture.modelRecording {
             result.model = ModelRecordingPresentation(
                 title: [model.voice, model.region].compactMap { $0 }.joined(separator: " \u{00B7} "),
-                attribution: model.attribution, voices: model.voices, selected: model.voice
+                attribution: model.attribution, voices: model.voices, selected: model.voice,
+                tags: model.tags ?? [], selectedIndex: model.selected, isOpen: model.open ?? false
             )
         }
         if fixture.phase == .showingTake, let take = loaded.take {

@@ -1,0 +1,80 @@
+{
+  "name": "voice-popup-open",
+  "summary": "The Model Voice pop-up open on the empty phrase (v3.2 W2, r6 E7, v3.3 X2–X3): closed button \"Iowa · p311\"; rows \"{region} ({accent})\" in Geist 13 with \"p311 · M\" right-aligned in Geist Mono 12 tertiary, manifest order, p311 checked. Subtitle \"Stress Shifts · Native speaker from Iowa, VCTK\".",
+  "phrase": "photography",
+  "phase": "empty",
+  "savedTakes": [],
+  "analysis": {
+    "describe": {
+      "you": {
+        "lengthSeconds": {
+          "reason": "noWords"
+        },
+        "syllablesPerSecond": {
+          "reason": "noWords"
+        },
+        "pitchRangeSemitones": {
+          "reason": "noWords"
+        },
+        "rhythmNPVI": {
+          "reason": "noWords"
+        }
+      },
+      "native": {
+        "voices": 8,
+        "lengthSeconds": {
+          "min": 1.9,
+          "max": 2.3,
+          "count": 8
+        },
+        "syllablesPerSecond": {
+          "min": 4.3,
+          "max": 5.1,
+          "count": 8
+        },
+        "pitchRangeSemitones": {
+          "min": 6,
+          "max": 9,
+          "count": 8
+        },
+        "rhythmNPVI": {
+          "min": 52,
+          "max": 61,
+          "count": 8
+        },
+        "endingDirections": {
+          "fall": 5,
+          "rise": 3
+        }
+      }
+    }
+  },
+  "inspectorOpen": true,
+  "subtitle": "Stress Shifts · Native speaker from Iowa, VCTK",
+  "modelRecording": {
+    "voice": "Iowa · p311",
+    "attribution": "p311 · Iowa\nVCTK 0.92 · CC BY 4.0",
+    "voices": [
+      "Southern England (English)",
+      "Surrey (English)",
+      "Cumbria (English)",
+      "Staffordshire (English)",
+      "Perth (Scottish)",
+      "Edinburgh (Scottish)",
+      "Iowa (American)",
+      "Florida (American)"
+    ],
+    "tags": [
+      "p225 · F",
+      "p226 · M",
+      "p227 · M",
+      "p233 · F",
+      "p241 · M",
+      "p252 · M",
+      "p311 · M",
+      "p345 · M"
+    ],
+    "selected": 6,
+    "open": true
+  }
+}

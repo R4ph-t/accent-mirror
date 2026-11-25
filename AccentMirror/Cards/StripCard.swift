@@ -6,7 +6,7 @@ import SwiftUI
 /// 16 + 16 title + 8 + (56 row + 24 labels) + 4 + (56 + 24) + 12.
 ///
 /// Spec 20 adds the motion on top, all from `StripChart`: the live recording row, the 1 pt playhead on each row's own
-/// timeline, the outline on the syllable being played, the hover and loop boxes, and the header's "Playing …" or
+/// timeline, the outline on the syllable being played, the hover and loop boxes behind the labels, and the header's "Playing …" or
 /// "Looping …" note.
 struct StripCard: View {
     @Environment(\.palette) private var palette
@@ -45,7 +45,6 @@ struct StripCard: View {
             VStack(alignment: .leading, spacing: 0) {
                 StripRow(label: "NATIVE") {
                     ZStack {
-                        HighlightBox(clusters: strip.native, highlight: chart.highlight)
                         BarsCanvas(clusters: strip.native, rowHeight: 56)
                         SyllableOutline(cluster: chart.playing.native.flatMap {
                             strip.native.indices.contains($0) ? strip.native[$0] : nil
@@ -53,7 +52,8 @@ struct StripCard: View {
                         Playhead(progress: chart.playhead?.native)
                     }
                 } labels: {
-                    ClusterLabels(clusters: strip.native, slots: [], playModel: playModel, loop: loop, hover: hover)
+                    ClusterLabels(clusters: strip.native, slots: [], highlight: chart.highlight, playModel: playModel,
+                                  loop: loop, hover: hover)
                 }
                 .padding(.bottom, StripGeometry.rowGap)
 
@@ -87,7 +87,6 @@ struct StripCard: View {
             TakeProblemRow(clusters: clusters, shape: shape, caption: caption)
         case .bars(let clusters, let slots, _):
             ZStack {
-                HighlightBox(clusters: clusters, highlight: chart.highlight)
                 BarsCanvas(clusters: clusters, rowHeight: 56)
                 MissingSlots(slots: slots, playModel: playModel)
                 SyllableOutline(cluster: chart.playing.you.flatMap { clusters.indices.contains($0) ? clusters[$0] : nil })
@@ -99,7 +98,8 @@ struct StripCard: View {
     @ViewBuilder private var youLabels: some View {
         switch strip.you {
         case .bars(let clusters, let slots, let showsLabels) where showsLabels:
-            ClusterLabels(clusters: clusters, slots: slots, playModel: playModel, loop: loop, hover: hover)
+            ClusterLabels(clusters: clusters, slots: slots, highlight: chart.highlight, playModel: playModel, loop: loop,
+                          hover: hover)
         default:
             Color.clear
         }
@@ -129,30 +129,6 @@ private struct HeaderNote: View {
         .typeRole(.small)
         .foregroundStyle(palette.textSecondary)
         .accessibilityElement(children: .combine)
-    }
-}
-
-/// The hover or loop box (r6 E3): one rounded rectangle, radius 4, 4 pt outside the word's bars, in the neutral
-/// `highlight` token, behind the bars. Faded in by the chart clock.
-private struct HighlightBox: View {
-    @Environment(\.palette) private var palette
-    var clusters: [StripCluster]
-    var highlight: ChartHighlight?
-
-    var body: some View {
-        Canvas { context, size in
-            guard let highlight else { return }
-            let bars = clusters.filter { $0.word == highlight.word }
-                .flatMap { clusterBars($0, width: size.width, maxHeight: size.height - 4) }
-            guard let first = bars.first, let last = bars.last else { return }
-            let tallest = bars.map(\.height).max() ?? 0
-            let rect = CGRect(x: first.x - 4, y: size.height / 2 - tallest / 2 - 4,
-                              width: last.x + CGFloat(EnvelopeBins.barWidth) - first.x + 8, height: tallest + 8)
-            let fill = highlight.strength == .loop ? palette.highlightLoop : palette.highlightHover
-            context.fill(Path(roundedRect: rect, cornerRadius: 4), with: .color(fill.opacity(highlight.opacity)))
-        }
-        .allowsHitTesting(false)
-        .accessibilityHidden(true)
     }
 }
 
@@ -457,6 +433,8 @@ private struct ClusterLabels: View {
     @Environment(\.palette) private var palette
     var clusters: [StripCluster]
     var slots: [MissingSlot]
+    /// The hovered or looping word (r6 E3, v3.2 W5): its box sits behind its labels on this row.
+    var highlight: ChartHighlight?
     var playModel: () -> Void
     var loop: (Int) -> Void
     var hover: (Int?) -> Void
@@ -484,6 +462,7 @@ private struct ClusterLabels: View {
             let shown = LabelLayout.visibility(entries.map {
                 LabelLayout.Item(center: $0.center, width: $0.width, priority: $0.priority)
             })
+            highlightBox(entries: entries, shown: shown, height: proxy.size.height)
             ForEach(Array(entries.enumerated()), id: \.offset) { index, entry in
                 if shown[index] {
                     label(entry).position(x: entry.center, y: proxy.size.height / 2)
@@ -501,6 +480,27 @@ private struct ClusterLabels: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Copy.labelLine(entries(width: 0).map(\.spoken)))
+    }
+
+    /// The hover or loop box (r6 E3, v3.2 W5): one rounded rectangle, radius 4, 4 pt outside the word's labels, in
+    /// the neutral `highlight` token, behind them. Faded in by the chart clock (at once with Reduce Motion).
+    @ViewBuilder private func highlightBox(entries: [Entry], shown: [Bool], height: CGFloat) -> some View {
+        if let highlight {
+            let labels: [(center: Double, width: Double)] = entries.indices.compactMap { index in
+                guard case .syllable(_, _, let word) = entries[index].content, word == highlight.word else { return nil }
+                let entry = entries[index]
+                return (Double(entry.center), Double(shown[index] ? entry.width : min(entry.width, entry.span)))
+            }
+            if let box = HighlightGeometry.box(labels) {
+                RoundedRectangle(cornerRadius: Metrics.markRadius, style: .continuous)
+                    .fill(highlight.strength == .loop ? palette.highlightLoop : palette.highlightHover)
+                    .opacity(highlight.opacity)
+                    .frame(width: box.maxX - box.minX, height: box.height)
+                    .position(x: (box.minX + box.maxX) / 2, y: height / 2)
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+            }
+        }
     }
 
     @ViewBuilder private func label(_ entry: Entry) -> some View {

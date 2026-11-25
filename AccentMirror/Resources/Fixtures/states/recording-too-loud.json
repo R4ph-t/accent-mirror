@@ -1,0 +1,21 @@
+{
+  "name": "recording-too-loud",
+  "summary": "The same take at a clipping frame (v3.2 W2, r6 E5): the fill reaches the end with a square cap, the 4 × 10 text.primary stop bar just past the track, and speaker.wave.3 with \"Too loud\" in Geist 12 / 500 before the meter. No colour change. Live, it holds until 1.5 s after the last such frame.",
+  "phrase": "photography",
+  "phase": "recording",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-recording",
+  "recording": {
+    "elapsed": "0:02",
+    "playhead": 0.46,
+    "level": {
+      "rmsDBFS": -3,
+      "peakDBFS": 0,
+      "tooLoud": true
+    }
+  }
+}

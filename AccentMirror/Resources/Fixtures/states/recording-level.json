@@ -1,0 +1,20 @@
+{
+  "name": "recording-level",
+  "summary": "A take in progress at a mid level, not clipping (v3.2 W2, r6 E5): the 96 × 6 meter's Lime fill part way along −60…0 dBFS with the 2 pt peak tick, \"Recording. Press Space when you're done.\", the native strip and pitch as W1, live Lime bars and playhead as A3. No \"Too loud\".",
+  "phrase": "photography",
+  "phase": "recording",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "photography-recording",
+  "recording": {
+    "elapsed": "0:02",
+    "playhead": 0.46,
+    "level": {
+      "rmsDBFS": -22,
+      "peakDBFS": -12
+    }
+  }
+}

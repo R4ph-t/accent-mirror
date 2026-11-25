@@ -70,7 +70,7 @@ private struct CardRowView: View {
                         Image(systemName: "play.fill")
                             .font(.system(size: 10))
                         Text(Copy.playBoth)
-                            .typeRole(.body)
+                            .typeRole(.bodyMedium)
                     }
                     .foregroundStyle(palette.textPrimary)
                     .padding(.horizontal, 12)
@@ -79,12 +79,12 @@ private struct CardRowView: View {
                 }
                 .help(Copy.playBothTooltip)
                 .accessibilityHint(Copy.playBothTooltip)
-            case .levelMeter:
-                LevelMeterView()
+            case .levelMeter(let fixed):
+                LevelMeterView(fixed: fixed)
             case .button(let title):
                 FocusRingButton(cornerRadius: Metrics.controlRadius, action: actions.cardButton) { _ in
                     Text(title)
-                        .typeRole(.body)
+                        .typeRole(.bodyMedium)
                         .foregroundStyle(palette.textPrimary)
                         .padding(.horizontal, 18)
                         .frame(height: Metrics.controlHeight)
@@ -103,18 +103,27 @@ private struct CardRowView: View {
 private struct LevelMeterView: View {
     @Environment(\.palette) private var palette
     @Environment(LevelMeterModel.self) private var meter: LevelMeterModel?
+    /// A fixture's frozen frame; nil reads the live meter.
+    var fixed: LevelReading?
 
     static let width: CGFloat = 96
 
+    private var reading: LevelReading? {
+        if let fixed { return fixed }
+        guard let meter, let rms = meter.rmsDBFS else { return nil }
+        return LevelReading(rmsDBFS: rms, peakDBFS: meter.peakDBFS, tooLoud: meter.tooLoud)
+    }
+
     var body: some View {
-        if let meter, let rms = meter.rmsDBFS {
+        if let reading {
+            let rms = reading.rmsDBFS
             HStack(spacing: 8) {
-                if meter.tooLoud {
+                if reading.tooLoud {
                     HStack(spacing: 4) {
                         Image(systemName: "speaker.wave.3")
                             .font(.system(size: 12, weight: .medium))
                         Text(Copy.tooLoud)
-                            .font(TypeRole.small.font.weight(.medium))
+                            .typeRole(.smallMedium)
                     }
                     .foregroundStyle(palette.textPrimary)
                 }
@@ -123,7 +132,7 @@ private struct LevelMeterView: View {
                         RoundedRectangle(cornerRadius: 3).fill(palette.surfaceWell)
                         let fill = Self.width * Self.fraction(rms)
                         Group {
-                            if meter.tooLoud {
+                            if reading.tooLoud {
                                 UnevenRoundedRectangle(topLeadingRadius: 3, bottomLeadingRadius: 3)
                                     .frame(width: Self.width)
                             } else {
@@ -134,13 +143,13 @@ private struct LevelMeterView: View {
                         Rectangle()
                             .fill(palette.textPrimary)
                             .frame(width: 2)
-                            .offset(x: max(0, Self.width * Self.fraction(meter.peakDBFS) - 2))
+                            .offset(x: max(0, Self.width * Self.fraction(reading.peakDBFS) - 2))
                     }
                     .frame(width: Self.width, height: 6)
                     Rectangle()
                         .fill(palette.textPrimary)
                         .frame(width: 4, height: 10)
-                        .opacity(meter.tooLoud ? 1 : 0)
+                        .opacity(reading.tooLoud ? 1 : 0)
                 }
             }
             .accessibilityHidden(true)

@@ -5,6 +5,8 @@ import Foundation
 /// no network, no system fallback. Each family's official `OFL.txt` sits next to its font files.
 enum BundledFonts {
     static let geistRegular = "Geist-Regular"
+    /// Geist 500 (v3.2 W3): ghost buttons, Play Both and "Too loud". Never the system medium.
+    static let geistMedium = "Geist-Medium"
     static let geistSemiBold = "Geist-SemiBold"
     static let geistBold = "Geist-Bold"
     static let geistMonoMedium = "GeistMono-Medium"
@@ -15,7 +17,7 @@ enum BundledFonts {
     static let geistBoldItalic = "Geist-BoldItalic"
 
     static let allPostScriptNames = [
-        geistRegular, geistSemiBold, geistBold, geistMonoMedium, funnelDisplaySemiBold,
+        geistRegular, geistMedium, geistSemiBold, geistBold, geistMonoMedium, funnelDisplaySemiBold,
         geistItalic, geistSemiBoldItalic, geistBoldItalic,
     ]
 

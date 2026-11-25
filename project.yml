@@ -113,6 +113,11 @@ targets:
       - path: AccentMirror/Live/LiveSession.swift
       - path: AccentMirror/Live/AudioPlayback.swift
       - path: AccentMirror/Live/MenuTable.swift
+      # v3.2 W3/W5: the token table, type roles, bundled fonts and the highlight box, all UI-free to test.
+      - path: AccentMirror/Design/Palette.swift
+      - path: AccentMirror/Design/Typography.swift
+      - path: AccentMirror/Design/BundledFonts.swift
+      - path: AccentMirror/Design/HighlightGeometry.swift
     dependencies:
       - package: AccentKit
         product: AMPipeline

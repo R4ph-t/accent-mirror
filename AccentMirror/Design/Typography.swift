@@ -6,12 +6,16 @@ enum TypeRole {
     case phraseTitle
     /// UI text, diff sentences, sidebar rows: Geist 13 / 400.
     case body
+    /// Ghost buttons (Model, You, Play Both, card 1's button): Geist 13 / 500 (v3.2 W3).
+    case bodyMedium
     /// Selected sidebar row: Geist 13 / 600.
     case bodySemibold
     /// Bold caps inside sentences (stressed syllables): Geist 13 / 700.
     case bodyBold
     /// Secondary text, subtitles, syllable labels: Geist 12 / 400.
     case small
+    /// "Too loud" beside the level meter: Geist 12 / 500 (v3.2 W2, W3).
+    case smallMedium
     /// Stressed syllable labels: Geist 12 / 700 caps.
     case smallBold
     /// Section headers, card titles, row labels, take menu, axis labels: Geist Mono 12 / 500, caps, tracking 0.6.
@@ -21,6 +25,7 @@ enum TypeRole {
         switch self {
         case .phraseTitle: BundledFonts.funnelDisplaySemiBold
         case .body, .small: BundledFonts.geistRegular
+        case .bodyMedium, .smallMedium: BundledFonts.geistMedium
         case .bodySemibold: BundledFonts.geistSemiBold
         case .bodyBold, .smallBold: BundledFonts.geistBold
         case .mono: BundledFonts.geistMonoMedium
@@ -30,8 +35,8 @@ enum TypeRole {
     var size: CGFloat {
         switch self {
         case .phraseTitle: 16
-        case .body, .bodySemibold, .bodyBold: 13
-        case .small, .smallBold, .mono: 12
+        case .body, .bodyMedium, .bodySemibold, .bodyBold: 13
+        case .small, .smallMedium, .smallBold, .mono: 12
         }
     }
 
@@ -51,6 +56,8 @@ enum TypeRole {
         switch self {
         case .phraseTitle: BundledFonts.funnelDisplaySemiBold
         case .body, .small: BundledFonts.geistItalic
+        // No role sets a medium run in italics; the Regular italic keeps it in Geist if one ever does.
+        case .bodyMedium, .smallMedium: BundledFonts.geistItalic
         case .bodySemibold: BundledFonts.geistSemiBoldItalic
         case .bodyBold, .smallBold: BundledFonts.geistBoldItalic
         case .mono: BundledFonts.geistMonoMedium
