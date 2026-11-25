@@ -9,6 +9,7 @@
     import CoreAudio
     import Foundation
     import Synchronization
+    import os
 
     /// Records takes from an input device with `AVAudioEngine`: an input tap converted to 16 kHz mono Float32 and fed
     /// to a `CaptureSession` (endpoint, cap, pre-roll, level and envelope streams). Opens the input only for a take,
@@ -18,11 +19,21 @@
             let session: CaptureSession
             let engine: AVAudioEngine
             let observers: [any NSObjectProtocol]
+            /// How many times this take's input has been reopened after the system reconfigured it.
+            let reopens: Int
         }
+
+        /// Reopens allowed per take before a reconfiguration ends it as `deviceLost`. A Continuity microphone (an
+        /// iPhone) reconfigures once or twice as its route settles just after it opens; one that keeps doing it is
+        /// not usable.
+        static let maxReopens = 3
+        static let log = Logger(subsystem: "AccentMirror", category: "Capture")
 
         private let thresholds: Thresholds
         /// The running take's engine and observers. Only touched under the lock.
         private let current = Mutex<UncheckedBox<Take>?>(nil)
+        /// Reopens run here, one at a time, off the notification's thread.
+        private let reopenQueue = DispatchQueue(label: "AccentMirror.MicRecorder.reopen", qos: .userInitiated)
 
         public init(thresholds: Thresholds = .current) {
             self.thresholds = thresholds
@@ -80,24 +91,16 @@
             guard let input = InputDevice.resolve(device, in: devices) else { throw .noMicrophone }
             current.withLock { $0 }?.value.session.cancel()
 
-            let engine = AVAudioEngine()
-            if !input.isDefault {
-                // AVAudioEngine follows the system default unless its input unit is pointed at another device.
-                guard Self.select(input.id, on: engine) else { throw .noMicrophone }
-            }
-            let format = engine.inputNode.outputFormat(forBus: 0)
-            guard let converter = SampleConverter(from: format) else { throw .noMicrophone }
-
             let session = CaptureSession(
                 device: input, lastSessionFloorDBFS: lastSessionFloorDBFS, thresholds: thresholds,
                 startedAt: startedAt, onEnd: { [weak self] in self?.release() })
-            let tap = Self.tapBlock(TapPipe(converter: converter, session: session))
-            // 50 ms per callback: the meter and live bars stay smooth; the endpointer still sees every 10 ms frame.
-            engine.inputNode.installTap(
-                onBus: 0, bufferSize: AVAudioFrameCount(format.sampleRate * 0.05), format: format, block: tap)
+            // AVAudioEngine follows the system default unless its input unit is pointed at another device.
+            let engine = try Self.openEngine(on: input.isDefault ? nil : input.id, feeding: session)
 
-            let observers = Self.lossObservers(engine: engine, deviceID: input.id, session: session)
-            current.withLock { $0 = UncheckedBox(Take(session: session, engine: engine, observers: observers)) }
+            let observers = lossObservers(engine: engine, deviceID: input.id, session: session)
+            current.withLock {
+                $0 = UncheckedBox(Take(session: session, engine: engine, observers: observers, reopens: 0))
+            }
             do {
                 engine.prepare()
                 try engine.start()
@@ -125,26 +128,110 @@
             }
         }
 
-        /// Ends the take with nothing kept when its device disappears or the engine is reconfigured under it.
-        private static func lossObservers(
+        /// A fresh engine whose input tap feeds `session`, not started yet. `deviceID` nil follows the system default.
+        private static func openEngine(
+            on deviceID: InputDevice.ID?, feeding session: CaptureSession
+        ) throws(CaptureError) -> AVAudioEngine {
+            let engine = AVAudioEngine()
+            if let deviceID {
+                guard select(deviceID, on: engine) else { throw .noMicrophone }
+            }
+            let format = engine.inputNode.outputFormat(forBus: 0)
+            guard let converter = SampleConverter(from: format) else { throw .noMicrophone }
+            let tap = tapBlock(TapPipe(converter: converter, session: session))
+            // 50 ms per callback: the meter and live bars stay smooth; the endpointer still sees every 10 ms frame.
+            engine.inputNode.installTap(
+                onBus: 0, bufferSize: AVAudioFrameCount(format.sampleRate * 0.05), format: format, block: tap)
+            return engine
+        }
+
+        /// Ends the take with nothing kept when its device disappears, and reopens the input when the system
+        /// reconfigures it.
+        private func lossObservers(
             engine: AVAudioEngine, deviceID: String, session: CaptureSession
         ) -> [any NSObjectProtocol] {
             let center = NotificationCenter.default
             let disconnected = center.addObserver(
                 forName: AVCaptureDevice.wasDisconnectedNotification, object: nil, queue: nil,
-                using: deviceLostObserver(deviceID: deviceID, session: session))
-            // The engine stops on a configuration change (the input went away, or its format changed), so the take
-            // can't go on either way.
+                using: Self.deviceLostObserver(deviceID: deviceID, session: session))
+            // The engine stops when its input's sample rate or channel count changes. A Continuity microphone (an
+            // iPhone) does that as its route settles just after the input opens, and the system default moving can
+            // do it too, so the take reopens its device rather than ending.
             let reconfigured = center.addObserver(
                 forName: .AVAudioEngineConfigurationChange, object: engine, queue: nil,
-                using: { _ in session.discard(.deviceLost) })
+                using: Self.reconfiguredObserver(self, engine: engine))
             return [disconnected, reconfigured]
+        }
+
+        private func scheduleReopen(after engine: AVAudioEngine) {
+            let held = UncheckedBox(engine)
+            reopenQueue.async { [weak self] in self?.reopen(after: held.value) }
+        }
+
+        /// Reopens the running take's device on a fresh engine after the system reconfigured `old`, keeping the take
+        /// (the few milliseconds in between are not heard). The take ends as `deviceLost` when the device is gone or
+        /// won't start, or after `maxReopens`.
+        private func reopen(after old: AVAudioEngine) {
+            guard
+                let take = current.withLock({ box -> UncheckedBox<Take>? in
+                    guard let take = box, take.value.engine === old, take.value.session.outcome == nil else {
+                        return nil
+                    }
+                    return take
+                })?.value
+            else { return }
+            let session = take.session
+            old.inputNode.removeTap(onBus: 0)
+            old.stop()
+            for observer in take.observers { NotificationCenter.default.removeObserver(observer) }
+            guard take.reopens < Self.maxReopens else {
+                Self.log.error("input reconfigured \(take.reopens + 1, privacy: .public) times; take ends as deviceLost")
+                session.discard(.deviceLost)
+                return
+            }
+
+            let engine: AVAudioEngine
+            do {
+                // Pinned to the take's device by UID, so the take stays where it started even when the system
+                // default has moved (macOS can switch it to an iPhone as that connects).
+                engine = try Self.openEngine(on: session.device.id, feeding: session)
+                engine.prepare()
+                try engine.start()
+            } catch {
+                Self.log.error("reopening the input failed: \(String(describing: error), privacy: .public)")
+                session.discard(.deviceLost)
+                return
+            }
+            let observers = lossObservers(engine: engine, deviceID: session.device.id, session: session)
+            let stored = current.withLock { box -> Bool in
+                guard let running = box, running.value.engine === old else { return false }
+                box = UncheckedBox(
+                    Take(session: session, engine: engine, observers: observers, reopens: take.reopens + 1))
+                return true
+            }
+            guard stored else {
+                // The take ended, or another one started, while the input reopened.
+                engine.inputNode.removeTap(onBus: 0)
+                engine.stop()
+                for observer in observers { NotificationCenter.default.removeObserver(observer) }
+                return
+            }
+            Self.log.notice("input reconfigured; reopened it (\(take.reopens + 1, privacy: .public) of \(Self.maxReopens, privacy: .public))")
+            // The take may have ended after the check above: release() found the old engine then, not this one.
+            if session.outcome != nil { release() }
         }
 
         // These build closures outside any isolation, so the audio and notification threads may call them.
 
         private nonisolated static func tapBlock(_ pipe: TapPipe) -> AVAudioNodeTapBlock {
             { buffer, _ in pipe.handle(buffer) }
+        }
+
+        private nonisolated static func reconfiguredObserver(
+            _ recorder: MicRecorder, engine: AVAudioEngine
+        ) -> @Sendable (Notification) -> Void {
+            let held = UncheckedBox(engine)
+            return { [weak recorder] _ in recorder?.scheduleReopen(after: held.value) }
         }
 
         private nonisolated static func deviceLostObserver(deviceID: String, session: CaptureSession)

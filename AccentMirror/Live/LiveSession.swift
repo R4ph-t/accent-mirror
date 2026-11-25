@@ -313,7 +313,10 @@ final class LiveSession {
         case .recorded(let take):
             lastFloorDBFS = take.floorDBFS
             submit(TakeAudio(samples: take.samples, sha256: take.sha256))
-        case .cancelled, .deviceLost:
+        case .cancelled:
+            restoreBeforeTake()
+        case .deviceLost:
+            Self.log.notice("take dropped: the input went away or kept reconfiguring")
             restoreBeforeTake()
         }
     }

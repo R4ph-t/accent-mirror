@@ -121,8 +121,11 @@ Built 2026-11-24 on `factory/14-live-capture` (factory, Claude Code on Opus).
 4. Multi-channel inputs keep the first channel (an interface's input 1), not a mixdown, so a mic on input 1 of a
    two-channel interface isn't read 6 dB quiet.
 5. A requested device that is gone falls back to the system default, then to the first device listed.
-6. Device lost (open question 1, built with the default): `CaptureOutcome.deviceLost`, nothing kept. The same outcome
-   covers an `AVAudioEngineConfigurationChange` mid-take (the engine has stopped, so the take can't go on).
+6. Device lost (open question 1, built with the default): `CaptureOutcome.deviceLost`, nothing kept. An
+   `AVAudioEngineConfigurationChange` mid-take reopens the take's device (by UID) on a fresh engine and the take goes
+   on; it ends as `deviceLost` only when the device is gone or won't start, or after 3 reopens in one take. Amended
+   2026-11-25: an iPhone used as the microphone (Continuity) reconfigures as its route settles just after it opens,
+   which used to end every take at once with nothing shown.
 7. Starting a take while one runs cancels the running one.
 8. The engine failing to start is `CaptureError.inputFailed`, which maps to no `TakeProblem`: spec 21 decides what it
    shows.
