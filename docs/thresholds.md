@@ -268,3 +268,16 @@ NOT EVALUATED until then, which is not a pass. Under a bar, the report goes to C
 | End-to-end budget | `performance.endToEndBudgetS` | 2 | s | v1 | 11 | 3 s take on M1, model warm; hand check (`make bench`) |
 | Non-ASR stages | `performance.nonASRStagesMs` | 500 | ms | v1 | 11 | CI gate on the runner |
 | ASR (warm) | `performance.asrWarmMs` | 900 | ms | v1 | 03 | `tiny.en` is the fallback if base.en goes over |
+
+## Sound judging (`Thresholds.soundJudging`)
+
+Per-sound pronunciation judging (sound-judging plan, 2026-11-25; judging spike report §3). AMJudging's per-phone
+logistic calibration (`AMJudging/Resources/calibration.json`, fitted on speechocean762 train only by
+`tools/export_judge_calibration.py`) turns each sound's segmentation-free GOP into P(error); a sound is flagged above
+this value and its word with it. Frozen from the spike, not tuned here: picked as the best phone F1 on speechocean762
+train, then reported unchanged on held-out sets (LibriSpeech natives: 35/5,659 words flagged, 0.62% [0.45, 0.86];
+speechocean762 test: 65% of gross word errors caught).
+
+| Name | Key | Value | Unit | Plan | Owner spec | Notes |
+|---|---|---|---|---|---|---|
+| Sound error threshold | `soundJudging.errorThreshold` | 0.22 | calibrated P(error) | sound-judging plan 2026-11-25 | sound judging | Flag when P(error) > this; confidence = 1 − P(error). Changing it needs a new `SoundScorer.judgeID` too |

@@ -206,6 +206,17 @@ Bundled with the app by spec 15 as the starter library's native recordings (`Res
 
 Not yet bundled; notice added by spec 02.
 
+## Sound-judging calibration (CC BY 4.0)
+
+`Packages/AccentKit/Sources/AMJudging/Resources/calibration.json` is bundled with the app: 81 logistic-regression
+weights that turn a sound's GOP into P(error), fitted by `tools/export_judge_calibration.py` on the phone accuracy
+labels of the speechocean762 train split. No audio or labels are bundled, only the fitted weights.
+
+- Work: speechocean762 (https://www.openslr.org/101/, https://huggingface.co/datasets/mispeech/speechocean762).
+- Attribution: Junbo Zhang et al., "speechocean762: An Open-Source Non-native English Speech Corpus For
+  Pronunciation Assessment", Interspeech 2021; SpeechOcean.
+- Licence: Creative Commons Attribution 4.0 International (CC BY 4.0).
+
 ## Evaluation corpora (CC BY 4.0)
 
 Committed by spec 02 for the agreement harness only: never bundled with the app, never read at runtime. The full

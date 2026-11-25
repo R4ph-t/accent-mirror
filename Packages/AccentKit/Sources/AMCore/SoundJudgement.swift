@@ -84,7 +84,8 @@ public struct JudgedWord: Sendable, Hashable, Codable {
 }
 
 public struct JudgedPhone: Sendable, Hashable, Codable {
-    /// The expected ARPAbet phone, stress digits stripped (e.g. `AH`, `TH`).
+    /// The expected ARPAbet phone, stress digits stripped (e.g. `TH`, `IY`), except that unstressed AH stays `AH0`
+    /// (schwa, "a" as in about) while AH1 and AH2 are `AH` ("u" as in cup). Designer ruling, 2026-11-25.
     public let phone: String
     /// Segmentation-free GOP, a log posterior ratio, <= 0. Composite units (vowel+R, AH0+L) give both members the
     /// unit's score.
