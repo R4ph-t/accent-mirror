@@ -47,6 +47,9 @@ struct LiveScreen: Sendable {
     /// Seconds of each side's audio, for playback and the playhead.
     var modelSeconds: Double?
     var youSeconds: Double?
+    /// The selected voice's native side with no take of yours (addendum v3.2 W1): drawn before the first take, and
+    /// while recording or on a take problem with no analysed take on screen. Nil until it loads, or if it can't.
+    var native: NativeDisplay?
 }
 
 /// The selected phrase and voice, from spec 15's manifest.
@@ -172,18 +175,22 @@ enum LivePresenter {
             case .missing(let reason): Describe.Value(value: nil, reason: Describe.MissingReason(rawValue: reason.rawValue))
             }
         }
-        func range(_ r: DescribedRange) -> Describe.Range { Describe.Range(min: r.min, max: r.max, count: r.count) }
-        let you = measures.you, native = measures.native
+        let you = measures.you
         return Describe(
             you: Describe.Speaker(
                 lengthSeconds: value(you.lengthSeconds), syllablesPerSecond: value(you.syllablesPerSecond),
                 pitchRangeSemitones: value(you.pitchRangeSemitones), rhythmNPVI: value(you.rhythmNPVI),
                 endingDirection: you.endingDirection.flatMap { Describe.Direction(rawValue: $0.rawValue) }),
-            native: Describe.Native(
-                voices: native.voices, lengthSeconds: range(native.lengthSeconds),
-                syllablesPerSecond: range(native.syllablesPerSecond),
-                pitchRangeSemitones: range(native.pitchRangeSemitones), rhythmNPVI: range(native.rhythmNPVI),
-                endingDirections: Dictionary(uniqueKeysWithValues: native.endingDirections.map { ($0.key.rawValue, $0.value) })))
+            native: describe(measures.native))
+    }
+
+    static func describe(_ native: NativeDescription) -> Describe.Native {
+        func range(_ r: DescribedRange) -> Describe.Range { Describe.Range(min: r.min, max: r.max, count: r.count) }
+        return Describe.Native(
+            voices: native.voices, lengthSeconds: range(native.lengthSeconds),
+            syllablesPerSecond: range(native.syllablesPerSecond),
+            pitchRangeSemitones: range(native.pitchRangeSemitones), rhythmNPVI: range(native.rhythmNPVI),
+            endingDirections: Dictionary(uniqueKeysWithValues: native.endingDirections.map { ($0.key.rawValue, $0.value) }))
     }
 
     // MARK: Timelines
@@ -207,29 +214,25 @@ enum LivePresenter {
     // MARK: The native side
 
     /// The phrase's native side for the result's voice: words and syllables on the model timeline, the band.
-    static func phrase(_ live: LivePhrase, result: AnalysisResult?) -> PhraseFixture {
-        guard let result else { return emptyPhrase(live) }
-        let axis = result.modelAxis
-        let words: [NativeWord] = result.model.words.map { word in
-            NativeWord(
-                text: word.text, stressCheck: nil, expectedStress: word.expectedStress?.map(syllableStress),
-                start: fraction(word.range.start, start: axis.start, end: axis.end),
-                end: fraction(word.range.end, start: axis.start, end: axis.end),
-                syllables: word.syllables.compactMap { index in
-                    guard result.model.syllables.indices.contains(index) else { return nil }
-                    let s = result.model.syllables[index]
-                    return Syllable(
-                        text: s.text, start: fraction(s.range.start, start: axis.start, end: axis.end),
-                        end: fraction(s.range.end, start: axis.start, end: axis.end), prominence: s.prominence)
-                })
-        }
+    static func phrase(_ live: LivePhrase, result: AnalysisResult?, native: NativeDisplay? = nil) -> PhraseFixture {
+        guard let result else { return emptyPhrase(live, native: native) }
         return PhraseFixture(
             id: live.phrase.id.rawValue, text: live.phrase.text, subtitle: subtitle(live),
-            rangeSemitones: rangeSemitones(result.pitchAxis), words: words, band: band(result))
+            rangeSemitones: rangeSemitones(result.pitchAxis), words: words(result.model, axis: result.modelAxis),
+            band: band(result.nativeBand, axis: result.modelAxis))
     }
 
-    /// Before any take: the phrase's words spread evenly, no bars or band yet (nothing has been analysed).
-    static func emptyPhrase(_ live: LivePhrase) -> PhraseFixture {
+    /// Before any take (addendum v3.2 W1): the selected voice's stored analysis, mapped as a result's model is. Words
+    /// spread evenly with no bars or band only when that analysis isn't available (it failed to load, or is still
+    /// loading, or belongs to another phrase or voice).
+    static func emptyPhrase(_ live: LivePhrase, native: NativeDisplay? = nil) -> PhraseFixture {
+        if let native, native.phraseID == live.phrase.id, native.recordingID == live.voice {
+            return PhraseFixture(
+                id: live.phrase.id.rawValue, text: live.phrase.text, subtitle: subtitle(live),
+                rangeSemitones: rangeSemitones(native.pitchAxis),
+                words: words(native.model, axis: native.modelAxis),
+                band: band(native.nativeBand, axis: native.modelAxis))
+        }
         let texts = live.phrase.text.split(separator: " ").map(String.init)
         let step = 1 / Double(max(texts.count, 1))
         let words = texts.enumerated().map { index, text in
@@ -238,6 +241,32 @@ enum LivePresenter {
         }
         return PhraseFixture(id: live.phrase.id.rawValue, text: live.phrase.text, subtitle: subtitle(live),
                              rangeSemitones: 12, words: words, band: [])
+    }
+
+    /// The model's words and syllables as fractions of `axis`.
+    static func words(_ model: SpeakerAnalysis, axis: TimeRange) -> [NativeWord] {
+        model.words.map { word in
+            NativeWord(
+                text: word.text, stressCheck: nil, expectedStress: word.expectedStress?.map(syllableStress),
+                start: fraction(word.range.start, start: axis.start, end: axis.end),
+                end: fraction(word.range.end, start: axis.start, end: axis.end),
+                syllables: word.syllables.compactMap { index in
+                    guard model.syllables.indices.contains(index) else { return nil }
+                    let s = model.syllables[index]
+                    return Syllable(
+                        text: s.text, start: fraction(s.range.start, start: axis.start, end: axis.end),
+                        end: fraction(s.range.end, start: axis.start, end: axis.end), prominence: s.prominence)
+                })
+        }
+    }
+
+    /// The native range with no take of yours: You is missing on every row, so the inspector shows an em dash.
+    static func describe(native: NativeDescription) -> Describe {
+        let none = Describe.Value(value: nil, reason: .noWords)
+        return Describe(
+            you: Describe.Speaker(lengthSeconds: none, syllablesPerSecond: none, pitchRangeSemitones: none,
+                                  rhythmNPVI: none, endingDirection: nil),
+            native: describe(native))
     }
 
     static func syllableStress(_ stress: AMCore.SyllableStress) -> SyllableStress {
@@ -254,12 +283,11 @@ enum LivePresenter {
     }
 
     /// The native band on model time, one segment per stretch: a gap over 250 ms starts a new one.
-    static func band(_ result: AnalysisResult) -> [BandSegment] {
-        let axis = result.modelAxis
+    static func band(_ points: [AMCore.BandPoint], axis: TimeRange) -> [BandSegment] {
         var segments: [BandSegment] = []
         var current: [BandPoint] = []
         var last: Double?
-        for point in result.nativeBand {
+        for point in points {
             if let last, point.time - last > 0.25, !current.isEmpty {
                 segments.append(BandSegment(points: current))
                 current = []
@@ -369,9 +397,11 @@ enum LivePresenter {
         var result: AnalysisResult?
         var take: TakeFixture?
         var analysis: Analysis?
+        let native = screen.native.flatMap { $0.phraseID == live.phrase.id && $0.recordingID == live.voice ? $0 : nil }
         switch screen.shown {
         case .nothing:
-            break
+            // W1: nothing analysed yet; the inspector's NATIVE RANGE still shows, You is an em dash.
+            analysis = native.map { Analysis(takeProblems: nil, describe: describe(native: $0.native)) }
         case .result(let analysed, let number):
             result = analysed
             take = Self.take(analysed, number: number)
@@ -403,7 +433,7 @@ enum LivePresenter {
             operationalError: screen.operationalError.map(operationalError),
             persistence: screen.persistence.flatMap(persistence), modelRecording: model)
         let earlier = result.map { r in screen.ghosts.map { ghost($0, axis: r.modelAxis) } } ?? []
-        var loaded = LoadedFixture(fixture: fixture, phrase: phrase(live, result: result), take: take,
+        var loaded = LoadedFixture(fixture: fixture, phrase: phrase(live, result: result, native: native), take: take,
                                    earlierTakes: earlier)
         if let model = screen.modelSeconds { loaded.liveSeconds = (model, screen.youSeconds ?? model) }
         return loaded

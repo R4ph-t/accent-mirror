@@ -159,6 +159,11 @@ struct PlaybackSchedule: Equatable, Sendable {
         return Self(steps: steps, repeats: true)
     }
 
+    /// The model's slice alone, repeating with no pause (v3.2 W1: a word loop with no take of yours).
+    static func loopModel(_ model: (from: Double, to: Double, seconds: Double)) -> Self {
+        Self(steps: [.play(.model, seconds: model.seconds, from: model.from, to: model.to)], repeats: true)
+    }
+
     var totalSeconds: Double { steps.map(\.seconds).reduce(0, +) }
 
     func phase(at elapsed: Double) -> Phase {

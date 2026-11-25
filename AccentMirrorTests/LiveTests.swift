@@ -176,6 +176,103 @@ struct LivePresenterTests {
     }
 }
 
+// MARK: - Before the first take (addendum v3.2 W1)
+
+@Suite("Native before the first take", .serialized) @MainActor
+struct NativeBeforeFirstTakeTests {
+    /// The live state with the native display loaded.
+    private func loaded(_ world: World) -> LoadedFixture {
+        LivePresenter.loaded(world.session.live, screen: world.session.screen,
+                             manifest: LivePresenter.manifest(world.starter))
+    }
+
+    /// The native words as the strip draws them: text, spans, syllables and dictionary stress.
+    private func signature(_ phrase: PhraseFixture) -> [String] {
+        phrase.words.map { word in
+            "\(word.text) \(word.start) \(word.end) \(word.expectedStress ?? []) "
+                + word.syllables.map { "\($0.text)@\($0.start)-\($0.end):\($0.prominence)" }.joined(separator: ",")
+        }
+    }
+
+    @Test func preTakeShowsTheNativeModel() async throws {
+        let world = try World.make()
+        await world.session.start()
+        await world.session.nativeLoad?.value
+        let native = try #require(world.session.screen.native)
+        #expect(native.recordingID == world.session.live.voice)
+        let state = loaded(world)
+
+        #expect(state.fixture.phase == .empty)
+        #expect(state.take == nil)
+        #expect(state.earlierTakes.isEmpty)
+        // Words come from the recording, not spread evenly; every word has syllables; some have dictionary stress.
+        let words = state.phrase.words
+        #expect(words.count == native.model.words.count)
+        let step = 1 / Double(words.count)
+        let even = words.indices.allSatisfy { abs(words[$0].start - Double($0) * step) < 1e-9 }
+        #expect(!even)
+        #expect(words.allSatisfy { !$0.syllables.isEmpty })
+        #expect(words.contains { $0.expectedStress?.contains(.primary) == true })
+        #expect(words.flatMap(\.syllables).contains { $0.prominence > 0 })
+        #expect(!state.phrase.band.isEmpty)
+        #expect(state.phrase.band.flatMap(\.points).allSatisfy { (0...1).contains($0.t) })
+        // Nothing of yours: no take (so the strip's You row is the placeholder, no connectors, no You line),
+        // nothing saved (the take menu reads TAKES), and the inspector's You column is empty with the native range.
+        #expect(state.fixture.savedTakes.isEmpty)
+        let analysis = try #require(state.fixture.analysis)
+        #expect(analysis.takeProblems == nil)
+        #expect(analysis.timing == nil)
+        let describe = try #require(analysis.describe)
+        #expect(describe.you.lengthSeconds.value == nil && describe.you.rhythmNPVI.value == nil)
+        #expect(describe.you.endingDirection == nil)
+        #expect(describe.native.voices == world.session.live.phrase.recordings.count)
+        #expect(describe.native.lengthSeconds.min != nil && describe.native.lengthSeconds.max != nil)
+        // Model plays the phrase window the charts draw.
+        #expect(state.liveSeconds?.model == native.modelAxis.end - native.modelAxis.start)
+        #expect(world.session.modelClip().seconds == native.modelAxis.end - native.modelAxis.start)
+    }
+
+    @Test func recordingKeepsTheNativeCharts() async throws {
+        let world = try World.make(pacing: .manual)
+        await world.session.start()
+        await world.session.nativeLoad?.value
+        let before = signature(loaded(world).phrase)
+        let take = Task { await world.session.recordOrStop() }
+        #expect(await world.until(5) { world.session.isRecording })
+        let recording = loaded(world)
+        #expect(recording.fixture.phase == .recording)
+        #expect(signature(recording.phrase) == before)
+        #expect(!recording.phrase.band.isEmpty)
+        #expect(world.session.cancel())
+        await take.value
+        #expect(signature(loaded(world).phrase) == before)
+    }
+
+    @Test func aTakeProblemKeepsTheNativeCharts() async throws {
+        let world = try World.make(take: [Float](repeating: 0, count: 32_000))
+        await world.session.start()
+        await world.session.nativeLoad?.value
+        let before = signature(loaded(world).phrase)
+        await world.session.recordOrStop()
+        #expect(await world.until { if case .takeProblem = world.session.screen.shown { true } else { false } })
+        let state = loaded(world)
+        #expect(state.fixture.analysis?.takeProblems?.isEmpty == false)
+        #expect(signature(state.phrase) == before)
+        #expect(!state.phrase.band.isEmpty)
+    }
+
+    @Test func aVoiceSwitchReloadsTheNativeDisplay() async throws {
+        let world = try World.make()
+        await world.session.start()
+        await world.session.nativeLoad?.value
+        let other = try #require(world.session.live.phrase.recordings.first { $0.id != world.session.live.voice }?.id)
+        await world.session.select(voice: other)
+        await world.session.nativeLoad?.value
+        #expect(world.session.screen.native?.recordingID == other)
+        #expect(!loaded(world).phrase.band.isEmpty)
+    }
+}
+
 // MARK: - Takes
 
 @Suite("Live takes", .serialized) @MainActor

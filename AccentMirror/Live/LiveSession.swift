@@ -72,6 +72,8 @@ final class LiveSession {
     private var lastFloorDBFS: Double?
     private var events: Task<Void, Never>?
     private var modelAudio: [RecordingID: [Float]] = [:]
+    /// The native display being loaded for the selected phrase and voice (tests await it).
+    private(set) var nativeLoad: Task<Void, Never>?
     /// The input device for the next take (the Input pop-up); nil follows the system default.
     var inputDevice: InputDevice.ID? {
         didSet { services.defaults.set(inputDevice, forKey: Self.inputKey) }
@@ -164,6 +166,7 @@ final class LiveSession {
     }
 
     private func showPhrase() async {
+        loadNative()
         savedTakes = await services.store.takes(for: live.phrase.id)
         screen.savedTakes = savedTakes.map(\.number)
         if let latest = savedTakes.first(where: { $0.status == .comparable }) {
@@ -179,6 +182,7 @@ final class LiveSession {
         guard !isRecording, voice != live.voice, live.phrase.recording(voice) != nil else { return }
         live.voice = voice
         services.defaults.set(voice.rawValue, forKey: Self.voiceKey(live.phrase.id))
+        loadNative()
         changed()
         if let shownTake {
             await show(saved: shownTake)
@@ -188,6 +192,34 @@ final class LiveSession {
         } else {
             screen.modelSeconds = modelClip().seconds
             changed()
+        }
+    }
+
+    /// Loads the selected voice's native display (v3.2 W1) off the main path: recording isn't blocked while it
+    /// loads, and a result arriving first wins (the presenter draws a result's own model). The display is kept only if
+    /// the phrase and voice are still selected. On failure the strip and pitch card keep the even-spread fallback;
+    /// nothing is announced (a reference problem surfaces when a take is analysed, as before).
+    private func loadNative() {
+        let phrase = live.phrase.id
+        let voice = live.voice
+        if let native = screen.native, native.phraseID == phrase, native.recordingID == voice { return }
+        let input = phraseInput()
+        let reference = services.coordinator.reference
+        nativeLoad?.cancel()
+        nativeLoad = Task { @MainActor [weak self] in
+            let display: NativeDisplay?
+            do {
+                display = try await NativeView.load(phrase: input, voice: voice, reference: reference)
+            } catch {
+                if !(error is CancellationError) {
+                    Self.log.error("native display for \(phrase.rawValue, privacy: .public) failed: \(String(describing: error), privacy: .public)")
+                }
+                display = nil
+            }
+            guard let self, !Task.isCancelled, self.live.phrase.id == phrase, self.live.voice == voice else { return }
+            self.screen.native = display
+            if !self.isResultShown { self.screen.modelSeconds = self.modelClip().seconds }
+            self.changed()
         }
     }
 
@@ -339,7 +371,10 @@ final class LiveSession {
 
     private func restoreBeforeTake() {
         if let before = beforeTake {
+            // The native display may have loaded during the take: keep the newer one.
+            let native = screen.native ?? before.screen.native
             screen = before.screen
+            screen.native = native
             youClip = before.you
             shownTake = before.shown
         } else {
@@ -523,7 +558,16 @@ final class LiveSession {
         if case .result(let result, _) = screen.shown, result.identity.reference.recordingID == voice {
             return AudioClip(samples: samples, start: result.modelAxis.start, end: result.modelAxis.end)
         }
+        // With no result on screen the charts draw the native display's phrase window (W1), so Model and a word
+        // loop play that window: the same one a result plays.
+        if !isResultShown, let native = screen.native, native.phraseID == live.phrase.id, native.recordingID == voice {
+            return AudioClip(samples: samples, start: native.modelAxis.start, end: native.modelAxis.end)
+        }
         return AudioClip(samples: samples)
+    }
+
+    private var isResultShown: Bool {
+        if case .result = screen.shown { true } else { false }
     }
 
     private func setClips(result: AnalysisResult, yours samples: [Float]) {

@@ -19,7 +19,7 @@ struct PitchCard: View {
                     .typeRole(.mono)
                     .foregroundStyle(palette.textSecondary)
                 Spacer()
-                PitchLegend(showsEarlier: !pitch.earlier.isEmpty)
+                PitchLegend(showsYou: pitch.showsYouLegend, showsEarlier: !pitch.earlier.isEmpty)
             }
             .frame(height: 16)
             .padding(.bottom, 8)
@@ -54,12 +54,16 @@ struct PitchCard: View {
 /// line "Earlier takes". Told apart by words and thickness, not colour.
 private struct PitchLegend: View {
     @Environment(\.palette) private var palette
+    /// No take on the chart (v3.2 W1): the legend is the band swatch and "Native range" only.
+    var showsYou: Bool
     var showsEarlier: Bool
 
     var body: some View {
         HStack(spacing: 14) {
-            item(Copy.legendYou) {
-                Capsule().fill(palette.pitchYou).frame(width: 14, height: 2)
+            if showsYou {
+                item(Copy.legendYou) {
+                    Capsule().fill(palette.pitchYou).frame(width: 14, height: 2)
+                }
             }
             item(Copy.legendNativeRange) {
                 Capsule().fill(palette.pitchNative).frame(width: 14, height: 6)
