@@ -76,7 +76,12 @@ final class AppModel {
                     throw ModelUnavailable(.notInstalled)
                 }
             }
-            let analyzer = Analyzer(speech: speech, configuration: configuration)
+            // Sound judging (sound-judging plan, 2026-11-25): the bundled Core ML judge, loaded in the background
+            // after launch. Until it is ready (or if it isn't bundled) a take's sounds read `unavailable`.
+            let judgeFolder = resources.appending(
+                path: "Models/\(SoundJudgeHost.modelFolderName)", directoryHint: .isDirectory)
+            let sounds = SoundJudgeHost.bundled(folder: judgeFolder)
+            let analyzer = Analyzer(speech: speech, sounds: sounds, configuration: configuration)
             let store = TakeStore(
                 root: try TakeStore.applicationSupportRoot(),
                 recomputer: .pipeline(analyzer: analyzer, reference: library, phrase: { references.phraseInput($0) }))
@@ -93,6 +98,7 @@ final class AppModel {
                 _ = await store.recover()
                 if unavailable == nil { await speech.prepare() }
             }
+            Task.detached(priority: .utility) { await sounds.prepare() }
             return session
         } catch {
             log.error("live library unavailable: \(String(describing: error), privacy: .public)")

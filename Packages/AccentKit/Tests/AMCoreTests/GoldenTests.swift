@@ -400,10 +400,10 @@ enum Golden {
             ]
             // Spec 28 (CTO): `scoringMode`, `describe`, `comparableCoverage` and `expectedStress` are additive (old JSON
             // still decodes), so no version moved; its golden record repeats (1, 8, 2) with a new digest. That one
-            // triple is the only allowed repeat.
+            // triple is the only allowed repeat (pinned by its digest, so later records can follow it).
             let additiveRepeat = up == [0, 0, 0]
                 && (next.algorithmVersion, next.thresholdsVersion, next.contractVersion) == (1, 8, 2)
-                && next.digest == records.last?.digest
+                && next.digest == "8469e6740ea26dc61ea41f2e1c1cf18cef50e21f6676d5a7f85b803c66b9d0b2"
             #expect(
                 up.allSatisfy { $0 >= 0 } && (up.contains { $0 > 0 } || additiveRepeat),
                 "versions must increase between records")

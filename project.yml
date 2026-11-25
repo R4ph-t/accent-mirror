@@ -82,6 +82,43 @@ targets:
           ditto "${cache}/${model}/tokenizer" "$dest/tokenizer"
           for f in manifest.json LICENSE NOTICE; do cp "${SRCROOT}/Resources/Models/${model}/$f" "$dest/$f"; done
           echo "Bundled ${model} into ${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Models"
+      # Sound judging: bundles the pinned judge model. Verifies the cached int8 package against
+      # Resources/Models/<model>/manifest.json (scripts/fetch-judge-model.sh --verify, never the network), compiles it
+      # with coremlcompiler into Contents/Resources/Models/<model>/LV60Int8.mlmodelc (the app never compiles at
+      # runtime) and copies the manifest, LICENSE and NOTICE next to it. Without a verified cache it prints a note
+      # and the app reports the judge as unavailable (modelNotInstalled). Debug and Release alike. Incremental builds
+      # skip the compile while the stamp (packageSHA256 and the three committed files) matches the bundled copy.
+      - name: Bundle judge model
+        basedOnDependencyAnalysis: false
+        script: |
+          model="wav2vec2-lv-60-espeak-cv-ft"
+          cache="${MODELS_CACHE:-${SRCROOT}/.cache/models}"
+          src="${SRCROOT}/Resources/Models/${model}"
+          dest="${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Models/${model}"
+          stamp="${DERIVED_FILE_DIR}/${model}.stamp"
+          if ! MODELS_CACHE="$cache" "${SRCROOT}/scripts/fetch-judge-model.sh" --verify >/dev/null 2>&1; then
+            rm -rf "$dest" "$stamp"
+            echo "note: ${model} is not fetched or not verified; the app will report sound judging as unavailable (run scripts/fetch-judge-model.sh)"
+            exit 0
+          fi
+          key="$(plutil -extract packageSHA256 raw -o - "$src/manifest.json") $(cd "$src" && cat manifest.json LICENSE NOTICE | shasum -a 256 | cut -d' ' -f1)"
+          if [ -d "$dest/LV60Int8.mlmodelc" ] && [ -f "$stamp" ] && [ "$(cat "$stamp")" = "$key" ] \
+            && [ "$(ls -A "$dest" | LC_ALL=C sort | tr '\n' ' ')" = "LICENSE LV60Int8.mlmodelc NOTICE manifest.json " ]; then
+            echo "${model} is already bundled and current"
+            exit 0
+          fi
+          rm -rf "$dest" "$stamp"
+          work="${DERIVED_FILE_DIR}/${model}.compile"
+          rm -rf "$work"
+          mkdir -p "$work" "$dest"
+          # coremlcompiler reads the cached package and leaves it unchanged (loading it with Core ML would not).
+          xcrun coremlcompiler compile "${cache}/${model}/LV60Int8.mlpackage" "$work" >/dev/null || { rm -rf "$work" "$dest"; echo "error: coremlcompiler failed for ${model}"; exit 1; }
+          mv "$work/LV60Int8.mlmodelc" "$dest/LV60Int8.mlmodelc"
+          rm -rf "$work"
+          for f in manifest.json LICENSE NOTICE; do cp "$src/$f" "$dest/$f"; done
+          mkdir -p "$(dirname "$stamp")"
+          printf '%s' "$key" >"$stamp"
+          echo "Bundled ${model} (compiled LV60Int8.mlmodelc) into ${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Models"
     settings:
       base:
         PRODUCT_NAME: AccentMirror
