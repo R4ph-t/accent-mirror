@@ -1,10 +1,11 @@
 import SwiftUI
 
 // Designer addendum v3.5 I2–I6 and v3.6 J3: the toolbar's Input button and the 300 pt Input popover it opens
-// (also opened by "Input…" in the inspector and on card 1). The popover is anchored to the control that opened
-// it, with an arrow on that control. Contents and the 300 pt width are unchanged from v3.5 I2. Positioning
-// follows I2: if the body would hit a window edge, it shifts to keep a 16 pt window margin and the arrow
-// stays on the control (NSPopover itself only clamps to the screen; see InputPopoverHost).
+// (also opened by "Input…" in the inspector and on card 1). The popover is a real macOS NSPopover (SwiftUI's
+// `.popover`), anchored to the control that opened it, with the system arrow. `arrowEdge: .bottom` places the
+// popover below the control with the arrow pointing up — the same attachment as NSPopover `preferredEdge: .maxY`
+// on a flipped positioning view (NSHostingView). I2's 16 pt margin is the screen edge, which NSPopover's own
+// clamping covers; the body may overhang the window. Contents and the 300 pt width are unchanged from v3.5 I2.
 
 /// The 28 pt mic ghost button immediately left of Details. Icon only, never hidden or reduced further (v3.6 J1).
 struct InputButton: View {
@@ -62,18 +63,19 @@ private struct InputPopoverAttachment: ViewModifier {
     @Environment(\.closeInputPopover) private var onClose
 
     func body(content: Content) -> some View {
-        content.background {
-            InputPopoverHost(
-                isPresented: state != nil && current == source,
-                onClose: onClose
-            ) {
-                if let state {
-                    InputPopoverView(state: state, systemChrome: true)
-                        .environment(\.palette, palette)
-                        .environment(\.shellActions, actions)
-                        .environment(\.inputMeter, inputMeter)
-                        .environment(recordingMeter)
-                }
+        content.popover(
+            isPresented: Binding(
+                get: { state != nil && current == source },
+                set: { if !$0 { onClose() } }
+            ),
+            arrowEdge: .bottom
+        ) {
+            if let state {
+                InputPopoverView(state: state, systemChrome: true)
+                    .environment(\.palette, palette)
+                    .environment(\.shellActions, actions)
+                    .environment(\.inputMeter, inputMeter)
+                    .environment(recordingMeter)
             }
         }
     }
@@ -89,7 +91,7 @@ struct InputPopoverView: View {
     @Environment(\.palette) private var palette
     @Environment(\.shellActions) private var actions
     var state: InputPopoverState
-    /// True when the view sits inside InputPopoverHost (v3.5 I2): the arrow and chrome are the host's; we
+    /// True when the view sits inside a system NSPopover (v3.6 J3): the arrow and chrome are the system's; we
     /// fill the content with the card surface but drop the floating-card shadow and hairline.
     var systemChrome = false
 
