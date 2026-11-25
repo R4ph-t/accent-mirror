@@ -104,6 +104,7 @@ private struct StarterJudgeFixture: Decodable {
         var judged: [(phrase: String, words: [JudgedWord])] = []
         for (phrase, audio, words) in try Self.starterPhrases() {
             let samples = try StarterReferences.decode16k(audio)
+            print("starter regression (model): judging \(phrase.id) (\(samples.count) samples)")
             judged.append((phrase.id.rawValue, try await judge.judge(samples: samples, words: words).words))
         }
         Self.check(judged, source: "model at \(folder.lastPathComponent)")
