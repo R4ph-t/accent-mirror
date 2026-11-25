@@ -1,6 +1,6 @@
 # 21: Coordinator-wired UI: record, compare, play back
 
-Status: Ready · Branch: – · Depends on: 29 (v3 result screen, Designer spec v3), 28 (scoring off; was 11, then 27; repointed 2026-11-24 after spike 27's NO-GO and Raph's v1
+Status: Done · Branch: factory/21-coordinator-wired-ui · Depends on: 29 (v3 result screen, Designer spec v3), 28 (scoring off; was 11, then 27; repointed 2026-11-24 after spike 27's NO-GO and Raph's v1
 show-don't-judge decision), 12 (pipeline, coordinator), 13 (entitlement, mic string;
 by hand), 14 (live capture), 15 (starter library), 16 (take store), 20 (charts) · Estimate: 10–12 h agent run + 2 h
 Raph review · Risk: high
