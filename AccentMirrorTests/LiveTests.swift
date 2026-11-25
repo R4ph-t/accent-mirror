@@ -473,6 +473,73 @@ struct LivePlaybackTests {
         #expect(out.count == 1_600)
         #expect(out.allSatisfy { $0 == 0 })
     }
+
+    @Test func aFullPlayAddsA300msTailAfterTheLastWordClampedToTheClip() {
+        // Analysis window is 0…0.7 s of a 1 s clip; the last 0.3 s holds a distinct tail marker.
+        var samples = [Float](repeating: 0.5, count: 16_000)
+        for i in 11_200..<16_000 { samples[i] = 0.25 }
+        let model = AudioClip(samples: samples, start: 0, end: 0.7)
+        #expect(abs(model.tailSeconds - AudioClip.tailPad) < 1e-9)
+        #expect(abs(model.playbackEnd - 1.0) < 1e-9)
+
+        let schedule = PlaybackSchedule.model(model.seconds).applyingTail(model: model, you: nil)
+        #expect(schedule.steps.count == 2)
+        guard case .play(.model, let body, let from, let to) = schedule.steps[0] else { Issue.record("missing body"); return }
+        #expect(abs(body - 0.7) < 1e-9 && from == 0 && to == 1)
+        guard case .play(.model, let tail, let tailFrom, let tailTo) = schedule.steps[1] else { Issue.record("missing tail"); return }
+        #expect(abs(tail - AudioClip.tailPad) < 1e-9 && tailFrom == 1 && tailTo == 1)
+        let out = AudioPlayback.render(schedule, model: model, you: nil)
+        #expect(out.count == 16_000)
+        #expect(out[..<11_200].allSatisfy { $0 == 0.5 })
+        #expect(out[11_200...].allSatisfy { $0 == 0.25 })
+
+        let clock = FrozenPlaybackClock(now: 0)
+        let run = PlaybackRun(schedule, clock: clock)
+        clock.now = 0.7
+        #expect(run.phase == .playing(.model, progress: 1))
+        clock.now = 0.85
+        #expect(run.phase == .playing(.model, progress: 1))
+        clock.now = 1.0
+        #expect(run.phase == .finished)
+    }
+
+    @Test func theTailIsClampedToTheClipWhenLessThan300msRemain() {
+        var samples = [Float](repeating: 0.5, count: 16_000)
+        for i in 14_400..<16_000 { samples[i] = 0.25 }
+        let you = AudioClip(samples: samples, start: 0, end: 0.9)
+        #expect(abs(you.tailSeconds - 0.1) < 1e-9)
+        let schedule = PlaybackSchedule.you(you.seconds).applyingTail(model: nil, you: you)
+        let out = AudioPlayback.render(schedule, model: nil, you: you)
+        #expect(out.count == 16_000)
+        #expect(out[14_400...].allSatisfy { $0 == 0.25 })
+    }
+
+    @Test func noTailWhenTheWindowAlreadyRunsToTheClipEnd() {
+        let model = AudioClip(samples: [Float](repeating: 0.5, count: 16_000))
+        #expect(model.tailSeconds == 0)
+        let schedule = PlaybackSchedule.model(model.seconds).applyingTail(model: model, you: nil)
+        #expect(schedule.steps == [.play(.model, seconds: 1)])
+        #expect(AudioPlayback.render(schedule, model: model, you: nil).count == 16_000)
+    }
+
+    @Test func aLastWordLoopAlsoPlaysTheTailAndEarlierWordsDoNot() {
+        var samples = [Float](repeating: 0.5, count: 16_000)
+        for i in 11_200..<16_000 { samples[i] = 0.25 }
+        let model = AudioClip(samples: samples, start: 0, end: 0.7)
+        let last = PlaybackSchedule.loopModel((from: 0.5, to: 1, seconds: 0.35)).applyingTail(model: model, you: nil)
+        let lastOut = AudioPlayback.render(last, model: model, you: nil)
+        #expect(last.steps.contains { step in
+            if case .play(.model, let seconds, let from, let to) = step { return from == 1 && to == 1 && abs(seconds - 0.3) < 1e-9 }
+            return false
+        })
+        #expect(lastOut.suffix(4_800).allSatisfy { $0 == 0.25 })
+
+        let earlier = PlaybackSchedule.loopModel((from: 0, to: 0.5, seconds: 0.35)).applyingTail(model: model, you: nil)
+        #expect(earlier.steps.count == 1)
+        let earlierOut = AudioPlayback.render(earlier, model: model, you: nil)
+        #expect(earlierOut.count == 5_600)
+        #expect(earlierOut.allSatisfy { $0 == 0.5 })
+    }
 }
 
 // MARK: - Menus and keyboard (v1 §10)

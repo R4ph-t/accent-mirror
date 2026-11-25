@@ -63,6 +63,8 @@ final class ShellModel {
     /// Spec 21: the audio follows the playhead. Called with each schedule that starts, and when playback stops.
     @ObservationIgnored var onPlay: ((PlaybackSchedule) -> Void)?
     @ObservationIgnored var onStopPlaying: (() -> Void)?
+    /// Live audio: lengthen a play that ends at the last word by the clip's tail (300 ms, clamped). Fixtures leave this nil.
+    @ObservationIgnored var adjustPlayback: ((PlaybackSchedule) -> PlaybackSchedule)?
 
     // MARK: Chart motion (spec 20)
 
@@ -350,6 +352,7 @@ final class ShellModel {
         loopingWord = nil
         chartInputs.loopingWord = nil
         chartInputs.loopingLabel = nil
+        let schedule = adjustPlayback?(schedule) ?? schedule
         playback = PlaybackRun(schedule, clock: clock)
         onPlay?(schedule)
     }
