@@ -126,7 +126,7 @@ struct LabelLayoutTests {
             Item(center: 112, width: 25, priority: .always),// CEN
         ]
         let placed = LabelLayout.place(items, within: 400)
-        #expect(placed.allSatisfy(\.shown))
+        #expect(placed.allSatisfy { $0.shown })
         for (item, p) in zip(items, placed) {
             #expect(p.center - item.width / 2 >= -1e-6)
             #expect(p.center + item.width / 2 <= 400 + 1e-6)
