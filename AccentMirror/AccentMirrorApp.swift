@@ -45,6 +45,7 @@ struct AccentMirrorApp: App {
             ShellView(model: model)
                 .environment(\.shellActions, app.actions)
                 .environment(app.meter)
+                .environment(\.inputMeter, app.inputMeter)
         }
         .windowStyle(.hiddenTitleBar)
         .defaultSize(Metrics.defaultWindow)

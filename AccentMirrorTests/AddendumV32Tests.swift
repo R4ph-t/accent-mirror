@@ -116,7 +116,7 @@ struct GeistMediumTests {
     @Test func mediumLabelsUseTheRoles() throws {
         let card = try String(contentsOf: repo.appending(path: "AccentMirror/Cards/CardOneView.swift"), encoding: .utf8)
         let toolbar = try String(contentsOf: repo.appending(path: "AccentMirror/Toolbar/ToolbarView.swift"), encoding: .utf8)
-        #expect(card.contains("Text(Copy.tooLoud)\n                            .typeRole(.smallMedium)"))
+        #expect(card.contains("Text(Copy.tooLoud)\n                        .typeRole(.smallMedium)"))
         #expect(card.contains("Text(Copy.playBoth)\n                            .typeRole(.bodyMedium)"))
         #expect(toolbar.contains("TextMeasure.width(title, role: .bodyMedium)"))
         #expect(!card.contains(".font.weight("), "a weight modifier on a Geist role falls back to synthesis")

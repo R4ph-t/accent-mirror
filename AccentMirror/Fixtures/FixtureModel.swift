@@ -42,6 +42,8 @@ struct UIFixture: Decodable, Sendable {
     /// Spec 20: the charts' motion inputs, frozen on the fixture clock. The screenshot runner also renders every
     /// state that has one with Reduce Motion on.
     var chart: ChartFixture?
+    /// v3.5 I7: the Input popover drawn open.
+    var inputPopover: InputPopoverFixture?
 
     struct ChartFixture: Decodable, Sendable {
         /// Milliseconds since every change in this state began (hover, loop, ghosts, voice switch). Nil: 0.
@@ -252,6 +254,8 @@ struct Analysis: Decodable, Sendable {
     var comparableCoverage: Double?
     /// `AnalysisResult.describe` (spec 28 §4a): you, and the range across the phrase's native voices.
     var describe: Describe?
+    /// v3.5 I4 tier B: the saved take has a run of frames at −1 dBFS lasting 50 ms or more (`ClippingTier`).
+    var clipped: Bool?
 
     enum Timing: String, Decodable, Sendable { case good, rough }
 }
@@ -364,4 +368,18 @@ struct LevelReading: Sendable, Equatable, Decodable {
     }
 
     private enum CodingKeys: String, CodingKey { case rmsDBFS, peakDBFS, tooLoud }
+}
+
+/// The Input popover drawn open (Designer addendum v3.5 I7): `input-popover`, `input-popover-no-volume`,
+/// `input-popover-too-loud`.
+struct InputPopoverFixture: Decodable, Sendable {
+    /// The chosen input's name; nil is "System Default".
+    var device: String?
+    /// The inputs listed after "System Default".
+    var devices: [String]?
+    /// The Mac input volume, 0…1; nil: the device sets its own level (the slider is disabled).
+    var volume: Double?
+    var notice: InputPopoverState.Notice?
+    /// The meter's frozen frame.
+    var level: LevelReading?
 }

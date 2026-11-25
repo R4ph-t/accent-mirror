@@ -612,6 +612,9 @@ final class LiveSession {
         let span = LivePresenter.yourSpan(result)
         youClip = samples.isEmpty ? nil : AudioClip(samples: samples, start: span.start, end: span.end)
         screen.youSeconds = youClip?.seconds
+        // v3.5 I4 tier B: measured and saved, but a run at −1 dBFS lasted 50 ms or more.
+        screen.youClipped = ClippingTier.classify(takeProblem: nil, samples: samples, sampleRate: AudioClip.sampleRate)
+            == .clippedSaved
         screen.modelSeconds = result.modelAxis.end - result.modelAxis.start
     }
 

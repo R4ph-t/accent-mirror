@@ -36,14 +36,18 @@ enum ToolbarCompaction {
         var recordDot: Double = 40
         var takeMenu: Double
         var takeMenuChevron: Double = 28
+        /// The Input button (v3.5 I2): a 28 pt icon at every level.
+        var input: Double = 28
         var inspectorToggle: Double = 28
 
         /// Model, Record and You.
         static let playbackSpacing: Double = 8
         /// Before the take menu.
         static let takeMenuGap: Double = 17
-        /// Before the inspector toggle.
+        /// After the take menu (before Input, v3.5; before the inspector toggle until then).
         static let toggleGap: Double = 16
+        /// Between Input and the inspector toggle (the v3.5 mockup).
+        static let inputGap: Double = 8
 
         /// The whole controls group at a level, gaps included.
         func total(_ level: Level) -> Double {
@@ -52,7 +56,7 @@ enum ToolbarCompaction {
                 + (level >= .recordDot ? recordDot : record) + Self.playbackSpacing
                 + (words ? youWordsOnly : you)
                 + Self.takeMenuGap + (level >= .menuChevron ? takeMenuChevron : takeMenu)
-                + Self.toggleGap + inspectorToggle
+                + Self.toggleGap + input + Self.inputGap + inspectorToggle
         }
     }
 

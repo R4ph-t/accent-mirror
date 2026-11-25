@@ -1,12 +1,14 @@
 import AppKit
 import SwiftUI
 
-/// The 52 pt toolbar drawn on surface.base (spec 18 §Toolbar). From the right: the inspector toggle, the take
-/// menu, You, Record, Model. Play and Record are visual only in this shell: no microphone, no audio.
+/// The 52 pt toolbar drawn on surface.base (spec 18 §Toolbar). From the right: the inspector toggle, Input (v3.5),
+/// the take menu, You, Record, Model. Play and Record are visual only in this shell: no microphone, no audio.
 struct ToolbarView: View {
     @Environment(\.palette) private var palette
     @Environment(\.shellActions) private var actions
     var state: ToolbarState
+    /// The Input popover is open: its button is drawn pressed.
+    var isInputOpen = false
     var toggleInspector: () -> Void
     /// The toolbar's width inside its side padding, measured; it picks the compaction level (r4 C7).
     @State private var available: CGFloat = Metrics.defaultWindow.width - Metrics.sidebarWidth - 2 * Metrics.outer
@@ -41,8 +43,11 @@ struct ToolbarView: View {
             TakeMenu(label: state.takeMenu, note: state.takeMenuNote, savedTakes: state.savedTakes,
                      compact: level >= .menuChevron)
                 .padding(.leading, ToolbarCompaction.ControlWidths.takeMenuGap)
-            InspectorToggle(action: toggleInspector)
+            // v3.5 I2: Input, immediately left of Details; both stay 28 pt icons at every level.
+            InputButton(isOpen: isInputOpen)
                 .padding(.leading, ToolbarCompaction.ControlWidths.toggleGap)
+            InspectorToggle(action: toggleInspector)
+                .padding(.leading, ToolbarCompaction.ControlWidths.inputGap)
         }
         // Controls keep their size; only the title block truncates.
         .fixedSize()

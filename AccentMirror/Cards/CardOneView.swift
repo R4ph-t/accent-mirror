@@ -22,7 +22,7 @@ struct CardOneView: View {
                 CardRowView(row: row, playBoth: playBoth)
             }
             if let line = card.quietLine {
-                InfoLine(sentence: line)
+                InfoLine(sentence: line, showsInput: card.quietLineInput)
             }
         }
         .padding(.horizontal, Metrics.outer)
@@ -82,13 +82,12 @@ private struct CardRowView: View {
             case .levelMeter(let fixed):
                 LevelMeterView(fixed: fixed)
             case .button(let title):
-                FocusRingButton(cornerRadius: Metrics.controlRadius, action: actions.cardButton) { _ in
-                    Text(title)
-                        .typeRole(.bodyMedium)
-                        .foregroundStyle(palette.textPrimary)
-                        .padding(.horizontal, 18)
-                        .frame(height: Metrics.controlHeight)
-                        .surface(palette.surfaceWell, cornerRadius: Metrics.controlRadius)
+                CardButton(title: title, action: actions.cardButton)
+            case .inputThenButton(let title):
+                // v3.5 I4 tier A: Input… (opens the popover) and Try Again.
+                HStack(spacing: 8) {
+                    CardButton(title: Copy.inputEllipsis, action: actions.openInput)
+                    CardButton(title: title, action: actions.cardButton)
                 }
             }
         }
@@ -101,7 +100,6 @@ private struct CardRowView: View {
 /// text.primary peak tick held for 1 s. Too loud (a peak at −1 dBFS or more, held 1.5 s): a square end, a 4 × 10 stop
 /// bar past the track, and `speaker.wave.3` with "Too loud" before it. No colour change. Nothing outside a take.
 private struct LevelMeterView: View {
-    @Environment(\.palette) private var palette
     @Environment(LevelMeterModel.self) private var meter: LevelMeterModel?
     /// A fixture's frozen frame; nil reads the live meter.
     var fixed: LevelReading?
@@ -116,43 +114,63 @@ private struct LevelMeterView: View {
 
     var body: some View {
         if let reading {
-            let rms = reading.rmsDBFS
-            HStack(spacing: 8) {
-                if reading.tooLoud {
-                    HStack(spacing: 4) {
-                        Image(systemName: "speaker.wave.3")
-                            .font(.system(size: 12, weight: .medium))
-                        Text(Copy.tooLoud)
-                            .typeRole(.smallMedium)
-                    }
-                    .foregroundStyle(palette.textPrimary)
+            LevelMeterBar(reading: reading, trackWidth: Self.width)
+        }
+    }
+}
+
+/// E5's drawing, shared by card 1's recording row (a 96 pt track) and the Input popover (the full content width,
+/// v3.5 I2): "Too loud" and its glyph, the 6 pt track, the peak tick and the stop bar.
+struct LevelMeterBar: View {
+    @Environment(\.palette) private var palette
+    var reading: LevelReading
+    /// Nil: the track takes the width it's offered.
+    var trackWidth: CGFloat?
+
+    var body: some View {
+        HStack(spacing: 8) {
+            if reading.tooLoud {
+                HStack(spacing: 4) {
+                    Image(systemName: "speaker.wave.3")
+                        .font(.system(size: 12, weight: .medium))
+                    Text(Copy.tooLoud)
+                        .typeRole(.smallMedium)
                 }
-                HStack(spacing: 2) {
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 3).fill(palette.surfaceWell)
-                        let fill = Self.width * Self.fraction(rms)
-                        Group {
-                            if reading.tooLoud {
-                                UnevenRoundedRectangle(topLeadingRadius: 3, bottomLeadingRadius: 3)
-                                    .frame(width: Self.width)
-                            } else {
-                                RoundedRectangle(cornerRadius: 3).frame(width: fill)
-                            }
-                        }
-                        .foregroundStyle(palette.accentGradient)
-                        Rectangle()
-                            .fill(palette.textPrimary)
-                            .frame(width: 2)
-                            .offset(x: max(0, Self.width * Self.fraction(reading.peakDBFS) - 2))
-                    }
-                    .frame(width: Self.width, height: 6)
-                    Rectangle()
-                        .fill(palette.textPrimary)
-                        .frame(width: 4, height: 10)
-                        .opacity(reading.tooLoud ? 1 : 0)
-                }
+                .foregroundStyle(palette.textPrimary)
+                .fixedSize()
             }
-            .accessibilityHidden(true)
+            HStack(spacing: 2) {
+                track
+                    .frame(width: trackWidth, height: 6)
+                    .frame(maxWidth: trackWidth == nil ? .infinity : nil)
+                Rectangle()
+                    .fill(palette.textPrimary)
+                    .frame(width: 4, height: 10)
+                    .opacity(reading.tooLoud ? 1 : 0)
+            }
+        }
+        .accessibilityHidden(true)
+    }
+
+    private var track: some View {
+        GeometryReader { proxy in
+            let width = proxy.size.width
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 3).fill(palette.surfaceWell)
+                Group {
+                    if reading.tooLoud {
+                        UnevenRoundedRectangle(topLeadingRadius: 3, bottomLeadingRadius: 3)
+                            .frame(width: width)
+                    } else {
+                        RoundedRectangle(cornerRadius: 3).frame(width: width * Self.fraction(reading.rmsDBFS))
+                    }
+                }
+                .foregroundStyle(palette.accentGradient)
+                Rectangle()
+                    .fill(palette.textPrimary)
+                    .frame(width: 2)
+                    .offset(x: max(0, width * Self.fraction(reading.peakDBFS) - 2))
+            }
         }
     }
 
@@ -161,9 +179,30 @@ private struct LevelMeterView: View {
     }
 }
 
+/// Card 1's well button (Try Again, Input…): surface.well, 28 tall, radius 6.
+private struct CardButton: View {
+    @Environment(\.palette) private var palette
+    var title: String
+    var action: @MainActor () -> Void
+
+    var body: some View {
+        FocusRingButton(cornerRadius: Metrics.controlRadius, action: action) { _ in
+            Text(title)
+                .typeRole(.bodyMedium)
+                .foregroundStyle(palette.textPrimary)
+                .padding(.horizontal, 18)
+                .frame(height: Metrics.controlHeight)
+                .surface(palette.surfaceWell, cornerRadius: Metrics.controlRadius)
+        }
+    }
+}
+
 private struct InfoLine: View {
     @Environment(\.palette) private var palette
+    @Environment(\.shellActions) private var actions
     var sentence: Sentence
+    /// v3.5 I4 tier B: the clipped line ends with an Input… button that opens the popover.
+    var showsInput = false
 
     var body: some View {
         HStack(spacing: 8) {
@@ -172,6 +211,17 @@ private struct InfoLine: View {
                 .frame(width: 16)
                 .accessibilityHidden(true)
             SentenceText(sentence: sentence, role: .small)
+            if showsInput {
+                Spacer(minLength: 8)
+                FocusRingButton(cornerRadius: Metrics.controlRadius, action: actions.openInput) { _ in
+                    Text(Copy.inputEllipsis)
+                        .typeRole(.bodyMedium)
+                        .foregroundStyle(palette.textPrimary)
+                        .padding(.horizontal, 10)
+                        .frame(height: Metrics.controlHeight)
+                        .surface(palette.surfaceWell, cornerRadius: Metrics.controlRadius)
+                }
+            }
         }
         .foregroundStyle(palette.textSecondary)
         .frame(height: 28)

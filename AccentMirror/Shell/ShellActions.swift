@@ -20,10 +20,16 @@ struct ShellActions {
     var selectedVoice: Int?
     var voiceDisabled = false
     var selectVoice: @MainActor (Int) -> Void = { _ in }
-    /// The Input pop-up: the devices and the one used for the next take.
-    var inputs: [(id: String, name: String)] = []
-    var selectedInput: String?
-    var selectInput: @MainActor (String) -> Void = { _ in }
+    /// The Input popover (v3.5): the chosen input (nil: System Default), opening and closing it, the Mac input volume
+    /// and the two settings panes it links to. The device used for the next take is remembered.
+    var inputName: String?
+    var selectInput: @MainActor (String?) -> Void = { _ in }
+    var openInput: @MainActor () -> Void = {}
+    var toggleInput: @MainActor () -> Void = {}
+    var closeInput: @MainActor () -> Void = {}
+    var setInputVolume: @MainActor (Double) -> Void = { _ in }
+    var openSoundSettings: @MainActor () -> Void = {}
+    var openMicrophonePrivacy: @MainActor () -> Void = {}
 }
 
 extension EnvironmentValues {

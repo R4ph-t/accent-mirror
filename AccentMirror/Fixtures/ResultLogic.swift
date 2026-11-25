@@ -27,14 +27,17 @@ enum StressMarks {
 
 /// At most one quiet line under the result row; the first that applies wins.
 enum ResultQuietLine: Equatable, Sendable {
+    /// v3.5 I4 tier B: a run of frames at −1 dBFS lasted 50 ms or more (the take is saved). First in the order.
+    case clipped
     /// `comparableCoverage` is known and below `minimumCoverage`.
     case lowCoverage
     case roughTiming
     /// The heard words you added, in order.
     case insertions([String])
 
-    static func first(comparableCoverage: Double?, minimumCoverage: Double, timing: Analysis.Timing?,
-                      insertions: [String]) -> ResultQuietLine? {
+    static func first(clipped: Bool = false, comparableCoverage: Double?, minimumCoverage: Double,
+                      timing: Analysis.Timing?, insertions: [String]) -> ResultQuietLine? {
+        if clipped { return .clipped }
         if let coverage = comparableCoverage, coverage < minimumCoverage { return .lowCoverage }
         if timing == .rough { return .roughTiming }
         if !insertions.isEmpty { return .insertions(insertions) }
