@@ -341,3 +341,130 @@ private let builtIn = InputDevice(id: "built-in", name: "MacBook Pro Microphone"
         #expect(FileCaptureSource(contentsOf: url) == nil)
     }
 }
+
+#if os(macOS)
+    @Suite("MicRecorder configuration change") struct MicRecorderConfigurationChangeTests {
+        @Test("config change with device present and new format keeps recording")
+        func configChangeDevicePresentKeepsRecording() async throws {
+            let format1 = try #require(AVAudioFormat(standardFormatWithSampleRate: 48_000, channels: 1))
+            let format2 = try #require(AVAudioFormat(standardFormatWithSampleRate: 44_100, channels: 2))
+            let converter = try #require(SampleConverter(from: format1))
+            let session = CaptureSession(device: usb, lastSessionFloorDBFS: nil, thresholds: .current)
+            let pipe = TapPipe(converter: converter, session: session)
+
+            var reinstalledFormat: AVAudioFormat?
+            var reinstalledTap: AVAudioNodeTapBlock?
+            var startCalled = false
+
+            MicRecorder.handleConfigurationChange(
+                session: session,
+                pipe: pipe,
+                devicePresent: { true },
+                readFormat: { format2 },
+                reinstallTap: { format, tap in
+                    reinstalledFormat = format
+                    reinstalledTap = tap
+                },
+                isRunning: { false },
+                startEngine: { startCalled = true }
+            )
+
+            #expect(session.outcome == nil)
+            #expect(startCalled)
+            #expect(reinstalledFormat == format2)
+            #expect(pipe.matchesFormat(format2))
+
+            let frameCount = 22_050
+            let buffer = try #require(AVAudioPCMBuffer(pcmFormat: format2, frameCapacity: AVAudioFrameCount(frameCount)))
+            buffer.frameLength = AVAudioFrameCount(frameCount)
+            let left = try #require(buffer.floatChannelData?[0])
+            let right = try #require(buffer.floatChannelData?[1])
+            for i in 0..<frameCount {
+                left[i] = Float(0.3 * sin(2 * .pi * 220 * Double(i) / 44_100))
+                right[i] = 0
+            }
+            let tap = try #require(reinstalledTap)
+            // Two 0.5 s buffers flush the resampler lookahead past the initial ~40 ms filter delay.
+            tap(buffer, AVAudioTime(sampleTime: 0, atRate: 44_100))
+            tap(buffer, AVAudioTime(sampleTime: AVAudioFramePosition(frameCount), atRate: 44_100))
+            session.stop()
+
+            let take = try #require(await session.result().take)
+            #expect(take.samples.count >= 15_000 && take.samples.count <= 16_000)
+            let rms = (take.samples.reduce(0.0) { $0 + Double($1) * Double($1) } / Double(take.samples.count)).squareRoot()
+            #expect(rms > 0.1)
+        }
+
+        @Test("config change with device present, same format, engine running keeps going without restart")
+        func configChangeSameFormatWhenRunning() async throws {
+            let format = try #require(AVAudioFormat(standardFormatWithSampleRate: 48_000, channels: 1))
+            let converter = try #require(SampleConverter(from: format))
+            let session = CaptureSession(device: builtIn, lastSessionFloorDBFS: nil, thresholds: .current)
+            let pipe = TapPipe(converter: converter, session: session)
+
+            var reinstalledFormat: AVAudioFormat?
+            var startCalled = false
+
+            MicRecorder.handleConfigurationChange(
+                session: session,
+                pipe: pipe,
+                devicePresent: { true },
+                readFormat: { format },
+                reinstallTap: { f, _ in reinstalledFormat = f },
+                isRunning: { true },
+                startEngine: { startCalled = true }
+            )
+
+            #expect(session.outcome == nil)
+            #expect(reinstalledFormat == format)
+            #expect(!startCalled)
+            session.cancel()
+            #expect(await session.result() == .cancelled)
+        }
+
+        @Test("config change with device gone ends in deviceLost")
+        func configChangeDeviceGone() async throws {
+            let format = try #require(AVAudioFormat(standardFormatWithSampleRate: 48_000, channels: 1))
+            let converter = try #require(SampleConverter(from: format))
+            let session = CaptureSession(device: usb, lastSessionFloorDBFS: nil, thresholds: .current)
+            let pipe = TapPipe(converter: converter, session: session)
+
+            var reinstallCalled = false
+            var startCalled = false
+
+            MicRecorder.handleConfigurationChange(
+                session: session,
+                pipe: pipe,
+                devicePresent: { false },
+                readFormat: { format },
+                reinstallTap: { _, _ in reinstallCalled = true },
+                isRunning: { false },
+                startEngine: { startCalled = true }
+            )
+
+            #expect(await session.result() == .deviceLost)
+            #expect(!reinstallCalled)
+            #expect(!startCalled)
+        }
+
+        @Test("config change where restart throws ends in deviceLost")
+        func configChangeStartThrows() async throws {
+            let format = try #require(AVAudioFormat(standardFormatWithSampleRate: 48_000, channels: 1))
+            let converter = try #require(SampleConverter(from: format))
+            let session = CaptureSession(device: usb, lastSessionFloorDBFS: nil, thresholds: .current)
+            let pipe = TapPipe(converter: converter, session: session)
+
+            MicRecorder.handleConfigurationChange(
+                session: session,
+                pipe: pipe,
+                devicePresent: { true },
+                readFormat: { format },
+                reinstallTap: { _, _ in },
+                isRunning: { false },
+                startEngine: { throw NSError(domain: "MicRecorderTest", code: 1) }
+            )
+
+            #expect(await session.result() == .deviceLost)
+        }
+    }
+#endif

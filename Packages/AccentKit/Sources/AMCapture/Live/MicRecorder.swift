@@ -17,6 +17,7 @@
         private struct Take {
             let session: CaptureSession
             let engine: AVAudioEngine
+            let engineQueue: DispatchQueue
             let observers: [any NSObjectProtocol]
         }
 
@@ -91,13 +92,19 @@
             let session = CaptureSession(
                 device: input, lastSessionFloorDBFS: lastSessionFloorDBFS, thresholds: thresholds,
                 startedAt: startedAt, onEnd: { [weak self] in self?.release() })
-            let tap = Self.tapBlock(TapPipe(converter: converter, session: session))
+            let pipe = TapPipe(converter: converter, session: session)
+            let tap = Self.tapBlock(pipe)
             // 50 ms per callback: the meter and live bars stay smooth; the endpointer still sees every 10 ms frame.
             engine.inputNode.installTap(
                 onBus: 0, bufferSize: AVAudioFrameCount(format.sampleRate * 0.05), format: format, block: tap)
 
-            let observers = Self.lossObservers(engine: engine, deviceID: input.id, session: session)
-            current.withLock { $0 = UncheckedBox(Take(session: session, engine: engine, observers: observers)) }
+            let engineQueue = DispatchQueue(label: "AccentMirror.MicRecorder.engine", qos: .userInitiated)
+            let observers = Self.lossObservers(
+                recorder: self, engine: engine, engineQueue: engineQueue, deviceID: input.id, pipe: pipe,
+                session: session)
+            current.withLock {
+                $0 = UncheckedBox(Take(session: session, engine: engine, engineQueue: engineQueue, observers: observers))
+            }
             do {
                 engine.prepare()
                 try engine.start()
@@ -118,33 +125,104 @@
                 box = nil
                 return take
             }) else { return }
-            DispatchQueue.global(qos: .userInitiated).async {
+            take.value.engineQueue.async {
                 take.value.engine.inputNode.removeTap(onBus: 0)
                 take.value.engine.stop()
                 for observer in take.value.observers { NotificationCenter.default.removeObserver(observer) }
             }
         }
 
-        /// Ends the take with nothing kept when its device disappears or the engine is reconfigured under it.
+        /// Watches for device disconnection and engine configuration changes (e.g. when a non-default device's AUHAL
+        /// switch completes after start, or its stream format changes).
         private static func lossObservers(
-            engine: AVAudioEngine, deviceID: String, session: CaptureSession
+            recorder: MicRecorder, engine: AVAudioEngine, engineQueue: DispatchQueue, deviceID: String,
+            pipe: TapPipe, session: CaptureSession
         ) -> [any NSObjectProtocol] {
             let center = NotificationCenter.default
             let disconnected = center.addObserver(
                 forName: AVCaptureDevice.wasDisconnectedNotification, object: nil, queue: nil,
                 using: deviceLostObserver(deviceID: deviceID, session: session))
-            // The engine stops on a configuration change (the input went away, or its format changed), so the take
-            // can't go on either way.
             let reconfigured = center.addObserver(
                 forName: .AVAudioEngineConfigurationChange, object: engine, queue: nil,
-                using: { _ in session.discard(.deviceLost) })
+                using: configurationChangeObserver(
+                    recorder: recorder, engine: engine, engineQueue: engineQueue, deviceID: deviceID, pipe: pipe,
+                    session: session))
             return [disconnected, reconfigured]
+        }
+
+        /// Handles `.AVAudioEngineConfigurationChange`: keeps recording if the device is still present and the engine
+        /// can re-tap and run; discards with `.deviceLost` only if the device is gone or restarting fails.
+        static func handleConfigurationChange(
+            session: CaptureSession,
+            pipe: TapPipe,
+            devicePresent: () -> Bool,
+            readFormat: () -> AVAudioFormat,
+            reinstallTap: (AVAudioFormat, @escaping AVAudioNodeTapBlock) -> Void,
+            isRunning: () -> Bool,
+            startEngine: () throws -> Void
+        ) {
+            guard session.outcome == nil else { return }
+            guard devicePresent() else {
+                session.discard(.deviceLost)
+                return
+            }
+            let format = readFormat()
+            guard format.sampleRate > 0, format.channelCount > 0 else {
+                session.discard(.deviceLost)
+                return
+            }
+            if !pipe.matchesFormat(format) {
+                guard pipe.replaceConverter(for: format) else {
+                    session.discard(.deviceLost)
+                    return
+                }
+            }
+            reinstallTap(format, tapBlock(pipe))
+            if !isRunning() {
+                do {
+                    try startEngine()
+                } catch {
+                    session.discard(.deviceLost)
+                }
+            }
         }
 
         // These build closures outside any isolation, so the audio and notification threads may call them.
 
         private nonisolated static func tapBlock(_ pipe: TapPipe) -> AVAudioNodeTapBlock {
             { buffer, _ in pipe.handle(buffer) }
+        }
+
+        private nonisolated static func configurationChangeObserver(
+            recorder: MicRecorder, engine: AVAudioEngine, engineQueue: DispatchQueue, deviceID: String,
+            pipe: TapPipe, session: CaptureSession
+        ) -> @Sendable (Notification) -> Void {
+            let engineBox = UncheckedBox(engine)
+            return { [weak recorder] _ in
+                engineQueue.async {
+                    guard let recorder else {
+                        session.discard(.deviceLost)
+                        return
+                    }
+                    let engine = engineBox.value
+                    handleConfigurationChange(
+                        session: session,
+                        pipe: pipe,
+                        devicePresent: { recorder.inputDevices().contains { $0.id == deviceID } },
+                        readFormat: { engine.inputNode.outputFormat(forBus: 0) },
+                        reinstallTap: { format, tap in
+                            engine.inputNode.removeTap(onBus: 0)
+                            engine.inputNode.installTap(
+                                onBus: 0, bufferSize: AVAudioFrameCount(format.sampleRate * 0.05),
+                                format: format, block: tap)
+                        },
+                        isRunning: { engine.isRunning },
+                        startEngine: {
+                            engine.prepare()
+                            try engine.start()
+                        })
+                }
+            }
         }
 
         private nonisolated static func deviceLostObserver(deviceID: String, session: CaptureSession)
@@ -192,21 +270,42 @@
         }
     }
 
-    /// Carries tap buffers to the session. The tap block runs on one audio thread at a time, so the converter's state
-    /// is never shared.
-    private final class TapPipe: @unchecked Sendable {
-        private let converter: SampleConverter
+    /// Carries tap buffers to the session. The tap block runs on one audio thread at a time, while an engine
+    /// configuration change may swap the converter from the engine queue.
+    final class TapPipe: @unchecked Sendable {
+        private let converter: Mutex<UncheckedBox<SampleConverter>>
         private let session: CaptureSession
 
         init(converter: SampleConverter, session: CaptureSession) {
-            self.converter = converter
+            self.converter = Mutex(UncheckedBox(converter))
             self.session = session
+        }
+
+        func matchesFormat(_ format: AVAudioFormat) -> Bool {
+            converter.withLock { samePCMShape($0.value.inputFormat, format) }
+        }
+
+        func replaceConverter(for format: AVAudioFormat) -> Bool {
+            guard let next = SampleConverter(from: format) else { return false }
+            converter.withLock { $0 = UncheckedBox(next) }
+            return true
         }
 
         func handle(_ buffer: AVAudioPCMBuffer) {
             guard session.outcome == nil else { return }
-            session.feed(converter.convert(buffer))
+            let samples = converter.withLock { box -> [Float]? in
+                guard samePCMShape(box.value.inputFormat, buffer.format) else { return nil }
+                return box.value.convert(buffer)
+            }
+            if let samples, !samples.isEmpty {
+                session.feed(samples)
+            }
         }
+    }
+
+    private func samePCMShape(_ a: AVAudioFormat, _ b: AVAudioFormat) -> Bool {
+        a.sampleRate == b.sampleRate && a.channelCount == b.channelCount
+            && a.commonFormat == b.commonFormat && a.isInterleaved == b.isInterleaved
     }
 
     /// Calls back when the system default input changes, so the Input pop-up's "default" mark follows it.

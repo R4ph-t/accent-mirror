@@ -291,6 +291,7 @@ final class LiveSession {
         } catch {
             guard generation == takeGeneration else { return }
             if let problem = error.takeProblem {
+                clearTransientError()
                 screen.shown = .takeProblem(problem, hasAudio: false)
                 screen.phase = .showingTake
                 screen.persistence = nil
@@ -345,8 +346,31 @@ final class LiveSession {
         case .recorded(let take):
             lastFloorDBFS = take.floorDBFS
             submit(TakeAudio(samples: take.samples, sha256: take.sha256))
-        case .cancelled, .deviceLost:
+        case .cancelled:
             restoreBeforeTake()
+        case .deviceLost:
+            handleDeviceLost()
+        }
+    }
+
+    private func handleDeviceLost() {
+        Self.log.error("capture ended: device lost")
+        if services.capture.availability() == .noMicrophone {
+            beforeTake = nil
+            clearTransientError()
+            screen.shown = .takeProblem(.noMicrophone, hasAudio: false)
+            screen.phase = .showingTake
+            screen.persistence = nil
+            youClip = nil
+            shownTake = nil
+            announce?(.takeProblem(LivePresenter.takeProblem(.noMicrophone)))
+            changed()
+            return
+        }
+        restoreBeforeTake()
+        if case .modelUnavailable = screen.operationalError {} else {
+            screen.operationalError = .audioUnreadable
+            changed()
         }
     }
 
