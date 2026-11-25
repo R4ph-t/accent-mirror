@@ -35,6 +35,8 @@ struct UIFixture: Decodable, Sendable {
     var playBoth: PlayBothFrame?
     /// The inspector's MODEL RECORDING.
     var modelRecording: ModelRecording?
+    /// Replaces the phrase file's toolbar subtitle for this state (`voice-popup-open`: "… from Iowa, VCTK").
+    var subtitle: String?
     /// The window size the screenshot runner renders this state at, in points. Nil: the default 1200 × 800.
     var window: WindowSize?
     /// Spec 20: the charts' motion inputs, frozen on the fixture clock. The screenshot runner also renders every
@@ -96,6 +98,12 @@ struct UIFixture: Decodable, Sendable {
         var attribution: String
         /// The voice pop-up's choices (spec 15); empty for a clip.
         var voices: [String]
+        /// Each row's right-aligned tag, "p225 · F" (r6 E7), in `voices` order.
+        var tags: [String]?
+        /// The checked row, an index into `voices`.
+        var selected: Int?
+        /// The pop-up drawn open (`voice-popup-open`, v3.2 W2).
+        var open: Bool?
     }
 
     struct WindowSize: Decodable, Sendable, Equatable {
@@ -118,6 +126,8 @@ struct UIFixture: Decodable, Sendable {
         var playhead: Double
         /// Seconds of envelope recorded so far (spec 20's live strip); wins over `playhead`.
         var seconds: Double?
+        /// The E5 level meter's frozen frame (v3.2 W2). Without it the meter isn't drawn, as outside a live take.
+        var level: LevelReading?
     }
 }
 
@@ -332,4 +342,26 @@ struct OperationalError: Decodable, Sendable {
 
 enum PersistenceStatus: String, Decodable, Sendable {
     case saved, notSaved, saveFailed, savedPruneFailed
+}
+
+/// One frame of the E5 level meter: the frame's RMS and the held peak (−60…0 dBFS), and whether "Too loud" holds.
+struct LevelReading: Sendable, Equatable, Decodable {
+    var rmsDBFS: Double
+    var peakDBFS: Double
+    var tooLoud: Bool = false
+
+    init(rmsDBFS: Double, peakDBFS: Double, tooLoud: Bool = false) {
+        self.rmsDBFS = rmsDBFS
+        self.peakDBFS = peakDBFS
+        self.tooLoud = tooLoud
+    }
+
+    init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        rmsDBFS = try c.decode(Double.self, forKey: .rmsDBFS)
+        peakDBFS = try c.decode(Double.self, forKey: .peakDBFS)
+        tooLoud = try c.decodeIfPresent(Bool.self, forKey: .tooLoud) ?? false
+    }
+
+    private enum CodingKeys: String, CodingKey { case rmsDBFS, peakDBFS, tooLoud }
 }

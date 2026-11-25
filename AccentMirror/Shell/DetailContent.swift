@@ -60,7 +60,8 @@ struct InspectorContent: View {
 
     var body: some View {
         let inspector = model.detail?.inspector ?? .empty
-        VStack(alignment: .leading, spacing: 20) {
+        // 24 pt between sections, as in the v3.1b inspector mockup.
+        VStack(alignment: .leading, spacing: 24) {
             Text("DETAILS")
                 .typeRole(.mono)
                 .foregroundStyle(palette.textSecondary)
@@ -73,35 +74,44 @@ struct InspectorContent: View {
                 thisTake(inspector)
             }
             if let alignment = inspector.alignment {
+                // v3.1b mockup: the value at the left, the note right-aligned, one 32 pt row over a hairline.
                 section(ThisTake.alignmentTitle) {
-                    HStack(alignment: .firstTextBaseline, spacing: 16) {
-                        Text(alignment)
-                            .typeRole(.body)
-                            .foregroundStyle(palette.textPrimary)
-                        Text(ThisTake.alignmentNote)
-                            .typeRole(.small)
-                            .foregroundStyle(palette.textSecondary)
+                    VStack(spacing: 0) {
+                        HStack(alignment: .firstTextBaseline, spacing: 12) {
+                            Text(alignment)
+                                .typeRole(.body)
+                                .foregroundStyle(palette.textPrimary)
+                            Spacer(minLength: 0)
+                            Text(ThisTake.alignmentNote)
+                                .typeRole(.small)
+                                .foregroundStyle(palette.textSecondary)
+                                .lineLimit(1)
+                        }
+                        .frame(height: 32)
+                        Hairline()
                     }
-                    .frame(height: 32)
+                    .accessibilityElement(children: .combine)
                 }
             }
             if let recording = inspector.model {
                 section(Copy.modelRecording) {
                     VStack(alignment: .leading, spacing: 4) {
                         if recording.voices.count > 1 {
-                            // The voice pop-up (r6 E7, spec 15): rows in manifest order, "p225 · F" after each in
-                            // the live app; disabled while recording (E8).
+                            // The voice pop-up (r6 E7, spec 15): rows in manifest order, "p311 · M" after each;
+                            // disabled while recording (E8).
+                            let tags = actions.isLive ? actions.voiceTags : recording.tags
+                            let selected = actions.isLive ? actions.selectedVoice : recording.selectedIndex
                             Menu {
                                 ForEach(Array(recording.voices.enumerated()), id: \.offset) { index, voice in
                                     Button {
                                         actions.selectVoice(index)
                                     } label: {
-                                        if actions.voiceTags.indices.contains(index) {
-                                            Text("\(voice)   \(Text(actions.voiceTags[index]).font(TypeRole.mono.fontSized(12)))")
+                                        if tags.indices.contains(index) {
+                                            Text("\(voice)   \(Text(tags[index]).font(TypeRole.mono.fontSized(12)))")
                                         } else {
                                             Text(voice)
                                         }
-                                        if index == actions.selectedVoice { Image(systemName: "checkmark") }
+                                        if index == selected { Image(systemName: "checkmark") }
                                     }
                                 }
                             } label: {
@@ -115,6 +125,13 @@ struct InspectorContent: View {
                             .disabled(actions.voiceDisabled)
                             .help(actions.voiceDisabled ? Copy.voiceDisabledTooltip : "")
                             .accessibilityLabel("\(Copy.voice), \(recording.title)")
+                            .overlay(alignment: .topLeading) {
+                                if recording.isOpen {
+                                    OpenVoiceMenu(rows: recording.voices, tags: tags, selected: selected)
+                                        .offset(x: -VoiceMenuMetrics.sideInset, y: VoiceMenuMetrics.belowButton)
+                                }
+                            }
+                            .zIndex(1)
                         } else {
                             Text(recording.title)
                                 .typeRole(.body)
@@ -173,9 +190,11 @@ struct InspectorContent: View {
                         Text(ThisTake.headers.you).gridColumnAlignment(.trailing)
                         Text(ThisTake.headers.native).gridColumnAlignment(.trailing)
                     }
-                    .typeRole(.mono)
+                    // The column headers are Geist Mono 11 / 500, 24 pt tall (v3.1b mockup).
+                    .font(TypeRole.mono.fontSized(11))
+                    .tracking(TypeRole.mono.tracking)
                     .foregroundStyle(palette.textTertiary)
-                    .frame(height: 28)
+                    .frame(height: 24)
                     ForEach(Array(inspector.measures.enumerated()), id: \.offset) { _, row in
                         GridRow {
                             Text(row.name)
@@ -205,5 +224,65 @@ struct InspectorContent: View {
                 }
             }
         }
+    }
+}
+
+enum VoiceMenuMetrics {
+    /// The open menu spans the inspector less 8 pt each side, starting 8 pt left of the content edge.
+    static let sideInset: CGFloat = 8
+    static let width: CGFloat = Metrics.inspectorWidth - 2 * sideInset
+    static let belowButton: CGFloat = 22
+    static let rowHeight: CGFloat = 22
+}
+
+/// The Model Voice pop-up drawn open, for the `voice-popup-open` fixture (v3.2 W2, r6 E7): a menu panel on
+/// surface.card with a hairline and a soft shadow; each row is "{region} ({accent})" in Geist 13 with the
+/// "p311 · M" tag right-aligned in Geist Mono 12 tertiary, and the selected row checked. Manifest order.
+private struct OpenVoiceMenu: View {
+    @Environment(\.palette) private var palette
+    var rows: [String]
+    var tags: [String]
+    var selected: Int?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
+                HStack(spacing: 0) {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 10, weight: .semibold))
+                        .opacity(index == selected ? 1 : 0)
+                        .frame(width: 12, alignment: .leading)
+                        .padding(.trailing, 4)
+                    Text(row)
+                        .typeRole(.body)
+                        .lineLimit(1)
+                    Spacer(minLength: 12)
+                    if tags.indices.contains(index) {
+                        Text(tags[index])
+                            .font(TypeRole.mono.fontSized(12))
+                            .foregroundStyle(palette.textTertiary)
+                            .lineLimit(1)
+                    }
+                }
+                .foregroundStyle(palette.textPrimary)
+                .padding(.leading, 6)
+                .padding(.trailing, 8)
+                .frame(height: VoiceMenuMetrics.rowHeight)
+            }
+        }
+        .padding(.vertical, 5)
+        .frame(width: VoiceMenuMetrics.width, alignment: .leading)
+        .background {
+            RoundedRectangle(cornerRadius: Metrics.controlRadius, style: .continuous)
+                .fill(palette.surfaceCard)
+                .shadow(color: .black.opacity(0.18), radius: 10, y: 4)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: Metrics.controlRadius, style: .continuous)
+                .strokeBorder(palette.hairline, lineWidth: 1)
+        }
+        .fixedSize(horizontal: false, vertical: true)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Copy.voice)
     }
 }

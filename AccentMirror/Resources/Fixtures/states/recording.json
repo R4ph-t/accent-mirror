@@ -1,6 +1,6 @@
 {
   "name": "recording",
-  "summary": "Recording, 0:02 in; bars in strip.bar up to the Lime playhead (mockup: recording).",
+  "summary": "Recording, 0:02 in (v3.2 W2: the same frame as recording-level): bars in strip.bar up to the Lime playhead, the E5 level meter part way along at the right of the recording row.",
   "phrase": "photography",
   "phase": "recording",
   "savedTakes": [
@@ -11,6 +11,10 @@
   "take": "photography-recording",
   "recording": {
     "elapsed": "0:02",
-    "playhead": 0.46
+    "playhead": 0.46,
+    "level": {
+      "rmsDBFS": -22,
+      "peakDBFS": -12
+    }
   }
 }

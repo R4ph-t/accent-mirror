@@ -35,12 +35,14 @@ time.
 | `earlierTakes` | string[]? | `takes/<id>.json` of earlier saved takes, newest first: up to 3 aligned ones draw faintly behind your line (v3 §3.3) |
 | `earlierTakesVisible` | bool? | View ▸ Show Earlier Takes for this state (`result-earlier-takes-off`); nil keeps the remembered choice, on by default |
 | `playBoth` | object? | `{elapsed, modelSeconds, youSeconds}`: Play Both frozen on an injected clock at `elapsed` s (`playing-both`) |
-| `modelRecording` | object? | The inspector's MODEL RECORDING: `{voice, region?, attribution, voices[]}` (voices feed the pop-up) |
+| `modelRecording` | object? | The inspector's MODEL RECORDING: `{voice, region?, attribution, voices[], tags[]?, selected?, open?}`. `voices` feed the pop-up; `tags` are the rows' "p311 · M"; `selected` is the checked row's index; `open: true` draws the pop-up open (`voice-popup-open`) |
+| `subtitle` | string? | Replaces the phrase file's toolbar subtitle for this state |
 | `chart` | object? | Spec 20's motion inputs, frozen on the fixture clock (below). A state with one is also rendered with Reduce Motion (`<name>-reduce-motion-{light,dark}@2x.png`) |
 | `window` | object? | `{width, height}` in points: the window size the screenshot runner uses. Defaults to 1200 × 800. At least the 960 × 680 minimum |
 
 `recording` also takes `seconds`: how much envelope has been recorded (spec 20's live row). Without it, `playhead` is
-read as a fraction of the model's duration.
+read as a fraction of the model's duration. `level: {rmsDBFS, peakDBFS, tooLoud?}` freezes the E5 level
+meter on one frame (−60…0 dBFS; `tooLoud` draws the clipping treatment); without it the meter isn't drawn.
 
 ### chart (spec 20)
 

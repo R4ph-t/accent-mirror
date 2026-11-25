@@ -52,7 +52,7 @@ struct ToolbarView: View {
     /// buttons use.
     static func controlWidths(for state: ToolbarState) -> ToolbarCompaction.ControlWidths {
         func ghost(_ title: String, triangle: Bool) -> Double {
-            let text = Double(TextMeasure.width(title, role: .body))
+            let text = Double(TextMeasure.width(title, role: .bodyMedium))
             return triangle
                 ? GhostButton.sidePadding + Double(GhostButton.playGlyphWidth) + GhostButton.glyphSpacing + text + GhostButton.sidePadding
                 : 2 * GhostButton.wordsOnlySidePadding + text
@@ -129,7 +129,7 @@ struct GhostButton: View {
                         .font(.system(size: 11))
                 }
                 Text(title)
-                    .typeRole(.body)
+                    .typeRole(.bodyMedium)
             }
             .foregroundStyle(isEnabled ? palette.textPrimary : palette.textTertiary)
             .padding(.horizontal, showsTriangle ? Self.sidePadding : Self.wordsOnlySidePadding)
