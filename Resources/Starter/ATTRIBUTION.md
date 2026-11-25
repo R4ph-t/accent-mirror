@@ -10,7 +10,7 @@ Edinburgh. https://doi.org/10.7488/ds/2645. Licensed under CC BY 4.0
 Changes: each clip (`wav48_silence_trimmed/<speaker>/<utterance>_mic1.flac`) was trimmed to the speech with
 200 ms before and 300 ms after it (the same rule for every speaker; `trimStart`/`trimEnd` in `manifest.json`)
 and re-encoded as mono 16-bit FLAC at its source rate. The word timings were recognised by WhisperKit
-(`openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631`) and shifted onto the trimmed clip; the analyses are derived from both.
+(`openai_whisper-base.en@0f63a7800b00dd0226abd051b906c246e1907482#a59b5631`) and shifted onto the trimmed clip; the analyses are derived from both. For `p311_006`, `p311_015`, and `p311_018` (where unprompted WhisperKit misheard words), word timings come from the repo's pinned Montreal Forced Aligner 3.4.4 baseline (`fixtures/vctk/mfa-word-baseline.json`), shifted onto the same trimmed clip.
 
 | Speaker | Accent | Region | Gender | Utterances |
 |---|---|---|---|---|

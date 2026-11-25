@@ -3,103 +3,103 @@
   "audioSHA256" : "e75bf94ee71180fe66fecda616df91a06deef864ccf1344d781da61aad932625",
   "clipID" : "p311_018",
   "formatVersion" : 1,
-  "text" : "Aristotle thought that the rainbow is caused by reflection of the sun's rays by the rain.",
+  "text" : "Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain.",
   "words" : [
     {
-      "end" : 0.31,
-      "probability" : 0.97,
-      "start" : 0.19,
-      "word" : " Aristotle"
-    },
-    {
-      "end" : 0.93,
-      "probability" : 0.98,
-      "start" : 0.31,
-      "word" : " thought"
-    },
-    {
-      "end" : 1.17,
-      "probability" : 0.96,
-      "start" : 0.93,
-      "word" : " that"
-    },
-    {
-      "end" : 1.29,
-      "probability" : 0.97,
-      "start" : 1.17,
-      "word" : " the"
-    },
-    {
-      "end" : 1.45,
-      "probability" : 0.98,
-      "start" : 1.29,
-      "word" : " rainbow"
-    },
-    {
-      "end" : 1.83,
-      "probability" : 0.94,
-      "start" : 1.45,
-      "word" : " is"
-    },
-    {
-      "end" : 2.05,
-      "probability" : 0.97,
-      "start" : 1.83,
-      "word" : " caused"
-    },
-    {
-      "end" : 2.33,
-      "probability" : 0.97,
-      "start" : 2.05,
-      "word" : " by"
-    },
-    {
-      "end" : 2.69,
-      "probability" : 0.91,
-      "start" : 2.33,
-      "word" : " reflection"
-    },
-    {
-      "end" : 3.01,
-      "probability" : 0.97,
-      "start" : 2.69,
-      "word" : " of"
-    },
-    {
-      "end" : 3.13,
-      "probability" : 0.99,
-      "start" : 3.01,
-      "word" : " the"
-    },
-    {
-      "end" : 3.53,
-      "probability" : 0.89,
-      "start" : 3.13,
-      "word" : " sun's"
-    },
-    {
-      "end" : 3.71,
+      "end" : 0.74,
       "probability" : 1,
-      "start" : 3.53,
-      "word" : " rays"
+      "start" : 0.19,
+      "word" : "aristotle"
     },
     {
-      "end" : 4.09,
-      "probability" : 0.91,
-      "start" : 3.71,
-      "word" : " by"
+      "end" : 1.13,
+      "probability" : 1,
+      "start" : 0.74,
+      "word" : "thought"
     },
     {
-      "end" : 4.25,
-      "probability" : 0.93,
-      "start" : 4.09,
-      "word" : " the"
+      "end" : 1.22,
+      "probability" : 1,
+      "start" : 1.13,
+      "word" : "that"
     },
     {
-      "end" : 4.43,
-      "probability" : 0.93,
-      "start" : 4.25,
-      "word" : " rain."
+      "end" : 1.32,
+      "probability" : 1,
+      "start" : 1.22,
+      "word" : "the"
+    },
+    {
+      "end" : 1.72,
+      "probability" : 1,
+      "start" : 1.32,
+      "word" : "rainbow"
+    },
+    {
+      "end" : 1.91,
+      "probability" : 1,
+      "start" : 1.72,
+      "word" : "was"
+    },
+    {
+      "end" : 2.27,
+      "probability" : 1,
+      "start" : 1.91,
+      "word" : "caused"
+    },
+    {
+      "end" : 2.38,
+      "probability" : 1,
+      "start" : 2.27,
+      "word" : "by"
+    },
+    {
+      "end" : 2.97,
+      "probability" : 1,
+      "start" : 2.38,
+      "word" : "reflection"
+    },
+    {
+      "end" : 3.07,
+      "probability" : 1,
+      "start" : 2.97,
+      "word" : "of"
+    },
+    {
+      "end" : 3.16,
+      "probability" : 1,
+      "start" : 3.07,
+      "word" : "the"
+    },
+    {
+      "end" : 3.57,
+      "probability" : 1,
+      "start" : 3.16,
+      "word" : "sun's"
+    },
+    {
+      "end" : 3.98,
+      "probability" : 1,
+      "start" : 3.57,
+      "word" : "rays"
+    },
+    {
+      "end" : 4.18,
+      "probability" : 1,
+      "start" : 3.98,
+      "word" : "by"
+    },
+    {
+      "end" : 4.28,
+      "probability" : 1,
+      "start" : 4.18,
+      "word" : "the"
+    },
+    {
+      "end" : 4.66,
+      "probability" : 1,
+      "start" : 4.28,
+      "word" : "rain"
     }
   ]
 }

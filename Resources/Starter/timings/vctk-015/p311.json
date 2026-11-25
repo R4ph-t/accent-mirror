@@ -3,115 +3,121 @@
   "audioSHA256" : "fc98c1b8577ab2e32382ba33990009ac7b852dea98846255950a5d489bbc9f1b",
   "clipID" : "p311_015",
   "formatVersion" : 1,
-  "text" : "The Greeks used to imagine that it was assigned from the gods to Fertel War or heavy rain.",
+  "text" : "The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain.",
   "words" : [
     {
-      "end" : 0.23,
-      "probability" : 0.91,
-      "start" : 0.13,
-      "word" : " The"
+      "end" : 0.25,
+      "probability" : 1,
+      "start" : 0.16,
+      "word" : "the"
     },
     {
-      "end" : 0.39,
-      "probability" : 0.99,
-      "start" : 0.23,
-      "word" : " Greeks"
-    },
-    {
-      "end" : 0.81,
-      "probability" : 0.99,
-      "start" : 0.39,
-      "word" : " used"
+      "end" : 0.68,
+      "probability" : 1,
+      "start" : 0.25,
+      "word" : "greeks"
     },
     {
       "end" : 1.03,
       "probability" : 1,
-      "start" : 0.81,
-      "word" : " to"
+      "start" : 0.68,
+      "word" : "used"
     },
     {
-      "end" : 1.27,
-      "probability" : 0.99,
+      "end" : 1.11,
+      "probability" : 1,
       "start" : 1.03,
-      "word" : " imagine"
+      "word" : "to"
     },
     {
-      "end" : 1.73,
-      "probability" : 0.98,
-      "start" : 1.27,
-      "word" : " that"
+      "end" : 1.68,
+      "probability" : 1,
+      "start" : 1.11,
+      "word" : "imagine"
     },
     {
-      "end" : 1.83,
-      "probability" : 0.99,
-      "start" : 1.73,
-      "word" : " it"
+      "end" : 1.78,
+      "probability" : 1,
+      "start" : 1.68,
+      "word" : "that"
     },
     {
-      "end" : 1.93,
-      "probability" : 0.99,
-      "start" : 1.83,
-      "word" : " was"
+      "end" : 1.86,
+      "probability" : 1,
+      "start" : 1.78,
+      "word" : "it"
     },
     {
-      "end" : 2.19,
-      "probability" : 0.69,
-      "start" : 1.93,
-      "word" : " assigned"
+      "end" : 2.01,
+      "probability" : 1,
+      "start" : 1.86,
+      "word" : "was"
     },
     {
-      "end" : 2.51,
-      "probability" : 0.96,
-      "start" : 2.19,
-      "word" : " from"
+      "end" : 2.05,
+      "probability" : 1,
+      "start" : 2.01,
+      "word" : "a"
     },
     {
-      "end" : 2.63,
-      "probability" : 0.98,
-      "start" : 2.51,
-      "word" : " the"
+      "end" : 2.41,
+      "probability" : 1,
+      "start" : 2.05,
+      "word" : "sign"
     },
     {
-      "end" : 2.87,
-      "probability" : 0.95,
-      "start" : 2.63,
-      "word" : " gods"
+      "end" : 2.58,
+      "probability" : 1,
+      "start" : 2.41,
+      "word" : "from"
+    },
+    {
+      "end" : 2.67,
+      "probability" : 1,
+      "start" : 2.58,
+      "word" : "the"
     },
     {
       "end" : 3.17,
-      "probability" : 0.94,
-      "start" : 2.87,
-      "word" : " to"
+      "probability" : 1,
+      "start" : 2.67,
+      "word" : "gods"
     },
     {
-      "end" : 3.55,
-      "probability" : 0.46,
+      "end" : 3.2,
+      "probability" : 1,
       "start" : 3.17,
-      "word" : " Fertel"
+      "word" : "to"
     },
     {
-      "end" : 3.73,
-      "probability" : 0.42,
-      "start" : 3.55,
-      "word" : " War"
+      "end" : 3.64,
+      "probability" : 1,
+      "start" : 3.2,
+      "word" : "foretell"
     },
     {
-      "end" : 4.11,
-      "probability" : 0.8,
-      "start" : 3.73,
-      "word" : " or"
+      "end" : 4,
+      "probability" : 1,
+      "start" : 3.64,
+      "word" : "war"
     },
     {
-      "end" : 4.29,
-      "probability" : 0.79,
-      "start" : 4.13,
-      "word" : " heavy"
+      "end" : 4.16,
+      "probability" : 1,
+      "start" : 4.05,
+      "word" : "or"
     },
     {
-      "end" : 4.59,
-      "probability" : 0.93,
-      "start" : 4.29,
-      "word" : " rain."
+      "end" : 4.44,
+      "probability" : 1,
+      "start" : 4.16,
+      "word" : "heavy"
+    },
+    {
+      "end" : 4.77,
+      "probability" : 1,
+      "start" : 4.44,
+      "word" : "rain"
     }
   ]
 }
