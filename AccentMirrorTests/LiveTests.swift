@@ -40,7 +40,9 @@ private struct World {
 
     /// `take`: the samples the file source plays. Default: a second native reader of the first Stress Shifts phrase
     /// (a real, clean take of the right words).
-    static func make(take: [Float]? = nil, pacing: FileCaptureSource.Pacing = .immediate) throws -> World {
+    static func make(
+        take: [Float]? = nil, pacing: FileCaptureSource.Pacing = .immediate, capture: FileCaptureSource? = nil
+    ) throws -> World {
         let root = FileManager.default.temporaryDirectory.appending(path: "am-live-\(UUID().uuidString)")
         let configuration = try Analyzer.Configuration.shipped()
         let (library, references) = try ReferenceLibrary.bundled(
@@ -62,7 +64,7 @@ private struct World {
         let defaults = try #require(UserDefaults(suiteName: "am-live-\(UUID().uuidString)"))
         let session = LiveSession(services: .init(
             coordinator: coordinator, store: store,
-            capture: FileCaptureSource(samples: take ?? readerAudio, pacing: pacing), references: references,
+            capture: capture ?? FileCaptureSource(samples: take ?? readerAudio, pacing: pacing), references: references,
             starter: starter, starterFolder: starterFolder, defaults: defaults))
         let log = AnnouncementLog()
         session.announce = { log.append($0) }
@@ -375,6 +377,52 @@ struct LiveTakeTests {
         #expect(world.session.live.voice == voice)
         world.session.cancel()
         await take.value
+    }
+
+    @Test func deviceLostWithAnotherMicSurfacesAudioUnreadableBanner() async throws {
+        let builtIn = InputDevice(id: "built-in", name: "Built-in Mic", isDefault: true)
+        let usb = InputDevice(id: "usb", name: "USB Mic", isDefault: false)
+        let capture = FileCaptureSource(
+            samples: [Float](repeating: 0, count: 64_000), pacing: .manual, devices: [builtIn, usb])
+        let world = try World.make(capture: capture)
+        world.session.inputDevice = usb.id
+        await world.session.start()
+
+        let take = Task { await world.session.recordOrStop() }
+        #expect(await world.until(5) { world.session.isRecording })
+        capture.setDevices([builtIn])
+        await take.value
+
+        #expect(!world.session.isRecording)
+        #expect(world.session.screen.operationalError == .audioUnreadable)
+        let loaded = LivePresenter.loaded(
+            world.session.live, screen: world.session.screen, manifest: LivePresenter.manifest(world.starter))
+        #expect(loaded.fixture.operationalError?.kind == .audioUnreadable)
+        #expect(loaded.fixture.operationalError?.source == "take")
+    }
+
+    @Test func deviceLostWithNoMicLeftSurfacesNoMicrophoneProblem() async throws {
+        let builtIn = InputDevice(id: "built-in", name: "Built-in Mic", isDefault: true)
+        let capture = FileCaptureSource(
+            samples: [Float](repeating: 0, count: 64_000), pacing: .manual, devices: [builtIn])
+        let world = try World.make(capture: capture)
+        await world.session.start()
+
+        let take = Task { await world.session.recordOrStop() }
+        #expect(await world.until(5) { world.session.isRecording })
+        capture.setDevices([])
+        await take.value
+
+        #expect(!world.session.isRecording)
+        if case .takeProblem(.noMicrophone, hasAudio: false) = world.session.screen.shown {} else {
+            Issue.record("expected noMicrophone takeProblem")
+        }
+        #expect(world.session.screen.operationalError == nil)
+        #expect(world.announcements.items.contains(.takeProblem(.noMicrophone)))
+        let loaded = LivePresenter.loaded(
+            world.session.live, screen: world.session.screen, manifest: LivePresenter.manifest(world.starter))
+        #expect(loaded.fixture.phase == .showingTake)
+        #expect(loaded.fixture.analysis?.takeProblems == [.noMicrophone])
     }
 }
 
