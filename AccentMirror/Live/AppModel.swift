@@ -318,19 +318,37 @@ final class AppModel {
         playback.play(schedule, model: session.modelClip(), you: session.youClip)
     }
 
-    /// Space records or stops when no text field has focus (v1 §10).
+    /// Space records or stops when no text field has focus (v1 §10). While a word popover is open (v5 §3), Space
+    /// replays its last button instead, ← and → step to the previous or next checkable word, and Esc closes it.
     private func installKeyMonitor() {
         keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
             let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask).subtracting([.capsLock, .numericPad, .function])
-            guard event.keyCode == 49, flags.isEmpty, !(NSApp.keyWindow?.firstResponder is NSText) else { return event }
+            guard flags.isEmpty, !(NSApp.keyWindow?.firstResponder is NSText) else { return event }
+            let key = event.keyCode
             let handled = MainActor.assumeIsolated { () -> Bool in
                 guard let self, self.isLive else { return false }
+                if self.shell.wordPopover != nil {
+                    switch key {
+                    case Self.spaceKey: self.shell.replayWord()
+                    case Self.leftArrowKey: self.shell.stepWord(by: -1)
+                    case Self.rightArrowKey: self.shell.stepWord(by: 1)
+                    case Self.escapeKey: self.shell.closeWordPopover()
+                    default: return false
+                    }
+                    return true
+                }
+                guard key == Self.spaceKey else { return false }
                 self.record()
                 return true
             }
             return handled ? nil : event
         }
     }
+
+    private static let spaceKey: UInt16 = 49
+    private static let escapeKey: UInt16 = 53
+    private static let leftArrowKey: UInt16 = 123
+    private static let rightArrowKey: UInt16 = 124
 }
 
 /// E5's level meter, fed by spec 14's level stream while recording; idle otherwise (the mic is never opened just to

@@ -1,13 +1,25 @@
 import SwiftUI
 
-/// Card 1, always "YOUR TAKE" (v3 §3.1: 16 title + 16 + 4 + 40 per row + 4), with at most one quiet line.
+/// Card 1: "SOUNDS TO CHECK" on an analysed take (v5 §1.1–1.2); otherwise "YOUR TAKE" (v3 §3.1: 16 title + 16 + 4 +
+/// 40 per row + 4) for the empty, recording, analysing and unusable states, with at most one quiet line.
 struct CardOneView: View {
     @Environment(\.palette) private var palette
     var card: CardPresentation
     /// Play Both (⌥⌘L): the model, 0.4 s, then your take.
     var playBoth: () -> Void = {}
+    /// A SOUNDS TO CHECK row opens that word's popover.
+    var openWord: (Int) -> Void = { _ in }
 
     var body: some View {
+        if let sounds = card.sounds {
+            SoundsToCheckCard(sounds: sounds, quietLine: card.quietLine, quietLineInput: card.quietLineInput,
+                              playBoth: playBoth, openWord: openWord)
+        } else {
+            yourTake
+        }
+    }
+
+    private var yourTake: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(card.title)
                 .typeRole(.mono)
@@ -20,9 +32,10 @@ struct CardOneView: View {
                         .padding(.leading, 24)
                 }
                 CardRowView(row: row, playBoth: playBoth)
+                    .modifier(RevealAfter(delay: card.revealAfter))
             }
             if let line = card.quietLine {
-                InfoLine(sentence: line, showsInput: card.quietLineInput)
+                CardQuietLine(sentence: line, showsInput: card.quietLineInput)
             }
         }
         .padding(.horizontal, Metrics.outer)
@@ -49,6 +62,11 @@ private struct CardRowView: View {
                         .foregroundStyle(palette.textSecondary)
                 case .overlay:
                     OverlayGlyph()
+                case .progress:
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .controlSize(.small)
+                        .frame(width: 14, height: 14)
                 case nil:
                     EmptyView()
                 }
@@ -65,20 +83,7 @@ private struct CardRowView: View {
                 EmptyView()
             case .playBoth:
                 // The ghost button: surface.well, 28 tall, radius 6, play glyph (v3 §3.1).
-                FocusRingButton(cornerRadius: Metrics.controlRadius, action: playBoth) { _ in
-                    HStack(spacing: 6) {
-                        Image(systemName: "play.fill")
-                            .font(.system(size: 10))
-                        Text(Copy.playBoth)
-                            .typeRole(.bodyMedium)
-                    }
-                    .foregroundStyle(palette.textPrimary)
-                    .padding(.horizontal, 12)
-                    .frame(height: Metrics.controlHeight)
-                    .surface(palette.surfaceWell, cornerRadius: Metrics.controlRadius)
-                }
-                .help(Copy.playBothTooltip)
-                .accessibilityHint(Copy.playBothTooltip)
+                PlayBothButton(action: playBoth)
             case .levelMeter(let fixed):
                 LevelMeterView(fixed: fixed)
             case .button(let title):
@@ -198,7 +203,27 @@ private struct CardButton: View {
     }
 }
 
-private struct InfoLine: View {
+/// v5 §1.3: a row that appears only once `delay` has passed (live analysis past 400 ms), fading in; at once when nil.
+private struct RevealAfter: ViewModifier {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    var delay: Double?
+    @State private var shown = false
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(delay == nil || shown ? 1 : 0)
+            .task(id: delay) {
+                guard let delay else { return }
+                try? await Task.sleep(for: .milliseconds(Int(delay * 1000)))
+                guard !Task.isCancelled else { return }
+                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) { shown = true }
+                AccessibilityAnnouncer.announce(Copy.checkingSoundsSpoken)
+            }
+    }
+}
+
+/// Card 1's one quiet line (Geist 12 secondary, info.circle); the clipped line ends with an Input… button.
+struct CardQuietLine: View {
     @Environment(\.palette) private var palette
     @Environment(\.shellActions) private var actions
     var sentence: Sentence

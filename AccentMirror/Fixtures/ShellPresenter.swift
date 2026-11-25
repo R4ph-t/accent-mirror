@@ -3,6 +3,9 @@ import AMPipeline
 import Foundation
 
 // What the shell shows for a contract state. Pure value types, no SwiftUI: the views only draw these.
+// v5 (sound flags and word playback): an analysed take's card 1 is SOUNDS TO CHECK, the PHRASE card draws every
+// word with its flag, and the strip and pitch cards sit inside the Rhythm and pitch disclosure. Stress and pitch stay
+// show-don't-judge; sound confidence only ranks and is never drawn.
 // Show-don't-judge v1 (specs 28 and 29): nothing here reads a verdict, a diff row, a stress line or a measure state. An
 // analysed take shows card 1 "YOUR TAKE" with the v3 result row, the strip with neutral bars and the native row's
 // dictionary-stress dots, the pitch card with earlier takes, and the inspector's plain measures.
@@ -10,6 +13,7 @@ import Foundation
 struct DetailPresentation: Sendable {
     var banner: BannerPresentation?
     var card: CardPresentation
+    var phrase: PhrasePresentation
     var strip: StripPresentation
     var pitch: PitchPresentation
     var inspector: InspectorPresentation
@@ -29,6 +33,78 @@ struct CardPresentation: Sendable {
     var quietLine: Sentence?
     /// The clipped quiet line (v3.5 I4 tier B) ends with an Input… button.
     var quietLineInput = false
+    /// v5 §1.1–1.2: an analysed take's SOUNDS TO CHECK body, under a header with Play Both. Nil: `rows` (YOUR TAKE).
+    var sounds: SoundsCard? = nil
+    /// v5 §1.3: live analysis shows its row only once it has run this long (no spinner flash); fixtures show it at once.
+    var revealAfter: Double? = nil
+}
+
+/// Card 1's body on an analysed take (v5 §1).
+enum SoundsCard: Sendable, Equatable {
+    /// Up to three flagged words, least confident first, and how many more are flagged in the phrase.
+    case flagged(rows: [SoundHint], more: Int)
+    /// Judged, nothing flagged.
+    case noneFlagged
+    /// Not judged (an older take, or the judge didn't run): says so, never that the take is clean.
+    case notChecked
+}
+
+/// The PHRASE card (v5 §2): every phrase word, whole-word marking only.
+struct PhrasePresentation: Sendable, Equatable {
+    enum Legend: Sendable, Equatable {
+        /// Nothing to click yet (no analysed take).
+        case none
+        /// "Click any word to hear Native vs You".
+        case hint
+        /// "◆ Check this sound" and the hint.
+        case flags
+        /// "Grey word: not in dictionary" and the hint.
+        case notInDictionary
+    }
+
+    var words: [PhraseWord]
+    var legend: Legend
+
+    /// The next (`step` 1) or previous (−1) word the popover can step to, skipping words that aren't checkable.
+    func step(from index: Int, by step: Int) -> Int? {
+        guard let position = words.firstIndex(where: { $0.index == index }) else { return nil }
+        var next = position + step
+        while words.indices.contains(next) {
+            if words[next].isInteractive { return words[next].index }
+            next += step
+        }
+        return nil
+    }
+}
+
+struct PhraseWord: Sendable, Equatable {
+    enum Kind: Sendable, Equatable {
+        /// No analysed take on screen: drawn plain, not clickable.
+        case plain
+        /// Checkable, nothing flagged: clickable.
+        case checkable
+        /// A flagged sound: Lime diamond, dotted Lime underline, weight 500; clickable.
+        case flagged
+        /// Not in the dictionary: text.secondary, not clickable.
+        case notInDictionary
+    }
+
+    var index: Int
+    var text: String
+    var kind: Kind
+    /// The flagged sounds in word order (the popover's list).
+    var hints: [SoundHint] = []
+    /// False when the word wasn't heard in your take: You, Play both and Play this sound are disabled.
+    var heardInTake = true
+
+    var isInteractive: Bool { kind == .checkable || kind == .flagged }
+}
+
+/// A button in the word popover (v5 §3). Space replays the last one pressed.
+enum WordAction: Sendable, Equatable {
+    case native, you, both
+    /// `Play this sound` for the word's flagged sound at this index of its `hints`.
+    case sound(Int)
 }
 
 struct CardRow: Sendable {
@@ -36,6 +112,8 @@ struct CardRow: Sendable {
         case symbol(String)
         /// The result row's 16 pt overlay glyph: two waves, one soft and one thin (v3 §3.1).
         case overlay
+        /// v5 §1.3: a 14 pt indeterminate spinner (analysis past 400 ms).
+        case progress
     }
 
     enum Trailing: Sendable, Equatable {
@@ -220,6 +298,7 @@ enum ShellPresenter {
         DetailPresentation(
             banner: banner(loaded.fixture),
             card: card(loaded),
+            phrase: phrase(loaded),
             strip: strip(loaded),
             pitch: pitch(loaded, showEarlierTakes: showEarlierTakes),
             inspector: inspector(loaded)
@@ -270,9 +349,10 @@ enum ShellPresenter {
                 CardRow(icon: .symbol("mic.fill"), sentence: [.plain(Copy.recordingPrompt)], trailing: .levelMeter(fixture.recording?.level)),
             ])
         case .analysing:
+            // v5 §1.3: an inline spinner and "Checking sounds…", live only once analysis passes 400 ms.
             return CardPresentation(title: Copy.yourTake, rows: [
-                CardRow(icon: nil, sentence: [.plain(Copy.analysing)], trailing: .none),
-            ])
+                CardRow(icon: .progress, sentence: [.plain(Copy.checkingSounds)], trailing: .none),
+            ], revealAfter: fixture.name == LivePresenter.fixtureName ? analysingRevealDelay : nil)
         case .showingTake:
             break
         }
@@ -302,9 +382,142 @@ enum ShellPresenter {
             return card(LoadedFixture(fixture: with(fixture) { $0.phase = .empty }, phrase: loaded.phrase, take: nil))
         }
         let quiet = quietLine(analysis, take: loaded.take)
-        return CardPresentation(title: Copy.yourTake, rows: [
-            CardRow(icon: .overlay, sentence: [.plain(Copy.resultRow)], trailing: .playBoth),
-        ], quietLine: quiet.map(Copy.quietLine), quietLineInput: quiet == .clipped)
+        return CardPresentation(title: Copy.soundsToCheck, rows: [], quietLine: quiet.map(Copy.quietLine),
+                                quietLineInput: quiet == .clipped, sounds: soundsCard(analysis.sounds))
+    }
+
+    /// v5 §1.3: no spinner before analysis has run this long.
+    static let analysingRevealDelay = 0.4
+
+    /// v5 §1.1–1.2, and no judging (nil or unavailable): the neutral line, never "No sounds to check".
+    static func soundsCard(_ sounds: SoundJudgementOutcome?) -> SoundsCard {
+        guard case .judged(let judgement) = sounds else { return .notChecked }
+        let card = SoundsToCheck.rows(judgement)
+        return card.rows.isEmpty ? .noneFlagged : .flagged(rows: card.rows, more: card.more)
+    }
+
+    /// The judgement on screen, if any.
+    static func judgement(_ loaded: LoadedFixture) -> SoundJudgement? {
+        guard isResult(loaded), case .judged(let judgement) = loaded.fixture.analysis?.sounds else { return nil }
+        return judgement
+    }
+
+    // MARK: Phrase card (v5 §2)
+
+    static func phrase(_ loaded: LoadedFixture) -> PhrasePresentation {
+        let texts = loaded.phrase.words.map(\.text)
+        guard isResult(loaded) else {
+            return PhrasePresentation(
+                words: texts.enumerated().map { PhraseWord(index: $0.offset, text: $0.element, kind: .plain) },
+                legend: .none)
+        }
+        if let judgement = judgement(loaded) {
+            let judged = Dictionary(judgement.words.map { ($0.index.rawValue, $0) }, uniquingKeysWith: { a, _ in a })
+            let words = texts.enumerated().map { index, text -> PhraseWord in
+                guard let word = judged[index] else { return PhraseWord(index: index, text: text, kind: .checkable) }
+                guard case .judged = word.state else {
+                    return PhraseWord(index: index, text: text, kind: .notInDictionary)
+                }
+                let flagged = SoundsToCheck.isFlagged(word)
+                return PhraseWord(index: index, text: text, kind: flagged ? .flagged : .checkable,
+                                  hints: SoundsToCheck.hints(word), heardInTake: word.youRange != nil)
+            }
+            let legend: PhrasePresentation.Legend =
+                words.contains { $0.kind == .flagged } ? .flags
+                : words.contains { $0.kind == .notInDictionary } ? .notInDictionary : .hint
+            return PhrasePresentation(words: words, legend: legend)
+        }
+        // Not judged: every word plays Native vs You; a word missing from your take can't play You.
+        var heard = Set<Int>()
+        if let take = loaded.take {
+            let indices = TimingConnectors.nativeWordIndices(phrase: loaded.phrase, take: take)
+            for (pair, index) in zip(take.words, indices) where pair.kind != .missing {
+                if let index { heard.insert(index) }
+            }
+        }
+        return PhrasePresentation(
+            words: texts.enumerated().map {
+                PhraseWord(index: $0.offset, text: $0.element, kind: .checkable, heardInTake: heard.contains($0.offset))
+            },
+            legend: .hint)
+    }
+
+    // MARK: Word and sound playback (v5 §3)
+
+    /// Each side's timeline: where it starts on its recording (seconds) and how long it is.
+    private static func timelines(_ loaded: LoadedFixture)
+        -> (model: (start: Double, length: Double), you: (start: Double, length: Double)) {
+        let seconds = playbackSeconds(loaded)
+        let starts = loaded.timelineStarts ?? (0, 0)
+        return ((starts.model, seconds.model), (starts.you, seconds.you))
+    }
+
+    private static func segment(_ start: Double, _ end: Double, on timeline: (start: Double, length: Double))
+        -> PlaybackSchedule.Segment? {
+        guard timeline.length > 0, end > start else { return nil }
+        return ((start - timeline.start) / timeline.length, (end - timeline.start) / timeline.length, end - start)
+    }
+
+    /// The native word: the judge's model range, else the phrase's word timing.
+    static func nativeSegment(_ loaded: LoadedFixture, word index: Int) -> PlaybackSchedule.Segment? {
+        let lines = timelines(loaded)
+        if let range = judgement(loaded)?.words.first(where: { $0.index.rawValue == index })?.modelRange {
+            return segment(range.start, range.end, on: lines.model)
+        }
+        guard loaded.phrase.words.indices.contains(index) else { return nil }
+        let word = loaded.phrase.words[index]
+        let from = word.syllables.first?.start ?? word.start
+        let to = word.syllables.last?.end ?? word.end
+        return to > from ? (from, to, (to - from) * lines.model.length) : nil
+    }
+
+    /// Your word, padded 30 ms each side and clamped to the words either side; nil when it wasn't heard.
+    static func youSegment(_ loaded: LoadedFixture, word index: Int) -> PlaybackSchedule.Segment? {
+        let lines = timelines(loaded)
+        if let judgement = judgement(loaded) {
+            guard let window = SegmentWindow.you(word: index, in: judgement) else { return nil }
+            return segment(window.start, window.end, on: lines.you)
+        }
+        guard isResult(loaded), let take = loaded.take, lines.you.length > 0 else { return nil }
+        // Not judged: the aligned word's syllables on your timeline, in seconds from its start.
+        let indices = TimingConnectors.nativeWordIndices(phrase: loaded.phrase, take: take)
+        let spans: [(word: Int?, start: Double, end: Double)] = zip(take.words, indices).compactMap { pair, word in
+            guard pair.kind != .missing, let a = pair.syllables.first, let b = pair.syllables.last else { return nil }
+            return (word, a.start * lines.you.length, b.end * lines.you.length)
+        }
+        guard let position = spans.firstIndex(where: { $0.word == index }),
+              let range = try? TimeRange(start: spans[position].start, end: spans[position].end)
+        else { return nil }
+        let window = SegmentWindow.padded(
+            range, previousEnd: position > 0 ? spans[position - 1].end : nil,
+            nextStart: position + 1 < spans.count ? spans[position + 1].start : nil)
+        return segment(window.start, window.end, on: (0, lines.you.length))
+    }
+
+    /// `Play this sound`: your take only, padded and clamped like a word.
+    static func soundSegment(_ loaded: LoadedFixture, word index: Int, hint: SoundHint) -> PlaybackSchedule.Segment? {
+        guard let judgement = judgement(loaded), let range = hint.youRange else { return nil }
+        let window = SegmentWindow.you(sound: range, word: index, in: judgement)
+        return segment(window.start, window.end, on: timelines(loaded).you)
+    }
+
+    /// What a popover button plays; nil when it can't (the word wasn't heard, or has no timing).
+    static func wordSchedule(_ loaded: LoadedFixture, word index: Int, action: WordAction) -> PlaybackSchedule? {
+        switch action {
+        case .native:
+            return nativeSegment(loaded, word: index).map { .segment(.model, $0) }
+        case .you:
+            return youSegment(loaded, word: index).map { .segment(.you, $0) }
+        case .both:
+            guard let model = nativeSegment(loaded, word: index), let you = youSegment(loaded, word: index) else {
+                return nil
+            }
+            return .wordBoth(model: model, you: you)
+        case .sound(let position):
+            let hints = phrase(loaded).words.first { $0.index == index }?.hints ?? []
+            guard hints.indices.contains(position) else { return nil }
+            return soundSegment(loaded, word: index, hint: hints[position]).map { .segment(.you, $0) }
+        }
     }
 
     /// Clipping (v3.5 I4 tier B), then coverage, then timing, then insertions; the coverage floor is the decision

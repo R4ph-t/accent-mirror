@@ -12,6 +12,9 @@ struct LoadedFixture: Sendable {
     var chartPhrases: [String: PhraseFixture] = [:]
     /// Spec 21: the live audio's lengths (the model's phrase window, your take's), for playback and the playhead.
     var liveSeconds: (model: Double, you: Double)?
+    /// Live: where each side's timeline starts on its recording, in seconds (the model axis, your first heard word),
+    /// so `analysis.sounds` times (seconds on the recordings) land on the timelines. Nil: both start at 0 (fixtures).
+    var timelineStarts: (model: Double, you: Double)?
 }
 
 /// Loads the committed JSON fixtures from the app bundle (`Contents/Resources/Fixtures/`). Bundle only:

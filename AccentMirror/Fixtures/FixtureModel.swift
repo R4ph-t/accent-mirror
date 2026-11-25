@@ -1,3 +1,4 @@
+import AMCore
 import Foundation
 
 // Fixture schema for the UI shell (spec 19, v3 in spec 29). Field names follow the contract (spec 28's `notScored`,
@@ -44,6 +45,10 @@ struct UIFixture: Decodable, Sendable {
     var chart: ChartFixture?
     /// v3.5 I7: the Input popover drawn open.
     var inputPopover: InputPopoverFixture?
+    /// v5 §3: the phrase word (index) whose Native vs You popover is drawn open.
+    var wordPopover: Int?
+    /// v5 §4: the Rhythm and pitch disclosure drawn expanded (the strip and pitch cards). Nil: collapsed, the default.
+    var rhythmAndPitchExpanded: Bool?
 
     struct ChartFixture: Decodable, Sendable {
         /// Milliseconds since every change in this state began (hover, loop, ghosts, voice switch). Nil: 0.
@@ -256,6 +261,9 @@ struct Analysis: Decodable, Sendable {
     var describe: Describe?
     /// v3.5 I4 tier B: the saved take has a run of frames at −1 dBFS lasting 50 ms or more (`ClippingTier`).
     var clipped: Bool?
+    /// `AnalysisResult.sounds` (v5 sound judging), AMCore's own type and JSON. Its times are seconds from the start of
+    /// each speaker's timeline (the fixture's playback lengths); live, `LoadedFixture.timelines` places them.
+    var sounds: SoundJudgementOutcome?
 
     enum Timing: String, Decodable, Sendable { case good, rough }
 }

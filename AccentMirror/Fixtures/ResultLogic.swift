@@ -146,6 +146,31 @@ struct PlaybackSchedule: Equatable, Sendable {
     var steps: [Step]
     /// A label click loops until Esc (v3 §3.5).
     var repeats = false
+    /// Each played stretch fades in and out over this long (v5 word and sound buttons: 10 ms), so a cut never clicks.
+    var fadeSeconds = 0.0
+
+    /// v5 §3: the popover's Play both keeps a 300 ms gap (card 1's phrase-level Play Both keeps 0.4 s).
+    static let wordPauseSeconds = 0.3
+
+    /// A stretch of one side's timeline: `from`…`to` as fractions of it (may run a little past 0 or 1 with padding).
+    typealias Segment = (from: Double, to: Double, seconds: Double)
+
+    /// One stretch of one side, played once with the 10 ms fade (v5 Native, You, Play this sound).
+    static func segment(_ side: Side, _ segment: Segment) -> Self {
+        Self(steps: [.play(side, seconds: segment.seconds, from: segment.from, to: segment.to)],
+             fadeSeconds: Self.segmentFade)
+    }
+
+    /// The model's word, 300 ms, then yours, once (v5 §3 Play both).
+    static func wordBoth(model: Segment, you: Segment) -> Self {
+        Self(steps: [.play(.model, seconds: model.seconds, from: model.from, to: model.to),
+                     .pause(seconds: wordPauseSeconds),
+                     .play(.you, seconds: you.seconds, from: you.from, to: you.to)],
+             fadeSeconds: Self.segmentFade)
+    }
+
+    /// `SegmentWindow.fade` (AMPipeline), restated here so this file stays free of package imports.
+    static let segmentFade = 0.01
 
     static func model(_ seconds: Double) -> Self { Self(steps: [.play(.model, seconds: seconds)]) }
     static func you(_ seconds: Double) -> Self { Self(steps: [.play(.you, seconds: seconds)]) }
@@ -179,7 +204,7 @@ struct PlaybackSchedule: Equatable, Sendable {
             let tail = (side == .model ? model : you)?.tailSeconds ?? 0
             if tail > 0 { out.append(.play(side, seconds: tail, from: 1, to: 1)) }
         }
-        return PlaybackSchedule(steps: out, repeats: repeats)
+        return PlaybackSchedule(steps: out, repeats: repeats, fadeSeconds: fadeSeconds)
     }
 
     func phase(at elapsed: Double) -> Phase {
