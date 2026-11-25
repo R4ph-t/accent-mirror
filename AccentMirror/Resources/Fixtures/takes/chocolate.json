@@ -1,0 +1,61 @@
+{
+  "id": "chocolate",
+  "number": 1,
+  "hasAudio": true,
+  "alignment": "aligned",
+  "level": "normal",
+  "words": [
+    {
+      "kind": "present",
+      "expected": "the",
+      "heard": "the",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "the",
+          "start": 0.02,
+          "end": 0.17,
+          "prominence": 0.45
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "chocolate",
+      "heard": "chocolate",
+      "stressCheck": "checked",
+      "syllables": [
+        {
+          "text": "",
+          "start": 0.21,
+          "end": 0.57,
+          "prominence": 0.85
+        },
+        {
+          "text": "",
+          "start": 0.6,
+          "end": 0.95,
+          "prominence": 0.5
+        }
+      ]
+    }
+  ],
+  "pitch": [
+    {
+      "points": [
+        {
+          "t": 0.05,
+          "st": -0.2
+        },
+        {
+          "t": 0.38,
+          "st": 3.4
+        },
+        {
+          "t": 0.78,
+          "st": -1.4
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 // your take on model time (`TimeWarp.pitchOnModel`), the band, the description, and the scorer's verdict (spec 28:
 // `.notScored` when scoring is off). Nothing is computed from audio here.
 
+import AMAlignment
 import AMCore
 import AMPitch
 import AMProsody
@@ -9,6 +10,8 @@ import AMWarp
 import Foundation
 
 enum ResultAssembly {
+    static let sharedDisplayResolver: DisplaySyllableResolver? = try? DisplaySyllableResolver.bundled()
+
     /// One word on a speaker's timeline and its syllables (none for a substituted or inserted word).
     struct Entry {
         let text: String
@@ -21,7 +24,7 @@ enum ResultAssembly {
     static func result(
         take: TakeAudio, phrase: PhraseInput, you: TakeProsody, model: TakeProsody, score: PairScore, mode: ScoringMode,
         warp: TimeWarp, band: NativeBand, describe: DescribedMeasures?, identity: AnalysisIdentity,
-        thresholds: Thresholds
+        thresholds: Thresholds, displaySyllables: DisplaySyllableResolver? = sharedDisplayResolver
     ) throws -> AnalysisResult {
         let expected = Dictionary(phrase.words.map { ($0.index, $0.expectedStress) }, uniquingKeysWith: { first, _ in first })
         let modelWords = Dictionary(
@@ -51,14 +54,17 @@ enum ResultAssembly {
             }
         }
         let modelSpeaker = speaker(
-            modelEntries, analysis: model, measured: score.measuredModel, mode: mode, thresholds: thresholds)
+            modelEntries, analysis: model, measured: score.measuredModel, mode: mode, thresholds: thresholds,
+            displaySyllables: displaySyllables)
         let youPitchOnModel = warp.pitchOnModel(you.pitch.segments, hopSeconds: you.pitch.hopSeconds)
         guard let first = modelEntries.first, let last = modelEntries.last else {
             throw PairScoring.Failure.modelIncomplete(phrase.words.map(\.index))
         }
         return AnalysisResult(
             phraseID: phrase.id, takeID: take.takeID, recordedAt: take.recordedAt, model: modelSpeaker,
-            you: speaker(yourEntries, analysis: you, measured: score.measuredYou, mode: mode, thresholds: thresholds),
+            you: speaker(
+                yourEntries, analysis: you, measured: score.measuredYou, mode: mode, thresholds: thresholds,
+                displaySyllables: displaySyllables),
             modelAxis: try TimeRange(start: first.range.start, end: max(first.range.start, last.range.end)),
             alignment: you.alignment, timeMap: warp.map, youPitchOnModel: youPitchOnModel,
             nativeBand: band.points,
@@ -75,7 +81,7 @@ enum ResultAssembly {
     /// ambiguous.
     static func speaker(
         _ entries: [Entry], analysis: TakeProsody, measured: [WordIndex: MeasuredWordStress], mode: ScoringMode,
-        thresholds: Thresholds
+        thresholds: Thresholds, displaySyllables: DisplaySyllableResolver? = sharedDisplayResolver
     ) -> SpeakerAnalysis {
         let prominence = TakeProminence(
             ComparableSyllable.all(in: analysis.segmentation, pitch: analysis.pitch, thresholds: thresholds.prominence),
@@ -92,6 +98,7 @@ enum ResultAssembly {
         var words: [WordSpan] = []
         var syllables: [SyllableMeasure] = []
         for (k, entry) in entries.enumerated() {
+            let displayPieces = displaySyllables?.resolve(word: entry.text, syllableCount: entry.syllables.count)
             var indices: [Int] = []
             for syllable in entry.syllables {
                 let measured = observed[syllable.phraseWord]
@@ -102,9 +109,12 @@ enum ResultAssembly {
                 let stress: SyllableStress = measured.map { o in
                     syllable.indexInWord == o.primary ? .primary : syllable.indexInWord == o.secondary ? .secondary : .unstressed
                 } ?? dictionary
+                let labelText = displayPieces.flatMap {
+                    $0.indices.contains(syllable.indexInWord) ? $0[syllable.indexInWord] : nil
+                } ?? ""
                 indices.append(syllables.count)
                 syllables.append(SyllableMeasure(
-                    text: syllable.phones.joined(separator: " "), wordIndex: k, indexInWord: syllable.indexInWord,
+                    text: labelText, wordIndex: k, indexInWord: syllable.indexInWord,
                     range: syllable.range, share: total > 0 ? syllable.range.duration / total : 0,
                     prominence: display[syllable.phraseWord]?[syllable.indexInWord] ?? 0, stress: stress,
                     stressSource: measured == nil ? .dictionary : .measured))

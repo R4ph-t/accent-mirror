@@ -466,15 +466,21 @@ private struct ClusterLabels: View {
             ForEach(Array(entries.enumerated()), id: \.offset) { index, entry in
                 if shown[index] {
                     label(entry).position(x: entry.center, y: proxy.size.height / 2)
-                    if entry.dot {
-                        StressDot().position(x: entry.center, y: (proxy.size.height - 16) / 2 + StripGeometry.dotCentre)
-                    }
                 } else {
                     Color.clear
                         .frame(width: max(8, min(entry.width, entry.span)), height: proxy.size.height)
                         .contentShape(Rectangle())
                         .help(entry.tooltip)
                         .position(x: entry.center, y: proxy.size.height / 2)
+                }
+            }
+            // Lime dots always sit under the stressed native syllable's bar cluster, including merged-word fallbacks (v3.4 Y2.3).
+            ForEach(Array(clusters.enumerated()), id: \.offset) { _, cluster in
+                if cluster.dot {
+                    StressDot().position(
+                        x: CGFloat((cluster.start + cluster.end) / 2) * proxy.size.width,
+                        y: (proxy.size.height - 16) / 2 + StripGeometry.dotCentre
+                    )
                 }
             }
         }
@@ -528,13 +534,17 @@ private struct ClusterLabels: View {
     private func entries(width: CGFloat) -> [Entry] {
         let syllables: [Entry] = clusters.compactMap { cluster in
             guard let label = cluster.label else { return nil }
+            let spanStart = cluster.labelSpan?.lowerBound ?? cluster.start
+            let spanEnd = cluster.labelSpan?.upperBound ?? cluster.end
+            let wordHasDot = cluster.labelSpan != nil && cluster.word != nil
+                && clusters.contains { $0.word == cluster.word && $0.dot }
             return Entry(
                 content: .syllable(label, tooltip: cluster.tooltip, word: cluster.word),
-                center: CGFloat((cluster.start + cluster.end) / 2) * width,
-                span: CGFloat(cluster.end - cluster.start) * width,
+                center: CGFloat((spanStart + spanEnd) / 2) * width,
+                span: CGFloat(spanEnd - spanStart) * width,
                 width: LabelView.width(label),
                 priority: LabelLayout.syllablePriority(label.style),
-                spoken: cluster.dot ? Copy.dictionaryStressLabel(label.text) : label.text,
+                spoken: (cluster.dot || wordHasDot) ? Copy.dictionaryStressLabel(label.text) : label.text,
                 tooltip: Copy.hiddenLabelTooltip(label.text, note: cluster.tooltip),
                 dot: cluster.dot
             )
@@ -568,7 +578,7 @@ private struct LabelView: View {
             Text(label.text)
                 .typeRole(.small)
                 .foregroundStyle(palette.textSecondary)
-        case .yours:
+        case .yours, .merged:
             Text(label.text)
                 .typeRole(.small)
                 .foregroundStyle(palette.textTertiary)
@@ -583,7 +593,7 @@ private struct LabelView: View {
     static func width(_ label: ClusterLabel) -> CGFloat {
         switch label.style {
         case .caps: TextMeasure.width(label.text, role: .smallBold)
-        case .lower, .yours: TextMeasure.width(label.text, role: .small)
+        case .lower, .yours, .merged: TextMeasure.width(label.text, role: .small)
         case .heard: TextMeasure.width(label.text, role: .small, italic: true)
         }
     }

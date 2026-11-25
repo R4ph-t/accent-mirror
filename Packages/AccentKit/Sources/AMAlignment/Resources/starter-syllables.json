@@ -1,0 +1,3646 @@
+{
+  "version": "v3.4",
+  "date": "2026-11-25",
+  "description": "Display syllables for Accent Mirror starter phrases. One lowercase string per CMUdict syllable of the pronunciation the phrase uses. Concatenating syllables equals the folded word.",
+  "phrases": [
+    {
+      "id": "002",
+      "text": "Ask her to bring these things with her from the store.",
+      "words": [
+        {
+          "index": 0,
+          "text": "Ask",
+          "folded": "ask",
+          "arpabet": "AE1 S K",
+          "source": "cmudict",
+          "syllables": [
+            "ask"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "her",
+          "folded": "her",
+          "arpabet": "HH ER0",
+          "source": "override",
+          "syllables": [
+            "her"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "to",
+          "folded": "to",
+          "arpabet": "T AH0",
+          "source": "override",
+          "syllables": [
+            "to"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "bring",
+          "folded": "bring",
+          "arpabet": "B R IH1 NG",
+          "source": "cmudict",
+          "syllables": [
+            "bring"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "these",
+          "folded": "these",
+          "arpabet": "DH IY1 Z",
+          "source": "cmudict",
+          "syllables": [
+            "these"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "things",
+          "folded": "things",
+          "arpabet": "TH IH1 NG Z",
+          "source": "cmudict",
+          "syllables": [
+            "things"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "with",
+          "folded": "with",
+          "arpabet": "W IH1 DH",
+          "source": "cmudict",
+          "syllables": [
+            "with"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "her",
+          "folded": "her",
+          "arpabet": "HH ER0",
+          "source": "override",
+          "syllables": [
+            "her"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "from",
+          "folded": "from",
+          "arpabet": "F R AH1 M",
+          "source": "cmudict",
+          "syllables": [
+            "from"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 10,
+          "text": "store.",
+          "folded": "store",
+          "arpabet": "S T AO1 R",
+          "source": "cmudict",
+          "syllables": [
+            "store"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "004",
+      "text": "We also need a small plastic snake and a big toy frog for the kids.",
+      "words": [
+        {
+          "index": 0,
+          "text": "We",
+          "folded": "we",
+          "arpabet": "W IY1",
+          "source": "cmudict",
+          "syllables": [
+            "we"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "also",
+          "folded": "also",
+          "arpabet": "AO1 L S OW0",
+          "source": "cmudict",
+          "syllables": [
+            "al",
+            "so"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "need",
+          "folded": "need",
+          "arpabet": "N IY1 D",
+          "source": "cmudict",
+          "syllables": [
+            "need"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "a",
+          "folded": "a",
+          "arpabet": "AH0",
+          "source": "override",
+          "syllables": [
+            "a"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "small",
+          "folded": "small",
+          "arpabet": "S M AO1 L",
+          "source": "cmudict",
+          "syllables": [
+            "small"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "plastic",
+          "folded": "plastic",
+          "arpabet": "P L AE1 S T IH0 K",
+          "source": "cmudict",
+          "syllables": [
+            "plas",
+            "tic"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "snake",
+          "folded": "snake",
+          "arpabet": "S N EY1 K",
+          "source": "cmudict",
+          "syllables": [
+            "snake"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "and",
+          "folded": "and",
+          "arpabet": "AH0 N D",
+          "source": "override",
+          "syllables": [
+            "and"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "a",
+          "folded": "a",
+          "arpabet": "AH0",
+          "source": "override",
+          "syllables": [
+            "a"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "big",
+          "folded": "big",
+          "arpabet": "B IH1 G",
+          "source": "cmudict",
+          "syllables": [
+            "big"
+          ]
+        },
+        {
+          "index": 10,
+          "text": "toy",
+          "folded": "toy",
+          "arpabet": "T OY1",
+          "source": "cmudict",
+          "syllables": [
+            "toy"
+          ]
+        },
+        {
+          "index": 11,
+          "text": "frog",
+          "folded": "frog",
+          "arpabet": "F R AA1 G",
+          "source": "cmudict",
+          "syllables": [
+            "frog"
+          ]
+        },
+        {
+          "index": 12,
+          "text": "for",
+          "folded": "for",
+          "arpabet": "F ER0",
+          "source": "override",
+          "syllables": [
+            "for"
+          ]
+        },
+        {
+          "index": 13,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 14,
+          "text": "kids.",
+          "folded": "kids",
+          "arpabet": "K IH1 D Z",
+          "source": "cmudict",
+          "syllables": [
+            "kids"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "005",
+      "text": "She can scoop these things into three red bags, and we will go meet her Wednesday at the train station.",
+      "words": [
+        {
+          "index": 0,
+          "text": "She",
+          "folded": "she",
+          "arpabet": "SH IY1",
+          "source": "cmudict",
+          "syllables": [
+            "she"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "can",
+          "folded": "can",
+          "arpabet": "K AE1 N",
+          "source": "cmudict",
+          "syllables": [
+            "can"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "scoop",
+          "folded": "scoop",
+          "arpabet": "S K UW1 P",
+          "source": "cmudict",
+          "syllables": [
+            "scoop"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "these",
+          "folded": "these",
+          "arpabet": "DH IY1 Z",
+          "source": "cmudict",
+          "syllables": [
+            "these"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "things",
+          "folded": "things",
+          "arpabet": "TH IH1 NG Z",
+          "source": "cmudict",
+          "syllables": [
+            "things"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "into",
+          "folded": "into",
+          "arpabet": "IH1 N T UW0",
+          "source": "cmudict",
+          "syllables": [
+            "in",
+            "to"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "three",
+          "folded": "three",
+          "arpabet": "TH R IY1",
+          "source": "cmudict",
+          "syllables": [
+            "three"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "red",
+          "folded": "red",
+          "arpabet": "R EH1 D",
+          "source": "cmudict",
+          "syllables": [
+            "red"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "bags,",
+          "folded": "bags",
+          "arpabet": "B AE1 G Z",
+          "source": "cmudict",
+          "syllables": [
+            "bags"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "and",
+          "folded": "and",
+          "arpabet": "AH0 N D",
+          "source": "override",
+          "syllables": [
+            "and"
+          ]
+        },
+        {
+          "index": 10,
+          "text": "we",
+          "folded": "we",
+          "arpabet": "W IY1",
+          "source": "cmudict",
+          "syllables": [
+            "we"
+          ]
+        },
+        {
+          "index": 11,
+          "text": "will",
+          "folded": "will",
+          "arpabet": "W IH1 L",
+          "source": "cmudict",
+          "syllables": [
+            "will"
+          ]
+        },
+        {
+          "index": 12,
+          "text": "go",
+          "folded": "go",
+          "arpabet": "G OW1",
+          "source": "cmudict",
+          "syllables": [
+            "go"
+          ]
+        },
+        {
+          "index": 13,
+          "text": "meet",
+          "folded": "meet",
+          "arpabet": "M IY1 T",
+          "source": "cmudict",
+          "syllables": [
+            "meet"
+          ]
+        },
+        {
+          "index": 14,
+          "text": "her",
+          "folded": "her",
+          "arpabet": "HH ER0",
+          "source": "override",
+          "syllables": [
+            "her"
+          ]
+        },
+        {
+          "index": 15,
+          "text": "Wednesday",
+          "folded": "wednesday",
+          "arpabet": "W EH1 N Z D IY0",
+          "source": "cmudict",
+          "syllables": [
+            "wednes",
+            "day"
+          ]
+        },
+        {
+          "index": 16,
+          "text": "at",
+          "folded": "at",
+          "arpabet": "AE1 T",
+          "source": "override",
+          "syllables": [
+            "at"
+          ]
+        },
+        {
+          "index": 17,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 18,
+          "text": "train",
+          "folded": "train",
+          "arpabet": "T R EY1 N",
+          "source": "override",
+          "syllables": [
+            "train"
+          ]
+        },
+        {
+          "index": 19,
+          "text": "station.",
+          "folded": "station",
+          "arpabet": "S T EY1 SH AH0 N",
+          "source": "override",
+          "syllables": [
+            "sta",
+            "tion"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "006",
+      "text": "When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow.",
+      "words": [
+        {
+          "index": 0,
+          "text": "When",
+          "folded": "when",
+          "arpabet": "W EH1 N",
+          "source": "cmudict",
+          "syllables": [
+            "when"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "sunlight",
+          "folded": "sunlight",
+          "arpabet": "S AH1 N L AY2 T",
+          "source": "override",
+          "syllables": [
+            "sun",
+            "light"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "strikes",
+          "folded": "strikes",
+          "arpabet": "S T R AY1 K S",
+          "source": "cmudict",
+          "syllables": [
+            "strikes"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "raindrops",
+          "folded": "raindrops",
+          "arpabet": "R EY1 N D R AA2 P S",
+          "source": "override",
+          "syllables": [
+            "rain",
+            "drops"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "in",
+          "folded": "in",
+          "arpabet": "IH0 N",
+          "source": "cmudict",
+          "syllables": [
+            "in"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "air,",
+          "folded": "air",
+          "arpabet": "EH1 R",
+          "source": "cmudict",
+          "syllables": [
+            "air"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "they",
+          "folded": "they",
+          "arpabet": "DH EY1",
+          "source": "cmudict",
+          "syllables": [
+            "they"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "act",
+          "folded": "act",
+          "arpabet": "AE1 K T",
+          "source": "cmudict",
+          "syllables": [
+            "act"
+          ]
+        },
+        {
+          "index": 10,
+          "text": "as",
+          "folded": "as",
+          "arpabet": "AE1 Z",
+          "source": "cmudict",
+          "syllables": [
+            "as"
+          ]
+        },
+        {
+          "index": 11,
+          "text": "a",
+          "folded": "a",
+          "arpabet": "AH0",
+          "source": "override",
+          "syllables": [
+            "a"
+          ]
+        },
+        {
+          "index": 12,
+          "text": "prism",
+          "folded": "prism",
+          "arpabet": "P R IH1 Z AH0 M",
+          "source": "cmudict",
+          "syllables": [
+            "pri",
+            "sm"
+          ]
+        },
+        {
+          "index": 13,
+          "text": "and",
+          "folded": "and",
+          "arpabet": "AH0 N D",
+          "source": "override",
+          "syllables": [
+            "and"
+          ]
+        },
+        {
+          "index": 14,
+          "text": "form",
+          "folded": "form",
+          "arpabet": "F AO1 R M",
+          "source": "cmudict",
+          "syllables": [
+            "form"
+          ]
+        },
+        {
+          "index": 15,
+          "text": "a",
+          "folded": "a",
+          "arpabet": "AH0",
+          "source": "override",
+          "syllables": [
+            "a"
+          ]
+        },
+        {
+          "index": 16,
+          "text": "rainbow.",
+          "folded": "rainbow",
+          "arpabet": "R EY1 N B OW2",
+          "source": "override",
+          "syllables": [
+            "rain",
+            "bow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "007",
+      "text": "The rainbow is a division of white light into many beautiful colors.",
+      "words": [
+        {
+          "index": 0,
+          "text": "The",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "rainbow",
+          "folded": "rainbow",
+          "arpabet": "R EY1 N B OW2",
+          "source": "override",
+          "syllables": [
+            "rain",
+            "bow"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "is",
+          "folded": "is",
+          "arpabet": "IH1 Z",
+          "source": "cmudict",
+          "syllables": [
+            "is"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "a",
+          "folded": "a",
+          "arpabet": "AH0",
+          "source": "override",
+          "syllables": [
+            "a"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "division",
+          "folded": "division",
+          "arpabet": "D IH0 V IH1 ZH AH0 N",
+          "source": "override",
+          "syllables": [
+            "di",
+            "vi",
+            "sion"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "of",
+          "folded": "of",
+          "arpabet": "AH0 V",
+          "source": "override",
+          "syllables": [
+            "of"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "white",
+          "folded": "white",
+          "arpabet": "W AY1 T",
+          "source": "cmudict",
+          "syllables": [
+            "white"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "light",
+          "folded": "light",
+          "arpabet": "L AY1 T",
+          "source": "cmudict",
+          "syllables": [
+            "light"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "into",
+          "folded": "into",
+          "arpabet": "IH1 N T UW0",
+          "source": "cmudict",
+          "syllables": [
+            "in",
+            "to"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "many",
+          "folded": "many",
+          "arpabet": "M EH1 N IY0",
+          "source": "cmudict",
+          "syllables": [
+            "ma",
+            "ny"
+          ]
+        },
+        {
+          "index": 10,
+          "text": "beautiful",
+          "folded": "beautiful",
+          "arpabet": "B Y UW1 T AH0 F AH0 L",
+          "source": "override",
+          "syllables": [
+            "beau",
+            "ti",
+            "ful"
+          ]
+        },
+        {
+          "index": 11,
+          "text": "colors.",
+          "folded": "colors",
+          "arpabet": "K AH1 L ER0 Z",
+          "source": "cmudict",
+          "syllables": [
+            "col",
+            "ors"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "009",
+      "text": "There is, according to legend, a boiling pot of gold at one end.",
+      "words": [
+        {
+          "index": 0,
+          "text": "There",
+          "folded": "there",
+          "arpabet": "DH EH1 R",
+          "source": "cmudict",
+          "syllables": [
+            "there"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "is,",
+          "folded": "is",
+          "arpabet": "IH1 Z",
+          "source": "cmudict",
+          "syllables": [
+            "is"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "according",
+          "folded": "according",
+          "arpabet": "AH0 K AO1 R D IH0 NG",
+          "source": "cmudict",
+          "syllables": [
+            "ac",
+            "cor",
+            "ding"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "to",
+          "folded": "to",
+          "arpabet": "T AH0",
+          "source": "override",
+          "syllables": [
+            "to"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "legend,",
+          "folded": "legend",
+          "arpabet": "L EH1 JH AH0 N D",
+          "source": "cmudict",
+          "syllables": [
+            "le",
+            "gend"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "a",
+          "folded": "a",
+          "arpabet": "AH0",
+          "source": "override",
+          "syllables": [
+            "a"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "boiling",
+          "folded": "boiling",
+          "arpabet": "B OY1 L IH0 NG",
+          "source": "cmudict",
+          "syllables": [
+            "boil",
+            "ing"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "pot",
+          "folded": "pot",
+          "arpabet": "P AA1 T",
+          "source": "cmudict",
+          "syllables": [
+            "pot"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "of",
+          "folded": "of",
+          "arpabet": "AH0 V",
+          "source": "override",
+          "syllables": [
+            "of"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "gold",
+          "folded": "gold",
+          "arpabet": "G OW1 L D",
+          "source": "cmudict",
+          "syllables": [
+            "gold"
+          ]
+        },
+        {
+          "index": 10,
+          "text": "at",
+          "folded": "at",
+          "arpabet": "AE1 T",
+          "source": "override",
+          "syllables": [
+            "at"
+          ]
+        },
+        {
+          "index": 11,
+          "text": "one",
+          "folded": "one",
+          "arpabet": "W AH1 N",
+          "source": "cmudict",
+          "syllables": [
+            "one"
+          ]
+        },
+        {
+          "index": 12,
+          "text": "end.",
+          "folded": "end",
+          "arpabet": "EH1 N D",
+          "source": "cmudict",
+          "syllables": [
+            "end"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "010",
+      "text": "People look, but no one ever finds it.",
+      "words": [
+        {
+          "index": 0,
+          "text": "People",
+          "folded": "people",
+          "arpabet": "P IY1 P AH0 L",
+          "source": "cmudict",
+          "syllables": [
+            "peo",
+            "ple"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "look,",
+          "folded": "look",
+          "arpabet": "L UH1 K",
+          "source": "cmudict",
+          "syllables": [
+            "look"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "but",
+          "folded": "but",
+          "arpabet": "B AH1 T",
+          "source": "cmudict",
+          "syllables": [
+            "but"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "no",
+          "folded": "no",
+          "arpabet": "N OW1",
+          "source": "cmudict",
+          "syllables": [
+            "no"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "one",
+          "folded": "one",
+          "arpabet": "W AH1 N",
+          "source": "cmudict",
+          "syllables": [
+            "one"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "ever",
+          "folded": "ever",
+          "arpabet": "EH1 V ER0",
+          "source": "cmudict",
+          "syllables": [
+            "ev",
+            "er"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "finds",
+          "folded": "finds",
+          "arpabet": "F AY1 N D Z",
+          "source": "cmudict",
+          "syllables": [
+            "finds"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "it.",
+          "folded": "it",
+          "arpabet": "IH1 T",
+          "source": "cmudict",
+          "syllables": [
+            "it"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "012",
+      "text": "Throughout the centuries people have explained the rainbow in various ways.",
+      "words": [
+        {
+          "index": 0,
+          "text": "Throughout",
+          "folded": "throughout",
+          "arpabet": "TH R UW0 AW1 T",
+          "source": "cmudict",
+          "syllables": [
+            "through",
+            "out"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "centuries",
+          "folded": "centuries",
+          "arpabet": "S EH1 N CH ER0 IY0 Z",
+          "source": "cmudict",
+          "syllables": [
+            "cen",
+            "tur",
+            "ies"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "people",
+          "folded": "people",
+          "arpabet": "P IY1 P AH0 L",
+          "source": "cmudict",
+          "syllables": [
+            "peo",
+            "ple"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "have",
+          "folded": "have",
+          "arpabet": "HH AE1 V",
+          "source": "cmudict",
+          "syllables": [
+            "have"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "explained",
+          "folded": "explained",
+          "arpabet": "IH0 K S P L EY1 N D",
+          "source": "override",
+          "syllables": [
+            "ex",
+            "plained"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "rainbow",
+          "folded": "rainbow",
+          "arpabet": "R EY1 N B OW2",
+          "source": "override",
+          "syllables": [
+            "rain",
+            "bow"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "in",
+          "folded": "in",
+          "arpabet": "IH0 N",
+          "source": "cmudict",
+          "syllables": [
+            "in"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "various",
+          "folded": "various",
+          "arpabet": "V EH1 R IY0 AH0 S",
+          "source": "cmudict",
+          "syllables": [
+            "va",
+            "ri",
+            "ous"
+          ]
+        },
+        {
+          "index": 10,
+          "text": "ways.",
+          "folded": "ways",
+          "arpabet": "W EY1 Z",
+          "source": "cmudict",
+          "syllables": [
+            "ways"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "013",
+      "text": "Some have accepted it as a miracle without physical explanation.",
+      "words": [
+        {
+          "index": 0,
+          "text": "Some",
+          "folded": "some",
+          "arpabet": "S AH1 M",
+          "source": "cmudict",
+          "syllables": [
+            "some"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "have",
+          "folded": "have",
+          "arpabet": "HH AE1 V",
+          "source": "cmudict",
+          "syllables": [
+            "have"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "accepted",
+          "folded": "accepted",
+          "arpabet": "AE0 K S EH1 P T IH0 D",
+          "source": "cmudict",
+          "syllables": [
+            "ac",
+            "cep",
+            "ted"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "it",
+          "folded": "it",
+          "arpabet": "IH1 T",
+          "source": "cmudict",
+          "syllables": [
+            "it"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "as",
+          "folded": "as",
+          "arpabet": "AE1 Z",
+          "source": "cmudict",
+          "syllables": [
+            "as"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "a",
+          "folded": "a",
+          "arpabet": "AH0",
+          "source": "override",
+          "syllables": [
+            "a"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "miracle",
+          "folded": "miracle",
+          "arpabet": "M IH1 R AH0 K AH0 L",
+          "source": "cmudict",
+          "syllables": [
+            "mi",
+            "ra",
+            "cle"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "without",
+          "folded": "without",
+          "arpabet": "W IH0 TH AW1 T",
+          "source": "cmudict",
+          "syllables": [
+            "with",
+            "out"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "physical",
+          "folded": "physical",
+          "arpabet": "F IH1 Z IH0 K AH0 L",
+          "source": "override",
+          "syllables": [
+            "phy",
+            "si",
+            "cal"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "explanation.",
+          "folded": "explanation",
+          "arpabet": "EH2 K S P L AH0 N EY1 SH AH0 N",
+          "source": "override",
+          "syllables": [
+            "ex",
+            "pla",
+            "na",
+            "tion"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "014",
+      "text": "To the Hebrews it was a token that there would be no more universal floods.",
+      "words": [
+        {
+          "index": 0,
+          "text": "To",
+          "folded": "to",
+          "arpabet": "T AH0",
+          "source": "override",
+          "syllables": [
+            "to"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "Hebrews",
+          "folded": "hebrews",
+          "arpabet": "HH IY1 B R UW0 Z",
+          "source": "cmudict",
+          "syllables": [
+            "he",
+            "brews"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "it",
+          "folded": "it",
+          "arpabet": "IH1 T",
+          "source": "cmudict",
+          "syllables": [
+            "it"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "was",
+          "folded": "was",
+          "arpabet": "W AH0 Z",
+          "source": "override",
+          "syllables": [
+            "was"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "a",
+          "folded": "a",
+          "arpabet": "AH0",
+          "source": "override",
+          "syllables": [
+            "a"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "token",
+          "folded": "token",
+          "arpabet": "T OW1 K AH0 N",
+          "source": "cmudict",
+          "syllables": [
+            "to",
+            "ken"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "that",
+          "folded": "that",
+          "arpabet": "DH AH0 T",
+          "source": "override",
+          "syllables": [
+            "that"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "there",
+          "folded": "there",
+          "arpabet": "DH EH1 R",
+          "source": "cmudict",
+          "syllables": [
+            "there"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "would",
+          "folded": "would",
+          "arpabet": "W UH1 D",
+          "source": "override",
+          "syllables": [
+            "would"
+          ]
+        },
+        {
+          "index": 10,
+          "text": "be",
+          "folded": "be",
+          "arpabet": "B IY1",
+          "source": "cmudict",
+          "syllables": [
+            "be"
+          ]
+        },
+        {
+          "index": 11,
+          "text": "no",
+          "folded": "no",
+          "arpabet": "N OW1",
+          "source": "cmudict",
+          "syllables": [
+            "no"
+          ]
+        },
+        {
+          "index": 12,
+          "text": "more",
+          "folded": "more",
+          "arpabet": "M AO1 R",
+          "source": "cmudict",
+          "syllables": [
+            "more"
+          ]
+        },
+        {
+          "index": 13,
+          "text": "universal",
+          "folded": "universal",
+          "arpabet": "Y UW2 N AH0 V ER1 S AH0 L",
+          "source": "override",
+          "syllables": [
+            "u",
+            "ni",
+            "ver",
+            "sal"
+          ]
+        },
+        {
+          "index": 14,
+          "text": "floods.",
+          "folded": "floods",
+          "arpabet": "F L AH1 D Z",
+          "source": "cmudict",
+          "syllables": [
+            "floods"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "015",
+      "text": "The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain.",
+      "words": [
+        {
+          "index": 0,
+          "text": "The",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "Greeks",
+          "folded": "greeks",
+          "arpabet": "G R IY1 K S",
+          "source": "cmudict",
+          "syllables": [
+            "greeks"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "used",
+          "folded": "used",
+          "arpabet": "Y UW1 Z D",
+          "source": "cmudict",
+          "syllables": [
+            "used"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "to",
+          "folded": "to",
+          "arpabet": "T AH0",
+          "source": "override",
+          "syllables": [
+            "to"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "imagine",
+          "folded": "imagine",
+          "arpabet": "IH2 M AE1 JH AH0 N",
+          "source": "override",
+          "syllables": [
+            "i",
+            "ma",
+            "gine"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "that",
+          "folded": "that",
+          "arpabet": "DH AH0 T",
+          "source": "override",
+          "syllables": [
+            "that"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "it",
+          "folded": "it",
+          "arpabet": "IH1 T",
+          "source": "cmudict",
+          "syllables": [
+            "it"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "was",
+          "folded": "was",
+          "arpabet": "W AH0 Z",
+          "source": "override",
+          "syllables": [
+            "was"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "a",
+          "folded": "a",
+          "arpabet": "AH0",
+          "source": "override",
+          "syllables": [
+            "a"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "sign",
+          "folded": "sign",
+          "arpabet": "S AY1 N",
+          "source": "cmudict",
+          "syllables": [
+            "sign"
+          ]
+        },
+        {
+          "index": 10,
+          "text": "from",
+          "folded": "from",
+          "arpabet": "F R AH1 M",
+          "source": "cmudict",
+          "syllables": [
+            "from"
+          ]
+        },
+        {
+          "index": 11,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 12,
+          "text": "gods",
+          "folded": "gods",
+          "arpabet": "G AA1 D Z",
+          "source": "cmudict",
+          "syllables": [
+            "gods"
+          ]
+        },
+        {
+          "index": 13,
+          "text": "to",
+          "folded": "to",
+          "arpabet": "T AH0",
+          "source": "override",
+          "syllables": [
+            "to"
+          ]
+        },
+        {
+          "index": 14,
+          "text": "foretell",
+          "folded": "foretell",
+          "arpabet": "F AO0 R T EH1 L",
+          "source": "cmudict",
+          "syllables": [
+            "fore",
+            "tell"
+          ]
+        },
+        {
+          "index": 15,
+          "text": "war",
+          "folded": "war",
+          "arpabet": "W AO1 R",
+          "source": "cmudict",
+          "syllables": [
+            "war"
+          ]
+        },
+        {
+          "index": 16,
+          "text": "or",
+          "folded": "or",
+          "arpabet": "AO1 R",
+          "source": "cmudict",
+          "syllables": [
+            "or"
+          ]
+        },
+        {
+          "index": 17,
+          "text": "heavy",
+          "folded": "heavy",
+          "arpabet": "HH EH1 V IY0",
+          "source": "cmudict",
+          "syllables": [
+            "hea",
+            "vy"
+          ]
+        },
+        {
+          "index": 18,
+          "text": "rain.",
+          "folded": "rain",
+          "arpabet": "R EY1 N",
+          "source": "cmudict",
+          "syllables": [
+            "rain"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "017",
+      "text": "Others have tried to explain the phenomenon physically.",
+      "words": [
+        {
+          "index": 0,
+          "text": "Others",
+          "folded": "others",
+          "arpabet": "AH1 DH ER0 Z",
+          "source": "cmudict",
+          "syllables": [
+            "oth",
+            "ers"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "have",
+          "folded": "have",
+          "arpabet": "HH AE1 V",
+          "source": "cmudict",
+          "syllables": [
+            "have"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "tried",
+          "folded": "tried",
+          "arpabet": "T R AY1 D",
+          "source": "cmudict",
+          "syllables": [
+            "tried"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "to",
+          "folded": "to",
+          "arpabet": "T AH0",
+          "source": "override",
+          "syllables": [
+            "to"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "explain",
+          "folded": "explain",
+          "arpabet": "IH0 K S P L EY1 N",
+          "source": "override",
+          "syllables": [
+            "ex",
+            "plain"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "phenomenon",
+          "folded": "phenomenon",
+          "arpabet": "F AH0 N AA1 M AH0 N AA2 N",
+          "source": "override",
+          "syllables": [
+            "phe",
+            "no",
+            "me",
+            "non"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "physically.",
+          "folded": "physically",
+          "arpabet": "F IH1 Z IH0 K AH0 L IY0",
+          "source": "cmudict",
+          "syllables": [
+            "phy",
+            "si",
+            "cal",
+            "ly"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "018",
+      "text": "Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain.",
+      "words": [
+        {
+          "index": 0,
+          "text": "Aristotle",
+          "folded": "aristotle",
+          "arpabet": "EH1 R AH0 S T AA2 T AH0 L",
+          "source": "override",
+          "syllables": [
+            "ar",
+            "is",
+            "tot",
+            "le"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "thought",
+          "folded": "thought",
+          "arpabet": "TH AO1 T",
+          "source": "cmudict",
+          "syllables": [
+            "thought"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "that",
+          "folded": "that",
+          "arpabet": "DH AH0 T",
+          "source": "override",
+          "syllables": [
+            "that"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "rainbow",
+          "folded": "rainbow",
+          "arpabet": "R EY1 N B OW2",
+          "source": "override",
+          "syllables": [
+            "rain",
+            "bow"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "was",
+          "folded": "was",
+          "arpabet": "W AH0 Z",
+          "source": "override",
+          "syllables": [
+            "was"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "caused",
+          "folded": "caused",
+          "arpabet": "K AA1 Z D",
+          "source": "cmudict",
+          "syllables": [
+            "caused"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "by",
+          "folded": "by",
+          "arpabet": "B AY1",
+          "source": "cmudict",
+          "syllables": [
+            "by"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "reflection",
+          "folded": "reflection",
+          "arpabet": "R AH0 F L EH1 K SH AH0 N",
+          "source": "override",
+          "syllables": [
+            "re",
+            "flec",
+            "tion"
+          ]
+        },
+        {
+          "index": 9,
+          "text": "of",
+          "folded": "of",
+          "arpabet": "AH0 V",
+          "source": "override",
+          "syllables": [
+            "of"
+          ]
+        },
+        {
+          "index": 10,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 11,
+          "text": "sun's",
+          "folded": "sun's",
+          "arpabet": "S AH1 N Z",
+          "source": "cmudict",
+          "syllables": [
+            "sun's"
+          ]
+        },
+        {
+          "index": 12,
+          "text": "rays",
+          "folded": "rays",
+          "arpabet": "R EY1 Z",
+          "source": "cmudict",
+          "syllables": [
+            "rays"
+          ]
+        },
+        {
+          "index": 13,
+          "text": "by",
+          "folded": "by",
+          "arpabet": "B AY1",
+          "source": "cmudict",
+          "syllables": [
+            "by"
+          ]
+        },
+        {
+          "index": 14,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 15,
+          "text": "rain.",
+          "folded": "rain",
+          "arpabet": "R EY1 N",
+          "source": "cmudict",
+          "syllables": [
+            "rain"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "020",
+      "text": "Many complicated ideas about the rainbow have been formed.",
+      "words": [
+        {
+          "index": 0,
+          "text": "Many",
+          "folded": "many",
+          "arpabet": "M EH1 N IY0",
+          "source": "cmudict",
+          "syllables": [
+            "ma",
+            "ny"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "complicated",
+          "folded": "complicated",
+          "arpabet": "K AA1 M P L AH0 K EY2 T AH0 D",
+          "source": "override",
+          "syllables": [
+            "com",
+            "pli",
+            "ca",
+            "ted"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "ideas",
+          "folded": "ideas",
+          "arpabet": "AY0 D IY1 AH0 Z",
+          "source": "cmudict",
+          "syllables": [
+            "i",
+            "de",
+            "as"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "about",
+          "folded": "about",
+          "arpabet": "AH0 B AW1 T",
+          "source": "cmudict",
+          "syllables": [
+            "a",
+            "bout"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "the",
+          "folded": "the",
+          "arpabet": "DH AH0",
+          "source": "override",
+          "syllables": [
+            "the"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "rainbow",
+          "folded": "rainbow",
+          "arpabet": "R EY1 N B OW2",
+          "source": "override",
+          "syllables": [
+            "rain",
+            "bow"
+          ]
+        },
+        {
+          "index": 6,
+          "text": "have",
+          "folded": "have",
+          "arpabet": "HH AE1 V",
+          "source": "cmudict",
+          "syllables": [
+            "have"
+          ]
+        },
+        {
+          "index": 7,
+          "text": "been",
+          "folded": "been",
+          "arpabet": "B IH1 N",
+          "source": "cmudict",
+          "syllables": [
+            "been"
+          ]
+        },
+        {
+          "index": 8,
+          "text": "formed.",
+          "folded": "formed",
+          "arpabet": "F AO1 R M D",
+          "source": "cmudict",
+          "syllables": [
+            "formed"
+          ]
+        }
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "photography",
+      "text": "Photography is harder than it looks.",
+      "words": [
+        {
+          "index": 0,
+          "text": "Photography",
+          "folded": "photography",
+          "arpabet": "F AH0 T AA1 G R AH0 F IY0",
+          "source": "cmudict",
+          "syllables": [
+            "pho",
+            "tog",
+            "ra",
+            "phy"
+          ]
+        },
+        {
+          "index": 1,
+          "text": "is",
+          "folded": "is",
+          "arpabet": "IH1 Z",
+          "source": "cmudict",
+          "syllables": [
+            "is"
+          ]
+        },
+        {
+          "index": 2,
+          "text": "harder",
+          "folded": "harder",
+          "arpabet": "HH AA1 R D ER0",
+          "source": "cmudict",
+          "syllables": [
+            "har",
+            "der"
+          ]
+        },
+        {
+          "index": 3,
+          "text": "than",
+          "folded": "than",
+          "arpabet": "DH AE1 N",
+          "source": "cmudict",
+          "syllables": [
+            "than"
+          ]
+        },
+        {
+          "index": 4,
+          "text": "it",
+          "folded": "it",
+          "arpabet": "IH1 T",
+          "source": "cmudict",
+          "syllables": [
+            "it"
+          ]
+        },
+        {
+          "index": 5,
+          "text": "looks.",
+          "folded": "looks",
+          "arpabet": "L UH1 K S",
+          "source": "cmudict",
+          "syllables": [
+            "looks"
+          ]
+        }
+      ]
+    }
+  ],
+  "lexicon": {
+    "a": {
+      "word": "a",
+      "arpabet": "AH0",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "a"
+      ]
+    },
+    "about": {
+      "word": "about",
+      "arpabet": "AH0 B AW1 T",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "a",
+        "bout"
+      ]
+    },
+    "accepted": {
+      "word": "accepted",
+      "arpabet": "AE0 K S EH1 P T IH0 D",
+      "source": "cmudict",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "ac",
+        "cep",
+        "ted"
+      ]
+    },
+    "according": {
+      "word": "according",
+      "arpabet": "AH0 K AO1 R D IH0 NG",
+      "source": "cmudict",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "ac",
+        "cor",
+        "ding"
+      ],
+      "note": "Readable ac/cor/ding (the first C is in the first syllable), not a/ccor/ding."
+    },
+    "act": {
+      "word": "act",
+      "arpabet": "AE1 K T",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "act"
+      ]
+    },
+    "air": {
+      "word": "air",
+      "arpabet": "EH1 R",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "air"
+      ]
+    },
+    "also": {
+      "word": "also",
+      "arpabet": "AO1 L S OW0",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "al",
+        "so"
+      ]
+    },
+    "and": {
+      "word": "and",
+      "arpabet": "AH0 N D",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "and"
+      ]
+    },
+    "aristotle": {
+      "word": "aristotle",
+      "arpabet": "EH1 R AH0 S T AA2 T AH0 L",
+      "source": "override",
+      "syllableCount": 4,
+      "variantCounts": [
+        4
+      ],
+      "syllables": [
+        "ar",
+        "is",
+        "tot",
+        "le"
+      ],
+      "note": "Classic hyphenation ar/is/tot/le, not maximal-onset a/ri/sto/tle."
+    },
+    "as": {
+      "word": "as",
+      "arpabet": "AE1 Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "as"
+      ]
+    },
+    "ask": {
+      "word": "ask",
+      "arpabet": "AE1 S K",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "ask"
+      ]
+    },
+    "at": {
+      "word": "at",
+      "arpabet": "AE1 T",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "at"
+      ]
+    },
+    "bags": {
+      "word": "bags",
+      "arpabet": "B AE1 G Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "bags"
+      ]
+    },
+    "be": {
+      "word": "be",
+      "arpabet": "B IY1",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "be"
+      ]
+    },
+    "beautiful": {
+      "word": "beautiful",
+      "arpabet": "B Y UW1 T AH0 F AH0 L",
+      "source": "override",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "beau",
+        "ti",
+        "ful"
+      ]
+    },
+    "been": {
+      "word": "been",
+      "arpabet": "B IH1 N",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "been"
+      ]
+    },
+    "big": {
+      "word": "big",
+      "arpabet": "B IH1 G",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "big"
+      ]
+    },
+    "boiling": {
+      "word": "boiling",
+      "arpabet": "B OY1 L IH0 NG",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "boil",
+        "ing"
+      ],
+      "note": "Readable boil/ing, not maximal-onset boi/ling."
+    },
+    "bring": {
+      "word": "bring",
+      "arpabet": "B R IH1 NG",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "bring"
+      ]
+    },
+    "but": {
+      "word": "but",
+      "arpabet": "B AH1 T",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "but"
+      ]
+    },
+    "by": {
+      "word": "by",
+      "arpabet": "B AY1",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "by"
+      ]
+    },
+    "can": {
+      "word": "can",
+      "arpabet": "K AE1 N",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "can"
+      ]
+    },
+    "caused": {
+      "word": "caused",
+      "arpabet": "K AA1 Z D",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "caused"
+      ]
+    },
+    "centuries": {
+      "word": "centuries",
+      "arpabet": "S EH1 N CH ER0 IY0 Z",
+      "source": "cmudict",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "cen",
+        "tur",
+        "ies"
+      ]
+    },
+    "colors": {
+      "word": "colors",
+      "arpabet": "K AH1 L ER0 Z",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "col",
+        "ors"
+      ]
+    },
+    "complicated": {
+      "word": "complicated",
+      "arpabet": "K AA1 M P L AH0 K EY2 T AH0 D",
+      "source": "override",
+      "syllableCount": 4,
+      "variantCounts": [
+        4
+      ],
+      "syllables": [
+        "com",
+        "pli",
+        "ca",
+        "ted"
+      ]
+    },
+    "division": {
+      "word": "division",
+      "arpabet": "D IH0 V IH1 ZH AH0 N",
+      "source": "override",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "di",
+        "vi",
+        "sion"
+      ]
+    },
+    "end": {
+      "word": "end",
+      "arpabet": "EH1 N D",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "end"
+      ]
+    },
+    "ever": {
+      "word": "ever",
+      "arpabet": "EH1 V ER0",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "ev",
+        "er"
+      ]
+    },
+    "explain": {
+      "word": "explain",
+      "arpabet": "IH0 K S P L EY1 N",
+      "source": "override",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "ex",
+        "plain"
+      ]
+    },
+    "explained": {
+      "word": "explained",
+      "arpabet": "IH0 K S P L EY1 N D",
+      "source": "override",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "ex",
+        "plained"
+      ]
+    },
+    "explanation": {
+      "word": "explanation",
+      "arpabet": "EH2 K S P L AH0 N EY1 SH AH0 N",
+      "source": "override",
+      "syllableCount": 4,
+      "variantCounts": [
+        4
+      ],
+      "syllables": [
+        "ex",
+        "pla",
+        "na",
+        "tion"
+      ]
+    },
+    "finds": {
+      "word": "finds",
+      "arpabet": "F AY1 N D Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "finds"
+      ]
+    },
+    "floods": {
+      "word": "floods",
+      "arpabet": "F L AH1 D Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "floods"
+      ]
+    },
+    "for": {
+      "word": "for",
+      "arpabet": "F ER0",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "for"
+      ]
+    },
+    "foretell": {
+      "word": "foretell",
+      "arpabet": "F AO0 R T EH1 L",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "fore",
+        "tell"
+      ]
+    },
+    "form": {
+      "word": "form",
+      "arpabet": "F AO1 R M",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "form"
+      ]
+    },
+    "formed": {
+      "word": "formed",
+      "arpabet": "F AO1 R M D",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "formed"
+      ]
+    },
+    "frog": {
+      "word": "frog",
+      "arpabet": "F R AA1 G",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "frog"
+      ]
+    },
+    "from": {
+      "word": "from",
+      "arpabet": "F R AH1 M",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "from"
+      ]
+    },
+    "go": {
+      "word": "go",
+      "arpabet": "G OW1",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "go"
+      ]
+    },
+    "gods": {
+      "word": "gods",
+      "arpabet": "G AA1 D Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "gods"
+      ]
+    },
+    "gold": {
+      "word": "gold",
+      "arpabet": "G OW1 L D",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "gold"
+      ]
+    },
+    "greeks": {
+      "word": "greeks",
+      "arpabet": "G R IY1 K S",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "greeks"
+      ]
+    },
+    "harder": {
+      "word": "harder",
+      "arpabet": "HH AA1 R D ER0",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "har",
+        "der"
+      ]
+    },
+    "have": {
+      "word": "have",
+      "arpabet": "HH AE1 V",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "have"
+      ]
+    },
+    "heavy": {
+      "word": "heavy",
+      "arpabet": "HH EH1 V IY0",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "hea",
+        "vy"
+      ],
+      "note": "Sound-based hea/vy (V starts the second syllable), not heav/y."
+    },
+    "hebrews": {
+      "word": "hebrews",
+      "arpabet": "HH IY1 B R UW0 Z",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "he",
+        "brews"
+      ]
+    },
+    "her": {
+      "word": "her",
+      "arpabet": "HH ER0",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "her"
+      ]
+    },
+    "ideas": {
+      "word": "ideas",
+      "arpabet": "AY0 D IY1 AH0 Z",
+      "source": "cmudict",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "i",
+        "de",
+        "as"
+      ]
+    },
+    "imagine": {
+      "word": "imagine",
+      "arpabet": "IH2 M AE1 JH AH0 N",
+      "source": "override",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "i",
+        "ma",
+        "gine"
+      ]
+    },
+    "in": {
+      "word": "in",
+      "arpabet": "IH0 N",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "in"
+      ]
+    },
+    "into": {
+      "word": "into",
+      "arpabet": "IH1 N T UW0",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "in",
+        "to"
+      ]
+    },
+    "is": {
+      "word": "is",
+      "arpabet": "IH1 Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "is"
+      ]
+    },
+    "it": {
+      "word": "it",
+      "arpabet": "IH1 T",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "it"
+      ]
+    },
+    "kids": {
+      "word": "kids",
+      "arpabet": "K IH1 D Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "kids"
+      ]
+    },
+    "legend": {
+      "word": "legend",
+      "arpabet": "L EH1 JH AH0 N D",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "le",
+        "gend"
+      ],
+      "note": "Sound-based le/gend (JH starts the second syllable), not leg/end."
+    },
+    "light": {
+      "word": "light",
+      "arpabet": "L AY1 T",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "light"
+      ]
+    },
+    "look": {
+      "word": "look",
+      "arpabet": "L UH1 K",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "look"
+      ]
+    },
+    "looks": {
+      "word": "looks",
+      "arpabet": "L UH1 K S",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "looks"
+      ]
+    },
+    "many": {
+      "word": "many",
+      "arpabet": "M EH1 N IY0",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "ma",
+        "ny"
+      ]
+    },
+    "meet": {
+      "word": "meet",
+      "arpabet": "M IY1 T",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "meet"
+      ]
+    },
+    "miracle": {
+      "word": "miracle",
+      "arpabet": "M IH1 R AH0 K AH0 L",
+      "source": "cmudict",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "mi",
+        "ra",
+        "cle"
+      ]
+    },
+    "more": {
+      "word": "more",
+      "arpabet": "M AO1 R",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "more"
+      ]
+    },
+    "need": {
+      "word": "need",
+      "arpabet": "N IY1 D",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "need"
+      ]
+    },
+    "no": {
+      "word": "no",
+      "arpabet": "N OW1",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "no"
+      ]
+    },
+    "of": {
+      "word": "of",
+      "arpabet": "AH0 V",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "of"
+      ]
+    },
+    "one": {
+      "word": "one",
+      "arpabet": "W AH1 N",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "one"
+      ]
+    },
+    "or": {
+      "word": "or",
+      "arpabet": "AO1 R",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "or"
+      ]
+    },
+    "others": {
+      "word": "others",
+      "arpabet": "AH1 DH ER0 Z",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "oth",
+        "ers"
+      ]
+    },
+    "people": {
+      "word": "people",
+      "arpabet": "P IY1 P AH0 L",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "peo",
+        "ple"
+      ]
+    },
+    "phenomenon": {
+      "word": "phenomenon",
+      "arpabet": "F AH0 N AA1 M AH0 N AA2 N",
+      "source": "override",
+      "syllableCount": 4,
+      "variantCounts": [
+        4
+      ],
+      "syllables": [
+        "phe",
+        "no",
+        "me",
+        "non"
+      ]
+    },
+    "photography": {
+      "word": "photography",
+      "arpabet": "F AH0 T AA1 G R AH0 F IY0",
+      "source": "cmudict",
+      "syllableCount": 4,
+      "variantCounts": [
+        4
+      ],
+      "syllables": [
+        "pho",
+        "tog",
+        "ra",
+        "phy"
+      ],
+      "note": "Mockup convention. Not one of the 14; included so the fixture stays locked. Do not use pho/tog/rap/hy (that is the naive spelling split)."
+    },
+    "physical": {
+      "word": "physical",
+      "arpabet": "F IH1 Z IH0 K AH0 L",
+      "source": "override",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "phy",
+        "si",
+        "cal"
+      ]
+    },
+    "physically": {
+      "word": "physically",
+      "arpabet": "F IH1 Z IH0 K AH0 L IY0",
+      "source": "cmudict",
+      "syllableCount": 4,
+      "variantCounts": [
+        3,
+        4
+      ],
+      "syllables": [
+        "phy",
+        "si",
+        "cal",
+        "ly"
+      ],
+      "note": "Locked to the first CMUdict entry (4 syllables). A 3-syllable variant F IH1 Z IH0 K L IY0 also exists; do not use it for this phrase."
+    },
+    "plastic": {
+      "word": "plastic",
+      "arpabet": "P L AE1 S T IH0 K",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "plas",
+        "tic"
+      ],
+      "note": "Readable plas/tic, not maximal-onset pla/stic."
+    },
+    "pot": {
+      "word": "pot",
+      "arpabet": "P AA1 T",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "pot"
+      ]
+    },
+    "prism": {
+      "word": "prism",
+      "arpabet": "P R IH1 Z AH0 M",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "pri",
+        "sm"
+      ],
+      "note": "No vowel letter in the second syllable; pri/sm is the only split that concatenates."
+    },
+    "rain": {
+      "word": "rain",
+      "arpabet": "R EY1 N",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "rain"
+      ]
+    },
+    "rainbow": {
+      "word": "rainbow",
+      "arpabet": "R EY1 N B OW2",
+      "source": "override",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "rain",
+        "bow"
+      ]
+    },
+    "raindrops": {
+      "word": "raindrops",
+      "arpabet": "R EY1 N D R AA2 P S",
+      "source": "override",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "rain",
+        "drops"
+      ]
+    },
+    "rays": {
+      "word": "rays",
+      "arpabet": "R EY1 Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "rays"
+      ]
+    },
+    "red": {
+      "word": "red",
+      "arpabet": "R EH1 D",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "red"
+      ]
+    },
+    "reflection": {
+      "word": "reflection",
+      "arpabet": "R AH0 F L EH1 K SH AH0 N",
+      "source": "override",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "re",
+        "flec",
+        "tion"
+      ]
+    },
+    "scoop": {
+      "word": "scoop",
+      "arpabet": "S K UW1 P",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "scoop"
+      ]
+    },
+    "she": {
+      "word": "she",
+      "arpabet": "SH IY1",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "she"
+      ]
+    },
+    "sign": {
+      "word": "sign",
+      "arpabet": "S AY1 N",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "sign"
+      ]
+    },
+    "small": {
+      "word": "small",
+      "arpabet": "S M AO1 L",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "small"
+      ]
+    },
+    "snake": {
+      "word": "snake",
+      "arpabet": "S N EY1 K",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "snake"
+      ]
+    },
+    "some": {
+      "word": "some",
+      "arpabet": "S AH1 M",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "some"
+      ]
+    },
+    "station": {
+      "word": "station",
+      "arpabet": "S T EY1 SH AH0 N",
+      "source": "override",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "sta",
+        "tion"
+      ]
+    },
+    "store": {
+      "word": "store",
+      "arpabet": "S T AO1 R",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "store"
+      ]
+    },
+    "strikes": {
+      "word": "strikes",
+      "arpabet": "S T R AY1 K S",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "strikes"
+      ]
+    },
+    "sun's": {
+      "word": "sun's",
+      "arpabet": "S AH1 N Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "sun's"
+      ]
+    },
+    "sunlight": {
+      "word": "sunlight",
+      "arpabet": "S AH1 N L AY2 T",
+      "source": "override",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "sun",
+        "light"
+      ]
+    },
+    "than": {
+      "word": "than",
+      "arpabet": "DH AE1 N",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "than"
+      ]
+    },
+    "that": {
+      "word": "that",
+      "arpabet": "DH AH0 T",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "that"
+      ]
+    },
+    "the": {
+      "word": "the",
+      "arpabet": "DH AH0",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "the"
+      ]
+    },
+    "there": {
+      "word": "there",
+      "arpabet": "DH EH1 R",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "there"
+      ]
+    },
+    "these": {
+      "word": "these",
+      "arpabet": "DH IY1 Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "these"
+      ]
+    },
+    "they": {
+      "word": "they",
+      "arpabet": "DH EY1",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "they"
+      ]
+    },
+    "things": {
+      "word": "things",
+      "arpabet": "TH IH1 NG Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "things"
+      ]
+    },
+    "thought": {
+      "word": "thought",
+      "arpabet": "TH AO1 T",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "thought"
+      ]
+    },
+    "three": {
+      "word": "three",
+      "arpabet": "TH R IY1",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "three"
+      ]
+    },
+    "throughout": {
+      "word": "throughout",
+      "arpabet": "TH R UW0 AW1 T",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "through",
+        "out"
+      ]
+    },
+    "to": {
+      "word": "to",
+      "arpabet": "T AH0",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "to"
+      ]
+    },
+    "token": {
+      "word": "token",
+      "arpabet": "T OW1 K AH0 N",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "to",
+        "ken"
+      ]
+    },
+    "toy": {
+      "word": "toy",
+      "arpabet": "T OY1",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "toy"
+      ]
+    },
+    "train": {
+      "word": "train",
+      "arpabet": "T R EY1 N",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "train"
+      ]
+    },
+    "tried": {
+      "word": "tried",
+      "arpabet": "T R AY1 D",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "tried"
+      ]
+    },
+    "universal": {
+      "word": "universal",
+      "arpabet": "Y UW2 N AH0 V ER1 S AH0 L",
+      "source": "override",
+      "syllableCount": 4,
+      "variantCounts": [
+        4
+      ],
+      "syllables": [
+        "u",
+        "ni",
+        "ver",
+        "sal"
+      ]
+    },
+    "used": {
+      "word": "used",
+      "arpabet": "Y UW1 Z D",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "used"
+      ]
+    },
+    "various": {
+      "word": "various",
+      "arpabet": "V EH1 R IY0 AH0 S",
+      "source": "cmudict",
+      "syllableCount": 3,
+      "variantCounts": [
+        3
+      ],
+      "syllables": [
+        "va",
+        "ri",
+        "ous"
+      ],
+      "note": "Sound-based va/ri/ous, not var/i/ous."
+    },
+    "war": {
+      "word": "war",
+      "arpabet": "W AO1 R",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "war"
+      ]
+    },
+    "was": {
+      "word": "was",
+      "arpabet": "W AH0 Z",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "was"
+      ]
+    },
+    "ways": {
+      "word": "ways",
+      "arpabet": "W EY1 Z",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "ways"
+      ]
+    },
+    "we": {
+      "word": "we",
+      "arpabet": "W IY1",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "we"
+      ]
+    },
+    "wednesday": {
+      "word": "wednesday",
+      "arpabet": "W EH1 N Z D IY0",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "wednes",
+        "day"
+      ],
+      "note": "Both CMUdict variants are 2 syllables (D IY0 and D EY2); display is wednes/day either way."
+    },
+    "when": {
+      "word": "when",
+      "arpabet": "W EH1 N",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "when"
+      ]
+    },
+    "white": {
+      "word": "white",
+      "arpabet": "W AY1 T",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "white"
+      ]
+    },
+    "will": {
+      "word": "will",
+      "arpabet": "W IH1 L",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "will"
+      ]
+    },
+    "with": {
+      "word": "with",
+      "arpabet": "W IH1 DH",
+      "source": "cmudict",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "with"
+      ]
+    },
+    "without": {
+      "word": "without",
+      "arpabet": "W IH0 TH AW1 T",
+      "source": "cmudict",
+      "syllableCount": 2,
+      "variantCounts": [
+        2
+      ],
+      "syllables": [
+        "with",
+        "out"
+      ]
+    },
+    "would": {
+      "word": "would",
+      "arpabet": "W UH1 D",
+      "source": "override",
+      "syllableCount": 1,
+      "variantCounts": [
+        1
+      ],
+      "syllables": [
+        "would"
+      ]
+    }
+  }
+}

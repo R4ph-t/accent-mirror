@@ -1,4 +1,5 @@
 import AMCore
+import AMPipeline
 import Foundation
 
 // What the shell shows for a contract state. Pure value types, no SwiftUI: the views only draw these.
@@ -87,6 +88,9 @@ struct StripCluster: Sendable, Equatable {
     var end: Double
     var prominence: Double
     var label: ClusterLabel?
+    /// When a merged-word fallback label spans the whole word rather than a single cluster, this holds the word's
+    /// start…end on the row's timeline; nil centres the label on this cluster's own `start...end`.
+    var labelSpan: ClosedRange<Double>? = nil
     /// The Lime dictionary-stress dot under the label (native row only, v3.1 V2).
     var dot: Bool
     /// The phrase word this syllable belongs to (index into the phrase's words): clicking its label loops that word.
@@ -107,6 +111,8 @@ struct ClusterLabel: Sendable, Equatable {
         case yours
         /// A heard word, italics, secondary ("photograph" in quotes, or "+ so").
         case heard
+        /// Merged-word fallback (v3.4 Y2.3): whole folded word once, lowercase, Geist 12 regular, text.tertiary.
+        case merged
     }
 
     var text: String
@@ -322,15 +328,27 @@ enum ShellPresenter {
         return phrase.words.enumerated().flatMap { wordIndex, word in
             let dotted = StressMarks.dottedSyllable(word)
             let ambiguous = StressMarks.isAmbiguous(word)
+            let isMerged = !word.syllables.isEmpty
+                && word.syllables.allSatisfy { $0.text.trimmingCharacters(in: .whitespaces).isEmpty }
+            let wordSpan: ClosedRange<Double>? = isMerged
+                ? (word.syllables.first!.start...word.syllables.last!.end)
+                : nil
+            let folded = isMerged ? DisplayWord.fold(word.text) : ""
             return word.syllables.enumerated().map { index, syllable in
                 seed += 1
                 let isDotted = dotted == index
-                return StripCluster(
-                    start: syllable.start, end: syllable.end, prominence: syllable.prominence,
-                    label: ClusterLabel(
+                let label: ClusterLabel? = if isMerged {
+                    (index == 0 && !folded.isEmpty) ? ClusterLabel(text: folded, style: .merged) : nil
+                } else {
+                    ClusterLabel(
                         text: isDotted ? syllable.text.uppercased() : syllable.text.lowercased(),
                         style: isDotted ? .caps : .lower
-                    ),
+                    )
+                }
+                return StripCluster(
+                    start: syllable.start, end: syllable.end, prominence: syllable.prominence,
+                    label: label,
+                    labelSpan: (isMerged && index == 0) ? wordSpan : nil,
                     dot: isDotted,
                     word: wordIndex,
                     seed: seed,
@@ -353,11 +371,26 @@ enum ShellPresenter {
             case .missing:
                 if let position = pair.slot { slots.append(MissingSlot(position: position, expected: pair.expected ?? "")) }
             case .present:
-                for syllable in pair.syllables {
+                let isMerged = !pair.syllables.isEmpty
+                    && pair.syllables.allSatisfy { $0.text.trimmingCharacters(in: .whitespaces).isEmpty }
+                let wordSpan: ClosedRange<Double>? = isMerged
+                    ? (pair.syllables.first!.start...pair.syllables.last!.end)
+                    : nil
+                let rawWord = pair.expected
+                    ?? wordIndex.flatMap { phrase?.words.indices.contains($0) == true ? phrase?.words[$0].text : nil }
+                    ?? ""
+                let folded = isMerged ? DisplayWord.fold(rawWord) : ""
+                for (index, syllable) in pair.syllables.enumerated() {
                     seed += 1
+                    let label: ClusterLabel? = if isMerged {
+                        (index == 0 && !folded.isEmpty) ? ClusterLabel(text: folded, style: .merged) : nil
+                    } else {
+                        ClusterLabel(text: syllable.text.lowercased(), style: .yours)
+                    }
                     clusters.append(StripCluster(
                         start: syllable.start, end: syllable.end, prominence: syllable.prominence,
-                        label: ClusterLabel(text: syllable.text.lowercased(), style: .yours),
+                        label: label,
+                        labelSpan: (isMerged && index == 0) ? wordSpan : nil,
                         dot: false, word: wordIndex, seed: seed, tooltip: nil
                     ))
                 }
@@ -377,7 +410,7 @@ enum ShellPresenter {
             }
         }
         if !labelled {
-            clusters = clusters.map { var c = $0; c.label = nil; c.tooltip = nil; return c }
+            clusters = clusters.map { var c = $0; c.label = nil; c.labelSpan = nil; c.tooltip = nil; return c }
         }
         return (clusters, slots)
     }

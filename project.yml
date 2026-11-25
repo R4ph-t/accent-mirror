@@ -118,6 +118,11 @@ targets:
       - path: AccentMirror/Design/Typography.swift
       - path: AccentMirror/Design/BundledFonts.swift
       - path: AccentMirror/Design/HighlightGeometry.swift
+      - path: AccentMirror/Design/LabelLayout.swift
+      - path: AccentMirror/Charts/ChartMotion.swift
+      - path: AccentMirror/Fixtures/Copy.swift
+      - path: AccentMirror/Shell/ToolbarState.swift
+      - path: AccentMirror/Fixtures/ShellPresenter.swift
     dependencies:
       - package: AccentKit
         product: AMPipeline

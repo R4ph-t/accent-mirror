@@ -54,7 +54,7 @@ enum LabelLayout {
         switch style {
         case .caps: .always
         case .heard: .high
-        case .lower, .yours: .low
+        case .lower, .yours, .merged: .low
         }
     }
 
