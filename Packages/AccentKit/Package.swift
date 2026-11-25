@@ -54,14 +54,15 @@ let package = Package(
                 name: module.name,
                 dependencies: module.dependencies.map { .target(name: $0) } + (externalDependencies[module.name] ?? []),
                 // AMAlignment bundles CMUdict and its word lists (spec 06), copied verbatim.
-                resources: module.name == "AMAlignment" ? [.copy("Resources")] : nil
+                // AMJudging bundles its calibration head (speechocean762, CC BY 4.0).
+                resources: ["AMAlignment", "AMJudging"].contains(module.name) ? [.copy("Resources")] : nil
             ),
             .testTarget(
                 name: "\(module.name)Tests",
                 dependencies: ([module.name] + (extraTestDependencies[module.name] ?? [])).map { .target(name: $0) },
                 // AMCore's golden JSON is read from the source tree by path (spec 01), not bundled.
                 exclude: module.name == "AMCore" ? ["Golden"] : [],
-                resources: module.name == "AMAlignment" ? [.copy("Fixtures")] : nil
+                resources: ["AMAlignment", "AMJudging"].contains(module.name) ? [.copy("Fixtures")] : nil
             ),
         ]
     } + [
