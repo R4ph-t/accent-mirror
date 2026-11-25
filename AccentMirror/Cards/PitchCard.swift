@@ -98,24 +98,29 @@ private struct WordLabels: View {
     var body: some View {
         let y = frame.baselineY + 13
         let widths = words.map { TextMeasure.width($0.text, role: .small) }
-        let centers = words.map { frame.x(($0.start + $0.end) / 2) }
-        let shown = LabelLayout.visibility(words.indices.map {
-            LabelLayout.Item(center: centers[$0], width: widths[$0], priority: LabelLayout.wordPriority(isTarget: words[$0].isTarget))
-        })
+        let plotCenters = words.map { CGFloat(($0.start + $0.end) / 2) * frame.plotWidth }
+        let placed = LabelLayout.place(
+            words.indices.map {
+                LabelLayout.Item(center: Double(plotCenters[$0]), width: Double(widths[$0]),
+                                 priority: LabelLayout.wordPriority(isTarget: words[$0].isTarget))
+            },
+            within: Double(frame.plotWidth)
+        )
         ZStack(alignment: .topLeading) {
             ForEach(Array(words.enumerated()), id: \.offset) { index, word in
-                if shown[index] {
+                let x = frame.plotX + CGFloat(placed[index].center)
+                if placed[index].shown {
                     Text(word.text)
                         .typeRole(.small)
                         .foregroundStyle(palette.textSecondary)
                         .fixedSize()
-                        .position(x: centers[index], y: y)
+                        .position(x: x, y: y)
                 } else {
                     Color.clear
                         .frame(width: max(8, min(widths[index], frame.x(word.end) - frame.x(word.start))), height: 20)
                         .contentShape(Rectangle())
                         .help(Copy.hiddenLabelTooltip(word.text, note: nil))
-                        .position(x: centers[index], y: y)
+                        .position(x: x, y: y)
                 }
             }
         }

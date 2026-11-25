@@ -6,76 +6,76 @@
   "text" : "The rainbow is a division of white light into many beautiful colors.",
   "words" : [
     {
-      "end" : 0.24,
-      "probability" : 0.92,
+      "end" : 0.26,
+      "probability" : 1,
       "start" : 0.18,
-      "word" : " The"
+      "word" : "the"
     },
     {
-      "end" : 0.4,
-      "probability" : 0.94,
-      "start" : 0.24,
-      "word" : " rainbow"
-    },
-    {
-      "end" : 0.82,
+      "end" : 0.76,
       "probability" : 1,
-      "start" : 0.4,
-      "word" : " is"
+      "start" : 0.26,
+      "word" : "rainbow"
     },
     {
-      "end" : 0.92,
-      "probability" : 0.99,
-      "start" : 0.82,
-      "word" : " a"
-    },
-    {
-      "end" : 1.22,
-      "probability" : 0.97,
-      "start" : 0.92,
-      "word" : " division"
-    },
-    {
-      "end" : 1.6,
+      "end" : 0.89,
       "probability" : 1,
-      "start" : 1.22,
-      "word" : " of"
+      "start" : 0.76,
+      "word" : "is"
     },
     {
-      "end" : 1.82,
-      "probability" : 0.94,
-      "start" : 1.6,
-      "word" : " white"
+      "end" : 0.93,
+      "probability" : 1,
+      "start" : 0.89,
+      "word" : "a"
     },
     {
-      "end" : 2.08,
-      "probability" : 0.97,
-      "start" : 1.82,
-      "word" : " light"
+      "end" : 1.5,
+      "probability" : 1,
+      "start" : 0.93,
+      "word" : "division"
     },
     {
-      "end" : 2.44,
-      "probability" : 0.92,
-      "start" : 2.08,
-      "word" : " into"
+      "end" : 1.72,
+      "probability" : 1,
+      "start" : 1.5,
+      "word" : "of"
     },
     {
-      "end" : 2.68,
-      "probability" : 0.99,
-      "start" : 2.44,
-      "word" : " many"
+      "end" : 1.94,
+      "probability" : 1,
+      "start" : 1.72,
+      "word" : "white"
     },
     {
-      "end" : 2.94,
-      "probability" : 0.99,
-      "start" : 2.68,
-      "word" : " beautiful"
+      "end" : 2.28,
+      "probability" : 1,
+      "start" : 1.94,
+      "word" : "light"
     },
     {
-      "end" : 3.46,
-      "probability" : 0.98,
-      "start" : 2.94,
-      "word" : " colors."
+      "end" : 2.55,
+      "probability" : 1,
+      "start" : 2.28,
+      "word" : "into"
+    },
+    {
+      "end" : 2.77,
+      "probability" : 1,
+      "start" : 2.55,
+      "word" : "many"
+    },
+    {
+      "end" : 3.18,
+      "probability" : 1,
+      "start" : 2.77,
+      "word" : "beautiful"
+    },
+    {
+      "end" : 3.78,
+      "probability" : 1,
+      "start" : 3.18,
+      "word" : "colors"
     }
   ]
 }

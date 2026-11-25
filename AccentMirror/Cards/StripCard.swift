@@ -459,19 +459,20 @@ private struct ClusterLabels: View {
     var body: some View {
         GeometryReader { proxy in
             let entries = entries(width: proxy.size.width)
-            let shown = LabelLayout.visibility(entries.map {
-                LabelLayout.Item(center: $0.center, width: $0.width, priority: $0.priority)
-            })
-            highlightBox(entries: entries, shown: shown, height: proxy.size.height)
+            let placed = LabelLayout.place(
+                entries.map { LabelLayout.Item(center: $0.center, width: $0.width, priority: $0.priority) },
+                within: Double(proxy.size.width)
+            )
+            highlightBox(entries: entries, placed: placed, height: proxy.size.height)
             ForEach(Array(entries.enumerated()), id: \.offset) { index, entry in
-                if shown[index] {
-                    label(entry).position(x: entry.center, y: proxy.size.height / 2)
+                if placed[index].shown {
+                    label(entry).position(x: CGFloat(placed[index].center), y: proxy.size.height / 2)
                 } else {
                     Color.clear
                         .frame(width: max(8, min(entry.width, entry.span)), height: proxy.size.height)
                         .contentShape(Rectangle())
                         .help(entry.tooltip)
-                        .position(x: entry.center, y: proxy.size.height / 2)
+                        .position(x: CGFloat(placed[index].center), y: proxy.size.height / 2)
                 }
             }
             // Lime dots always sit under the stressed native syllable's bar cluster, including merged-word fallbacks (v3.4 Y2.3).
@@ -490,12 +491,12 @@ private struct ClusterLabels: View {
 
     /// The hover or loop box (r6 E3, v3.2 W5): one rounded rectangle, radius 4, 4 pt outside the word's labels, in
     /// the neutral `highlight` token, behind them. Faded in by the chart clock (at once with Reduce Motion).
-    @ViewBuilder private func highlightBox(entries: [Entry], shown: [Bool], height: CGFloat) -> some View {
+    @ViewBuilder private func highlightBox(entries: [Entry], placed: [LabelLayout.Placed], height: CGFloat) -> some View {
         if let highlight {
             let labels: [(center: Double, width: Double)] = entries.indices.compactMap { index in
                 guard case .syllable(_, _, let word) = entries[index].content, word == highlight.word else { return nil }
                 let entry = entries[index]
-                return (Double(entry.center), Double(shown[index] ? entry.width : min(entry.width, entry.span)))
+                return (placed[index].center, Double(placed[index].shown ? entry.width : min(entry.width, entry.span)))
             }
             if let box = HighlightGeometry.box(labels) {
                 RoundedRectangle(cornerRadius: Metrics.markRadius, style: .continuous)

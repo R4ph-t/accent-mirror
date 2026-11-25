@@ -116,4 +116,37 @@ struct LabelLayoutTests {
         #expect(!ShellPresenter.isTargetWord(than, named: []))
         #expect(ShellPresenter.isTargetWord(than, named: ["than"]))
     }
+
+    @Test func placeClampsEdgeLabelsInsideLaneAndNudgesMinorOverlapWithoutDropping() {
+        // Mirrors "through" + "OUT" + "the" at the start of vctk-012: "through" would overhang x=0 and graze "OUT".
+        let items = [
+            Item(center: 20, width: 45, priority: .low),    // through
+            Item(center: 55, width: 26, priority: .always), // OUT
+            Item(center: 77, width: 19, priority: .low),    // the
+            Item(center: 112, width: 25, priority: .always),// CEN
+        ]
+        let placed = LabelLayout.place(items, within: 400)
+        #expect(placed.allSatisfy(\.shown))
+        for (item, p) in zip(items, placed) {
+            #expect(p.center - item.width / 2 >= -1e-6)
+            #expect(p.center + item.width / 2 <= 400 + 1e-6)
+        }
+        for i in 1..<placed.count {
+            let prevRight = placed[i - 1].center + items[i - 1].width / 2
+            let nextLeft = placed[i].center - items[i].width / 2
+            #expect(nextLeft - prevRight >= LabelLayout.minimumGap - 1e-6)
+        }
+    }
+
+    @Test func placeFallsBackToPriorityHidingWhenTooNarrow() {
+        let items = [
+            Item(center: 100, width: 40, priority: .low),
+            Item(center: 120, width: 40, priority: .high),
+            Item(center: 140, width: 40, priority: .always),
+        ]
+        // Total required = 128 > lane width 110 -> clamps inside 0...110 and drops .low/.high per C6.
+        let placed = LabelLayout.place(items, within: 110)
+        #expect(placed.map(\.shown) == [false, false, true])
+        #expect(placed[2].center + items[2].width / 2 <= 110 + 1e-6)
+    }
 }

@@ -474,22 +474,22 @@ struct LivePlaybackTests {
         #expect(out.allSatisfy { $0 == 0 })
     }
 
-    @Test func aFullPlayAddsA300msTailAfterTheLastWordClampedToTheClip() {
-        // Analysis window is 0…0.7 s of a 1 s clip; the last 0.3 s holds a distinct tail marker.
-        var samples = [Float](repeating: 0.5, count: 16_000)
-        for i in 11_200..<16_000 { samples[i] = 0.25 }
+    @Test func aFullPlayReachesTheTrueAudioEndPastLastWordEvenBeyond300ms() {
+        // Analysis window is 0…0.7 s of a 1.5 s clip (0.8 s tail > old 300 ms cap); the tail holds a distinct marker.
+        var samples = [Float](repeating: 0.5, count: 24_000)
+        for i in 11_200..<24_000 { samples[i] = 0.25 }
         let model = AudioClip(samples: samples, start: 0, end: 0.7)
-        #expect(abs(model.tailSeconds - AudioClip.tailPad) < 1e-9)
-        #expect(abs(model.playbackEnd - 1.0) < 1e-9)
+        #expect(abs(model.tailSeconds - 0.8) < 1e-9)
+        #expect(abs(model.playbackEnd - 1.5) < 1e-9)
 
         let schedule = PlaybackSchedule.model(model.seconds).applyingTail(model: model, you: nil)
         #expect(schedule.steps.count == 2)
         guard case .play(.model, let body, let from, let to) = schedule.steps[0] else { Issue.record("missing body"); return }
         #expect(abs(body - 0.7) < 1e-9 && from == 0 && to == 1)
         guard case .play(.model, let tail, let tailFrom, let tailTo) = schedule.steps[1] else { Issue.record("missing tail"); return }
-        #expect(abs(tail - AudioClip.tailPad) < 1e-9 && tailFrom == 1 && tailTo == 1)
+        #expect(abs(tail - 0.8) < 1e-9 && tailFrom == 1 && tailTo == 1)
         let out = AudioPlayback.render(schedule, model: model, you: nil)
-        #expect(out.count == 16_000)
+        #expect(out.count == 24_000)
         #expect(out[..<11_200].allSatisfy { $0 == 0.5 })
         #expect(out[11_200...].allSatisfy { $0 == 0.25 })
 
@@ -497,21 +497,32 @@ struct LivePlaybackTests {
         let run = PlaybackRun(schedule, clock: clock)
         clock.now = 0.7
         #expect(run.phase == .playing(.model, progress: 1))
-        clock.now = 0.85
+        clock.now = 1.1
         #expect(run.phase == .playing(.model, progress: 1))
-        clock.now = 1.0
+        clock.now = 1.5
         #expect(run.phase == .finished)
     }
 
-    @Test func theTailIsClampedToTheClipWhenLessThan300msRemain() {
-        var samples = [Float](repeating: 0.5, count: 16_000)
-        for i in 14_400..<16_000 { samples[i] = 0.25 }
-        let you = AudioClip(samples: samples, start: 0, end: 0.9)
-        #expect(abs(you.tailSeconds - 0.1) < 1e-9)
-        let schedule = PlaybackSchedule.you(you.seconds).applyingTail(model: nil, you: you)
-        let out = AudioPlayback.render(schedule, model: nil, you: you)
-        #expect(out.count == 16_000)
-        #expect(out[14_400...].allSatisfy { $0 == 0.25 })
+    @Test func playYouAndPlayBothPlayToTrueEndOnBothSides() {
+        var modelSamples = [Float](repeating: 0.5, count: 24_000) // 1.5 s
+        for i in 11_200..<24_000 { modelSamples[i] = 0.25 }       // end=0.7 s, tail=0.8 s
+        var youSamples = [Float](repeating: -0.5, count: 20_800) // 1.3 s
+        for i in 14_400..<20_800 { youSamples[i] = -0.25 }       // end=0.9 s, tail=0.4 s
+        let model = AudioClip(samples: modelSamples, start: 0, end: 0.7)
+        let you = AudioClip(samples: youSamples, start: 0, end: 0.9)
+
+        let youSchedule = PlaybackSchedule.you(you.seconds).applyingTail(model: model, you: you)
+        let youOut = AudioPlayback.render(youSchedule, model: model, you: you)
+        #expect(youOut.count == 20_800)
+        #expect(youOut[..<14_400].allSatisfy { $0 == -0.5 })
+        #expect(youOut[14_400...].allSatisfy { $0 == -0.25 })
+
+        let bothSchedule = PlaybackSchedule.both(model: model.seconds, you: you.seconds).applyingTail(model: model, you: you)
+        let bothOut = AudioPlayback.render(bothSchedule, model: model, you: you)
+        #expect(bothOut.count == 24_000 + 6_400 + 20_800)
+        #expect(bothOut[11_200..<24_000].allSatisfy { $0 == 0.25 })
+        #expect(bothOut[24_000..<30_400].allSatisfy { $0 == 0 })
+        #expect(bothOut[(24_000 + 6_400 + 14_400)...].allSatisfy { $0 == -0.25 })
     }
 
     @Test func noTailWhenTheWindowAlreadyRunsToTheClipEnd() {
@@ -522,23 +533,57 @@ struct LivePlaybackTests {
         #expect(AudioPlayback.render(schedule, model: model, you: nil).count == 16_000)
     }
 
-    @Test func aLastWordLoopAlsoPlaysTheTailAndEarlierWordsDoNot() {
-        var samples = [Float](repeating: 0.5, count: 16_000)
-        for i in 11_200..<16_000 { samples[i] = 0.25 }
+    @Test func aLastWordLoopAlsoPlaysToTheTrueEndAndEarlierWordsDoNot() {
+        var samples = [Float](repeating: 0.5, count: 24_000)
+        for i in 11_200..<24_000 { samples[i] = 0.25 }
         let model = AudioClip(samples: samples, start: 0, end: 0.7)
         let last = PlaybackSchedule.loopModel((from: 0.5, to: 1, seconds: 0.35)).applyingTail(model: model, you: nil)
         let lastOut = AudioPlayback.render(last, model: model, you: nil)
         #expect(last.steps.contains { step in
-            if case .play(.model, let seconds, let from, let to) = step { return from == 1 && to == 1 && abs(seconds - 0.3) < 1e-9 }
+            if case .play(.model, let seconds, let from, let to) = step { return from == 1 && to == 1 && abs(seconds - 0.8) < 1e-9 }
             return false
         })
-        #expect(lastOut.suffix(4_800).allSatisfy { $0 == 0.25 })
+        #expect(lastOut.suffix(12_800).allSatisfy { $0 == 0.25 })
 
         let earlier = PlaybackSchedule.loopModel((from: 0, to: 0.5, seconds: 0.35)).applyingTail(model: model, you: nil)
         #expect(earlier.steps.count == 1)
         let earlierOut = AudioPlayback.render(earlier, model: model, you: nil)
         #expect(earlierOut.count == 5_600)
         #expect(earlierOut.allSatisfy { $0 == 0.5 })
+    }
+
+    @Test("Every bundled p311 starter recording plays through the true end of its FLAC")
+    func everyStarterModelPlaysToTrueEndOfFLAC() async throws {
+        let caches = FileManager.default.temporaryDirectory.appending(path: "am-tail-starter-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: caches) }
+        let (library, references) = try ReferenceLibrary.bundled(
+            folder: starterFolder, caches: caches, configuration: try .shipped())
+
+        for phrase in library.manifest.phrases {
+            let input = try #require(references.phraseInput(phrase.id))
+            let display = try await NativeView.load(phrase: input, voice: phrase.headlineVoice, reference: library)
+            let recording = try #require(phrase.recording(phrase.headlineVoice))
+            let samples = try StarterReferences.decode16k(starterFolder.appending(path: recording.audio))
+            let clip = AudioClip(samples: samples, start: display.modelAxis.start, end: display.modelAxis.end)
+            #expect(clip.duration >= display.modelAxis.end, "\(phrase.id)")
+
+            let schedule = PlaybackSchedule.model(clip.seconds).applyingTail(model: clip, you: nil)
+            let rendered = AudioPlayback.render(schedule, model: clip, you: nil)
+            let startSample = max(0, min(samples.count, Int((clip.start * AudioClip.sampleRate).rounded())))
+            #expect(abs(rendered.count - (samples.count - startSample)) <= 1, "\(phrase.id)")
+            if let expectedLast = samples.last, let renderedLast = rendered.last {
+                #expect(renderedLast == expectedLast, "\(phrase.id) final sample mismatch")
+            }
+        }
+    }
+
+    @Test("AppModel and ShellModel wire adjustPlayback so live playback keeps the tail")
+    func appModelWiresAdjustPlaybackToTrueEnd() throws {
+        let appModel = try String(contentsOf: repo.appending(path: "AccentMirror/Live/AppModel.swift"), encoding: .utf8)
+        let shellModel = try String(contentsOf: repo.appending(path: "AccentMirror/Shell/ShellModel.swift"), encoding: .utf8)
+        #expect(appModel.contains("shell.adjustPlayback"))
+        #expect(appModel.contains("applyingTail(model: session.modelClip(), you: session.youClip)"))
+        #expect(shellModel.contains("let schedule = adjustPlayback?(schedule) ?? schedule"))
     }
 }
 

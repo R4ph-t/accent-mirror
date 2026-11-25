@@ -3,85 +3,85 @@
   "audioSHA256" : "363aef3188f9ac048ea1010c7c7be1d9e5981a0bc0aaab73d1a48802791a4bf3",
   "clipID" : "p311_009",
   "formatVersion" : 1,
-  "text" : "There is, according to legend, a boiling pot of gold at one end.",
+  "text" : "There is , according to legend, a boiling pot of gold at one end.",
   "words" : [
     {
-      "end" : 0.24,
-      "probability" : 0.89,
-      "start" : 0.18,
-      "word" : " There"
-    },
-    {
-      "end" : 0.46,
-      "probability" : 0.98,
-      "start" : 0.24,
-      "word" : " is,"
-    },
-    {
-      "end" : 0.84,
+      "end" : 0.33,
       "probability" : 1,
-      "start" : 0.62,
-      "word" : " according"
+      "start" : 0.18,
+      "word" : "there"
     },
     {
-      "end" : 1,
-      "probability" : 0.97,
-      "start" : 0.84,
-      "word" : " to"
+      "end" : 0.58,
+      "probability" : 1,
+      "start" : 0.33,
+      "word" : "is"
     },
     {
-      "end" : 1.2,
-      "probability" : 0.96,
-      "start" : 1,
-      "word" : " legend,"
+      "end" : 0.96,
+      "probability" : 1,
+      "start" : 0.58,
+      "word" : "according"
+    },
+    {
+      "end" : 1.02,
+      "probability" : 1,
+      "start" : 0.96,
+      "word" : "to"
+    },
+    {
+      "end" : 1.45,
+      "probability" : 1,
+      "start" : 1.02,
+      "word" : "legend"
     },
     {
       "end" : 1.56,
-      "probability" : 0.96,
-      "start" : 1.42,
-      "word" : " a"
+      "probability" : 1,
+      "start" : 1.45,
+      "word" : "a"
     },
     {
-      "end" : 1.82,
-      "probability" : 0.97,
+      "end" : 1.96,
+      "probability" : 1,
       "start" : 1.56,
-      "word" : " boiling"
+      "word" : "boiling"
     },
     {
-      "end" : 2.06,
+      "end" : 2.17,
       "probability" : 1,
-      "start" : 1.82,
-      "word" : " pot"
+      "start" : 1.96,
+      "word" : "pot"
     },
     {
-      "end" : 2.2,
-      "probability" : 0.99,
-      "start" : 2.06,
-      "word" : " of"
-    },
-    {
-      "end" : 2.36,
-      "probability" : 0.98,
-      "start" : 2.2,
-      "word" : " gold"
-    },
-    {
-      "end" : 2.54,
-      "probability" : 0.97,
-      "start" : 2.36,
-      "word" : " at"
-    },
-    {
-      "end" : 2.7,
-      "probability" : 0.99,
-      "start" : 2.54,
-      "word" : " one"
-    },
-    {
-      "end" : 2.9,
+      "end" : 2.24,
       "probability" : 1,
-      "start" : 2.7,
-      "word" : " end."
+      "start" : 2.17,
+      "word" : "of"
+    },
+    {
+      "end" : 2.5,
+      "probability" : 1,
+      "start" : 2.24,
+      "word" : "gold"
+    },
+    {
+      "end" : 2.6,
+      "probability" : 1,
+      "start" : 2.5,
+      "word" : "at"
+    },
+    {
+      "end" : 2.81,
+      "probability" : 1,
+      "start" : 2.6,
+      "word" : "one"
+    },
+    {
+      "end" : 3.13,
+      "probability" : 1,
+      "start" : 2.81,
+      "word" : "end"
     }
   ]
 }

@@ -6,64 +6,64 @@
   "text" : "Some have accepted it as a miracle without physical explanation.",
   "words" : [
     {
-      "end" : 0.34,
-      "probability" : 0.88,
-      "start" : 0.18,
-      "word" : " Some"
-    },
-    {
-      "end" : 0.48,
-      "probability" : 0.99,
-      "start" : 0.34,
-      "word" : " have"
-    },
-    {
-      "end" : 0.74,
+      "end" : 0.39,
       "probability" : 1,
-      "start" : 0.48,
-      "word" : " accepted"
+      "start" : 0.17,
+      "word" : "some"
     },
     {
-      "end" : 1.06,
+      "end" : 0.54,
       "probability" : 1,
-      "start" : 0.74,
-      "word" : " it"
+      "start" : 0.39,
+      "word" : "have"
     },
     {
-      "end" : 1.2,
-      "probability" : 0.98,
-      "start" : 1.06,
-      "word" : " as"
+      "end" : 0.98,
+      "probability" : 1,
+      "start" : 0.54,
+      "word" : "accepted"
+    },
+    {
+      "end" : 1.11,
+      "probability" : 1,
+      "start" : 0.98,
+      "word" : "it"
+    },
+    {
+      "end" : 1.28,
+      "probability" : 1,
+      "start" : 1.11,
+      "word" : "as"
     },
     {
       "end" : 1.32,
-      "probability" : 0.99,
-      "start" : 1.2,
-      "word" : " a"
+      "probability" : 1,
+      "start" : 1.28,
+      "word" : "a"
     },
     {
-      "end" : 1.48,
-      "probability" : 0.99,
+      "end" : 1.74,
+      "probability" : 1,
       "start" : 1.32,
-      "word" : " miracle"
+      "word" : "miracle"
     },
     {
-      "end" : 1.9,
-      "probability" : 0.98,
-      "start" : 1.48,
-      "word" : " without"
+      "end" : 2.06,
+      "probability" : 1,
+      "start" : 1.74,
+      "word" : "without"
     },
     {
-      "end" : 2.28,
-      "probability" : 0.98,
-      "start" : 1.9,
-      "word" : " physical"
+      "end" : 2.54,
+      "probability" : 1,
+      "start" : 2.06,
+      "word" : "physical"
     },
     {
-      "end" : 2.94,
-      "probability" : 0.99,
-      "start" : 2.28,
-      "word" : " explanation."
+      "end" : 3.32,
+      "probability" : 1,
+      "start" : 2.54,
+      "word" : "explanation"
     }
   ]
 }

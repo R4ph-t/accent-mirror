@@ -6,94 +6,94 @@
   "text" : "We also need a small plastic snake and a big toy frog for the kids.",
   "words" : [
     {
-      "end" : 0.24,
-      "probability" : 0.93,
-      "start" : 0.18,
-      "word" : " We"
-    },
-    {
-      "end" : 0.44,
+      "end" : 0.31,
       "probability" : 1,
-      "start" : 0.24,
-      "word" : " also"
+      "start" : 0.17,
+      "word" : "we"
     },
     {
-      "end" : 0.82,
+      "end" : 0.67,
       "probability" : 1,
-      "start" : 0.44,
-      "word" : " need"
+      "start" : 0.31,
+      "word" : "also"
     },
     {
-      "end" : 0.96,
-      "probability" : 0.99,
-      "start" : 0.82,
-      "word" : " a"
-    },
-    {
-      "end" : 1.18,
+      "end" : 0.91,
       "probability" : 1,
-      "start" : 0.96,
-      "word" : " small"
+      "start" : 0.67,
+      "word" : "need"
     },
     {
-      "end" : 1.56,
-      "probability" : 0.99,
-      "start" : 1.18,
-      "word" : " plastic"
-    },
-    {
-      "end" : 2,
-      "probability" : 0.99,
-      "start" : 1.56,
-      "word" : " snake"
-    },
-    {
-      "end" : 2.3,
-      "probability" : 0.9,
-      "start" : 2,
-      "word" : " and"
-    },
-    {
-      "end" : 2.4,
-      "probability" : 0.96,
-      "start" : 2.3,
-      "word" : " a"
-    },
-    {
-      "end" : 2.56,
-      "probability" : 0.97,
-      "start" : 2.4,
-      "word" : " big"
-    },
-    {
-      "end" : 2.8,
-      "probability" : 0.96,
-      "start" : 2.56,
-      "word" : " toy"
-    },
-    {
-      "end" : 3.06,
-      "probability" : 0.96,
-      "start" : 2.8,
-      "word" : " frog"
-    },
-    {
-      "end" : 3.38,
-      "probability" : 0.99,
-      "start" : 3.06,
-      "word" : " for"
-    },
-    {
-      "end" : 3.5,
-      "probability" : 0.97,
-      "start" : 3.38,
-      "word" : " the"
-    },
-    {
-      "end" : 3.7,
+      "end" : 0.95,
       "probability" : 1,
-      "start" : 3.5,
-      "word" : " kids."
+      "start" : 0.91,
+      "word" : "a"
+    },
+    {
+      "end" : 1.35,
+      "probability" : 1,
+      "start" : 0.95,
+      "word" : "small"
+    },
+    {
+      "end" : 1.81,
+      "probability" : 1,
+      "start" : 1.35,
+      "word" : "plastic"
+    },
+    {
+      "end" : 2.25,
+      "probability" : 1,
+      "start" : 1.81,
+      "word" : "snake"
+    },
+    {
+      "end" : 2.37,
+      "probability" : 1,
+      "start" : 2.25,
+      "word" : "and"
+    },
+    {
+      "end" : 2.42,
+      "probability" : 1,
+      "start" : 2.37,
+      "word" : "a"
+    },
+    {
+      "end" : 2.67,
+      "probability" : 1,
+      "start" : 2.42,
+      "word" : "big"
+    },
+    {
+      "end" : 2.93,
+      "probability" : 1,
+      "start" : 2.67,
+      "word" : "toy"
+    },
+    {
+      "end" : 3.29,
+      "probability" : 1,
+      "start" : 2.93,
+      "word" : "frog"
+    },
+    {
+      "end" : 3.42,
+      "probability" : 1,
+      "start" : 3.29,
+      "word" : "for"
+    },
+    {
+      "end" : 3.52,
+      "probability" : 1,
+      "start" : 3.42,
+      "word" : "the"
+    },
+    {
+      "end" : 3.99,
+      "probability" : 1,
+      "start" : 3.52,
+      "word" : "kids"
     }
   ]
 }

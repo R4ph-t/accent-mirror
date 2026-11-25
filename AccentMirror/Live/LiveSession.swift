@@ -11,21 +11,17 @@ struct AudioClip: Sendable {
     var start: Double
     var end: Double
 
-    /// The visual / analysis window (first heard word to last). Play Model / Play You add `tailPad` after this.
+    /// The visual / analysis window (first heard word to last). Whole-phrase playback plays past this to `duration`.
     var seconds: Double { max(0, end - start) }
 
     /// How much of the file this clip holds, in seconds (may run past `end`).
     var duration: Double { Double(samples.count) / Self.sampleRate }
 
-    /// Extra audio after the last word, so a late Whisper end timestamp does not cut the final consonant.
-    /// Clamped to the samples. Designer should confirm this 300 ms constant.
-    static let tailPad = 0.3
+    /// Remaining audio after `end` up to the true end of `samples`. Zero when `end` already reaches `duration`.
+    var tailSeconds: Double { max(0, duration - end) }
 
-    /// `tailPad` after `end`, not past the samples. Zero when the window already runs to the file end.
-    var tailSeconds: Double { min(Self.tailPad, max(0, duration - end)) }
-
-    /// The last sample time Play Model / Play You / Play Both should reach.
-    var playbackEnd: Double { end + tailSeconds }
+    /// The last sample time Play Model / Play You / Play Both (and a last-word loop) should reach.
+    var playbackEnd: Double { max(end, duration) }
 
     static let sampleRate = TakeAudio.sampleRate
 

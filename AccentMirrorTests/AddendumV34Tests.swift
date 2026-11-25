@@ -1,6 +1,8 @@
 import AMCore
 import AMLibrary
 import AMPipeline
+import AppKit
+import CoreText
 import Foundation
 import Testing
 
@@ -134,5 +136,88 @@ struct AddendumV34Tests {
         #expect(!strip.connectors[0].fromDot)
         #expect(strip.connectors[1].fromDot)
         #expect(!strip.connectors[2].fromDot)
+    }
+
+    @Test("Every syllable of every starter phrase gets a native label and its span sits inside the drawn lane")
+    func everyStarterSyllableGetsANativeLabelInsideTheDrawnLane() async throws {
+        let caches = FileManager.default.temporaryDirectory.appending(path: "am-lane-labels-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: caches) }
+        let (refLibrary, references) = try ReferenceLibrary.bundled(
+            folder: starterFolder, caches: caches, configuration: try .shipped())
+
+        // Register the bundled Geist cuts once so layout measurements use the exact app font faces.
+        let fontsRoot = repo.appending(path: "AccentMirror/Resources/Fonts", directoryHint: .isDirectory)
+        let fontURLs = (FileManager.default.enumerator(at: fontsRoot, includingPropertiesForKeys: nil)?.allObjects as? [URL]) ?? []
+        for url in fontURLs where url.pathExtension == "ttf" || url.pathExtension == "otf" {
+            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+        }
+        func measuredWidth(_ label: ClusterLabel) -> Double {
+            let role: TypeRole = label.style == .caps ? .smallBold : .small
+            let fontName = label.style == .heard ? role.italicFontName : role.fontName
+            let font = NSFont(name: fontName, size: role.size) ?? .systemFont(ofSize: role.size)
+            let attributed = NSAttributedString(string: label.text, attributes: [.font: font, .kern: role.tracking])
+            return Double(ceil(attributed.size().width))
+        }
+
+        // Standard 1200x800 window with sidebar open (240) and inspector closed: plot lane width = 776 pt.
+        let laneWidth = 776.0
+        var checked012 = false
+
+        for phrase in refLibrary.manifest.phrases {
+            let input = try #require(references.phraseInput(phrase.id))
+            let display = try await NativeView.load(phrase: input, voice: phrase.headlineVoice, reference: refLibrary)
+            let livePhrase = LivePhrase(phrase: phrase, packTitle: "Starter", voice: phrase.headlineVoice)
+            let fixturePhrase = LivePresenter.emptyPhrase(livePhrase, native: display)
+            let clusters = ShellPresenter.nativeClusters(fixturePhrase)
+
+            let expectedCount = fixturePhrase.words.map(\.syllables.count).reduce(0, +)
+            #expect(clusters.count == expectedCount, "\(phrase.id)")
+            #expect(expectedCount > 0, "\(phrase.id)")
+
+            for (index, cluster) in clusters.enumerated() {
+                let label = try #require(cluster.label, "\(phrase.id) cluster \(index) missing label")
+                #expect(!label.text.isEmpty, "\(phrase.id) cluster \(index) empty label")
+                #expect(cluster.start >= 0 && cluster.start < cluster.end && cluster.end <= 1,
+                        "\(phrase.id) cluster \(index) ('\(label.text)') span \(cluster.start)..<\(cluster.end) outside 0...1")
+                if let span = cluster.labelSpan {
+                    #expect(span.lowerBound >= 0 && span.lowerBound < span.upperBound && span.upperBound <= 1,
+                            "\(phrase.id) cluster \(index) labelSpan outside 0...1")
+                }
+            }
+
+            if phrase.id.rawValue == "vctk-012" {
+                checked012 = true
+                #expect(clusters.first?.label?.text == "through")
+                #expect(clusters.first?.prominence ?? 0 > 0, "vctk-012 first syllable must cover speech, not room noise")
+                #expect(clusters.dropFirst().first?.label?.text == "OUT")
+            }
+
+            let items = clusters.compactMap { cluster -> LabelLayout.Item? in
+                guard let label = cluster.label else { return nil }
+                let spanStart = cluster.labelSpan?.lowerBound ?? cluster.start
+                let spanEnd = cluster.labelSpan?.upperBound ?? cluster.end
+                return LabelLayout.Item(
+                    center: (spanStart + spanEnd) / 2 * laneWidth,
+                    width: measuredWidth(label),
+                    priority: LabelLayout.syllablePriority(label.style)
+                )
+            }
+            let placed = LabelLayout.place(items, within: laneWidth)
+            #expect(placed.count == items.count, "\(phrase.id)")
+            for i in placed.indices {
+                #expect(placed[i].shown, "\(phrase.id) syllable \(i) ('\(clusters[i].label?.text ?? "")') was hidden")
+                let left = placed[i].center - items[i].width / 2
+                let right = placed[i].center + items[i].width / 2
+                #expect(left >= -1e-6 && right <= laneWidth + 1e-6,
+                        "\(phrase.id) label \(i) [\(left) .. \(right)] outside 0...\(laneWidth)")
+            }
+            for i in 1..<placed.count {
+                let prevRight = placed[i - 1].center + items[i - 1].width / 2
+                let nextLeft = placed[i].center - items[i].width / 2
+                #expect(nextLeft - prevRight >= LabelLayout.minimumGap - 1e-6,
+                        "\(phrase.id) gap \(nextLeft - prevRight) < \(LabelLayout.minimumGap) at \(i)")
+            }
+        }
+        #expect(checked012)
     }
 }

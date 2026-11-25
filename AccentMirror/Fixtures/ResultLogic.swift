@@ -169,8 +169,8 @@ struct PlaybackSchedule: Equatable, Sendable {
 
     var totalSeconds: Double { steps.map(\.seconds).reduce(0, +) }
 
-    /// After a full-window play, or a slice that ends at the last word (`to == 1`), play `AudioClip.tailPad` more
-    /// of the clip (clamped) and hold the playhead at the end of the word. Word loops of earlier words are unchanged.
+    /// After a full-window play, or a slice that ends at the last word (`to == 1`), play through the true end
+    /// of the clip (`tailSeconds`) and hold the playhead at the end of the word. Word loops of earlier words are unchanged.
     func applyingTail(model: AudioClip?, you: AudioClip?) -> PlaybackSchedule {
         var out: [Step] = []
         for step in steps {
