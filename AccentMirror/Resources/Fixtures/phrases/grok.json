@@ -1,0 +1,100 @@
+{
+  "id": "grok",
+  "text": "Grok explained the rainbow in various ways.",
+  "subtitle": "My Phrases · Imported clip",
+  "rangeSemitones": 12,
+  "words": [
+    {
+      "text": "Grok",
+      "start": 0.0,
+      "end": 0.131,
+      "syllables": [
+        {
+          "text": "grok",
+          "start": 0.0,
+          "end": 0.131,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "explained",
+      "start": 0.143,
+      "end": 0.274,
+      "syllables": [
+        {
+          "text": "explained",
+          "start": 0.143,
+          "end": 0.274,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "the",
+      "start": 0.286,
+      "end": 0.417,
+      "syllables": [
+        {
+          "text": "the",
+          "start": 0.286,
+          "end": 0.417,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "rainbow",
+      "start": 0.429,
+      "end": 0.559,
+      "syllables": [
+        {
+          "text": "rainbow",
+          "start": 0.429,
+          "end": 0.559,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "in",
+      "start": 0.571,
+      "end": 0.702,
+      "syllables": [
+        {
+          "text": "in",
+          "start": 0.571,
+          "end": 0.702,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "various",
+      "start": 0.714,
+      "end": 0.845,
+      "syllables": [
+        {
+          "text": "various",
+          "start": 0.714,
+          "end": 0.845,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "ways.",
+      "start": 0.857,
+      "end": 0.988,
+      "syllables": [
+        {
+          "text": "ways",
+          "start": 0.857,
+          "end": 0.988,
+          "prominence": 0.6
+        }
+      ]
+    }
+  ],
+  "band": []
+}

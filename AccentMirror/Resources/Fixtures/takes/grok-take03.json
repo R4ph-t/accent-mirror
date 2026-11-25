@@ -1,0 +1,101 @@
+{
+  "id": "grok-take03",
+  "number": 3,
+  "hasAudio": true,
+  "alignment": "aligned",
+  "level": "normal",
+  "words": [
+    {
+      "kind": "present",
+      "expected": "grok",
+      "heard": "grok",
+      "syllables": [
+        {
+          "text": "grok",
+          "start": 0.0,
+          "end": 0.128,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "explained",
+      "heard": "explained",
+      "syllables": [
+        {
+          "text": "explained",
+          "start": 0.143,
+          "end": 0.271,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "the",
+      "heard": "the",
+      "syllables": [
+        {
+          "text": "the",
+          "start": 0.286,
+          "end": 0.414,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "rainbow",
+      "heard": "rainbow",
+      "syllables": [
+        {
+          "text": "rainbow",
+          "start": 0.429,
+          "end": 0.556,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "in",
+      "heard": "in",
+      "syllables": [
+        {
+          "text": "in",
+          "start": 0.571,
+          "end": 0.699,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "various",
+      "heard": "various",
+      "syllables": [
+        {
+          "text": "various",
+          "start": 0.714,
+          "end": 0.842,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "ways",
+      "heard": "ways",
+      "syllables": [
+        {
+          "text": "ways",
+          "start": 0.857,
+          "end": 0.985,
+          "prominence": 0.55
+        }
+      ]
+    }
+  ],
+  "pitch": []
+}

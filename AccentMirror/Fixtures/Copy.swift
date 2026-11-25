@@ -106,7 +106,6 @@ enum Copy {
 
     // MARK: Result (v3 §3.1)
 
-    static let resultRow = "Your take is drawn over the model\u{2019}s. Play them back to back, then try another take."
     static let playBoth = "Play Both"
     static let playBothTooltip = "Play the model, then your take"
     /// VoiceOver, once a result is on screen.

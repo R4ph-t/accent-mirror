@@ -1,0 +1,146 @@
+{
+  "id": "rainbow-take03-missing",
+  "number": 3,
+  "hasAudio": true,
+  "alignment": "aligned",
+  "level": "normal",
+  "words": [
+    {
+      "kind": "present",
+      "expected": "throughout",
+      "heard": "throughout",
+      "syllables": [
+        {
+          "text": "throughout",
+          "start": 0.0,
+          "end": 0.076,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "the",
+      "heard": "the",
+      "syllables": [
+        {
+          "text": "the",
+          "start": 0.091,
+          "end": 0.167,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "centuries",
+      "heard": "centuries",
+      "syllables": [
+        {
+          "text": "centuries",
+          "start": 0.182,
+          "end": 0.258,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "missing",
+      "expected": "people",
+      "syllables": [],
+      "slot": 0.273
+    },
+    {
+      "kind": "present",
+      "expected": "have",
+      "heard": "have",
+      "syllables": [
+        {
+          "text": "have",
+          "start": 0.364,
+          "end": 0.44,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "explained",
+      "heard": "explained",
+      "syllables": [
+        {
+          "text": "explained",
+          "start": 0.455,
+          "end": 0.53,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "the",
+      "heard": "the",
+      "syllables": [
+        {
+          "text": "the",
+          "start": 0.545,
+          "end": 0.621,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "rainbow",
+      "heard": "rainbow",
+      "syllables": [
+        {
+          "text": "rainbow",
+          "start": 0.636,
+          "end": 0.712,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "in",
+      "heard": "in",
+      "syllables": [
+        {
+          "text": "in",
+          "start": 0.727,
+          "end": 0.803,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "various",
+      "heard": "various",
+      "syllables": [
+        {
+          "text": "various",
+          "start": 0.818,
+          "end": 0.894,
+          "prominence": 0.55
+        }
+      ]
+    },
+    {
+      "kind": "present",
+      "expected": "ways",
+      "heard": "ways",
+      "syllables": [
+        {
+          "text": "ways",
+          "start": 0.909,
+          "end": 0.985,
+          "prominence": 0.55
+        }
+      ]
+    }
+  ],
+  "pitch": []
+}

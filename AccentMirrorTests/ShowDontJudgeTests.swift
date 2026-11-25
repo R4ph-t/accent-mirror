@@ -112,7 +112,6 @@ struct BannedWordTests {
     @Test func copyAndRulesCarryTheV3Sentences() throws {
         let copy = try String(contentsOf: repo.appending(path: "AccentMirror/Fixtures/Copy.swift"), encoding: .utf8)
         for sentence in [
-            "Play them back to back, then try another take.",
             "Only part of your take lined up with the model, so some of it isn",
             "The timing match is rough, so syllables may not line up exactly.",
             "drawn on the pitch chart.",

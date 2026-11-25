@@ -3,6 +3,7 @@
   "summary": "Recording 19.5 s in, far past the model's 2 s: the whole row compresses to fit and the Lime playhead stays at the right edge.",
   "phrase": "photography",
   "phase": "recording",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-recording",
   "recording": {"elapsed": "0:19", "playhead": 0, "seconds": 19.5},

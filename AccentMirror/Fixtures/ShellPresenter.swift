@@ -110,8 +110,6 @@ enum WordAction: Sendable, Equatable {
 struct CardRow: Sendable {
     enum Icon: Sendable, Equatable {
         case symbol(String)
-        /// The result row's 16 pt overlay glyph: two waves, one soft and one thin (v3 §3.1).
-        case overlay
         /// v5 §1.3: a 14 pt indeterminate spinner (analysis past 400 ms).
         case progress
     }

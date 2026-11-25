@@ -3,6 +3,7 @@
   "summary": "Play Model (⌘L) frozen mid-word in \"photography\": the 1 pt playhead on the native row, on your row where the time map reaches it and on the pitch plot; the syllable being played outlined on both rows; \"Playing the model\" in the strip header.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

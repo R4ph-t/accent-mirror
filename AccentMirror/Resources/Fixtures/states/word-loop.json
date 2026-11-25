@@ -3,6 +3,7 @@
   "summary": "Looping \"harder\" (r6 E3, E4): the stronger neutral box behind its syllables on both rows and as a column on the pitch plot, the model's HAR outlined under the playhead, and \"Looping “harder” · Esc to stop\" with the repeat symbol in the strip header.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

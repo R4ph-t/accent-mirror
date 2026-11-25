@@ -3,6 +3,7 @@
   "summary": "Feedback with one inserted word: quiet line, \"+ so\" in the strip, a pitch break.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [
     3,
     2,

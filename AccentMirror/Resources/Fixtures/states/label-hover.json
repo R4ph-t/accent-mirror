@@ -3,6 +3,7 @@
   "summary": "The pointer over the TOG label (r6 E3; stands in for row-hover, which has no diff rows in v1): the light neutral box behind \"photography\" on both rows and as a column on the pitch plot. Nothing plays.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

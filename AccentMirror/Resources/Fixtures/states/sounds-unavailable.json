@@ -1,0 +1,120 @@
+{
+  "name": "sounds-unavailable",
+  "summary": "The judge didn't run (model not installed): SOUNDS TO CHECK says the sounds weren't checked, never that the take is clean; every word still plays Native vs You.",
+  "phrase": "rainbow",
+  "manifest": {
+    "packs": [
+      {
+        "id": "my-phrases",
+        "title": "My Phrases",
+        "phrases": [
+          {
+            "id": "photography",
+            "text": "Photography is harder than it looks."
+          },
+          {
+            "id": "rainbow",
+            "text": "Throughout the centuries people have explained the rainbow in various ways."
+          },
+          {
+            "id": "grok",
+            "text": "Grok explained the rainbow in various ways."
+          },
+          {
+            "id": "complicated-ideas",
+            "text": "Many complicated ideas about the rainbow have been formed."
+          }
+        ]
+      },
+      {
+        "id": "noun-verb-pairs",
+        "title": "Noun and Verb Pairs",
+        "phrases": [
+          {
+            "id": "record-noun",
+            "text": "Press record to keep the record."
+          }
+        ]
+      },
+      {
+        "id": "compound-nouns",
+        "title": "Compound Nouns",
+        "phrases": [
+          {
+            "id": "sunlight-raindrops",
+            "text": "When the sunlight strikes raindrops in the air, they act as a prism."
+          }
+        ]
+      }
+    ]
+  },
+  "sidebar": {
+    "selectedPhraseID": "rainbow",
+    "expandedPackIDs": [
+      "my-phrases"
+    ]
+  },
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "rainbow-take03",
+  "analysis": {
+    "verdict": {
+      "notScored": {}
+    },
+    "timing": "good",
+    "comparableCoverage": 0.97,
+    "describe": {
+      "you": {
+        "lengthSeconds": {
+          "value": 3.9
+        },
+        "syllablesPerSecond": {
+          "value": 4.1
+        },
+        "pitchRangeSemitones": {
+          "value": 5
+        },
+        "rhythmNPVI": {
+          "value": 44
+        },
+        "endingDirection": "fall"
+      },
+      "native": {
+        "voices": 8,
+        "lengthSeconds": {
+          "min": 3.6,
+          "max": 4.1,
+          "count": 8
+        },
+        "syllablesPerSecond": {
+          "min": 4.2,
+          "max": 5.0,
+          "count": 8
+        },
+        "pitchRangeSemitones": {
+          "min": 6,
+          "max": 9,
+          "count": 8
+        },
+        "rhythmNPVI": {
+          "min": 50,
+          "max": 60,
+          "count": 8
+        },
+        "endingDirections": {
+          "fall": 6,
+          "rise": 2
+        }
+      }
+    },
+    "sounds": {
+      "unavailable": {
+        "_0": "modelNotInstalled"
+      }
+    }
+  }
+}

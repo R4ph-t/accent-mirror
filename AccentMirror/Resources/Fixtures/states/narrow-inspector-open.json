@@ -3,6 +3,7 @@
   "summary": "The minimum window (960 × 680 pt, spec 18) with the Details inspector open: label collisions, the toolbar compaction and the short pitch plot (fixes round 5, Addendum r4 C6 to C8).",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [
     3,
     2,

@@ -3,6 +3,7 @@
   "summary": "View ▸ Show Earlier Takes (⇧⌘G) just turned off, 60 ms into the 120 ms fade: both earlier takes at half their opacity.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

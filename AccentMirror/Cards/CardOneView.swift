@@ -60,8 +60,6 @@ private struct CardRowView: View {
                     Image(systemName: name)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(palette.textSecondary)
-                case .overlay:
-                    OverlayGlyph()
                 case .progress:
                     ProgressView()
                         .progressViewStyle(.circular)
@@ -252,32 +250,6 @@ struct CardQuietLine: View {
         }
         .foregroundStyle(palette.textSecondary)
         .frame(height: 28)
-    }
-}
-
-/// The result row's 16 pt overlay icon: two waves in text.secondary, one soft (wide, faint) and one thin.
-private struct OverlayGlyph: View {
-    @Environment(\.palette) private var palette
-
-    var body: some View {
-        Canvas { context, size in
-            func wave(phase: CGFloat) -> Path {
-                var path = Path()
-                let midY = size.height / 2
-                for step in 0...32 {
-                    let x = CGFloat(step) / 32 * size.width
-                    let y = midY + sin((x / size.width) * 2 * .pi + phase) * size.height * 0.2
-                    if step == 0 { path.move(to: CGPoint(x: x, y: y)) } else { path.addLine(to: CGPoint(x: x, y: y)) }
-                }
-                return path
-            }
-            let style = StrokeStyle(lineCap: .round)
-            var soft = style; soft.lineWidth = 2.5
-            var thin = style; thin.lineWidth = 1
-            context.stroke(wave(phase: 0.5), with: .color(palette.textSecondary.opacity(0.4)), style: soft)
-            context.stroke(wave(phase: 0), with: .color(palette.textSecondary), style: thin)
-        }
-        .frame(width: 16, height: 16)
     }
 }
 

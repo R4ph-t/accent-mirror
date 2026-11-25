@@ -3,6 +3,7 @@
   "summary": "Play Model frozen in \"HAR\" (r6 E4): a 1 pt text.secondary outline 3 pt outside HAR's bars on the native row and around your matching \"har\"; \"Playing the model\" in the strip header.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

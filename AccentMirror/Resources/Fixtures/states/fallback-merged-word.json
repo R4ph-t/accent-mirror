@@ -3,6 +3,7 @@
   "summary": "Merged-word fallback (v3.4 Y2.3): chocolate CMUdict 2 syllables vs TeX 3, centred lowercase tertiary label, dot under first native syllable.",
   "phrase": "chocolate",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [
     1
   ],
