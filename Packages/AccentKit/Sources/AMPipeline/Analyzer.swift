@@ -9,10 +9,15 @@
 // L0 and L1 are cached per take, L2 per take and reference, so a voice switch recomputes L2 only. The reference side
 // is read from the `ReferenceSet`, never recomputed during a take. A stage that throws becomes
 // `failed(.inferenceFailed(stage:))`; a cancelled request returns `.cancelled`.
+//
+// Sound judging (sound-judging plan, 2026-11-25) runs alongside all of it, from the start of the request, off this
+// actor, through the `SoundJudgeHost`; its outcome goes into `AnalysisResult.sounds`. It never fails the analysis,
+// and a judge still loading answers `.unavailable(.modelNotInstalled)` at once.
 
 import AMAlignment
 import AMCapture
 import AMCore
+import AMJudging
 import AMLibrary
 import AMPitch
 import AMProsody
@@ -87,18 +92,28 @@ public actor Analyzer {
     }
 
     public let speech: SpeechModelHost
+    /// Judges your take's sounds; nil leaves `AnalysisResult.sounds` nil (evaluation tools).
+    public let sounds: SoundJudgeHost?
     public let configuration: Configuration
     public private(set) var statistics = Statistics()
     private let stages: TakeStages
     private var l0Cache: LevelCache<L0Key, L0Analysis>
     private var l1Cache: LevelCache<L1Key, L1Analysis>
-    private var l2Cache: LevelCache<L2Key, L2Analysis>
+    private var l2Cache: LevelCache<L2Key, Compared>
+    /// Settled judgements per take and phrase words (a voice switch doesn't judge again). A judge that wasn't ready
+    /// isn't cached, so the next request tries again.
+    private var soundsCache: LevelCache<SoundsKey, SoundJudgementOutcome>
+    /// Where judged words' pronunciations come from (empty if the bundled CMUdict can't be read: nothing judgeable).
+    private let dictionary: PronouncingDictionary
 
     static let signposter = OSSignposter(subsystem: "AccentMirror", category: "Analysis")
 
-    public init(speech: SpeechModelHost, configuration: Configuration) {
+    public init(speech: SpeechModelHost, sounds: SoundJudgeHost? = nil, configuration: Configuration) {
         self.speech = speech
+        self.sounds = sounds
         self.configuration = configuration
+        dictionary = (try? PronouncingDictionary.bundled()) ?? PronouncingDictionary(contents: "")
+        soundsCache = LevelCache(capacity: configuration.cacheCapacity)
         stages = TakeStages(
             voicing: configuration.voicing, aligner: configuration.aligner, thresholds: configuration.thresholds)
         l0Cache = LevelCache(capacity: configuration.cacheCapacity)
@@ -138,19 +153,73 @@ public actor Analyzer {
                 response: AnalysisResponse(requestID: requestID, identity: identity, outcome: outcome),
                 timings: clock.seconds, derived: derived, l2: l2)
         }
-        do {
-            let l0 = try await takeL0(take, clock: &clock)
-            if let problem = TakeProblem.first(of: l0.takeProblems) { return respond(.takeProblem(problem)) }
-            let l1 = try await takeL1(take, phrase: phrase, l0: l0, clock: &clock)
-            let l2 = try await compare(
-                take: take, phrase: phrase, l1: l1, reference: reference, voice: voice, identity: identity,
-                clock: &clock)
-            try Task.checkCancellation()
-            let derived = try [DerivedCoding.record(l0), DerivedCoding.record(l1), DerivedCoding.record(l2)]
-            return respond(l2.outcome, derived: derived, l2: l2)
-        } catch {
-            return respond(Self.outcome(of: error))
+        // Judging starts first and runs beside every stage; it is cancelled with the request and on any early exit.
+        let judging = startJudging(take: take, phrase: phrase)
+        defer { judging?.task.cancel() }
+        return await withTaskCancellationHandler {
+            do {
+                let l0 = try await takeL0(take, clock: &clock)
+                if let problem = TakeProblem.first(of: l0.takeProblems) { return respond(.takeProblem(problem)) }
+                let l1 = try await takeL1(take, phrase: phrase, l0: l0, clock: &clock)
+                let compared = try await compare(
+                    take: take, phrase: phrase, l1: l1, reference: reference, voice: voice, identity: identity,
+                    clock: &clock)
+                var l2 = compared.l2
+                if let judging, case .analysed = l2.outcome {
+                    let sounds = try await settle(judging)
+                    l2 = l2.with(sounds: SoundJudgeWords.placing(
+                        sounds, modelRanges: compared.modelRanges, alignment: l1.analysis.alignment))
+                }
+                try Task.checkCancellation()
+                let derived = try [DerivedCoding.record(l0), DerivedCoding.record(l1), DerivedCoding.record(l2)]
+                return respond(l2.outcome, derived: derived, l2: l2)
+            } catch {
+                return respond(Self.outcome(of: error))
+            }
+        } onCancel: {
+            judging?.task.cancel()
         }
+    }
+
+    // MARK: - Sounds
+
+    struct SoundsKey: Hashable, Sendable {
+        let takeAudioSHA256: String
+        let words: [AMJudging.ExpectedWord]
+    }
+
+    /// A judging run in flight, or one served from the cache.
+    struct Judging: Sendable {
+        let key: SoundsKey
+        let task: Task<SoundJudgementOutcome?, Never>
+    }
+
+    /// Starts judging `take` off this actor; nil when the analyzer has no judge. The task's value is nil only when
+    /// it was cancelled.
+    private func startJudging(take: TakeAudio, phrase: PhraseInput) -> Judging? {
+        guard let host = sounds else { return nil }
+        let words = SoundJudgeWords.expected(phrase.words, dictionary: dictionary)
+        let key = SoundsKey(takeAudioSHA256: take.sha256, words: words)
+        if let cached = soundsCache[key] {
+            return Judging(key: key, task: Task { cached })
+        }
+        let samples = take.samples
+        return Judging(key: key, task: Task.detached(priority: .userInitiated) {
+            try? await host.outcome(samples: samples, words: words)
+        })
+    }
+
+    /// The judging run's outcome, cached when it is settled (judged, or unavailable for a reason a later request
+    /// wouldn't change).
+    private func settle(_ judging: Judging) async throws -> SoundJudgementOutcome {
+        guard let outcome = await judging.task.value else { throw CancellationError() }
+        switch outcome {
+        case .judged, .unavailable(.nothingJudgeable), .unavailable(.takeOutOfRange):
+            soundsCache.insert(outcome, for: judging.key)
+        case .unavailable(.modelNotInstalled), .unavailable(.modelFailed):
+            break
+        }
+        return outcome
     }
 
     /// A native recording's L0 and L1, as the reference set stores them (spec 15 builds its records with this; the
@@ -284,7 +353,7 @@ public actor Analyzer {
     private func compare(
         take: TakeAudio, phrase: PhraseInput, l1: L1Analysis, reference: any ReferenceSet, voice: RecordingID,
         identity: AnalysisIdentity, clock: inout StageClock
-    ) async throws -> L2Analysis {
+    ) async throws -> Compared {
         let key = l2Key(l1: l1.key, reference: identity.reference)
         if let cached = l2Cache[key] {
             statistics.l2Hits += 1
@@ -347,9 +416,16 @@ public actor Analyzer {
                 modelValues: score.modelValues, referenceAnomaly: score.stress.contains(where: \.referenceAnomaly),
                 bandCoverage: band.coverage(of: youOnModel, warp: warp))
         }
-        l2Cache.insert(l2, for: key)
+        let compared = Compared(l2: l2, modelRanges: SoundJudgeWords.modelRanges(model))
+        l2Cache.insert(compared, for: key)
         statistics.l2Computed += 1
-        return l2
+        return compared
+    }
+
+    /// L2 and the phrase words on the selected native's timeline (where judged words are placed).
+    struct Compared: Sendable {
+        let l2: L2Analysis
+        let modelRanges: [WordIndex: TimeRange]
     }
 
     /// A native recording and its decoded analysis.
