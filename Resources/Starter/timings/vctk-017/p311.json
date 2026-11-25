@@ -6,52 +6,52 @@
   "text" : "Others have tried to explain the phenomenon physically.",
   "words" : [
     {
-      "end" : 0.34,
-      "probability" : 0.91,
-      "start" : 0.16,
-      "word" : " Others"
-    },
-    {
-      "end" : 0.54,
+      "end" : 0.51,
       "probability" : 1,
-      "start" : 0.34,
-      "word" : " have"
+      "start" : 0.15,
+      "word" : "others"
     },
     {
-      "end" : 0.72,
+      "end" : 0.61,
       "probability" : 1,
-      "start" : 0.54,
-      "word" : " tried"
+      "start" : 0.51,
+      "word" : "have"
     },
     {
-      "end" : 0.96,
+      "end" : 0.94,
       "probability" : 1,
-      "start" : 0.72,
-      "word" : " to"
+      "start" : 0.61,
+      "word" : "tried"
     },
     {
-      "end" : 1.26,
+      "end" : 1.0,
       "probability" : 1,
-      "start" : 0.96,
-      "word" : " explain"
+      "start" : 0.94,
+      "word" : "to"
     },
     {
-      "end" : 1.5,
-      "probability" : 0.99,
-      "start" : 1.26,
-      "word" : " the"
+      "end" : 1.45,
+      "probability" : 1,
+      "start" : 1.0,
+      "word" : "explain"
     },
     {
-      "end" : 1.84,
-      "probability" : 0.9,
-      "start" : 1.5,
-      "word" : " phenomenon"
+      "end" : 1.51,
+      "probability" : 1,
+      "start" : 1.45,
+      "word" : "the"
     },
     {
-      "end" : 2.36,
-      "probability" : 0.99,
-      "start" : 1.84,
-      "word" : " physically."
+      "end" : 2.12,
+      "probability" : 1,
+      "start" : 1.51,
+      "word" : "phenomenon"
+    },
+    {
+      "end" : 2.69,
+      "probability" : 1,
+      "start" : 2.12,
+      "word" : "physically"
     }
   ]
 }

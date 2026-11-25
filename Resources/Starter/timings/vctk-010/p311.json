@@ -6,52 +6,52 @@
   "text" : "People look, but no one ever finds it.",
   "words" : [
     {
-      "end" : 0.37,
-      "probability" : 0.71,
-      "start" : 0.19,
-      "word" : " People"
-    },
-    {
-      "end" : 0.61,
-      "probability" : 0.97,
-      "start" : 0.37,
-      "word" : " look,"
-    },
-    {
-      "end" : 0.89,
-      "probability" : 0.99,
-      "start" : 0.83,
-      "word" : " but"
-    },
-    {
-      "end" : 1.03,
-      "probability" : 0.99,
-      "start" : 0.89,
-      "word" : " no"
-    },
-    {
-      "end" : 1.15,
-      "probability" : 0.98,
-      "start" : 1.03,
-      "word" : " one"
-    },
-    {
-      "end" : 1.31,
-      "probability" : 0.99,
-      "start" : 1.15,
-      "word" : " ever"
-    },
-    {
-      "end" : 1.57,
+      "end" : 0.45,
       "probability" : 1,
-      "start" : 1.31,
-      "word" : " finds"
+      "start" : 0.18,
+      "word" : "people"
     },
     {
-      "end" : 1.85,
+      "end" : 0.77,
       "probability" : 1,
-      "start" : 1.57,
-      "word" : " it."
+      "start" : 0.45,
+      "word" : "look"
+    },
+    {
+      "end" : 0.93,
+      "probability" : 1,
+      "start" : 0.77,
+      "word" : "but"
+    },
+    {
+      "end" : 1.07,
+      "probability" : 1,
+      "start" : 0.93,
+      "word" : "no"
+    },
+    {
+      "end" : 1.21,
+      "probability" : 1,
+      "start" : 1.07,
+      "word" : "one"
+    },
+    {
+      "end" : 1.4,
+      "probability" : 1,
+      "start" : 1.21,
+      "word" : "ever"
+    },
+    {
+      "end" : 1.78,
+      "probability" : 1,
+      "start" : 1.4,
+      "word" : "finds"
+    },
+    {
+      "end" : 1.84,
+      "probability" : 1,
+      "start" : 1.78,
+      "word" : "it"
     }
   ]
 }
