@@ -1,6 +1,6 @@
 # 13: Sandbox, microphone entitlement and usage string (by hand)
 
-Status: Ready · Branch: – · Depends on: 00 (project skeleton) · Estimate: – (Raph by hand) + 0.5 h Raph · Risk: high
+Status: Done · Branch: factory/13-entitlements-mic-string · Depends on: 00 (project skeleton) · Estimate: – (Raph by hand) + 0.5 h Raph · Risk: high
 
 Risk: high. Raph only: entitlements, the `NSMicrophoneUsageDescription` string, `project.yml` signing keys and the
 `Makefile` are Raph-only areas (AGENTS.md). No agent edits them, and the factory never picks this row (no agent run).
@@ -65,4 +65,14 @@ There is no pre-prompt screen of our own: the first Record press shows macOS's p
 
 ## Implementation notes
 
-_(filled in by Raph)_
+Built by hand on Raph's OK (2026-11-25 09:01 Europe/Paris, "Make it record"), with the proposed values unchanged:
+
+- `AccentMirror/AccentMirror.entitlements`: `com.apple.security.app-sandbox`, `com.apple.security.device.audio-input`
+  and `com.apple.security.files.user-selected.read-only`, all true. No other entitlement.
+- `project.yml`, target `AccentMirror`: `CODE_SIGN_ENTITLEMENTS` and `INFOPLIST_KEY_NSMicrophoneUsageDescription` with
+  Designer v1 §4.4's sentence. Signing stays automatic with the ad-hoc identity `-`: no team ID, hardened runtime or
+  notarization.
+- `Makefile`: `fetch-models` runs `scripts/fetch-models.sh` (honours `MODELS_CACHE`).
+- `make build` passes `CODE_SIGNING_ALLOWED=NO`, so its product carries no signature and no entitlements (as CI). The
+  entitlements check (How to test step 2) is run on a signed build of the same tree: the same `xcodebuild` command
+  without `CODE_SIGNING_ALLOWED=NO`.

@@ -38,9 +38,11 @@ check-ui-frameworks:
 check: build test check-corpus check-ui-frameworks
 	scripts/test-check-local-corpus.sh
 
-# Stubs until their specs land.
+# Fetches and SHA-256 verifies the pinned speech-model weights into .cache/models (or MODELS_CACHE) (spec 13).
 fetch-models:
-	@echo "fetch-models: not yet: spec 03"
+	scripts/fetch-models.sh
+
+# Stubs until their specs land.
 
 bench:
 	@echo "bench: not yet: spec 11"

@@ -74,7 +74,7 @@ So:
 | 28 | [Scoring off: show-don't-judge v1 (verdict paths gated out of the shipped app; Raph 2026-11-24 18:42)](28-scoring-off.md) | Done | 10, 12, 15, 16, 19 (spike 27 NO-GO; report in docs PR #69) | 6–8 h | 2 h |
 | 14 | [Live microphone capture (macOS)](14-live-capture.md) | Done | 05 (the hand test needs spec 13) | 3–4 h | 1 h |
 | 20 | [Charts: live strip, playhead, earlier takes and voice-switch ease](20-charts-motion.md) | Done | 19, 29, 28 (v3 result screen and scoring off; was 27, repointed 2026-11-24 after spike 27's NO-GO and Raph's v1 show-don't-judge decision) | 6–8 h | 1.5 h |
-| 13 | [Sandbox, microphone entitlement and usage string (by hand)](13-entitlements-mic-string.md) | Ready | 00 | – | 0.5 h |
+| 13 | [Sandbox, microphone entitlement and usage string (by hand)](13-entitlements-mic-string.md) | Done | 00 | – | 0.5 h |
 | 21 | [Coordinator-wired UI: record, compare, play back](21-coordinator-wired-ui.md) | Ready | 29, 28 (v3 result screen and scoring off; was 27, repointed 2026-11-24 after spike 27's NO-GO and Raph's v1 show-don't-judge decision), 12, 13, 14, 15, 16, 20 | 10–12 h | 2 h |
 | 17 | [Clip import pipeline (no UI)](17-clip-import.md) | Done | 03, 06, 12, 15, 16 | 4–5 h | 1 h |
 | 29 | [v3/v3.1 show-don't-judge UI: YOUR TAKE, Play Both, strip, inspector, earlier takes (Designer spec v3 + v3.1 addendum; fixture-driven)](29-v3-show-dont-judge-ui.md) | Done | 28, 19 (needs PR #29, specs 18–19 fixes round 5, merged first) | 8–10 h | 2 h |
