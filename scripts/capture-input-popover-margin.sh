@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-# On-screen light+dark captures of the Input popover at 1200 × 800, mid-screen, showing the 16 pt
-# window margin and the arrow on Input (v3.5 I2). Uses a *copy* of the test host with a distinct
-# bundle id, so it does not launch, quit, or replace the installed Accent Mirror app.
+# On-screen light+dark captures of the Input popover (real NSPopover, system arrow):
+#   (1) 1200 wide, mid-screen — arrow on Input, body may overhang the window edge
+#   (2) 1068 wide, inspector open — same
+#   (3) 1200 wide, window against the screen’s right edge — system clamp keeps the popover on screen
+# Writes PNGs (no '@' in names) and measures.txt (arrow tip x vs Input centre, popover vs window and screen).
 #
-# This takes over the screen for a few seconds. It is for Raph to run, not for an agent.
-# From a checkout of this repo:
+# Uses a *copy* of the test host with a distinct bundle id, so it does not launch, quit, or replace
+# the installed Accent Mirror app. This takes over the screen for a few seconds. For Raph to run, not an agent.
+#
 #   scripts/capture-input-popover-margin.sh
 # Optional: OUTPUT_DIR=/path/to/folder scripts/capture-input-popover-margin.sh
 set -euo pipefail
@@ -20,7 +23,7 @@ command -v xcodegen >/dev/null || { echo "xcodegen is missing: brew install xcod
 xcodegen generate
 
 DERIVED="${DERIVED:-.build/DerivedData}"
-OUTPUT_DIR="${OUTPUT_DIR:-${TMPDIR:-/tmp}am-input-popover-margin}"
+OUTPUT_DIR="${OUTPUT_DIR:-${TMPDIR:-/tmp}am-input-popover-nspopover}"
 CACHE="${CACHE_DIR:-$HOME/dev/accent-mirror-wt/_cache-input-popover}"
 HOST_COPY="$CACHE/AccentMirror-popovercapture.app"
 RUN="$CACHE/popovercapture.xctestrun"
