@@ -3,103 +3,109 @@
   "audioSHA256" : "a42df8fa8092099bb8572316a306d20a7e441e4b1d6c870fd724b7a5e8ad4423",
   "clipID" : "p311_006",
   "formatVersion" : 1,
-  "text" : "When the sunlight strikes raindrops in the air, they act as a prism in former rainbow.",
+  "text" : "When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow.",
   "words" : [
     {
-      "end" : 0.26,
-      "probability" : 0.92,
-      "start" : 0.14,
-      "word" : " When"
+      "end" : 0.32,
+      "probability" : 1,
+      "start" : 0.18,
+      "word" : "when"
     },
     {
       "end" : 0.38,
-      "probability" : 0.96,
-      "start" : 0.26,
-      "word" : " the"
+      "probability" : 1,
+      "start" : 0.32,
+      "word" : "the"
     },
     {
-      "end" : 0.64,
+      "end" : 0.8,
       "probability" : 1,
       "start" : 0.38,
-      "word" : " sunlight"
+      "word" : "sunlight"
     },
     {
       "end" : 1.2,
       "probability" : 1,
-      "start" : 0.64,
-      "word" : " strikes"
+      "start" : 0.8,
+      "word" : "strikes"
     },
     {
-      "end" : 1.52,
-      "probability" : 0.96,
+      "end" : 1.74,
+      "probability" : 1,
       "start" : 1.2,
-      "word" : " raindrops"
+      "word" : "raindrops"
     },
     {
-      "end" : 1.78,
-      "probability" : 0.98,
-      "start" : 1.52,
-      "word" : " in"
+      "end" : 1.8,
+      "probability" : 1,
+      "start" : 1.74,
+      "word" : "in"
     },
     {
       "end" : 1.88,
-      "probability" : 0.99,
-      "start" : 1.78,
-      "word" : " the"
+      "probability" : 1,
+      "start" : 1.8,
+      "word" : "the"
     },
     {
-      "end" : 2.12,
+      "end" : 2.25,
       "probability" : 1,
       "start" : 1.88,
-      "word" : " air,"
+      "word" : "air"
     },
     {
-      "end" : 2.62,
-      "probability" : 0.81,
-      "start" : 2.45,
-      "word" : " they"
+      "end" : 2.69,
+      "probability" : 1,
+      "start" : 2.57,
+      "word" : "they"
     },
     {
-      "end" : 2.76,
-      "probability" : 0.99,
-      "start" : 2.62,
-      "word" : " act"
+      "end" : 2.89,
+      "probability" : 1,
+      "start" : 2.69,
+      "word" : "act"
     },
     {
-      "end" : 2.92,
-      "probability" : 0.98,
-      "start" : 2.76,
-      "word" : " as"
+      "end" : 2.98,
+      "probability" : 1,
+      "start" : 2.89,
+      "word" : "as"
     },
     {
-      "end" : 3.02,
-      "probability" : 0.98,
-      "start" : 2.92,
-      "word" : " a"
+      "end" : 3.03,
+      "probability" : 1,
+      "start" : 2.98,
+      "word" : "a"
     },
     {
-      "end" : 3.2,
-      "probability" : 0.98,
-      "start" : 3.02,
-      "word" : " prism"
+      "end" : 3.4,
+      "probability" : 1,
+      "start" : 3.03,
+      "word" : "prism"
     },
     {
-      "end" : 3.46,
-      "probability" : 0.55,
-      "start" : 3.2,
-      "word" : " in"
+      "end" : 3.48,
+      "probability" : 1,
+      "start" : 3.4,
+      "word" : "and"
     },
     {
-      "end" : 3.66,
-      "probability" : 0.32,
-      "start" : 3.46,
-      "word" : " former"
+      "end" : 3.82,
+      "probability" : 1,
+      "start" : 3.48,
+      "word" : "form"
     },
     {
-      "end" : 4.08,
-      "probability" : 0.58,
-      "start" : 3.66,
-      "word" : " rainbow."
+      "end" : 3.85,
+      "probability" : 1,
+      "start" : 3.82,
+      "word" : "a"
+    },
+    {
+      "end" : 4.41,
+      "probability" : 1,
+      "start" : 3.85,
+      "word" : "rainbow"
     }
   ]
 }

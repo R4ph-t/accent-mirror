@@ -166,7 +166,36 @@ final class SpyScorer: PairScorer {
                 Issue.record("\(c.phrase.id): off \(off.response.outcome), on \(on.response.outcome)")
             }
         }
-        #expect(analysed >= cases.count - 2, "analysed \(analysed) of \(cases.count) (\(failedBoth) failed both ways)")
+        #expect(analysed == cases.count, "analysed \(analysed) of \(cases.count) (\(failedBoth) failed both ways)")
+        #expect(failedBoth == 0)
+    }
+
+    @Test("the default voice analyses cleanly on every starter phrase")
+    func defaultVoiceAnalysesEveryPhrase() async throws {
+        let world = try StarterWorld.load()
+        defer { try? FileManager.default.removeItem(at: world.caches) }
+        for phrase in world.library.manifest.phrases {
+            #expect(phrase.headlineVoice.rawValue.hasPrefix("p311_"), "\(phrase.id)")
+            let input = try #require(world.references.phraseInput(phrase.id))
+            // Use the default voice's own clean timings/audio as a valid take to ensure the model reference itself
+            // is always warpable (`PairScoring.warp` never throws `.inferenceFailed(stage: .mapTime)`).
+            let model = try #require(phrase.recording(phrase.headlineVoice))
+            let timings = try JSONDecoder().decode(
+                RecordedTimestamps.self, from: Data(contentsOf: StarterWorld.folder.appending(path: model.timings)))
+            let take = TakeAudio(
+                samples: try StarterReferences.decode16k(StarterWorld.folder.appending(path: model.audio)),
+                sha256: "default-check-" + model.audioSHA256, clipID: model.id.rawValue)
+            let c = StarterWorld.Case(
+                phrase: phrase, input: input, take: take, words: timings.words, asrModelID: timings.asrModelID)
+            let result = await world.analyzer(c)
+                .run(take: c.take, phrase: c.input, reference: world.library, voice: phrase.headlineVoice)
+            switch result.response.outcome {
+            case .analysed(let r):
+                #expect(r.verdict == .notScored, "\(phrase.id)")
+            default:
+                Issue.record("\(phrase.id) failed with default voice \(phrase.headlineVoice): \(result.response.outcome)")
+            }
+        }
     }
 
     @Test("the L2 key includes the scoring mode, so an .on comparison is never served for .off")
