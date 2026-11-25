@@ -35,6 +35,7 @@ struct CardOneView: View {
 
 private struct CardRowView: View {
     @Environment(\.palette) private var palette
+    @Environment(\.shellActions) private var actions
     var row: CardRow
     var playBoth: () -> Void
 
@@ -78,8 +79,10 @@ private struct CardRowView: View {
                 }
                 .help(Copy.playBothTooltip)
                 .accessibilityHint(Copy.playBothTooltip)
+            case .levelMeter:
+                LevelMeterView()
             case .button(let title):
-                FocusRingButton(cornerRadius: Metrics.controlRadius, action: {}) { _ in
+                FocusRingButton(cornerRadius: Metrics.controlRadius, action: actions.cardButton) { _ in
                     Text(title)
                         .typeRole(.body)
                         .foregroundStyle(palette.textPrimary)
@@ -91,6 +94,61 @@ private struct CardRowView: View {
         }
         .frame(height: 40)
         .accessibilityElement(children: .combine)
+    }
+}
+
+/// r6 E5: a 96 × 6 track in surface.well, the Lime gradient fill from −60 to 0 dBFS on the frame's RMS, a 2 pt
+/// text.primary peak tick held for 1 s. Too loud (a peak at −1 dBFS or more, held 1.5 s): a square end, a 4 × 10 stop
+/// bar past the track, and `speaker.wave.3` with "Too loud" before it. No colour change. Nothing outside a take.
+private struct LevelMeterView: View {
+    @Environment(\.palette) private var palette
+    @Environment(LevelMeterModel.self) private var meter: LevelMeterModel?
+
+    static let width: CGFloat = 96
+
+    var body: some View {
+        if let meter, let rms = meter.rmsDBFS {
+            HStack(spacing: 8) {
+                if meter.tooLoud {
+                    HStack(spacing: 4) {
+                        Image(systemName: "speaker.wave.3")
+                            .font(.system(size: 12, weight: .medium))
+                        Text(Copy.tooLoud)
+                            .font(TypeRole.small.font.weight(.medium))
+                    }
+                    .foregroundStyle(palette.textPrimary)
+                }
+                HStack(spacing: 2) {
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 3).fill(palette.surfaceWell)
+                        let fill = Self.width * Self.fraction(rms)
+                        Group {
+                            if meter.tooLoud {
+                                UnevenRoundedRectangle(topLeadingRadius: 3, bottomLeadingRadius: 3)
+                                    .frame(width: Self.width)
+                            } else {
+                                RoundedRectangle(cornerRadius: 3).frame(width: fill)
+                            }
+                        }
+                        .foregroundStyle(palette.accentGradient)
+                        Rectangle()
+                            .fill(palette.textPrimary)
+                            .frame(width: 2)
+                            .offset(x: max(0, Self.width * Self.fraction(meter.peakDBFS) - 2))
+                    }
+                    .frame(width: Self.width, height: 6)
+                    Rectangle()
+                        .fill(palette.textPrimary)
+                        .frame(width: 4, height: 10)
+                        .opacity(meter.tooLoud ? 1 : 0)
+                }
+            }
+            .accessibilityHidden(true)
+        }
+    }
+
+    static func fraction(_ dbfs: Double) -> CGFloat {
+        CGFloat(min(1, max(0, (dbfs + 60) / 60)))
     }
 }
 
@@ -171,6 +229,7 @@ extension TypeRole {
 /// surface.well with a 1 px hairline, ink only. Never blue, never Try Again, never inside card 1.
 struct BannerView: View {
     @Environment(\.palette) private var palette
+    @Environment(\.shellActions) private var actions
     var banner: BannerPresentation
 
     var body: some View {
@@ -186,7 +245,7 @@ struct BannerView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.9)
             Spacer(minLength: 8)
-            FocusRingButton(cornerRadius: Metrics.controlRadius, action: {}) { _ in
+            FocusRingButton(cornerRadius: Metrics.controlRadius, action: actions.bannerButton) { _ in
                 Text(banner.button)
                     .typeRole(.bodySemibold)
                     .foregroundStyle(palette.textPrimary)
@@ -194,7 +253,7 @@ struct BannerView: View {
                     .frame(height: Metrics.controlHeight)
             }
             if banner.closable {
-                FocusRingButton(cornerRadius: Metrics.controlRadius, action: {}) { _ in
+                FocusRingButton(cornerRadius: Metrics.controlRadius, action: actions.bannerClose) { _ in
                     Image(systemName: "xmark")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(palette.textSecondary)
@@ -213,7 +272,7 @@ struct BannerView: View {
         }
         .contextMenu {
             // Details (the stage and the error) live under Copy Details, not in the sentence.
-            Button("Copy Details") {}
+            Button("Copy Details") { actions.copyDetails() }
         }
     }
 }

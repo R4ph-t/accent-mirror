@@ -60,6 +60,9 @@ final class ShellModel {
     /// The playback clock. A fixture with `playBoth` swaps in a frozen one.
     private var clock: any PlaybackClock = SystemPlaybackClock()
     @ObservationIgnored private let preference: EarlierTakesPreference
+    /// Spec 21: the audio follows the playhead. Called with each schedule that starts, and when playback stops.
+    @ObservationIgnored var onPlay: ((PlaybackSchedule) -> Void)?
+    @ObservationIgnored var onStopPlaying: (() -> Void)?
 
     // MARK: Chart motion (spec 20)
 
@@ -94,6 +97,25 @@ final class ShellModel {
 
     /// Switches this window to another fixture in place. Fixtures don't set sidebar visibility, so it stays.
     func apply(_ loaded: LoadedFixture) {
+        apply(loaded, announce: true)
+    }
+
+    /// Spec 21: a live state. The inspector stays as the user left it, and VoiceOver hears "Result ready" only when
+    /// the result is new (`announce`). The live recording row is fed by `recordingEnvelope(_:)`.
+    func applyLive(_ loaded: LoadedFixture, announce: Bool) {
+        let inspector = inspectorVisible
+        onStopPlaying?()
+        apply(loaded, announce: announce)
+        inspectorVisible = inspector
+    }
+
+    /// The live strip while recording (spec 20's envelope stream, binned by `EnvelopeBins`).
+    func recordingEnvelope(_ rms: [Double]) {
+        guard case .recording = detail?.strip.you else { return }
+        detail?.strip.you = .recording(envelope: RecordingEnvelope(rms: rms))
+    }
+
+    private func apply(_ loaded: LoadedFixture, announce: Bool) {
         let chart = loaded.fixture.chart
         // A voice switch shows the new voice in the subtitle at once; the drawing follows when its L2 arrives.
         var shown = loaded
@@ -179,7 +201,7 @@ final class ShellModel {
             }
         }
         chartInputs = inputs
-        if ShellPresenter.isResult(shown) {
+        if announce, ShellPresenter.isResult(shown) {
             AccessibilityAnnouncer.announce(Copy.resultReady)
         }
     }
@@ -308,6 +330,20 @@ final class ShellModel {
         start(schedule(seconds.model, seconds.you))
     }
 
+    /// Play Model (⌘L) whenever Model is enabled, even before a take; the same button stops it (v1 §5.3).
+    func playModel() {
+        guard let loaded, toolbar.modelEnabled else { return }
+        if playbackPhase != nil { stopPlaying(); return }
+        start(.model(ShellPresenter.playbackSeconds(loaded).model))
+    }
+
+    /// Play You (⇧⌘L) whenever You is enabled: a result, or a take problem's attempt ("LAST TRY · NOT SAVED").
+    func playYou() {
+        guard let loaded, toolbar.youEnabled else { return }
+        if playbackPhase != nil { stopPlaying(); return }
+        start(.you(ShellPresenter.playbackSeconds(loaded).you))
+    }
+
     private func start(_ schedule: PlaybackSchedule) {
         if clock is FrozenPlaybackClock { clock = SystemPlaybackClock() }
         if motionClock is FrozenPlaybackClock { motionClock = SystemPlaybackClock() }
@@ -315,6 +351,7 @@ final class ShellModel {
         chartInputs.loopingWord = nil
         chartInputs.loopingLabel = nil
         playback = PlaybackRun(schedule, clock: clock)
+        onPlay?(schedule)
     }
 
     /// Clicking a word or syllable label (v3 §3.5): the loop box fades in at the stronger fill.
@@ -327,12 +364,11 @@ final class ShellModel {
         chartInputs.loopStart = motionClock.now
     }
 
-    func playModel() { play { model, _ in .model(model) } }
-    func playYou() { play { _, you in .you(you) } }
     func playBoth() { play { model, you in .both(model: model, you: you) } }
 
     /// Esc.
     func stopPlaying() {
+        onStopPlaying?()
         playback?.stop()
         playback = nil
         loopingWord = nil

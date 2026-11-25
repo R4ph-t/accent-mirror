@@ -3,6 +3,7 @@ import SwiftUI
 /// The sidebar (spec 18 §Sidebar, Addendum A1/A2). Measurements are from the final2 mockups.
 struct SidebarView: View {
     @Environment(\.palette) private var palette
+    @Environment(\.shellActions) private var actions
     var manifest: LibraryManifest
     var state: SidebarState
 
@@ -35,9 +36,12 @@ struct SidebarView: View {
 
             Spacer(minLength: 0)
 
-            NewPhraseButton()
-                .padding(.horizontal, 8)
-                .padding(.bottom, 9)
+            // Hidden outside fixture mode until clip import ships (E6, Designer's call): no dead control.
+            if !actions.isLive {
+                NewPhraseButton()
+                    .padding(.horizontal, 8)
+                    .padding(.bottom, 9)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .surface(palette.surfaceSidebar)
@@ -91,7 +95,7 @@ private struct PackSection: View {
                 header(chevron: false)
                     .frame(height: 24, alignment: .top)
                 ForEach(pack.phrases) { phrase in
-                    PhraseRow(text: phrase.text, isSelected: phrase.id == selectedPhraseID)
+                    PhraseRow(id: phrase.id, text: phrase.text, isSelected: phrase.id == selectedPhraseID)
                 }
             }
             .padding(.bottom, 16)
@@ -159,12 +163,14 @@ private struct HeaderButton<Label: View>: View {
 private struct PhraseRow: View {
     @Environment(\.palette) private var palette
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.shellActions) private var actions
+    let id: String
     let text: String
     let isSelected: Bool
 
     var body: some View {
-        // Selecting a phrase loads it in a later spec; the row is focusable and hoverable now.
-        FocusRingButton(cornerRadius: Metrics.controlRadius, action: {}) { hovered in
+        // Spec 21: selecting a phrase loads it (fixture mode: drawn only).
+        FocusRingButton(cornerRadius: Metrics.controlRadius, action: { actions.selectPhrase(id) }) { hovered in
             HStack(spacing: 0) {
                 if isSelected {
                     LimeBarsGlyph()

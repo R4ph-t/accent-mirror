@@ -60,6 +60,28 @@ targets:
             echo "error: project.yml changed: run make generate"
             exit 1
           fi
+    postBuildScripts:
+      # Spec 21: bundles the pinned speech model. Verifies the cached weights against Resources/Models/<model>/
+      # manifest.json (scripts/fetch-models.sh --verify, never the network) and copies them, with the manifest,
+      # LICENSE and NOTICE, into Contents/Resources/Models/<model>/, where the sandboxed app reads them. Without a
+      # verified cache (CI, or before `make fetch-models`) it prints a note and the app shows the modelUnavailable
+      # banner. Debug and Release alike. The cache is MODELS_CACHE (default .cache/models), outside the sources.
+      - name: Bundle speech model
+        basedOnDependencyAnalysis: false
+        script: |
+          model="openai_whisper-base.en"
+          cache="${MODELS_CACHE:-${SRCROOT}/.cache/models}"
+          dest="${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Models/${model}"
+          rm -rf "$dest"
+          if ! MODELS_CACHE="$cache" "${SRCROOT}/scripts/fetch-models.sh" --verify "$model" >/dev/null 2>&1; then
+            echo "note: ${model} is not fetched or not verified; the app will show the model-unavailable banner (run make fetch-models)"
+            exit 0
+          fi
+          mkdir -p "$dest"
+          ditto "${cache}/${model}/model" "$dest/model"
+          ditto "${cache}/${model}/tokenizer" "$dest/tokenizer"
+          for f in manifest.json LICENSE NOTICE; do cp "${SRCROOT}/Resources/Models/${model}/$f" "$dest/$f"; done
+          echo "Bundled ${model} into ${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Models"
     settings:
       base:
         PRODUCT_NAME: AccentMirror
@@ -86,6 +108,14 @@ targets:
       - path: AccentMirror/Fixtures/FixtureLibrary.swift
       - path: AccentMirror/Fixtures/FixtureModel.swift
       - path: AccentMirror/Shell/LibraryManifest.swift
+      # Spec 21: the live flow's UI-free files (presenter, session, playback render, menu table).
+      - path: AccentMirror/Live/LivePresenter.swift
+      - path: AccentMirror/Live/LiveSession.swift
+      - path: AccentMirror/Live/AudioPlayback.swift
+      - path: AccentMirror/Live/MenuTable.swift
+    dependencies:
+      - package: AccentKit
+        product: AMPipeline
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.raphaelterrier.accentmirror.tests
