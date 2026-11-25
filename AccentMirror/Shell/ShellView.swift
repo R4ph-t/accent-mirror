@@ -3,6 +3,7 @@ import SwiftUI
 /// The window content: sidebar, detail (toolbar plus cards) and the trailing Details inspector.
 struct ShellView: View {
     @Bindable var model: ShellModel
+    @Environment(\.shellActions) private var actions
 
     var body: some View {
         ShellSplitView(
@@ -20,6 +21,12 @@ struct ShellView: View {
                minHeight: Metrics.minimumWindow.height - Metrics.toolbarHeight)
         .ignoresSafeArea()
         .background(WindowChromeConfigurator())
+        .environment(\.inputPopoverState, model.inputPopover)
+        .environment(\.inputPopoverSource, model.inputPopoverSource)
+        .environment(\.closeInputPopover, {
+            actions.closeInput()
+            model.inputPopover = nil
+        })
     }
 }
 
@@ -40,7 +47,9 @@ struct DetailPane: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ToolbarView(state: model.toolbar, toggleInspector: { model.inspectorVisible.toggle() })
+            ToolbarView(state: model.toolbar, isInputOpen: model.inputPopover != nil,
+                        inspectorVisible: model.inspectorVisible,
+                        toggleInspector: { model.inspectorVisible.toggle() })
             if let banner = model.detail?.banner {
                 // §13.2: 8 pt below the toolbar, 40 tall; the cards move down by 48.
                 BannerView(banner: banner)

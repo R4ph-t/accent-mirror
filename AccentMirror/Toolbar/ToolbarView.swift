@@ -1,12 +1,16 @@
 import AppKit
 import SwiftUI
 
-/// The 52 pt toolbar drawn on surface.base (spec 18 §Toolbar). From the right: the inspector toggle, the take
-/// menu, You, Record, Model. Play and Record are visual only in this shell: no microphone, no audio.
+/// The 52 pt toolbar drawn on surface.base (spec 18 §Toolbar). From the right: the inspector toggle, Input (v3.5),
+/// the take menu, You, Record, Model. Play and Record are visual only in this shell: no microphone, no audio.
 struct ToolbarView: View {
     @Environment(\.palette) private var palette
     @Environment(\.shellActions) private var actions
     var state: ToolbarState
+    /// The Input popover is open: its button is drawn pressed.
+    var isInputOpen = false
+    /// The Details inspector is open: the toggle's tooltip and VoiceOver say "Hide Details" or "Show Details".
+    var inspectorVisible = false
     var toggleInspector: () -> Void
     /// The toolbar's width inside its side padding, measured; it picks the compaction level (r4 C7).
     @State private var available: CGFloat = Metrics.defaultWindow.width - Metrics.sidebarWidth - 2 * Metrics.outer
@@ -39,10 +43,13 @@ struct ToolbarView: View {
                             action: actions.playYou)
             }
             TakeMenu(label: state.takeMenu, note: state.takeMenuNote, savedTakes: state.savedTakes,
-                     compact: level >= .menuChevron)
+                     form: level >= .takeCount ? .count : .full)
                 .padding(.leading, ToolbarCompaction.ControlWidths.takeMenuGap)
-            InspectorToggle(action: toggleInspector)
+            // v3.6 J1: Input, immediately left of Details; it stays a 28 pt icon at every level.
+            InputButton(isOpen: isInputOpen)
                 .padding(.leading, ToolbarCompaction.ControlWidths.toggleGap)
+            InspectorToggle(isOpen: inspectorVisible, iconOnly: level >= .detailsIcon, action: toggleInspector)
+                .padding(.leading, ToolbarCompaction.ControlWidths.inputGap)
         }
         // Controls keep their size; only the title block truncates.
         .fixedSize()
@@ -60,7 +67,9 @@ struct ToolbarView: View {
         return ToolbarCompaction.ControlWidths(
             model: ghost("Model", triangle: true), modelWordsOnly: ghost("Model", triangle: false),
             you: ghost("You", triangle: true), youWordsOnly: ghost("You", triangle: false),
-            takeMenu: Double(TakeMenu.fullWidth(label: state.takeMenu, note: state.takeMenuNote))
+            takeMenu: Double(TakeMenu.fullWidth(label: state.takeMenu, note: state.takeMenuNote)),
+            takeMenuCount: Double(TakeMenu.countWidth(label: state.takeMenu)),
+            inspectorToggleFull: Double(InspectorToggle.fullWidth)
         )
     }
 
@@ -201,18 +210,31 @@ struct TakeMenu: View {
     var label: ToolbarState.TakeMenuLabel
     var note: String?
     var savedTakes: [Int]
-    /// True on a narrow toolbar (r4 C7 step 1): the chevron only, "Takes" or "Take 03" in the tooltip and for
-    /// VoiceOver.
-    var compact = false
+    enum Form {
+        /// "TAKE 03" (or "TAKES" / "LAST TRY · NOT SAVED") plus the chevron.
+        case full
+        /// The count plus the chevron ("03" ▾). VoiceOver: "Take 3" (v3.6 J2).
+        case count
+    }
+
+    var form = Form.full
 
     /// The full form's width: the title (and note) in Geist Mono, 8 pt, the 10 pt chevron; at least 70.
     @MainActor static func fullWidth(label: ToolbarState.TakeMenuLabel, note: String?) -> CGFloat {
         let title = TextMeasure.width(Self.title(label), role: .mono)
         let noteWidth = note.map { 8 + TextMeasure.width($0, role: .mono) } ?? 0
+        return max(70, title + noteWidth + 8 + chevronWidth)
+    }
+
+    /// The count form's width: "03" (or the full short title when it isn't a numbered take) plus the chevron.
+    @MainActor static func countWidth(label: ToolbarState.TakeMenuLabel) -> CGFloat {
+        TextMeasure.width(countTitle(label), role: .mono) + 8 + chevronWidth
+    }
+
+    @MainActor private static var chevronWidth: CGFloat {
         let configuration = NSImage.SymbolConfiguration(pointSize: 10, weight: .semibold)
-        let chevron = NSImage(systemSymbolName: "chevron.down", accessibilityDescription: nil)?
+        return NSImage(systemSymbolName: "chevron.down", accessibilityDescription: nil)?
             .withSymbolConfiguration(configuration)?.size.width ?? 10
-        return max(70, title + noteWidth + 8 + chevron)
     }
 
     private var title: String { Self.title(label) }
@@ -226,7 +248,19 @@ struct TakeMenu: View {
     }
 
     static func takeTitle(_ number: Int) -> String {
-        "TAKE " + (number < 10 ? "0\(number)" : "\(number)")
+        "TAKE " + padded(number)
+    }
+
+    /// The visible count form: "03", or the full short title when the menu isn't on a numbered take.
+    static func countTitle(_ label: ToolbarState.TakeMenuLabel) -> String {
+        switch label {
+        case .take(let number): padded(number)
+        case .takes, .lastTryNotSaved: title(label)
+        }
+    }
+
+    static func padded(_ number: Int) -> String {
+        number < 10 ? "0\(number)" : "\(number)"
     }
 
     var body: some View {
@@ -244,53 +278,65 @@ struct TakeMenu: View {
                 }
             }
         } label: {
-            if compact {
+            HStack(spacing: 8) {
+                Text(form == .count ? Self.countTitle(label) : title)
+                    .typeRole(.mono)
+                    .foregroundStyle(palette.textSecondary)
+                if form == .full, let note {
+                    Text(note)
+                        .typeRole(.mono)
+                        .foregroundStyle(palette.textTertiary)
+                }
                 Image(systemName: "chevron.down")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(palette.textSecondary)
-                    .frame(width: 28, height: Metrics.controlHeight)
-                    .contentShape(Rectangle())
-            } else {
-                HStack(spacing: 8) {
-                    Text(title)
-                        .typeRole(.mono)
-                        .foregroundStyle(palette.textSecondary)
-                    if let note {
-                        Text(note)
-                            .typeRole(.mono)
-                            .foregroundStyle(palette.textTertiary)
-                    }
-                    Spacer(minLength: 0)
-                    Image(systemName: "chevron.down")
-                        .font(.system(size: 10, weight: .semibold))
-                        .foregroundStyle(palette.textSecondary)
-                }
-                .frame(minWidth: 70)
-                .fixedSize()
-                .contentShape(Rectangle())
             }
+            .frame(minWidth: form == .full ? 70 : 0)
+            .fixedSize()
+            .contentShape(Rectangle())
         }
         .menuStyle(.button)
         .buttonStyle(.plain)
         .menuIndicator(.hidden)
         .fixedSize()
-        .help(compact ? Copy.takeMenuShortLabel(label) : "")
-        .accessibilityLabel(compact ? Copy.takeMenuShortLabel(label) : (note.map { "\(title), \($0)" } ?? title))
+        .help(form == .count ? Copy.takeMenuCountLabel(label) : "")
+        .accessibilityLabel(form == .count ? Copy.takeMenuCountLabel(label) : (note.map { "\(title), \($0)" } ?? title))
     }
 }
 
 private struct InspectorToggle: View {
     @Environment(\.palette) private var palette
+    var isOpen: Bool
+    /// v3.6 J2: after the title has reached 154 pt, Details becomes this 28 pt `sidebar.trailing` icon.
+    var iconOnly: Bool
     var action: () -> Void
 
+    static let iconWidth: CGFloat = 28
+    static let sidePadding: CGFloat = 8
+
+    /// The labeled form's width: "Details" in Geist Medium with 8 pt side padding.
+    @MainActor static var fullWidth: CGFloat {
+        2 * sidePadding + TextMeasure.width(Copy.details, role: .bodyMedium)
+    }
+
     var body: some View {
+        let name = isOpen ? Copy.hideDetails : Copy.showDetails
         FocusRingButton(cornerRadius: Metrics.controlRadius, action: action) { _ in
-            Image(systemName: "sidebar.right")
-                .font(.system(size: 15, weight: .regular))
-                .foregroundStyle(palette.textSecondary)
-                .frame(width: 28, height: Metrics.controlHeight)
+            Group {
+                if iconOnly {
+                    Image(systemName: "sidebar.trailing")
+                        .font(.system(size: 15, weight: .regular))
+                        .frame(width: Self.iconWidth, height: Metrics.controlHeight)
+                } else {
+                    Text(Copy.details)
+                        .typeRole(.bodyMedium)
+                        .padding(.horizontal, Self.sidePadding)
+                        .frame(height: Metrics.controlHeight)
+                }
+            }
+            .foregroundStyle(palette.textSecondary)
         }
-        .help("Show or hide Details")
-        .accessibilityLabel("Details")
+        .help(name)
+        .accessibilityLabel(name)
     }
 }

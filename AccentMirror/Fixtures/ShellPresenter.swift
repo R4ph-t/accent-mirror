@@ -27,6 +27,8 @@ struct CardPresentation: Sendable {
     var rows: [CardRow]
     /// The one quiet line (Geist 12 secondary, info.circle) under the result row; never counted as a row.
     var quietLine: Sentence?
+    /// The clipped quiet line (v3.5 I4 tier B) ends with an Input… button.
+    var quietLineInput = false
 }
 
 struct CardRow: Sendable {
@@ -41,6 +43,8 @@ struct CardRow: Sendable {
         /// The result row's Play Both ghost button (⌥⌘L).
         case playBoth
         case button(String)
+        /// v3.5 I4 tier A (too loud to measure): Input…, then the row's button (Try Again).
+        case inputThenButton(String)
         /// The recording row's level meter (r6 E5, v3.2 W2). nil reads the live meter, drawn only while a take feeds
         /// it; a fixture passes its frozen frame (`recording-level`, `recording-too-loud`).
         case levelMeter(LevelReading?)
@@ -281,11 +285,14 @@ enum ShellPresenter {
 
         if let problem = firstTakeProblem(loaded) {
             // The too-quiet icon is text.secondary like every other card 1 icon (v3 §5).
+            let button = Copy.takeProblemButton(problem)
             return CardPresentation(title: Copy.yourTake, rows: [
                 CardRow(
                     icon: .symbol(takeProblemIcon(problem)),
                     sentence: [.plain(Copy.takeProblem(problem))],
-                    trailing: Copy.takeProblemButton(problem).map(CardRow.Trailing.button) ?? .none
+                    trailing: problem == .clipped
+                        ? button.map(CardRow.Trailing.inputThenButton) ?? .none
+                        : button.map(CardRow.Trailing.button) ?? .none
                 ),
             ])
         }
@@ -297,12 +304,14 @@ enum ShellPresenter {
         let quiet = quietLine(analysis, take: loaded.take)
         return CardPresentation(title: Copy.yourTake, rows: [
             CardRow(icon: .overlay, sentence: [.plain(Copy.resultRow)], trailing: .playBoth),
-        ], quietLine: quiet.map(Copy.quietLine))
+        ], quietLine: quiet.map(Copy.quietLine), quietLineInput: quiet == .clipped)
     }
 
-    /// Coverage, then timing, then insertions; the coverage floor is the decision procedure's own threshold.
+    /// Clipping (v3.5 I4 tier B), then coverage, then timing, then insertions; the coverage floor is the decision
+    /// procedure's own threshold.
     static func quietLine(_ analysis: Analysis, take: TakeFixture?) -> ResultQuietLine? {
         ResultQuietLine.first(
+            clipped: analysis.clipped ?? false,
             comparableCoverage: analysis.comparableCoverage,
             minimumCoverage: Thresholds.current.decision.minComparableCoverage,
             timing: analysis.timing,

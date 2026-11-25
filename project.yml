@@ -113,6 +113,10 @@ targets:
       - path: AccentMirror/Live/LiveSession.swift
       - path: AccentMirror/Live/AudioPlayback.swift
       - path: AccentMirror/Live/MenuTable.swift
+      # v3.5: the Input popover's state and mic-check rules.
+      - path: AccentMirror/Live/InputPanel.swift
+      # v3.6 J2: the toolbar compact order is UI-free.
+      - path: AccentMirror/Toolbar/ToolbarCompaction.swift
       # v3.2 W3/W5: the token table, type roles, bundled fonts and the highlight box, all UI-free to test.
       - path: AccentMirror/Design/Palette.swift
       - path: AccentMirror/Design/Typography.swift

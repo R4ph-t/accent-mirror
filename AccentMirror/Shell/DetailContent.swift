@@ -143,21 +143,27 @@ struct InspectorContent: View {
                     }
                 }
             }
-            if actions.isLive, !actions.inputs.isEmpty {
-                // The Input pop-up (v1 §9): spec 14's devices, used for the next take and remembered. No level here
-                // (E5: the meter lives in the recording row only).
+            if actions.isLive {
+                // v3.5 I2: no second meter here. The input in use and a compact Input… that opens the toolbar's
+                // popover, where the microphone and the Mac input volume are chosen (and remembered).
                 section(Copy.input) {
-                    Picker(Copy.input, selection: Binding(
-                        get: { actions.selectedInput ?? actions.inputs.first?.id ?? "" },
-                        set: { actions.selectInput($0) }
-                    )) {
-                        ForEach(actions.inputs, id: \.id) { input in
-                            Text(input.name).tag(input.id)
+                    HStack(spacing: 8) {
+                        Text(actions.inputName ?? Copy.systemDefault)
+                            .typeRole(.body)
+                            .foregroundStyle(palette.textPrimary)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                        Spacer(minLength: 0)
+                        FocusRingButton(cornerRadius: Metrics.controlRadius, action: { actions.openInput(.inspector) }) { _ in
+                            Text(Copy.inputEllipsis)
+                                .typeRole(.bodyMedium)
+                                .foregroundStyle(palette.textPrimary)
+                                .padding(.horizontal, 10)
+                                .frame(height: Metrics.controlHeight)
+                                .surface(palette.surfaceWell, cornerRadius: Metrics.controlRadius)
                         }
+                        .inputPopover(source: .inspector)
                     }
-                    .labelsHidden()
-                    .fixedSize()
-                    .disabled(actions.voiceDisabled)
                 }
             }
             if let status = inspector.takeStatus {

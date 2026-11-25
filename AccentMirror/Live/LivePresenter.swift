@@ -47,6 +47,8 @@ struct LiveScreen: Sendable {
     /// Seconds of each side's audio, for playback and the playhead.
     var modelSeconds: Double?
     var youSeconds: Double?
+    /// The analysed take on screen clipped for 50 ms or more (v3.5 I4 tier B): card 1's clipped quiet line.
+    var youClipped = false
     /// The selected voice's native side with no take of yours (addendum v3.2 W1): drawn before the first take, and
     /// while recording or on a take problem with no analysed take on screen. Nil until it loads, or if it can't.
     var native: NativeDisplay?
@@ -411,6 +413,7 @@ enum LivePresenter {
             result = analysed
             take = Self.take(analysed, number: number)
             analysis = Self.analysis(analysed)
+            analysis?.clipped = screen.youClipped
         case .takeProblem(let problem, let hasAudio):
             take = problemTake(hasAudio: hasAudio)
             analysis = Analysis(takeProblems: [takeProblem(problem)])

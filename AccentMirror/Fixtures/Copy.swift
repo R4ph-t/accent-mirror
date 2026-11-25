@@ -55,6 +55,8 @@ enum Copy {
     /// Card 1's one quiet line.
     static func quietLine(_ line: ResultQuietLine) -> Sentence {
         switch line {
+        case .clipped:
+            return [.plain("Your take clipped. Lower the input volume and try another take.")]
         case .lowCoverage:
             return [.plain("Only part of your take lined up with the model, so some of it isn\u{2019}t drawn.")]
         case .roughTiming:
@@ -88,11 +90,27 @@ enum Copy {
     static let nextTake = "Next Take"
     static let previousPhrase = "Previous Phrase"
     static let nextPhrase = "Next Phrase"
+    static let details = "Details"
     static let showDetails = "Show Details"
     static let hideDetails = "Hide Details"
     static let find = "Find"
     static let input = "INPUT"
     static let tooLoud = "Too loud"
+
+    // MARK: Input popover (v3.5 I1–I6)
+
+    /// The toolbar button's tooltip and VoiceOver label.
+    static let inputButton = "Input"
+    /// The inspector, card 1 and tier A buttons that open the popover.
+    static let inputEllipsis = "Input\u{2026}"
+    static let microphone = "Microphone"
+    static let systemDefault = "System Default"
+    static let inputVolume = "Input volume"
+    static let inputVolumeTooltip = "Mac input volume. This also applies in other apps."
+    static let fixedLevel = "This microphone sets its own level"
+    static let soundSettings = "Sound Settings\u{2026}"
+    static let inputHint = "Speak at your normal volume. Aim for the middle."
+    static let microphoneDisabledTooltip = "Stop recording to change the microphone"
     static let voiceDisabledTooltip = "Stop recording to change the voice"
     static let recordingAnnouncement = "Recording"
     static let analysingAnnouncement = "Analysing"
@@ -214,6 +232,15 @@ enum Copy {
         switch label {
         case .takes: "Takes"
         case .take(let number): "Take " + (number < 10 ? "0\(number)" : "\(number)")
+        case .lastTryNotSaved: "Last try, not saved"
+        }
+    }
+
+    /// Tooltip and VoiceOver for the take menu's count form (v3.6 J2): "Take 3", no leading zero.
+    static func takeMenuCountLabel(_ label: ToolbarState.TakeMenuLabel) -> String {
+        switch label {
+        case .takes: "Takes"
+        case .take(let number): "Take \(number)"
         case .lastTryNotSaved: "Last try, not saved"
         }
     }

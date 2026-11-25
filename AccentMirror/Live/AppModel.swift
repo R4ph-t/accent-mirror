@@ -19,6 +19,9 @@ final class AppModel {
     @ObservationIgnored private(set) var session: LiveSession?
     private(set) var actions = ShellActions()
     let meter = LevelMeterModel()
+    /// The Input popover's mic check (v3.5 I3): fed only while the popover is open and nothing records.
+    let inputMeter = LevelMeterModel()
+    @ObservationIgnored private var inputPanel: InputPanel?
     @ObservationIgnored private let playback = AudioPlayback()
     @ObservationIgnored private var keyMonitor: Any?
     @ObservationIgnored private var observers: [any NSObjectProtocol] = []
@@ -104,11 +107,8 @@ final class AppModel {
         session.announce = { [weak self] announcement in self?.announce(announcement) }
         shell.onPlay = { [weak self] schedule in self?.playAudio(schedule) }
         shell.onStopPlaying = { [weak self] in self?.playback.stop() }
-        shell.adjustPlayback = { [weak self] schedule in
-            guard let session = self?.session else { return schedule }
-            return schedule.applyingTail(model: session.modelClip(), you: session.youClip)
-        }
         installKeyMonitor()
+        wireInput()
         let center = NotificationCenter.default
         observers.append(center.addObserver(forName: NSApplication.didBecomeActiveNotification, object: nil,
                                             queue: .main) { [weak self] _ in
@@ -165,6 +165,7 @@ final class AppModel {
     private func refreshActions() {
         guard let session, isLive || rendered == nil else {
             actions = ShellActions()
+            inputPanel?.close()
             return
         }
         var actions = ShellActions(isLive: true)
@@ -185,10 +186,55 @@ final class AppModel {
             guard recordings.indices.contains(index) else { return }
             self?.selectVoice(recordings[index].id)
         }
-        actions.inputs = devices.map { (id: $0.id, name: $0.name) }
-        actions.selectedInput = InputDevice.resolve(session.inputDevice, in: devices)?.id
-        actions.selectInput = { [weak self] id in self?.session?.inputDevice = id }
+        // v3.5: the Input popover. The inspector names the chosen input ("System Default" while it follows it).
+        actions.inputName = session.inputDevice.flatMap { id in devices.first { $0.id == id }?.name }
+        actions.selectInput = { [weak self] id in self?.selectInput(id) }
+        actions.openInput = { [weak self] source in
+            self?.shell.inputPopoverSource = source
+            self?.inputPanel?.open()
+        }
+        actions.toggleInput = { [weak self] in
+            self?.shell.inputPopoverSource = .toolbar
+            self?.inputPanel?.toggle()
+        }
+        actions.closeInput = { [weak self] in self?.inputPanel?.close() }
+        actions.setInputVolume = { [weak self] value in self?.inputPanel?.setVolume(value) }
+        actions.openSoundSettings = { Self.openSettings(Self.soundInputPane) }
+        actions.openMicrophonePrivacy = { Self.openSettings(Self.microphonePrivacyPane) }
         self.actions = actions
+        inputPanel?.update(devices: devices, requested: session.inputDevice,
+                           authorization: session.services.capture.authorization(), isRecording: session.isRecording)
+    }
+
+    // MARK: Input popover (v3.5)
+
+    /// System Settings › Sound › Input and Privacy & Security › Microphone: local settings panes, not the network.
+    static let soundInputPane = "x-apple.systempreferences:com.apple.preference.sound?input"
+    static let microphonePrivacyPane = "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone"
+
+    private static func openSettings(_ pane: String) {
+        if let url = URL(string: pane) { NSWorkspace.shared.open(url) }
+    }
+
+    /// The popover's state, its mic check and the Mac input volume. Live only: fixtures draw a frozen popover.
+    private func wireInput() {
+        let panel = InputPanel(volume: InputVolume(CoreAudioVolumeScalars()), monitor: MicLevelMonitor())
+        panel.onChange = { [weak self] state in
+            // Samples ▸ owns the window while it shows a fixture (its own frozen popover, if any).
+            guard let self, self.isLive else { return }
+            self.shell.inputPopover = state
+        }
+        panel.onLevel = { [weak self] level in self?.inputMeter.update(level) }
+        panel.onStopListening = { [weak self] in self?.inputMeter.reset() }
+        // The input ended by itself (permission refused at the prompt, device gone): re-read both.
+        panel.onListeningEnded = { [weak self] in self?.refreshActions() }
+        inputPanel = panel
+    }
+
+    private func selectInput(_ id: InputDevice.ID?) {
+        guard let session, !session.isRecording else { return }
+        session.inputDevice = id
+        refreshActions()
     }
 
     private func announce(_ announcement: LiveAnnouncement) {
@@ -217,6 +263,11 @@ final class AppModel {
 
     /// Esc: cancels a recording or an analysis first, else stops playback.
     func cancel() {
+        // The Input popover is frontmost: Esc closes it first.
+        if isLive, let inputPanel, inputPanel.isOpen {
+            inputPanel.close()
+            return
+        }
         if isLive, session?.cancel() == true { return }
         shell.stopPlaying()
     }
@@ -246,9 +297,7 @@ final class AppModel {
         guard let session else { return }
         if case .takeProblem(.micDenied, _) = session.screen.shown {
             // Privacy & Security ▸ Microphone (a local settings pane, not the network).
-            if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone") {
-                NSWorkspace.shared.open(url)
-            }
+            Self.openSettings(Self.microphonePrivacyPane)
             return
         }
         record()
