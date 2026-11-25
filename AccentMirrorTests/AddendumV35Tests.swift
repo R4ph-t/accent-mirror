@@ -136,14 +136,29 @@ private final class FakeMonitor: InputLevelMonitor, Sendable {
 
     func levels(device: InputDevice.ID?) -> AsyncStream<InputLevel> {
         let (stream, continuation) = AsyncStream.makeStream(of: InputLevel.self)
-        continuation.onTermination = { [terminations] _ in terminations.withLock { $0 += 1 } }
+        continuation.onTermination = { [weak self] _ in
+            self?.terminations.withLock { value in
+                value += 1
+                return
+            }
+        }
         starts.withLock { $0.append(device) }
         continuations.withLock { $0.append(continuation) }
         return stream
     }
 
-    func yield(_ level: InputLevel) { continuations.withLock { $0.last?.yield(level) } }
-    func endLast() { continuations.withLock { $0.last?.finish() } }
+    func yield(_ level: InputLevel) {
+        continuations.withLock { c in
+            c.last?.yield(level)
+            return
+        }
+    }
+    func endLast() {
+        continuations.withLock { c in
+            c.last?.finish()
+            return
+        }
+    }
 }
 
 private final class FakeVolume: InputVolumeControl, Sendable {

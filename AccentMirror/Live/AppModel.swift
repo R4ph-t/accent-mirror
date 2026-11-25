@@ -107,10 +107,6 @@ final class AppModel {
         session.announce = { [weak self] announcement in self?.announce(announcement) }
         shell.onPlay = { [weak self] schedule in self?.playAudio(schedule) }
         shell.onStopPlaying = { [weak self] in self?.playback.stop() }
-        shell.adjustPlayback = { [weak self] schedule in
-            guard let session = self?.session else { return schedule }
-            return schedule.applyingTail(model: session.modelClip(), you: session.youClip)
-        }
         installKeyMonitor()
         wireInput()
         let center = NotificationCenter.default
@@ -193,8 +189,14 @@ final class AppModel {
         // v3.5: the Input popover. The inspector names the chosen input ("System Default" while it follows it).
         actions.inputName = session.inputDevice.flatMap { id in devices.first { $0.id == id }?.name }
         actions.selectInput = { [weak self] id in self?.selectInput(id) }
-        actions.openInput = { [weak self] in self?.inputPanel?.open() }
-        actions.toggleInput = { [weak self] in self?.inputPanel?.toggle() }
+        actions.openInput = { [weak self] source in
+            self?.shell.inputPopoverSource = source
+            self?.inputPanel?.open()
+        }
+        actions.toggleInput = { [weak self] in
+            self?.shell.inputPopoverSource = .toolbar
+            self?.inputPanel?.toggle()
+        }
         actions.closeInput = { [weak self] in self?.inputPanel?.close() }
         actions.setInputVolume = { [weak self] value in self?.inputPanel?.setVolume(value) }
         actions.openSoundSettings = { Self.openSettings(Self.soundInputPane) }

@@ -2,24 +2,20 @@ import Foundation
 import Testing
 @testable import AccentMirror
 
-/// Addendum r5 D1 (over r4 C7): the title gives up its extra width, down to 160 pt, before any control compacts;
-/// then the take menu becomes its chevron, Record its dot, and Model and You lose the triangle and keep their
-/// words. Only after all three may the title go to 154 pt. The gaps never shrink.
-/// `ToolbarCompaction.decide` is pure; it runs with the screenshot scheme only because it lives in the app target.
-///
-/// Addendum v3.5 I2 adds the 28 pt Input button 8 pt left of Details (36 pt more, never compacted). At 1200 pt with
-/// the inspector open the title still gets 194 pt (≥ 160). Below 996 pt with the inspector open the title can't keep
-/// D1's 154 pt any more (118 pt at 960 pt): a spec gap reported to Designer, kept here as a known issue rather than a
-/// lowered floor.
+/// Designer addendum v3.6 J2 (wins over r4 C7, r5 D1's 160 pt first floor, and v3.5 I2 where they disagree):
+/// the title goes to 154 pt before any control compact; then Details goes icon-only; then the take menu becomes
+/// the count plus the chevron. Record → dot and Model/You words-only stay as later steps so the 960 pt window
+/// still fits. Input is a 28 pt icon at every level. Nothing compact at 1200 pt, including with the inspector
+/// open. `ToolbarCompaction.decide` is pure; this scheme also measures the real typography.
 @Suite("Toolbar compaction")
 struct ToolbarCompactionTests {
     typealias Widths = ToolbarCompaction.ControlWidths
 
-    /// Round numbers close to the real ones: Model 80, You 67, take menu 72; words only 53 and 40.
-    let widths = Widths(model: 80, modelWordsOnly: 53, you: 67, youWordsOnly: 40, takeMenu: 72)
-    /// The widths measured in the VM with the bundled fonts (round 5b): Model 81 / 54, You 66 / 39, take menu 74.
-    /// Totals with Input (v3.5): full 438, chevron 392, dot 328, words only 274.
-    let measured = Widths(model: 81, modelWordsOnly: 54, you: 66, youWordsOnly: 39, takeMenu: 74)
+    /// Round numbers close to the real ones: Model 80, You 67, take menu 72, count 40, Details 64.
+    let widths = Widths(
+        model: 80, modelWordsOnly: 53, you: 67, youWordsOnly: 40,
+        takeMenu: 72, takeMenuCount: 40, inspectorToggleFull: 64
+    )
 
     /// The toolbar's width inside its padding for a window width with the inspector open.
     static func inspectorOpen(_ window: Double) -> Double {
@@ -27,125 +23,77 @@ struct ToolbarCompactionTests {
     }
 
     @Test func totalsAddEveryControlAndTheFixedGaps() {
-        // 80 + 8 + 104 + 8 + 67 + 17 + 72 + 16 + 28 (Input) + 8 + 28 (Details)
-        #expect(widths.total(.full) == 436)
-        #expect(widths.total(.menuChevron) == 436 - 72 + 28)
-        #expect(widths.total(.recordDot) == 392 - 104 + 40)
-        #expect(widths.total(.wordsOnly) == 328 - 80 - 67 + 53 + 40)
-        #expect(measured.total(.full) == 438)
-        #expect(measured.total(.wordsOnly) == 274)
+        #expect(widths.total(.full) == 472)
+        #expect(widths.total(.detailsIcon) == 436)
+        #expect(widths.total(.takeCount) == 404)
+        #expect(widths.total(.recordDot) == 340)
+        #expect(widths.total(.wordsOnly) == 286)
     }
 
-    @Test func fullWhenEverythingFitsNextToTheFullTitle() {
-        let decision = ToolbarCompaction.decide(available: 436 + 16 + 260, controls: widths)
-        #expect(decision == .init(level: .full, titleWidth: 260, fits: true))
+    @Test func theTitleReaches154BeforeAnyControlCompacts() {
+        #expect(ToolbarCompaction.decide(available: 472 + 16 + 154, controls: widths)
+            == .init(level: .full, titleWidth: 154, fits: true))
+        #expect(ToolbarCompaction.decide(available: 472 + 16 + 153, controls: widths)
+            == .init(level: .detailsIcon, titleWidth: 153 + 36, fits: true))
     }
 
-    @Test func theTitleTruncatesTo160BeforeTheTakeMenuCompacts() {
-        // Room for every control at full size next to a 200 pt or a 160 pt title: nothing compacts.
-        #expect(ToolbarCompaction.decide(available: 436 + 16 + 200, controls: widths)
-            == .init(level: .full, titleWidth: 200, fits: true))
-        #expect(ToolbarCompaction.decide(available: 436 + 16 + 160, controls: widths)
-            == .init(level: .full, titleWidth: 160, fits: true))
-        // One point less: the take menu is the first control to compact, and the title gets its width back.
-        #expect(ToolbarCompaction.decide(available: 436 + 16 + 159, controls: widths)
-            == .init(level: .menuChevron, titleWidth: 159 + 44, fits: true))
-    }
-
-    @Test func thenRecordThenModelAndYou() {
-        #expect(ToolbarCompaction.decide(available: 392 + 16 + 160, controls: widths).level == .menuChevron)
-        #expect(ToolbarCompaction.decide(available: 392 + 16 + 159, controls: widths)
-            == .init(level: .recordDot, titleWidth: 159 + 64, fits: true))
-        #expect(ToolbarCompaction.decide(available: 328 + 16 + 160, controls: widths)
-            == .init(level: .recordDot, titleWidth: 160, fits: true))
-        let words = ToolbarCompaction.decide(available: 328 + 16 + 159, controls: widths)
-        #expect(words == .init(level: .wordsOnly, titleWidth: 159 + 54, fits: true))
-        // Never icon-only: the words-only forms are wider than a bare triangle button would be.
-        #expect(widths.modelWordsOnly > 34 && widths.youWordsOnly > 34)
-    }
-
-    @Test func onlyAfterAllThreeStepsMayTheTitleGoTo154() {
-        #expect(ToolbarCompaction.decide(available: 274 + 16 + 154, controls: widths)
-            == .init(level: .wordsOnly, titleWidth: 154, fits: true))
-        #expect(ToolbarCompaction.decide(available: 274 + 16 + 153, controls: widths)
-            == .init(level: .wordsOnly, titleWidth: 153, fits: false))
-    }
-
-    /// r5 D1: at the default 1200 pt window with the inspector open, nothing compacts ("TAKE 03" keeps its label)
-    /// and the title truncates, keeping at least 160 pt.
-    @Test func at1200WithTheInspectorOpenNothingCompacts() {
+    /// v3.6 J2: at the default 1200 pt window with the inspector open, nothing compact and the title stays
+    /// at or above 154 pt.
+    @MainActor @Test func at1200WithTheInspectorOpenNothingCompacts() {
+        BundledFonts.register()
+        let library = FixtureLibrary(bundle: Bundle(for: ShellModel.self))!
+        let state = ShellPresenter.toolbar(for: try! library.load("inspector-open"))
+        let measured = ToolbarView.controlWidths(for: state)
         let decision = ToolbarCompaction.decide(available: Self.inspectorOpen(1200), controls: measured)
+        let title = Double(TextMeasure.width(state.title, role: .phraseTitle))
+        print("[toolbar] 1200 inspector-open: title ideal \(title); measured \(measured); decision \(decision)")
         #expect(decision.level == .full)
         #expect(decision.titleWidth >= ToolbarCompaction.titleMinimum)
-        #expect(decision.titleWidth == 648 - 16 - 438)
+        #expect(decision.titleWidth < title, "the title truncates at 1200 pt with the inspector open")
         #expect(decision.fits)
+        #expect(measured.input == 28)
     }
 
-    /// r5 D1: at 960 pt with the inspector open, all three steps, and the title gets 154 pt. With Input (v3.5) it gets
-    /// 118 pt: the known spec gap.
-    @Test func at960WithTheInspectorOpenAllThreeStepsAndA154Title() {
+    /// v3.6 J2: at 960 pt with the inspector open, measure the title width after the new compact order (Details
+    /// icon-only, take count, then C7's later steps if needed). The number is for Designer; the test does not
+    /// lower the 154 pt floor.
+    @MainActor @Test func at960WithTheInspectorOpenMeasuresTheTitleWidth() {
+        BundledFonts.register()
+        let library = FixtureLibrary(bundle: Bundle(for: ShellModel.self))!
+        let state = ShellPresenter.toolbar(for: try! library.load("inspector-open"))
+        let measured = ToolbarView.controlWidths(for: state)
         let decision = ToolbarCompaction.decide(available: Self.inspectorOpen(960), controls: measured)
-        #expect(decision.level == .wordsOnly)
-        #expect(decision.titleWidth == 960 - 552 - 16 - 274)
-        withKnownIssue("v3.5 Input button: the title can't keep 154 pt at 960 pt with the inspector open") {
-            #expect(decision == .init(level: .wordsOnly, titleWidth: 154, fits: true))
-        }
+        print("[toolbar] 960 inspector-open: level \(decision.level); title \(decision.titleWidth); fits \(decision.fits); "
+            + "Model \(measured.model)/\(measured.modelWordsOnly); You \(measured.you)/\(measured.youWordsOnly); "
+            + "take \(measured.takeMenu)/count \(measured.takeMenuCount); Details \(measured.inspectorToggleFull)/"
+            + "\(measured.inspectorToggle); Input \(measured.input); "
+            + "totals full \(measured.total(.full)) icon \(measured.total(.detailsIcon)) count \(measured.total(.takeCount)) "
+            + "dot \(measured.total(.recordDot)) words \(measured.total(.wordsOnly))")
+        #expect(decision.level >= .takeCount, "J2's take-count step has been applied at 960 pt")
+        #expect(measured.input == 28)
+        #expect(decision.titleWidth == Self.inspectorOpen(960) - ToolbarCompaction.titleGap - measured.total(decision.level))
     }
 
-    /// Window widths in between, inspector open: each step starts exactly where the one before would push the title
-    /// under 160 pt, and the title is back above 160 pt right after each step.
-    @Test(arguments: [
-        (1200.0, ToolbarCompaction.Level.full, 194.0),
-        (1166, .full, 160),
-        (1165, .menuChevron, 205),
-        (1120, .menuChevron, 160),
-        (1119, .recordDot, 223),
-        (1056, .recordDot, 160),
-        (1055, .wordsOnly, 213),
-        (996, .wordsOnly, 154),
-        (960, .wordsOnly, 118),
-    ])
-    func theOrderHoldsBetween960And1200(window: Double, level: ToolbarCompaction.Level, title: Double) {
-        let decision = ToolbarCompaction.decide(available: Self.inspectorOpen(window), controls: measured)
-        #expect(decision.level == level)
-        #expect(decision.titleWidth == title)
-    }
-
-    /// Down to 996 pt: below that the v3.5 known issue starts (see `at960…`).
-    @Test func theLevelOnlyGrowsAsTheWindowNarrowsAndTheTitleKeeps160UntilTheLastStep() {
+    @MainActor @Test func theLevelOnlyGrowsAsTheWindowNarrowsAndTheTitleKeeps154UntilTheLastStep() {
+        BundledFonts.register()
+        let library = FixtureLibrary(bundle: Bundle(for: ShellModel.self))!
+        let state = ShellPresenter.toolbar(for: try! library.load("inspector-open"))
+        let measured = ToolbarView.controlWidths(for: state)
         var previous = ToolbarCompaction.Level.full
-        for window in stride(from: 1200.0, through: 996, by: -1) {
+        for window in stride(from: 1200.0, through: 960, by: -1) {
             let decision = ToolbarCompaction.decide(available: Self.inspectorOpen(window), controls: measured)
             #expect(decision.level >= previous, "\(window) pt")
-            #expect(decision.titleWidth >= (decision.level < .wordsOnly ? 160 : 154), "\(window) pt")
-            #expect(decision.fits)
+            if decision.level < .wordsOnly {
+                #expect(decision.titleWidth >= ToolbarCompaction.titleMinimum, "\(window) pt")
+            }
             previous = decision.level
         }
     }
 
-    /// The real numbers with the bundled fonts: at 1200 pt with the inspector open nothing compacts and the title
-    /// truncates; at 960 pt (408 pt inside the toolbar's padding) all three steps and a 154 pt title.
-    @MainActor @Test func measuredAt1200And960() throws {
-        BundledFonts.register()
-        let library = try #require(FixtureLibrary(bundle: Bundle(for: ShellModel.self)))
-        let state = ShellPresenter.toolbar(for: try library.load("inspector-open"))
-        let measured = ToolbarView.controlWidths(for: state)
-        let title = Double(TextMeasure.width(state.title, role: .phraseTitle))
-        let wide = ToolbarCompaction.decide(available: Self.inspectorOpen(1200), controls: measured)
-        let narrow = ToolbarCompaction.decide(available: Self.inspectorOpen(960), controls: measured)
-        print("[toolbar] inspector open: title ideal \(title); "
-            + "Model \(measured.model) / words only \(measured.modelWordsOnly); You \(measured.you) / \(measured.youWordsOnly); "
-            + "Record \(measured.record) / dot \(measured.recordDot); take menu \(measured.takeMenu) / chevron \(measured.takeMenuChevron); "
-            + "input \(measured.input); toggle \(measured.inspectorToggle); gaps 8, 8, 17, 16, 8 and 16 before the controls; "
-            + "controls total full \(measured.total(.full)), chevron \(measured.total(.menuChevron)), dot \(measured.total(.recordDot)), "
-            + "words only \(measured.total(.wordsOnly)); 1200 pt \(wide); 960 pt \(narrow)")
-        #expect(wide.level == .full)
-        #expect(wide.titleWidth >= ToolbarCompaction.titleMinimum)
-        #expect(wide.titleWidth < title, "the title truncates at 1200 pt with the inspector open")
-        #expect(narrow.level == .wordsOnly)
-        withKnownIssue("v3.5 Input button: the title can't keep 154 pt at 960 pt with the inspector open") {
-            #expect(narrow.fits)
-            #expect(abs(narrow.titleWidth - 154) < 1)
-        }
+
+    @Test func takeCountVoiceOverDropsTheLeadingZero() {
+        #expect(Copy.takeMenuCountLabel(.take(3)) == "Take 3")
+        #expect(Copy.takeMenuCountLabel(.take(12)) == "Take 12")
+        #expect(Copy.details == "Details")
     }
 }

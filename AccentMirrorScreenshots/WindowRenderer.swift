@@ -89,6 +89,9 @@ enum WindowRenderer {
         ) else { throw RenderError.bitmap }
         rep.size = frameView.bounds.size
         frameView.cacheDisplay(in: frameView.bounds, to: rep)
+        // v3.6 J3: the Input popover is a real NSPopover (a child window). Composite it so fixture frames
+        // still show the open popover. Anything that sits outside the parent window is clipped.
+        compositeChildWindows(of: window, into: rep, frameView: frameView)
         guard let srgb = rep.converting(to: .sRGB, renderingIntent: .default),
               let png = srgb.representation(using: .png, properties: [:])
         else { throw RenderError.encode }
@@ -145,6 +148,34 @@ enum WindowRenderer {
         try? await Task.sleep(for: .milliseconds(30))
         await Task.yield()
         return (png, weakWindow == nil, NSApp.windows.count)
+    }
+
+    /// Draws each visible child window (the Input popover) into the parent window's bitmap, in window coordinates.
+    private static func compositeChildWindows(of window: NSWindow, into rep: NSBitmapImageRep, frameView: NSView) {
+        guard let children = window.childWindows, !children.isEmpty,
+              let context = NSGraphicsContext(bitmapImageRep: rep) else { return }
+        let previous = NSGraphicsContext.current
+        NSGraphicsContext.current = context
+        defer { NSGraphicsContext.current = previous }
+        let parent = window.frame
+        for child in children where child.isVisible {
+            guard let childFrame = child.contentView?.superview else { continue }
+            var dest = child.frame
+            dest.origin.x -= parent.origin.x
+            dest.origin.y -= parent.origin.y
+            let pixels = NSSize(
+                width: childFrame.bounds.width * CGFloat(scale),
+                height: childFrame.bounds.height * CGFloat(scale)
+            )
+            guard let childRep = NSBitmapImageRep(
+                bitmapDataPlanes: nil, pixelsWide: Int(pixels.width), pixelsHigh: Int(pixels.height),
+                bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
+                colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0
+            ) else { continue }
+            childRep.size = childFrame.bounds.size
+            childFrame.cacheDisplay(in: childFrame.bounds, to: childRep)
+            childRep.draw(in: dest)
+        }
     }
 
     private static func tearDown(_ window: NSWindow) {

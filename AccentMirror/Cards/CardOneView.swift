@@ -86,7 +86,8 @@ private struct CardRowView: View {
             case .inputThenButton(let title):
                 // v3.5 I4 tier A: Input… (opens the popover) and Try Again.
                 HStack(spacing: 8) {
-                    CardButton(title: Copy.inputEllipsis, action: actions.openInput)
+                    CardButton(title: Copy.inputEllipsis, action: { actions.openInput(.card) })
+                        .inputPopover(source: .card)
                     CardButton(title: title, action: actions.cardButton)
                 }
             }
@@ -213,7 +214,7 @@ private struct InfoLine: View {
             SentenceText(sentence: sentence, role: .small)
             if showsInput {
                 Spacer(minLength: 8)
-                FocusRingButton(cornerRadius: Metrics.controlRadius, action: actions.openInput) { _ in
+                FocusRingButton(cornerRadius: Metrics.controlRadius, action: { actions.openInput(.card) }) { _ in
                     Text(Copy.inputEllipsis)
                         .typeRole(.bodyMedium)
                         .foregroundStyle(palette.textPrimary)
@@ -221,6 +222,7 @@ private struct InfoLine: View {
                         .frame(height: Metrics.controlHeight)
                         .surface(palette.surfaceWell, cornerRadius: Metrics.controlRadius)
                 }
+                .inputPopover(source: .card)
             }
         }
         .foregroundStyle(palette.textSecondary)

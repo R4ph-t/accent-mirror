@@ -90,6 +90,7 @@ enum Copy {
     static let nextTake = "Next Take"
     static let previousPhrase = "Previous Phrase"
     static let nextPhrase = "Next Phrase"
+    static let details = "Details"
     static let showDetails = "Show Details"
     static let hideDetails = "Hide Details"
     static let find = "Find"
@@ -231,6 +232,15 @@ enum Copy {
         switch label {
         case .takes: "Takes"
         case .take(let number): "Take " + (number < 10 ? "0\(number)" : "\(number)")
+        case .lastTryNotSaved: "Last try, not saved"
+        }
+    }
+
+    /// Tooltip and VoiceOver for the take menu's count form (v3.6 J2): "Take 3", no leading zero.
+    static func takeMenuCountLabel(_ label: ToolbarState.TakeMenuLabel) -> String {
+        switch label {
+        case .takes: "Takes"
+        case .take(let number): "Take \(number)"
         case .lastTryNotSaved: "Last try, not saved"
         }
     }

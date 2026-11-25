@@ -24,7 +24,7 @@ struct ShellActions {
     /// and the two settings panes it links to. The device used for the next take is remembered.
     var inputName: String?
     var selectInput: @MainActor (String?) -> Void = { _ in }
-    var openInput: @MainActor () -> Void = {}
+    var openInput: @MainActor (InputPopoverSource) -> Void = { _ in }
     var toggleInput: @MainActor () -> Void = {}
     var closeInput: @MainActor () -> Void = {}
     var setInputVolume: @MainActor (Double) -> Void = { _ in }

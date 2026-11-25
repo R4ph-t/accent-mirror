@@ -1,10 +1,11 @@
 import SwiftUI
 
-// Designer addendum v3.5 I2–I6: the toolbar's Input button and the 300 pt Input popover it opens (also opened by
-// "Input…" in the inspector and on card 1). The popover is drawn in the window, pinned under the Input button, so it
-// has the card surface, radius and hairline the mockup shows and renders in fixtures; a click outside or Esc closes it.
+// Designer addendum v3.5 I2–I6 and v3.6 J3: the toolbar's Input button and the 300 pt Input popover it opens
+// (also opened by "Input…" in the inspector and on card 1). The popover is a real macOS NSPopover (SwiftUI's
+// `.popover`, system arrow), anchored to the control that opened it. Contents and the 300 pt width are unchanged
+// from v3.5 I2.
 
-/// The 28 pt mic ghost button immediately left of Details. Icon only, never hidden or reduced further.
+/// The 28 pt mic ghost button immediately left of Details. Icon only, never hidden or reduced further (v3.6 J1).
 struct InputButton: View {
     @Environment(\.palette) private var palette
     @Environment(\.shellActions) private var actions
@@ -26,44 +27,71 @@ struct InputButton: View {
         }
         .help(Copy.inputButton)
         .accessibilityLabel(Copy.inputButton)
+        .inputPopover(source: .toolbar)
     }
 }
 
-/// Where the popover sits in the detail pane: right-aligned to the Input button (Details 28 + 8 pt + the 16 pt
-/// toolbar margin from the trailing edge), 6 pt under the button. It can't leave the 16 pt margin: the narrowest
-/// detail pane (960 pt window, inspector open) is still wider than 16 + 300 + 52.
+/// The popover's width and inner padding (v3.5 I2); the system arrow sits outside this width (v3.6 J3).
 enum InputPopoverMetrics {
     static let width: CGFloat = 300
-    static let trailing: CGFloat = Metrics.outer + ToolbarCompaction.ControlWidths.inputGap + 28
-    static let top: CGFloat = (Metrics.toolbarHeight - Metrics.controlHeight) / 2 + Metrics.controlHeight + 6
     static let padding: CGFloat = 16
     static let radius: CGFloat = 10
 }
 
-/// Overlays the open popover on the detail pane, with a click-away layer under it.
-struct InputPopoverLayer: View {
-    @Environment(\.shellActions) private var actions
-    var state: InputPopoverState?
+/// Which control an open Input popover is anchored to (v3.6 J3).
+enum InputPopoverSource: Equatable, Sendable {
+    case toolbar, inspector, card
+}
 
-    var body: some View {
-        if let state {
-            ZStack(alignment: .topTrailing) {
-                Color.black.opacity(0.0001)
-                    .onTapGesture { actions.closeInput() }
-                    .accessibilityHidden(true)
-                InputPopoverView(state: state)
-                    .padding(.top, InputPopoverMetrics.top)
-                    .padding(.trailing, InputPopoverMetrics.trailing)
+extension View {
+    /// Presents the Input popover from this control when it is the active source (v3.6 J3).
+    func inputPopover(source: InputPopoverSource) -> some View {
+        modifier(InputPopoverAttachment(source: source))
+    }
+}
+
+private struct InputPopoverAttachment: ViewModifier {
+    var source: InputPopoverSource
+    @Environment(\.palette) private var palette
+    @Environment(\.shellActions) private var actions
+    @Environment(\.inputMeter) private var inputMeter
+    @Environment(LevelMeterModel.self) private var recordingMeter: LevelMeterModel?
+    @Environment(\.inputPopoverState) private var state
+    @Environment(\.inputPopoverSource) private var current
+    @Environment(\.closeInputPopover) private var onClose
+
+    func body(content: Content) -> some View {
+        content.popover(
+            isPresented: Binding(
+                get: { state != nil && current == source },
+                set: { if !$0 { onClose() } }
+            ),
+            arrowEdge: .bottom
+        ) {
+            if let state {
+                InputPopoverView(state: state, systemChrome: true)
+                    .environment(\.palette, palette)
+                    .environment(\.shellActions, actions)
+                    .environment(\.inputMeter, inputMeter)
+                    .environment(recordingMeter)
             }
-            .onExitCommand { actions.closeInput() }
         }
     }
+}
+
+extension EnvironmentValues {
+    @Entry var inputPopoverState: InputPopoverState? = nil
+    @Entry var inputPopoverSource: InputPopoverSource = .toolbar
+    @Entry var closeInputPopover: @MainActor () -> Void = {}
 }
 
 struct InputPopoverView: View {
     @Environment(\.palette) private var palette
     @Environment(\.shellActions) private var actions
     var state: InputPopoverState
+    /// True when the view sits inside a system NSPopover (v3.6 J3): the arrow and chrome are the system's; we
+    /// fill the content with the card surface but drop the floating-card shadow and hairline.
+    var systemChrome = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -113,13 +141,19 @@ struct InputPopoverView: View {
         .padding(InputPopoverMetrics.padding)
         .frame(width: InputPopoverMetrics.width, alignment: .leading)
         .background {
-            RoundedRectangle(cornerRadius: InputPopoverMetrics.radius, style: .continuous)
-                .fill(palette.surfaceCard)
-                .shadow(color: .black.opacity(0.16), radius: 15, y: 10)
+            if systemChrome {
+                palette.surfaceCard
+            } else {
+                RoundedRectangle(cornerRadius: InputPopoverMetrics.radius, style: .continuous)
+                    .fill(palette.surfaceCard)
+                    .shadow(color: .black.opacity(0.16), radius: 15, y: 10)
+            }
         }
         .overlay {
-            RoundedRectangle(cornerRadius: InputPopoverMetrics.radius, style: .continuous)
-                .strokeBorder(palette.hairline, lineWidth: 1)
+            if !systemChrome {
+                RoundedRectangle(cornerRadius: InputPopoverMetrics.radius, style: .continuous)
+                    .strokeBorder(palette.hairline, lineWidth: 1)
+            }
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Copy.inputButton)

@@ -154,7 +154,7 @@ struct InspectorContent: View {
                             .lineLimit(1)
                             .truncationMode(.middle)
                         Spacer(minLength: 0)
-                        FocusRingButton(cornerRadius: Metrics.controlRadius, action: actions.openInput) { _ in
+                        FocusRingButton(cornerRadius: Metrics.controlRadius, action: { actions.openInput(.inspector) }) { _ in
                             Text(Copy.inputEllipsis)
                                 .typeRole(.bodyMedium)
                                 .foregroundStyle(palette.textPrimary)
@@ -162,6 +162,7 @@ struct InspectorContent: View {
                                 .frame(height: Metrics.controlHeight)
                                 .surface(palette.surfaceWell, cornerRadius: Metrics.controlRadius)
                         }
+                        .inputPopover(source: .inspector)
                     }
                 }
             }

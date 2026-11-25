@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import AccentMirror
 
@@ -43,10 +44,8 @@ struct AddendumV35ContractTests {
         #expect(model.inputPopover == nil, "Samples ▸ to another state closes it")
     }
 
-    @Test func popoverStaysPinnedInsideTheNarrowestDetailPane() {
-        // 960 pt window, sidebar and inspector open: the detail pane is 440 pt wide.
-        let pane = Metrics.minimumWindow.width - Metrics.sidebarWidth - Metrics.inspectorWidth
-        #expect(pane - InputPopoverMetrics.trailing - InputPopoverMetrics.width >= Metrics.outer)
+    @Test func thePopoverKeepsTheV35Width() {
+        // v3.6 J3: a real NSPopover with the system arrow; the content width is unchanged from v3.5 I2.
         #expect(InputPopoverMetrics.width == 300)
     }
 }

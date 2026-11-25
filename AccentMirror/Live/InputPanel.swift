@@ -140,7 +140,7 @@ final class InputPanel {
         onChange?(isOpen ? state : nil)
     }
 
-    static func state(devices: [InputDevice], requested: InputDevice.ID?, authorization: MicAuthorization,
+    nonisolated static func state(devices: [InputDevice], requested: InputDevice.ID?, authorization: MicAuthorization,
                       isRecording: Bool, volume: InputVolumeState) -> InputPopoverState {
         let notice: InputPopoverState.Notice? = if devices.isEmpty {
             .noMicrophone
@@ -189,8 +189,9 @@ extension InputPopoverState {
     /// A fixture's `inputPopover` block; `isRecording` follows the fixture's phase.
     init(fixture: InputPopoverFixture, isRecording: Bool) {
         let names = fixture.devices ?? []
-        devices = names.enumerated().map { Device(id: "fixture-\($0.offset)", name: $0.element) }
-        selected = fixture.device.flatMap { name in devices.first { $0.name == name }?.id }
+        let list = names.enumerated().map { Device(id: "fixture-\($0.offset)", name: $0.element) }
+        devices = list
+        selected = fixture.device.flatMap { name in list.first { $0.name == name }?.id }
         volume = fixture.volume.map { .settable(min(1, max(0, $0))) } ?? .fixed
         notice = fixture.notice
         self.isRecording = isRecording

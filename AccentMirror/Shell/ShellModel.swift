@@ -10,6 +10,8 @@ final class ShellModel {
     var inspectorVisible = false
     /// The Input popover (v3.5 I2) when it's open: a fixture's frozen state, or the live app's `InputPanel`.
     var inputPopover: InputPopoverState?
+    /// Which control the open popover is anchored to (v3.6 J3). Fixtures use the toolbar Input button.
+    var inputPopoverSource: InputPopoverSource = .toolbar
     var manifest: LibraryManifest
     var sidebar: SidebarState
     var toolbar: ToolbarState
@@ -31,8 +33,6 @@ final class ShellModel {
     /// Spec 21: the audio follows the playhead. Called with each schedule that starts, and when playback stops.
     @ObservationIgnored var onPlay: ((PlaybackSchedule) -> Void)?
     @ObservationIgnored var onStopPlaying: (() -> Void)?
-    /// Live audio: lengthen a play that ends at the last word by the clip's tail (300 ms, clamped). Fixtures leave this nil.
-    @ObservationIgnored var adjustPlayback: ((PlaybackSchedule) -> PlaybackSchedule)?
 
     // MARK: Chart motion (spec 20)
 
@@ -75,10 +75,12 @@ final class ShellModel {
     func applyLive(_ loaded: LoadedFixture, announce: Bool) {
         let inspector = inspectorVisible
         let popover = inputPopover
+        let popoverSource = inputPopoverSource
         onStopPlaying?()
         apply(loaded, announce: announce)
         inspectorVisible = inspector
         inputPopover = popover
+        inputPopoverSource = popoverSource
     }
 
     /// The live strip while recording (spec 20's envelope stream, binned by `EnvelopeBins`).
@@ -91,6 +93,7 @@ final class ShellModel {
         inputPopover = loaded.fixture.inputPopover.map {
             InputPopoverState(fixture: $0, isRecording: loaded.fixture.phase == .recording)
         }
+        inputPopoverSource = .toolbar
         let chart = loaded.fixture.chart
         // A voice switch shows the new voice in the subtitle at once; the drawing follows when its L2 arrives.
         var shown = loaded
@@ -325,7 +328,6 @@ final class ShellModel {
         loopingWord = nil
         chartInputs.loopingWord = nil
         chartInputs.loopingLabel = nil
-        let schedule = adjustPlayback?(schedule) ?? schedule
         playback = PlaybackRun(schedule, clock: clock)
         onPlay?(schedule)
     }
