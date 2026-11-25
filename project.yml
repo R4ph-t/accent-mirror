@@ -118,6 +118,7 @@ targets:
       # v3.6 J2 / v3.7 K2–K3: the toolbar compact order and inspector width policy are UI-free.
       - path: AccentMirror/Toolbar/ToolbarCompaction.swift
       - path: AccentMirror/Toolbar/InspectorLayout.swift
+      - path: AccentMirror/Toolbar/InputPopoverLayout.swift
       # v3.2 W3/W5: the token table, type roles, bundled fonts and the highlight box, all UI-free to test.
       - path: AccentMirror/Design/Palette.swift
       - path: AccentMirror/Design/Typography.swift
