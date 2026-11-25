@@ -19,15 +19,26 @@
             let listener = Listener(continuation: continuation, queue: queue)
             continuation.onTermination = { _ in queue.async { listener.stop() } }
             Task.detached(priority: .userInitiated) {
-                guard await Self.authorized(),
-                      let input = InputDevice.resolve(device, in: MicRecorder().inputDevices())
-                else {
-                    continuation.finish()
-                    return
-                }
-                queue.async { listener.start(input) }
+                await Self.begin(device: device, continuation: continuation, queue: queue, listener: listener)
             }
             return stream
+        }
+
+        /// Isolated from `levels` so Release/WMO DeadObjectElimination does not crash Swift 6.2.3.
+        @_optimize(none)
+        private static func begin(
+            device: InputDevice.ID?,
+            continuation: AsyncStream<InputLevel>.Continuation,
+            queue: DispatchQueue,
+            listener: Listener
+        ) async {
+            let allowed = await authorized()
+            let devices = MicRecorder().inputDevices()
+            guard allowed, let input = InputDevice.resolve(device, in: devices) else {
+                continuation.finish()
+                return
+            }
+            queue.async { listener.start(input) }
         }
 
         /// Asks once if never asked (the system's own prompt; opening the popover is the user's action).
