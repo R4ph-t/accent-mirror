@@ -16,7 +16,9 @@ let modules: [(name: String, dependencies: [String])] = [
     ("AMPlacement", ["AMCore", "AMCapture", "AMAlignment", "AMPitch", "AMProsody"]),
     ("AMScoring", ["AMCore", "AMProsody", "AMWarp", "AMPlacement"]),
     ("AMLibrary", ["AMCore"]),
-    ("AMPipeline", ["AMCore", "AMCapture", "AMAlignment", "AMPitch", "AMProsody", "AMWarp", "AMLibrary"]),
+    // Per-sound pronunciation judging (sound-judging plan, 2026-11-25): Core ML GOP. AMCore and Apple frameworks only.
+    ("AMJudging", ["AMCore"]),
+    ("AMPipeline", ["AMCore", "AMCapture", "AMAlignment", "AMPitch", "AMProsody", "AMWarp", "AMLibrary", "AMJudging"]),
     // The verdict scorer (`VerdictScorer`), pair scoring and the placement goldens. Evaluation and Milestone 2 only.
     ("AMVerdicts", ["AMCore", "AMCapture", "AMAlignment", "AMPitch", "AMProsody", "AMWarp", "AMPlacement", "AMScoring",
                     "AMPipeline"]),

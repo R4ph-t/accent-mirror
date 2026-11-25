@@ -31,6 +31,7 @@ with a few concrete differences to work on. Everything runs on the device. Nativ
 | `AMWarp` | Time-warping a take onto the native model | AMCore, AMPitch |
 | `AMScoring` | Comparison against the native band, diff rows | AMCore, AMProsody, AMWarp |
 | `AMLibrary` | Starter phrases and saved takes | AMCore |
+| `AMJudging` | Per-sound pronunciation judging (Core ML GOP) | AMCore |
 | `AMPipeline` | Wires the stages into one analysis | all of the above |
 | `AMEvaluation` | Agreement harness: corpus sets, folds, statistics, reports (evaluation only) | AMCore |
 

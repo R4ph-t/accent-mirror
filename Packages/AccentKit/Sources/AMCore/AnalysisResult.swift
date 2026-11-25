@@ -34,13 +34,17 @@ public struct AnalysisResult: Sendable, Hashable, Codable {
     /// Plain measures for you and the native range (spec 28 §4a): measurements, never a comparison. Nil for takes
     /// saved before spec 28; omitted from JSON when nil.
     public let describe: DescribedMeasures?
+    /// Per-sound judging of your take (sound-judging plan, 2026-11-25). Nil for takes saved before it; omitted from
+    /// JSON when nil. Not rendered until Designer's spec lands.
+    public let sounds: SoundJudgementOutcome?
 
     public init(
         phraseID: PhraseID, takeID: TakeID, recordedAt: Date, model: SpeakerAnalysis, you: SpeakerAnalysis,
         modelAxis: TimeRange, alignment: WordAlignment, timeMap: PartialTimeMap, youPitchOnModel: [PitchSegment],
         nativeBand: [BandPoint], pitchAxis: ClosedRange<Double>, timing: TimingLevel, stress: [StressLine],
         measures: [MeasureKind: MeasureState<Double>], applicability: ApplicabilityTable, verdict: Verdict,
-        identity: AnalysisIdentity, comparableCoverage: Double? = nil, describe: DescribedMeasures? = nil
+        identity: AnalysisIdentity, comparableCoverage: Double? = nil, describe: DescribedMeasures? = nil,
+        sounds: SoundJudgementOutcome? = nil
     ) {
         self.phraseID = phraseID
         self.takeID = takeID
@@ -61,6 +65,7 @@ public struct AnalysisResult: Sendable, Hashable, Codable {
         self.identity = identity
         self.comparableCoverage = comparableCoverage
         self.describe = describe
+        self.sounds = sounds
     }
 }
 
