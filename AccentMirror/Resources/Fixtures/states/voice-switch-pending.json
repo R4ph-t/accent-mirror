@@ -3,6 +3,7 @@
   "summary": "Voice switched from p225 to p226, before p226's L2 arrives (§13 item 9): the subtitle already names p226 and the p225 drawing stays, band included.",
   "phrase": "photography-p225",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

@@ -49,6 +49,14 @@ final class ShellModel {
     private(set) var playback: PlaybackRun?
     /// The word a label click is looping ("Looping "harder" · Esc to stop").
     private(set) var loopingWord: String?
+    /// v5 §3: the phrase word whose Native vs You popover is open.
+    private(set) var wordPopover: Int?
+    /// v5 §4: the Rhythm and pitch disclosure, collapsed by default; kept across takes in the live app.
+    var rhythmExpanded = false
+    /// The phrase word a popover button is playing (drawn with the playing border while it plays).
+    private(set) var playingWord: Int?
+    /// The last popover button pressed in this popover session; Space replays it (Play both before any).
+    @ObservationIgnored private var lastWordAction: WordAction?
     /// The playback clock. A fixture with `playBoth` swaps in a frozen one.
     private var clock: any PlaybackClock = SystemPlaybackClock()
     @ObservationIgnored private let preference: EarlierTakesPreference
@@ -100,11 +108,20 @@ final class ShellModel {
         let inspector = inspectorVisible
         let popover = inputPopover
         let popoverSource = inputPopoverSource
+        let expanded = rhythmExpanded
+        // The word popover stays open while the same take is on screen (a save notice), and closes on a new one.
+        let word = self.loaded?.take?.id == loaded.take?.id ? wordPopover : nil
+        let action = lastWordAction
         onStopPlaying?()
         apply(loaded, announce: announce)
         inspectorVisible = inspector
         inputPopover = popover
         inputPopoverSource = popoverSource
+        rhythmExpanded = expanded
+        if let word, detail?.phrase.words.first(where: { $0.index == word })?.isInteractive == true {
+            wordPopover = word
+            lastWordAction = action
+        }
     }
 
     /// The live strip while recording (spec 20's envelope stream, binned by `EnvelopeBins`).
@@ -143,6 +160,10 @@ final class ShellModel {
             detail.inspector.model?.selected = change.voice
         }
         inspectorVisible = loaded.fixture.inspectorOpen ?? false
+        rhythmExpanded = loaded.fixture.rhythmAndPitchExpanded ?? false
+        wordPopover = nil
+        lastWordAction = nil
+        playingWord = nil
         fixtureName = loaded.fixture.name
         self.loaded = shown
         playback = nil
@@ -165,6 +186,9 @@ final class ShellModel {
         }
         detail.pitch.rangeSemitones = growAxis(phrase: shown.phrase.text, detail.pitch)
         self.detail = detail
+        if let word = loaded.fixture.wordPopover, detail.phrase.words.first(where: { $0.index == word })?.isInteractive == true {
+            wordPopover = word
+        }
 
         if let frame = loaded.fixture.playBoth {
             // The fixture freezes Play Both at `elapsed` on an injected clock.
@@ -239,7 +263,8 @@ final class ShellModel {
         guard let detail else { return nil }
         var inputs = chartInputs
         if case .playing(let side, let progress) = playbackPhase {
-            inputs.playback = PlaybackPosition(side: side, position: progress)
+            // A padded word or sound can start a little before its timeline or end a little after it.
+            inputs.playback = PlaybackPosition(side: side, position: min(1, max(0, progress)))
         }
         return ChartModel.make(detail, inputs: inputs, now: motionClock.now,
                                reduceMotion: reduceMotionOverride ?? systemReduceMotion)
@@ -350,6 +375,7 @@ final class ShellModel {
         if clock is FrozenPlaybackClock { clock = SystemPlaybackClock() }
         if motionClock is FrozenPlaybackClock { motionClock = SystemPlaybackClock() }
         loopingWord = nil
+        playingWord = nil
         chartInputs.loopingWord = nil
         chartInputs.loopingLabel = nil
         let schedule = adjustPlayback?(schedule) ?? schedule
@@ -369,12 +395,59 @@ final class ShellModel {
 
     func playBoth() { play { model, you in .both(model: model, you: you) } }
 
+    // MARK: Word popover (v5 §3)
+
+    /// Clicking a checkable word, or its card 1 row: opens its popover (one at a time).
+    func openWord(_ index: Int) {
+        guard detail?.phrase.words.first(where: { $0.index == index })?.isInteractive == true else { return }
+        if wordPopover != index { lastWordAction = nil }
+        wordPopover = index
+    }
+
+    /// Esc, a click outside, or the popover closing itself: Space goes back to Record.
+    func closeWordPopover() {
+        wordPopover = nil
+        lastWordAction = nil
+    }
+
+    /// ← / →: the previous or next checkable word, skipping words that aren't in the dictionary.
+    func stepWord(by step: Int) {
+        guard let index = wordPopover, let next = detail?.phrase.step(from: index, by: step) else { return }
+        wordPopover = next
+        lastWordAction = nil
+    }
+
+    /// Whether a popover button can play: You, Play both and Play this sound need the word in your take.
+    func canPlayWord(_ index: Int, _ action: WordAction) -> Bool {
+        guard let loaded else { return false }
+        return ShellPresenter.wordSchedule(loaded, word: index, action: action) != nil
+    }
+
+    /// A popover button: plays once, and is what Space replays.
+    func playWord(_ index: Int, _ action: WordAction) {
+        guard let loaded, let schedule = ShellPresenter.wordSchedule(loaded, word: index, action: action) else { return }
+        lastWordAction = action
+        start(schedule)
+        playingWord = index
+    }
+
+    /// Space while the popover is open: the last button pressed, else Play both (Native when You can't play).
+    func replayWord() {
+        guard let index = wordPopover else { return }
+        let action = lastWordAction ?? (canPlayWord(index, .both) ? .both : .native)
+        playWord(index, action)
+    }
+
+    /// The word whose clip is playing now, for the playing border.
+    var playingPhraseWord: Int? { playbackPhase == nil ? nil : playingWord }
+
     /// Esc.
     func stopPlaying() {
         onStopPlaying?()
         playback?.stop()
         playback = nil
         loopingWord = nil
+        playingWord = nil
         chartInputs.loopingWord = nil
         chartInputs.loopingLabel = nil
     }

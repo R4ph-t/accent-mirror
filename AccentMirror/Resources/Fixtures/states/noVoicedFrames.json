@@ -3,6 +3,7 @@
   "summary": "No usable pitch: native band only, the message, and \"—\" for pitch measures.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [
     3,
     2,

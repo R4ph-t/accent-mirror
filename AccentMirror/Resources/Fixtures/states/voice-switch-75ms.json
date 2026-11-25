@@ -3,6 +3,7 @@
   "summary": "p226's L2 arrived 75 ms ago, halfway through the 150 ms ease: the band, your line, the native row and the connectors sit between the p225 and p226 timelines. The band is drawn.",
   "phrase": "photography-p225",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

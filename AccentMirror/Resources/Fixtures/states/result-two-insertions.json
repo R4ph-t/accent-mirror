@@ -3,6 +3,7 @@
   "summary": "Feedback with two inserted words.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [
     3,
     2,

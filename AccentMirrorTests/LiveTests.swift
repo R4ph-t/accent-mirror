@@ -173,6 +173,10 @@ struct LivePresenterTests {
         #expect(loaded.take?.words.count == result.alignment.pairs.count)
         #expect(loaded.fixture.analysis?.describe?.native.voices == result.describe?.native.voices)
         #expect(loaded.liveSeconds?.model == result.modelAxis.end - result.modelAxis.start)
+        // v5: the sound judgement rides along untouched, and its seconds are placed by each timeline's start.
+        #expect(loaded.fixture.analysis?.sounds == result.sounds)
+        #expect(loaded.timelineStarts?.model == result.modelAxis.start)
+        #expect(loaded.timelineStarts?.you == LivePresenter.yourSpan(result).start)
         #expect(loaded.fixture.modelRecording?.voices.count == world.session.live.phrase.recordings.count)
         #expect(world.announcements.items.contains(.resultReady))
     }

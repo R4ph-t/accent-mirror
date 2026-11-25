@@ -3,6 +3,7 @@
   "summary": "An imported clip with one native take: the inspector shows that take’s values.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [
     3
   ],

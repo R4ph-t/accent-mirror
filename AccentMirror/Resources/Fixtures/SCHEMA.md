@@ -39,6 +39,8 @@ time.
 | `subtitle` | string? | Replaces the phrase file's toolbar subtitle for this state |
 | `chart` | object? | Spec 20's motion inputs, frozen on the fixture clock (below). A state with one is also rendered with Reduce Motion (`<name>-reduce-motion-{light,dark}@2x.png`) |
 | `inputPopover` | object? | The Input popover drawn open (v3.5 I7): `{device?, devices?[], volume?, notice?, level?}`. `device` is the chosen input's name (none: "System Default"), `devices` the inputs listed after it, `volume` the Mac input volume 0…1 (none: the device sets its own level, so the slider is disabled with the Sound Settings… note), `notice` `micDenied` \| `noMicrophone` (v2 §11.1 copy, no meter), `level` the meter's frozen frame (`{rmsDBFS, peakDBFS, tooLoud?}`) |
+| `wordPopover` | int? | v5 §3: the phrase word (index) whose Native vs You popover is drawn open. Ignored on a word that isn't checkable |
+| `rhythmAndPitchExpanded` | bool? | v5 §4: draws the Rhythm and pitch disclosure expanded (the strip and pitch cards). Default collapsed. Set on the states whose subject is the strip or the pitch chart |
 | `window` | object? | `{width, height}` in points: the window size the screenshot runner uses. Defaults to 1200 × 800. At least the 960 × 680 minimum |
 
 `recording` also takes `seconds`: how much envelope has been recorded (spec 20's live row). Without it, `playhead` is
@@ -68,6 +70,7 @@ Show-don't-judge v1 (specs 28–29): no verdict rows, measure states, stress lin
 | `timing` | `good` \| `rough` | Inspector ALIGNMENT reads Clear / Rough; rough gives card 1's timing quiet line |
 | `comparableCoverage` | number? | `AnalysisResult.comparableCoverage`: below `Thresholds.decision.minComparableCoverage`, card 1's coverage quiet line |
 | `clipped` | bool? | v3.5 I4 tier B: the saved take has a run of 10 ms frames at −1 dBFS lasting 50 ms or more; card 1's first quiet line, with an Input… button. Tier A is the `clipped` take problem (not saved; Input… and Try Again) |
+| `sounds` | object? | `AnalysisResult.sounds` (v5 sound judging) in AMCore's own JSON: `{"judged": {"_0": {modelID, judgeID, errorThreshold, words[]}}}` or `{"unavailable": {"_0": "modelNotInstalled"}}`. Each word is `{index, text, youRange?, modelRange?, state: {"judged": {"_0": [phones]}} \| {"unjudged": {"_0": "notInDictionary"}}}`; each phone `{phone, gop, confidence, flagged, heardInstead?: {"sound": {"_0": "t"}} \| {"nothing": {}}, youRange?}`. Ranges are `{start, end}` in **seconds** from the start of each speaker's timeline (the state's playback lengths, `describe`'s). Absent: card 1 says the sounds weren't checked |
 | `describe` | object? | `AnalysisResult.describe` (spec 28 §4a): `{you: {lengthSeconds, syllablesPerSecond, pitchRangeSemitones, rhythmNPVI: {value} \| {reason}, endingDirection?: rise \| fall \| level}, native: {voices, lengthSeconds, syllablesPerSecond, pitchRangeSemitones, rhythmNPVI: {min, max, count}, endingDirections: {fall: 5, rise: 3}}}`. The inspector's THIS TAKE |
 
 Card 1's quiet line is the first of: clipped (`clipped`, v3.5), low coverage, rough timing, inserted words (the take's

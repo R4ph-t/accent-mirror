@@ -3,6 +3,7 @@
   "summary": "The voice switch to p226 is done: band, your line, native row and connectors on p226's timeline.",
   "phrase": "photography-p225",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

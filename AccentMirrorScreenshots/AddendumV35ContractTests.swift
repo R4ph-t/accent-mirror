@@ -11,7 +11,7 @@ struct AddendumV35ContractTests {
 
     @Test func tierBIsTheFirstQuietLineWithInput() throws {
         let card = ShellPresenter.card(try library.load("result-clipped"))
-        #expect(card.rows.first?.trailing == .playBoth)
+        #expect(card.sounds != nil, "v5: SOUNDS TO CHECK, Play Both in its header")
         #expect(card.quietLine?.plain == "Your take clipped. Lower the input volume and try another take.")
         #expect(card.quietLineInput)
     }

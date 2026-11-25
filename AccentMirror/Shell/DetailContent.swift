@@ -1,7 +1,8 @@
 import SwiftUI
 
-/// The card column (x 256 to 1184): card 1, the strip card and the pitch card, which fills what is left.
-/// With no fixture loaded it is the plain spec 18 surface.
+/// The card column (x 256 to 1184), v5: card 1, the PHRASE card and the Rhythm and pitch disclosure; expanded, the
+/// strip card and the pitch card (which fills what is left) follow it. With no fixture loaded it is the plain spec 18
+/// surface.
 struct DetailContent: View {
     @Environment(\.palette) private var palette
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -30,12 +31,15 @@ struct DetailContent: View {
 extension DetailContent {
     private func cards(_ detail: DetailPresentation) -> some View {
         VStack(spacing: Metrics.inner) {
-            CardOneView(card: detail.card, playBoth: model.playBoth)
+            CardOneView(card: detail.card, playBoth: model.playBoth, openWord: model.openWord)
             // Spec 20: both charts are resolved from `ChartModel` at the chart clock's now. The timeline ticks while
-            // something plays or a fade or ease runs (spec 21 wires the audio), and pauses otherwise.
+            // something plays or a fade or ease runs (spec 21 wires the audio), and pauses otherwise; the PHRASE
+            // card reads it too, for the playing word's border.
             TimelineView(.animation(paused: model.playback == nil && !model.motionActive)) { _ in
-                if let charts = model.charts(systemReduceMotion: reduceMotion) {
-                    VStack(spacing: Metrics.inner) {
+                VStack(spacing: Metrics.inner) {
+                    PhraseCard(phrase: detail.phrase, model: model, fillsHeight: !model.rhythmExpanded)
+                    RhythmPitchDisclosure(expanded: model.rhythmExpanded) { model.rhythmExpanded.toggle() }
+                    if model.rhythmExpanded, let charts = model.charts(systemReduceMotion: reduceMotion) {
                         StripCard(chart: charts.strip, playModel: model.playModel, loop: model.loop(word:),
                                   hover: model.hover(word:))
                         PitchCard(chart: charts.pitch)

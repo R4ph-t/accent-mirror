@@ -396,7 +396,8 @@ enum LivePresenter {
 
     static func analysis(_ result: AnalysisResult) -> Analysis {
         Analysis(takeProblems: nil, verdict: Verdict(notScored: ()), timing: timing(result.timing),
-                 comparableCoverage: result.comparableCoverage, describe: result.describe.map(describe))
+                 comparableCoverage: result.comparableCoverage, describe: result.describe.map(describe),
+                 sounds: result.sounds)
     }
 
     /// The fixture-shaped state for `screen`, which `ShellModel.apply` draws exactly as it draws a committed fixture.
@@ -444,6 +445,7 @@ enum LivePresenter {
         var loaded = LoadedFixture(fixture: fixture, phrase: phrase(live, result: result, native: native), take: take,
                                    earlierTakes: earlier)
         if let model = screen.modelSeconds { loaded.liveSeconds = (model, screen.youSeconds ?? model) }
+        if let result { loaded.timelineStarts = (result.modelAxis.start, yourSpan(result).start) }
         return loaded
     }
 

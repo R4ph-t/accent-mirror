@@ -1,0 +1,819 @@
+{
+  "name": "sounds-flags",
+  "summary": "v5 §1.1: three flagged words, least confident first; the PHRASE card marks them (mockup-v5-flags).",
+  "phrase": "rainbow",
+  "manifest": {
+    "packs": [
+      {
+        "id": "my-phrases",
+        "title": "My Phrases",
+        "phrases": [
+          {
+            "id": "photography",
+            "text": "Photography is harder than it looks."
+          },
+          {
+            "id": "rainbow",
+            "text": "Throughout the centuries people have explained the rainbow in various ways."
+          },
+          {
+            "id": "grok",
+            "text": "Grok explained the rainbow in various ways."
+          },
+          {
+            "id": "complicated-ideas",
+            "text": "Many complicated ideas about the rainbow have been formed."
+          }
+        ]
+      },
+      {
+        "id": "noun-verb-pairs",
+        "title": "Noun and Verb Pairs",
+        "phrases": [
+          {
+            "id": "record-noun",
+            "text": "Press record to keep the record."
+          }
+        ]
+      },
+      {
+        "id": "compound-nouns",
+        "title": "Compound Nouns",
+        "phrases": [
+          {
+            "id": "sunlight-raindrops",
+            "text": "When the sunlight strikes raindrops in the air, they act as a prism."
+          }
+        ]
+      }
+    ]
+  },
+  "sidebar": {
+    "selectedPhraseID": "rainbow",
+    "expandedPackIDs": [
+      "my-phrases"
+    ]
+  },
+  "phase": "showingTake",
+  "savedTakes": [
+    3,
+    2,
+    1
+  ],
+  "take": "rainbow-take03",
+  "analysis": {
+    "verdict": {
+      "notScored": {}
+    },
+    "timing": "good",
+    "comparableCoverage": 0.97,
+    "describe": {
+      "you": {
+        "lengthSeconds": {
+          "value": 3.9
+        },
+        "syllablesPerSecond": {
+          "value": 4.1
+        },
+        "pitchRangeSemitones": {
+          "value": 5
+        },
+        "rhythmNPVI": {
+          "value": 44
+        },
+        "endingDirection": "fall"
+      },
+      "native": {
+        "voices": 8,
+        "lengthSeconds": {
+          "min": 3.6,
+          "max": 4.1,
+          "count": 8
+        },
+        "syllablesPerSecond": {
+          "min": 4.2,
+          "max": 5.0,
+          "count": 8
+        },
+        "pitchRangeSemitones": {
+          "min": 6,
+          "max": 9,
+          "count": 8
+        },
+        "rhythmNPVI": {
+          "min": 50,
+          "max": 60,
+          "count": 8
+        },
+        "endingDirections": {
+          "fall": 6,
+          "rise": 2
+        }
+      }
+    },
+    "sounds": {
+      "judged": {
+        "_0": {
+          "modelID": "wav2vec2-lv-60-espeak-cv-ft@fixture#00000000",
+          "judgeID": "gop-sf-1",
+          "errorThreshold": 0.22,
+          "words": [
+            {
+              "index": 0,
+              "text": "Throughout",
+              "modelRange": {
+                "start": 0.0,
+                "end": 0.284
+              },
+              "youRange": {
+                "start": 0.0,
+                "end": 0.296
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "TH",
+                      "gop": -6.5,
+                      "confidence": 0.18,
+                      "flagged": true,
+                      "heardInstead": {
+                        "sound": {
+                          "_0": "t"
+                        }
+                      },
+                      "youRange": {
+                        "start": 0.0,
+                        "end": 0.059
+                      }
+                    },
+                    {
+                      "phone": "R",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.059,
+                        "end": 0.118
+                      }
+                    },
+                    {
+                      "phone": "UW",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.118,
+                        "end": 0.178
+                      }
+                    },
+                    {
+                      "phone": "AW",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.178,
+                        "end": 0.237
+                      }
+                    },
+                    {
+                      "phone": "T",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.237,
+                        "end": 0.296
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "index": 1,
+              "text": "the",
+              "modelRange": {
+                "start": 0.328,
+                "end": 0.612
+              },
+              "youRange": {
+                "start": 0.355,
+                "end": 0.651
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "DH",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.355,
+                        "end": 0.503
+                      }
+                    },
+                    {
+                      "phone": "AH0",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.503,
+                        "end": 0.651
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "index": 2,
+              "text": "centuries",
+              "modelRange": {
+                "start": 0.655,
+                "end": 0.94
+              },
+              "youRange": {
+                "start": 0.71,
+                "end": 1.006
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "S",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.71,
+                        "end": 0.752
+                      }
+                    },
+                    {
+                      "phone": "EH",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.752,
+                        "end": 0.795
+                      }
+                    },
+                    {
+                      "phone": "N",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.795,
+                        "end": 0.837
+                      }
+                    },
+                    {
+                      "phone": "CH",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.837,
+                        "end": 0.879
+                      }
+                    },
+                    {
+                      "phone": "ER",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.879,
+                        "end": 0.921
+                      }
+                    },
+                    {
+                      "phone": "IY",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.921,
+                        "end": 0.964
+                      }
+                    },
+                    {
+                      "phone": "Z",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 0.964,
+                        "end": 1.006
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "index": 3,
+              "text": "people",
+              "modelRange": {
+                "start": 0.983,
+                "end": 1.267
+              },
+              "youRange": {
+                "start": 1.065,
+                "end": 1.361
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "P",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.065,
+                        "end": 1.124
+                      }
+                    },
+                    {
+                      "phone": "IY",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.124,
+                        "end": 1.183
+                      }
+                    },
+                    {
+                      "phone": "P",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.183,
+                        "end": 1.243
+                      }
+                    },
+                    {
+                      "phone": "AH0",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.243,
+                        "end": 1.302
+                      }
+                    },
+                    {
+                      "phone": "L",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.302,
+                        "end": 1.361
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "index": 4,
+              "text": "have",
+              "modelRange": {
+                "start": 1.31,
+                "end": 1.595
+              },
+              "youRange": {
+                "start": 1.42,
+                "end": 1.716
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "HH",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.42,
+                        "end": 1.519
+                      }
+                    },
+                    {
+                      "phone": "AE",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.519,
+                        "end": 1.617
+                      }
+                    },
+                    {
+                      "phone": "V",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.617,
+                        "end": 1.716
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "index": 5,
+              "text": "explained",
+              "modelRange": {
+                "start": 1.638,
+                "end": 1.919
+              },
+              "youRange": {
+                "start": 1.774,
+                "end": 2.067
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "IH",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.774,
+                        "end": 1.811
+                      }
+                    },
+                    {
+                      "phone": "K",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.811,
+                        "end": 1.847
+                      }
+                    },
+                    {
+                      "phone": "S",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.847,
+                        "end": 1.884
+                      }
+                    },
+                    {
+                      "phone": "P",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.884,
+                        "end": 1.921
+                      }
+                    },
+                    {
+                      "phone": "L",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.921,
+                        "end": 1.957
+                      }
+                    },
+                    {
+                      "phone": "EY",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.957,
+                        "end": 1.994
+                      }
+                    },
+                    {
+                      "phone": "N",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 1.994,
+                        "end": 2.03
+                      }
+                    },
+                    {
+                      "phone": "D",
+                      "gop": -6.5,
+                      "confidence": 0.31,
+                      "flagged": true,
+                      "heardInstead": {
+                        "sound": {
+                          "_0": "t"
+                        }
+                      },
+                      "youRange": {
+                        "start": 2.03,
+                        "end": 2.067
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "index": 6,
+              "text": "the",
+              "modelRange": {
+                "start": 1.962,
+                "end": 2.246
+              },
+              "youRange": {
+                "start": 2.126,
+                "end": 2.422
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "DH",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 2.126,
+                        "end": 2.274
+                      }
+                    },
+                    {
+                      "phone": "AH0",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 2.274,
+                        "end": 2.422
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "index": 7,
+              "text": "rainbow",
+              "modelRange": {
+                "start": 2.29,
+                "end": 2.574
+              },
+              "youRange": {
+                "start": 2.48,
+                "end": 2.777
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "R",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 2.48,
+                        "end": 2.539
+                      }
+                    },
+                    {
+                      "phone": "EY",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 2.539,
+                        "end": 2.599
+                      }
+                    },
+                    {
+                      "phone": "N",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 2.599,
+                        "end": 2.658
+                      }
+                    },
+                    {
+                      "phone": "B",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 2.658,
+                        "end": 2.718
+                      }
+                    },
+                    {
+                      "phone": "OW",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 2.718,
+                        "end": 2.777
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "index": 8,
+              "text": "in",
+              "modelRange": {
+                "start": 2.617,
+                "end": 2.902
+              },
+              "youRange": {
+                "start": 2.835,
+                "end": 3.132
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "IH",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 2.835,
+                        "end": 2.984
+                      }
+                    },
+                    {
+                      "phone": "N",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 2.984,
+                        "end": 3.132
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "index": 9,
+              "text": "various",
+              "modelRange": {
+                "start": 2.945,
+                "end": 3.229
+              },
+              "youRange": {
+                "start": 3.19,
+                "end": 3.487
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "V",
+                      "gop": -6.5,
+                      "confidence": 0.4,
+                      "flagged": true,
+                      "heardInstead": {
+                        "sound": {
+                          "_0": "w"
+                        }
+                      },
+                      "youRange": {
+                        "start": 3.19,
+                        "end": 3.24
+                      }
+                    },
+                    {
+                      "phone": "EH",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 3.24,
+                        "end": 3.289
+                      }
+                    },
+                    {
+                      "phone": "R",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 3.289,
+                        "end": 3.338
+                      }
+                    },
+                    {
+                      "phone": "IY",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 3.338,
+                        "end": 3.388
+                      }
+                    },
+                    {
+                      "phone": "AH0",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 3.388,
+                        "end": 3.438
+                      }
+                    },
+                    {
+                      "phone": "S",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 3.438,
+                        "end": 3.487
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "index": 10,
+              "text": "ways.",
+              "modelRange": {
+                "start": 3.272,
+                "end": 3.557
+              },
+              "youRange": {
+                "start": 3.545,
+                "end": 3.841
+              },
+              "state": {
+                "judged": {
+                  "_0": [
+                    {
+                      "phone": "W",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 3.545,
+                        "end": 3.644
+                      }
+                    },
+                    {
+                      "phone": "EY",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 3.644,
+                        "end": 3.742
+                      }
+                    },
+                    {
+                      "phone": "Z",
+                      "gop": -0.2,
+                      "confidence": 0.93,
+                      "flagged": false,
+                      "youRange": {
+                        "start": 3.742,
+                        "end": 3.841
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

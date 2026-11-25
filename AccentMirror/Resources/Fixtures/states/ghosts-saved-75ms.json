@@ -3,6 +3,7 @@
   "summary": "Take 03 just saved, 75 ms into the 150 ms fade (v3 §3.3; the v3 form of ghosts-hover): take 02 fading in towards 30% while take 01 steps from 30% to 20%.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

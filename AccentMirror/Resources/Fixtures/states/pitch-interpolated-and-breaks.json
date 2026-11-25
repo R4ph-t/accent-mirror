@@ -3,6 +3,7 @@
   "summary": "Bridged unvoiced frames drawn lighter, a break at a pause over 250 ms, a 2-frame stub not drawn.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [
     3,
     2,

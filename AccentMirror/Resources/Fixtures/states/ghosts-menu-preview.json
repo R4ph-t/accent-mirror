@@ -3,6 +3,7 @@
   "summary": "Take 01 hovered in the open take menu (§6): it is the only ghost, at 30%; take 02 isn't drawn while the preview lasts.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

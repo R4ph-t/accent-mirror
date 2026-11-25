@@ -176,15 +176,14 @@ struct ShellContractTests {
 
     // MARK: - Spec 29: v3/v3.1 show-don't-judge
 
+    /// v5 Supersedes: an analysed take's card 1 is SOUNDS TO CHECK (Play Both in its header), not v3's YOUR TAKE row.
+    /// These takes carry no sound judging, so the card says the sounds weren't checked.
     @Test(arguments: ["result", "result-not-scored", "result-no-verdict", "result-one-native", "inspector-open"])
-    func resultShowsYourTakeWithTheResultRowAndPlayBoth(_ name: String) throws {
+    func resultShowsSoundsToCheckWithPlayBoth(_ name: String) throws {
         let card = ShellPresenter.card(try library.load(name))
-        #expect(card.title == "YOUR TAKE")
-        #expect(card.rows.count == 1)
-        #expect(card.rows.first?.icon == .overlay)
-        #expect(card.rows.first?.trailing == .playBoth)
-        #expect(card.rows.first?.sentence.plain ==
-                "Your take is drawn over the model\u{2019}s. Play them back to back, then try another take.")
+        #expect(card.title == "SOUNDS TO CHECK")
+        #expect(card.rows.isEmpty)
+        #expect(card.sounds == .notChecked)
     }
 
     @Test func onlyTheFirstQuietLineShows() throws {

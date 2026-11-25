@@ -3,6 +3,7 @@
   "summary": "Play Both (⌥⌘L) on the injected clock: the model, 0.4 s, then your take; the playhead is in your half.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [
     3,
     2,

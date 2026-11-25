@@ -28,10 +28,13 @@ enum Copy {
     // MARK: Card 1 titles
 
     static let yourTake = "YOUR TAKE"
+    /// v5 §1.1: card 1 on an analysed take.
+    static let soundsToCheck = "SOUNDS TO CHECK"
 
     // MARK: Phases (§7)
 
-    static let emptyPrompt = "Listen to the model, then press Space to record your take."
+    /// v5 §1.3.
+    static let emptyPrompt = "Press Record or Space to record your take."
     static let recordingPrompt = "Recording. Press Space when you\u{2019}re done."
     static let analysing = "Analysing your take\u{2026}"
     static let yourTakeAppearsHere = "Your take appears here."
@@ -44,9 +47,65 @@ enum Copy {
     static let notComparable = "NOT COMPARABLE"
     static let notComparableTooltip = "Recorded for the old wording, so it can't be lined up with the new one."
 
+    // MARK: Sounds to check (v5 §1)
+
+    /// v5 §1.3: only when analysis runs past 400 ms.
+    static let checkingSounds = "Checking sounds\u{2026}"
+    static let checkingSoundsSpoken = "Checking sounds"
+    /// Always at the foot of SOUNDS TO CHECK.
+    static let flagsAreHints = "Flags are hints, not a grade."
+    static let noSoundsToCheck = "No sounds to check in this take."
+    static let noSoundsNote = "This check listens for clear sound swaps and can miss subtle differences."
+    /// No judging for this take (an older take, or the judge didn't run): never claims the take is clean.
+    static let soundsNotChecked = "Sounds weren\u{2019}t checked for this take."
+    static let soundRowHint = "Opens word playback and sound details"
+
+    /// "+2 more highlighted in the phrase below".
+    static func moreFlagged(_ count: Int) -> String { "+\(count) more highlighted in the phrase below" }
+    static func moreFlaggedSpoken(_ count: Int) -> String {
+        "\(count) more \(count == 1 ? "word" : "words") highlighted in the phrase below"
+    }
+
+    /// VoiceOver for a card 1 row: "Check sound in Throughout: th as in think, sounded closer to t as in tin".
+    static func soundRowSpoken(word: String, expected: String, heard: String) -> String {
+        "Check sound in \(word): \(expected), \(heard)"
+    }
+
+    // MARK: Phrase card and word popover (v5 §2–3)
+
+    static let phrase = "PHRASE"
+    static let checkThisSound = "Check this sound"
+    static let greyWordNote = "Grey word: not in dictionary"
+    /// Designer correction (2026-11-25) of the mockup's "Click any checked word…".
+    static let clickAnyWord = "Click any word to hear Native vs You"
+    static let notInDictionary = "Not checked: this word isn\u{2019}t in the dictionary"
+    static let wordHint = "Press to hear native and your take"
+    static let checkSoundSuffix = ", check sound"
+    static let playThisSound = "Play this sound"
+    static let native = "Native"
+    static let you = "You"
+    static let playBothWord = "Play both"
+    static let popoverFooter = "\u{2190} \u{2192} move word \u{00B7} Space replay"
+    static let wordNotHeard = "This word wasn\u{2019}t heard in your take"
+    static func playThisSoundSpoken(expected: String, word: String) -> String {
+        "Play this sound, your take only: \(expected) in \(word)"
+    }
+    static func playNativeSpoken(_ word: String) -> String { "Play native word \(word)" }
+    static func playYouSpoken(_ word: String) -> String { "Play your take of \(word)" }
+    static func playBothSpoken(_ word: String) -> String { "Play native then your take of \(word)" }
+
+    // MARK: Rhythm and pitch disclosure (v5 §4)
+
+    static let rhythmAndPitch = "Rhythm and pitch"
+    static let show = "Show"
+    static let hide = "Hide"
+    static let collapsed = "Collapsed"
+    static let expanded = "Expanded"
+    static let showRhythmAndPitch = "Show rhythm and pitch"
+    static let hideRhythmAndPitch = "Hide rhythm and pitch"
+
     // MARK: Result (v3 §3.1)
 
-    static let resultRow = "Your take is drawn over the model\u{2019}s. Play them back to back, then try another take."
     static let playBoth = "Play Both"
     static let playBothTooltip = "Play the model, then your take"
     /// VoiceOver, once a result is on screen.

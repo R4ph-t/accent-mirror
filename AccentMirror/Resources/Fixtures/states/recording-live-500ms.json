@@ -3,6 +3,7 @@
   "summary": "Recording 0.5 s in: live bars from the envelope stream in strip.bar up to the 2 pt Lime playhead, a quarter of the way along the model's 2 s.",
   "phrase": "photography",
   "phase": "recording",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-recording",
   "recording": {"elapsed": "0:00", "playhead": 0, "seconds": 0.5},

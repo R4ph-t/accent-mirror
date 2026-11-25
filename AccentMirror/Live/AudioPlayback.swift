@@ -32,11 +32,23 @@ final class AudioPlayback {
                 let i0 = max(0, min(clip.samples.count, Int((a * rate).rounded())))
                 let i1 = max(i0, min(clip.samples.count, Int((b * rate).rounded())))
                 chunk = Array(clip.samples[i0..<i1])
+                fade(&chunk, seconds: schedule.fadeSeconds, rate: rate)
             }
             if chunk.count < wanted { chunk += [Float](repeating: 0, count: wanted - chunk.count) }
             out += chunk.prefix(wanted)
         }
         return out
+    }
+
+    /// A linear ramp over the first and last `seconds` of `chunk` (v5: 10 ms on word and sound buttons).
+    nonisolated static func fade(_ chunk: inout [Float], seconds: Double, rate: Double) {
+        let length = min(chunk.count / 2, Int((seconds * rate).rounded()))
+        guard length > 0 else { return }
+        for i in 0..<length {
+            let gain = Float(i) / Float(length)
+            chunk[i] *= gain
+            chunk[chunk.count - 1 - i] *= gain
+        }
     }
 
     func play(_ schedule: PlaybackSchedule, model: AudioClip?, you: AudioClip?) {

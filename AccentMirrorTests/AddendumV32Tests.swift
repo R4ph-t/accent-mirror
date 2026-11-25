@@ -115,9 +115,13 @@ struct GeistMediumTests {
     /// Ghost buttons, Play Both and "Too loud" read the medium roles, and nothing sets a system weight on Geist.
     @Test func mediumLabelsUseTheRoles() throws {
         let card = try String(contentsOf: repo.appending(path: "AccentMirror/Cards/CardOneView.swift"), encoding: .utf8)
+        // v5: Play Both moved into card 1's header, a shared button in SoundsToCheckCard.swift.
+        let sounds = try String(contentsOf: repo.appending(path: "AccentMirror/Cards/SoundsToCheckCard.swift"), encoding: .utf8)
         let toolbar = try String(contentsOf: repo.appending(path: "AccentMirror/Toolbar/ToolbarView.swift"), encoding: .utf8)
         #expect(card.contains("Text(Copy.tooLoud)\n                        .typeRole(.smallMedium)"))
-        #expect(card.contains("Text(Copy.playBoth)\n                            .typeRole(.bodyMedium)"))
+        #expect(sounds.contains("Text(Copy.playBoth)\n                    .typeRole(.bodyMedium)"))
+        #expect(card.contains("PlayBothButton(action: playBoth)"))
+        #expect(!sounds.contains(".font.weight("), "a weight modifier on a Geist role falls back to synthesis")
         #expect(toolbar.contains("TextMeasure.width(title, role: .bodyMedium)"))
         #expect(!card.contains(".font.weight("), "a weight modifier on a Geist role falls back to synthesis")
     }

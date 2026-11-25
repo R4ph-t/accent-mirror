@@ -1,0 +1,152 @@
+{
+  "id": "rainbow",
+  "text": "Throughout the centuries people have explained the rainbow in various ways.",
+  "subtitle": "My Phrases · Starter set",
+  "rangeSemitones": 12,
+  "words": [
+    {
+      "text": "Throughout",
+      "start": 0.0,
+      "end": 0.079,
+      "syllables": [
+        {
+          "text": "throughout",
+          "start": 0.0,
+          "end": 0.079,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "the",
+      "start": 0.091,
+      "end": 0.17,
+      "syllables": [
+        {
+          "text": "the",
+          "start": 0.091,
+          "end": 0.17,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "centuries",
+      "start": 0.182,
+      "end": 0.261,
+      "syllables": [
+        {
+          "text": "centuries",
+          "start": 0.182,
+          "end": 0.261,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "people",
+      "start": 0.273,
+      "end": 0.352,
+      "syllables": [
+        {
+          "text": "people",
+          "start": 0.273,
+          "end": 0.352,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "have",
+      "start": 0.364,
+      "end": 0.443,
+      "syllables": [
+        {
+          "text": "have",
+          "start": 0.364,
+          "end": 0.443,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "explained",
+      "start": 0.455,
+      "end": 0.533,
+      "syllables": [
+        {
+          "text": "explained",
+          "start": 0.455,
+          "end": 0.533,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "the",
+      "start": 0.545,
+      "end": 0.624,
+      "syllables": [
+        {
+          "text": "the",
+          "start": 0.545,
+          "end": 0.624,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "rainbow",
+      "start": 0.636,
+      "end": 0.715,
+      "syllables": [
+        {
+          "text": "rainbow",
+          "start": 0.636,
+          "end": 0.715,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "in",
+      "start": 0.727,
+      "end": 0.806,
+      "syllables": [
+        {
+          "text": "in",
+          "start": 0.727,
+          "end": 0.806,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "various",
+      "start": 0.818,
+      "end": 0.897,
+      "syllables": [
+        {
+          "text": "various",
+          "start": 0.818,
+          "end": 0.897,
+          "prominence": 0.6
+        }
+      ]
+    },
+    {
+      "text": "ways.",
+      "start": 0.909,
+      "end": 0.988,
+      "syllables": [
+        {
+          "text": "ways",
+          "start": 0.909,
+          "end": 0.988,
+          "prominence": 0.6
+        }
+      ]
+    }
+  ],
+  "band": []
+}

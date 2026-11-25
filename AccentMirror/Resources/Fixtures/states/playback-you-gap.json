@@ -3,6 +3,7 @@
   "summary": "Play You frozen inside the inserted \"so\" (a youOnly stretch): your row has the playhead, the native row has none, and the pitch playhead holds at the gap edge, the end of \"is\".",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03-insertion",
   "analysis": {

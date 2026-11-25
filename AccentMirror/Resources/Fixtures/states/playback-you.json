@@ -3,6 +3,7 @@
   "summary": "Play You (⇧⌘L) frozen mid-word in \"photography\": the playhead on your row, mapped through TimeWarp.toModel onto the native row and the pitch plot; \"Playing your take\" in the strip header.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {

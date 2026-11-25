@@ -20,13 +20,19 @@ enum TypeRole {
     case smallBold
     /// Section headers, card titles, row labels, take menu, axis labels: Geist Mono 12 / 500, caps, tracking 0.6.
     case mono
+    /// v5 §2: a PHRASE card word, Geist 18 / 400 (26 pt line).
+    case phraseWord
+    /// v5 §2: a flagged PHRASE card word, Geist 18 / 500.
+    case phraseWordFlagged
+    /// v5 §3: the word popover's header, Geist 15 / 600.
+    case popoverTitle
 
     var fontName: String {
         switch self {
         case .phraseTitle: BundledFonts.funnelDisplaySemiBold
-        case .body, .small: BundledFonts.geistRegular
-        case .bodyMedium, .smallMedium: BundledFonts.geistMedium
-        case .bodySemibold: BundledFonts.geistSemiBold
+        case .body, .small, .phraseWord: BundledFonts.geistRegular
+        case .bodyMedium, .smallMedium, .phraseWordFlagged: BundledFonts.geistMedium
+        case .bodySemibold, .popoverTitle: BundledFonts.geistSemiBold
         case .bodyBold, .smallBold: BundledFonts.geistBold
         case .mono: BundledFonts.geistMonoMedium
         }
@@ -37,6 +43,8 @@ enum TypeRole {
         case .phraseTitle: 16
         case .body, .bodyMedium, .bodySemibold, .bodyBold: 13
         case .small, .smallMedium, .smallBold, .mono: 12
+        case .phraseWord, .phraseWordFlagged: 18
+        case .popoverTitle: 15
         }
     }
 
@@ -55,10 +63,10 @@ enum TypeRole {
     var italicFontName: String {
         switch self {
         case .phraseTitle: BundledFonts.funnelDisplaySemiBold
-        case .body, .small: BundledFonts.geistItalic
+        case .body, .small, .phraseWord: BundledFonts.geistItalic
         // No role sets a medium run in italics; the Regular italic keeps it in Geist if one ever does.
-        case .bodyMedium, .smallMedium: BundledFonts.geistItalic
-        case .bodySemibold: BundledFonts.geistSemiBoldItalic
+        case .bodyMedium, .smallMedium, .phraseWordFlagged: BundledFonts.geistItalic
+        case .bodySemibold, .popoverTitle: BundledFonts.geistSemiBoldItalic
         case .bodyBold, .smallBold: BundledFonts.geistBoldItalic
         case .mono: BundledFonts.geistMonoMedium
         }

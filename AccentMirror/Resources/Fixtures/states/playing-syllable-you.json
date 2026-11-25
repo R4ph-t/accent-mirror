@@ -3,6 +3,7 @@
   "summary": "Play You frozen in your \"har\" (r6 E4): the outline on your syllable and the matching native HAR; \"Playing your take\" in the strip header.",
   "phrase": "photography",
   "phase": "showingTake",
+  "rhythmAndPitchExpanded": true,
   "savedTakes": [3, 2, 1],
   "take": "photography-take03",
   "analysis": {
