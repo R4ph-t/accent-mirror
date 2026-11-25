@@ -1,0 +1,17 @@
+wav2vec2-lv-60-espeak-cv-ft, as used by Accent Mirror for on-device per-sound pronunciation judging (Goodness of
+Pronunciation, judge `gop-sf-1`).
+
+- Model: facebook/wav2vec2-lv-60-espeak-cv-ft on Hugging Face,
+  https://huggingface.co/facebook/wav2vec2-lv-60-espeak-cv-ft, commit ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4,
+  by Facebook AI (Qiantong Xu, Alexei Baevski and Michael Auli, "Simple and Effective Zero-shot Cross-lingual
+  Phoneme Recognition", 2021, https://arxiv.org/abs/2109.11680). Licence: Apache License 2.0 (model card front
+  matter `license: apache-2.0` at that commit). The upstream repository ships no LICENSE or NOTICE file of its own.
+- Training data: pretrained on Libri-Light (LibriVox audiobooks, public domain); fine-tuned on Common Voice (CC0)
+  for multilingual espeak-ng phoneme recognition.
+- Modification: converted to Core ML by Accent Mirror (tools/convert_judge_model.py, coremltools 9.0,
+  BSD-3-Clause): log-softmax added to the output, fp16 compute, weights quantised to int8 (per-channel, linear
+  symmetric), input lengths enumerated at 2, 4, 6, 8, 10, 12 and 15 s, then compiled with coremlcompiler.
+
+The upstream files and the converted package are fetched and built by scripts/fetch-judge-model.sh and SHA-256 pinned
+in manifest.json. None is committed and none is in Git LFS; the app build bundles the verified, compiled package.
+See LICENSE in this folder for the full Apache-2.0 text.

@@ -88,6 +88,37 @@ the full licence texts are in that folder's `LICENSE` and `NOTICE`.
 - Tokenizer files: `openai/whisper-base.en` at commit `911407f4214e0e1d82085af863093ec0b66f9cd6`, model card licence
   Apache-2.0.
 
+## wav2vec2-lv-60-espeak-cv-ft (Apache-2.0): sound judging model
+
+Bundled with the app for per-sound pronunciation judging, compiled at build time to
+`Contents/Resources/Models/wav2vec2-lv-60-espeak-cv-ft/LV60Int8.mlmodelc`, with its `manifest.json`, `LICENSE`
+(full Apache-2.0 text) and `NOTICE` next to it. Not committed and never Git LFS: `scripts/fetch-judge-model.sh`
+fetches the weights at a pinned commit, checks every file's SHA-256, converts them and checks the converted package
+against `Resources/Models/wav2vec2-lv-60-espeak-cv-ft/manifest.json`. Without a verified cache the app is built
+without it and reports sound judging as unavailable.
+
+- Model: `facebook/wav2vec2-lv-60-espeak-cv-ft` at commit `ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4`, model card
+  https://huggingface.co/facebook/wav2vec2-lv-60-espeak-cv-ft/blob/ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4/README.md,
+  licence Apache-2.0. Authors: Qiantong Xu, Alexei Baevski, Michael Auli (Facebook AI), "Simple and Effective
+  Zero-shot Cross-lingual Phoneme Recognition", 2021. Apache-2.0 is compatible with GPL-3.0.
+- Training data: Libri-Light (LibriVox recordings, public domain) for pretraining; Common Voice (CC0) for
+  fine-tuning. No LDC or non-commercial data.
+- Changes: converted to Core ML by Accent Mirror (`tools/convert_judge_model.py`), with a log-softmax output, fp16
+  compute and int8 per-channel weights. `coremltools` 9.0 (BSD-3-Clause) runs only in the fetch script's
+  git-ignored venv; it is never linked into the app.
+
+### Sound judging calibration weights (fitted on speechocean762, CC BY 4.0)
+
+The sound judge ships a per-phone logistic calibration (81 weights: GOP, a 39-phone one-hot and their product) that
+turns a GOP score into P(error). The weights were fitted on the speechocean762 train split; no speechocean762 audio
+or labels ship with the app.
+
+- Attribution: Junbo Zhang et al., speechocean762, 2021 ("speechocean762: An Open-Source Non-native English Speech
+  Corpus For Pronunciation Assessment", Interspeech 2021; SpeechOcean). https://www.openslr.org/101/
+- Licence: Creative Commons Attribution 4.0 International (CC BY 4.0),
+  https://creativecommons.org/licenses/by/4.0/
+- Changes: only fitted model coefficients derived from the corpus's phone scores are distributed.
+
 ## CMUdict (BSD-style)
 
 Bundled by spec 06, unmodified, as an `AMAlignment` package resource under
