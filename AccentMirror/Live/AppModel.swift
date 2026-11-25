@@ -104,6 +104,10 @@ final class AppModel {
         session.announce = { [weak self] announcement in self?.announce(announcement) }
         shell.onPlay = { [weak self] schedule in self?.playAudio(schedule) }
         shell.onStopPlaying = { [weak self] in self?.playback.stop() }
+        shell.adjustPlayback = { [weak self] schedule in
+            guard let session = self?.session else { return schedule }
+            return schedule.applyingTail(model: session.modelClip(), you: session.youClip)
+        }
         installKeyMonitor()
         let center = NotificationCenter.default
         observers.append(center.addObserver(forName: NSApplication.didBecomeActiveNotification, object: nil,

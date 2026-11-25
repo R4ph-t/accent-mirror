@@ -26,8 +26,9 @@ final class AudioPlayback {
             let wanted = Int((step.seconds * rate).rounded())
             var chunk: [Float] = []
             if case .play(let side, _, let from, let to) = step, let clip = side == .model ? model : you {
-                let a = clip.start + from * clip.seconds
-                let b = clip.start + to * clip.seconds
+                // from == to == 1 is the tail after the last word: clip.end ..< playbackEnd.
+                let a = from == 1 && to == 1 ? clip.end : clip.start + from * clip.seconds
+                let b = to == 1 ? clip.playbackEnd : clip.start + to * clip.seconds
                 let i0 = max(0, min(clip.samples.count, Int((a * rate).rounded())))
                 let i1 = max(i0, min(clip.samples.count, Int((b * rate).rounded())))
                 chunk = Array(clip.samples[i0..<i1])
