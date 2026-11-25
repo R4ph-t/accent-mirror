@@ -47,7 +47,7 @@
   ],
   "phrases" : [
     {
-      "headlineVoice" : "p225_002",
+      "headlineVoice" : "p311_002",
       "id" : "vctk-002",
       "pronunciations" : {
         "1" : "HH ER0",
@@ -236,7 +236,7 @@
       "text" : "Ask her to bring these things with her from the store."
     },
     {
-      "headlineVoice" : "p225_004",
+      "headlineVoice" : "p311_004",
       "id" : "vctk-004",
       "pronunciations" : {
         "12" : "F ER0",
@@ -425,7 +425,7 @@
       "text" : "We also need a small plastic snake and a big toy frog for the kids."
     },
     {
-      "headlineVoice" : "p225_005",
+      "headlineVoice" : "p311_005",
       "id" : "vctk-005",
       "pronunciations" : {
         "1" : "K AH0 N",
@@ -526,7 +526,7 @@
       "text" : "She can scoop these things into three red bags, and we will go meet her Wednesday at the train station."
     },
     {
-      "headlineVoice" : "p225_006",
+      "headlineVoice" : "p311_006",
       "id" : "vctk-006",
       "pronunciations" : {
         "16" : "R EY1 N B OW2",
@@ -690,7 +690,7 @@
       "text" : "When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow."
     },
     {
-      "headlineVoice" : "p225_007",
+      "headlineVoice" : "p311_007",
       "id" : "vctk-007",
       "pronunciations" : {
         "10" : "B Y UW1 T AH0 F AH0 L",
@@ -852,7 +852,7 @@
       "text" : "The rainbow is a division of white light into many beautiful colors."
     },
     {
-      "headlineVoice" : "p225_009",
+      "headlineVoice" : "p311_009",
       "id" : "vctk-009",
       "pronunciations" : {
         "10" : "AE1 T",
@@ -1039,7 +1039,7 @@
       "text" : "There is , according to legend, a boiling pot of gold at one end."
     },
     {
-      "headlineVoice" : "p225_010",
+      "headlineVoice" : "p311_010",
       "id" : "vctk-010",
       "pronunciations" : {
         "2" : "B AH1 T"
@@ -1199,7 +1199,7 @@
       "text" : "People look, but no one ever finds it."
     },
     {
-      "headlineVoice" : "p225_012",
+      "headlineVoice" : "p311_012",
       "id" : "vctk-012",
       "pronunciations" : {
         "5" : "IH0 K S P L EY1 N D"
@@ -1380,7 +1380,7 @@
       "text" : "Throughout the centuries people have explained the rainbow in various ways."
     },
     {
-      "headlineVoice" : "p225_013",
+      "headlineVoice" : "p311_013",
       "id" : "vctk-013",
       "pronunciations" : {
         "8" : "F IH1 Z IH0 K AH0 L",
@@ -1563,7 +1563,7 @@
       "text" : "Some have accepted it as a miracle without physical explanation."
     },
     {
-      "headlineVoice" : "p225_014",
+      "headlineVoice" : "p311_014",
       "id" : "vctk-014",
       "pronunciations" : {
         "0" : "T AH0",
@@ -1756,7 +1756,7 @@
       "text" : "To the Hebrews it was a token that there would be no more universal floods."
     },
     {
-      "headlineVoice" : "p226_015",
+      "headlineVoice" : "p311_015",
       "id" : "vctk-015",
       "pronunciations" : {
         "4" : "IH2 M AE1 JH AH0 N"
@@ -1874,7 +1874,7 @@
       "text" : "The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain."
     },
     {
-      "headlineVoice" : "p225_017",
+      "headlineVoice" : "p311_017",
       "id" : "vctk-017",
       "pronunciations" : {
         "4" : "IH0 K S P L EY1 N",
@@ -2057,7 +2057,7 @@
       "text" : "Others have tried to explain the phenomenon physically."
     },
     {
-      "headlineVoice" : "p225_018",
+      "headlineVoice" : "p311_018",
       "id" : "vctk-018",
       "pronunciations" : {
         "0" : "EH1 R AH0 S T AA2 T AH0 L",
@@ -2252,7 +2252,7 @@
       "text" : "Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain."
     },
     {
-      "headlineVoice" : "p225_020",
+      "headlineVoice" : "p311_020",
       "id" : "vctk-020",
       "pronunciations" : {
         "1" : "K AA1 M P L AH0 K EY2 T AH0 D"

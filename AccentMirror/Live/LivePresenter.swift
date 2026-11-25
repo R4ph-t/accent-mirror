@@ -121,6 +121,11 @@ enum LivePresenter {
         "\(recording.speaker), \(recording.corpus), \(recording.licence)"
     }
 
+    /// v3.3 X2: "{id} · {region}", then the existing corpus/licence line under the closed button.
+    static func inspectorCredit(_ recording: StarterManifest.Recording) -> String {
+        "\(recording.speaker) \u{00B7} \(recording.region)\n\(recording.corpus) \u{00B7} \(recording.licence)"
+    }
+
     // MARK: Drift (spec 01)
 
     static func takeProblem(_ problem: AMCore.TakeProblem) -> TakeProblem {
@@ -422,7 +427,7 @@ enum LivePresenter {
         }
         let voices = live.phrase.recordings
         let model = live.recording.map { recording in
-            UIFixture.ModelRecording(voice: voiceTitle(recording), region: nil, attribution: attribution(recording),
+            UIFixture.ModelRecording(voice: voiceTitle(recording), region: nil, attribution: inspectorCredit(recording),
                                      voices: voices.map(voiceRow))
         }
         let fixture = UIFixture(

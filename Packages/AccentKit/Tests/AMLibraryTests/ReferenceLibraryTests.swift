@@ -19,7 +19,8 @@ let starterFolder = URL(fileURLWithPath: #filePath)
         #expect(!manifest.phrases.isEmpty)
         for phrase in manifest.phrases {
             #expect(!phrase.targets.isEmpty, "\(phrase.id) has no target")
-            #expect(phrase.recordings.first?.id == phrase.headlineVoice)
+            #expect(phrase.recording(phrase.headlineVoice) != nil, "\(phrase.id) headline is not one of its recordings")
+            #expect(phrase.headlineVoice.rawValue.hasPrefix("p311_"), "\(phrase.id) default voice should be p311")
         }
     }
 
@@ -47,9 +48,9 @@ let starterFolder = URL(fileURLWithPath: #filePath)
         }
         let p225 = try #require(recordings.first { $0.speaker == "p225" })
         #expect((p225.accent, p225.region, p225.gender) == ("English", "Southern England", "F"))
-        // p225 has no 015; its headline is p226.
+        // p225 has no 015. The default voice is p311 (v3.3).
         if let phrase = manifest.phrase(PhraseID("vctk-015")) {
-            #expect(phrase.headlineVoice == RecordingID("p226_015"))
+            #expect(phrase.headlineVoice == RecordingID("p311_015"))
             #expect(!phrase.recordings.contains { $0.speaker == "p225" })
         }
     }

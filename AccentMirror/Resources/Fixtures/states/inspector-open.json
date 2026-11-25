@@ -66,9 +66,8 @@
   "inspectorOpen": true,
   "persistence": "notSaved",
   "modelRecording": {
-    "voice": "p225",
-    "region": "Southern England",
-    "attribution": "VCTK 0.92 · CC BY 4.0",
+    "voice": "Iowa · p311",
+    "attribution": "p311 · Iowa\nVCTK 0.92 · CC BY 4.0",
     "voices": [
       "p225",
       "p226",
@@ -77,7 +76,8 @@
       "p229",
       "p230",
       "p231",
-      "p232"
+      "p232",
+      "p311"
     ]
   },
   "earlierTakes": [
