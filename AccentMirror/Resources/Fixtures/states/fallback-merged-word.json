@@ -1,0 +1,72 @@
+{
+  "name": "fallback-merged-word",
+  "summary": "Merged-word fallback (v3.4 Y2.3): chocolate CMUdict 2 syllables vs TeX 3, centred lowercase tertiary label, dot under first native syllable.",
+  "phrase": "chocolate",
+  "phase": "showingTake",
+  "savedTakes": [
+    1
+  ],
+  "take": "chocolate",
+  "analysis": {
+    "verdict": {
+      "notScored": {}
+    },
+    "timing": "good",
+    "comparableCoverage": 1.0,
+    "describe": {
+      "you": {
+        "lengthSeconds": {
+          "value": 1.0
+        },
+        "syllablesPerSecond": {
+          "value": 3.0
+        },
+        "pitchRangeSemitones": {
+          "value": 4.8
+        },
+        "rhythmNPVI": {
+          "value": 42
+        },
+        "finalSlope": {
+          "value": -2.0
+        },
+        "endingDirection": "fall"
+      },
+      "native": {
+        "voices": 8,
+        "lengthSeconds": {
+          "min": 0.9,
+          "max": 1.2,
+          "count": 8
+        },
+        "syllablesPerSecond": {
+          "min": 2.8,
+          "max": 3.5,
+          "count": 8
+        },
+        "pitchRangeSemitones": {
+          "min": 5.5,
+          "max": 8.0,
+          "count": 8
+        },
+        "rhythmNPVI": {
+          "min": 48,
+          "max": 58,
+          "count": 8
+        },
+        "endingDirections": {
+          "fall": 6,
+          "rise": 2
+        }
+      }
+    }
+  },
+  "modelRecording": {
+    "voice": "p311",
+    "region": "Iowa",
+    "attribution": "VCTK 0.92 · CC BY 4.0",
+    "voices": [
+      "p311"
+    ]
+  }
+}
