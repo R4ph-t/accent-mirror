@@ -8,6 +8,7 @@ import AMCore
 import AMJudging
 import AMProsody
 import Foundation
+import os
 
 public actor SoundJudgeHost {
     /// Judges one 16 kHz mono take: `SoundJudge.judge(samples:words:)` in the app, a stub in tests.
@@ -81,8 +82,37 @@ public actor SoundJudgeHost {
     }
 
     /// Judges `samples` (16 kHz mono) against `words`. Never throws for a model problem: that is an `.unavailable`
-    /// outcome. Throws `CancellationError` only when the calling task is cancelled.
+    /// outcome. Throws `CancellationError` only when the calling task is cancelled. Each settled outcome is logged
+    /// (`Self.log`, numbers only).
     public func outcome(samples: [Float], words: [AMJudging.ExpectedWord]) async throws -> SoundJudgementOutcome {
+        let outcome = try await judgedOutcome(samples: samples, words: words)
+        Self.log.notice("\(Self.logLine(outcome), privacy: .public)")
+        return outcome
+    }
+
+    /// Judging results in the unified log:
+    /// `log show --predicate 'subsystem == "AccentMirror" AND category == "Judge"'`.
+    static let log = Logger(subsystem: "AccentMirror", category: "Judge")
+
+    /// One take's outcome as the log line: no words or transcript, only the outcome, the worst P(error), the flagged
+    /// word count and the threshold.
+    static func logLine(_ outcome: SoundJudgementOutcome) -> String {
+        switch outcome {
+        case .judged(let judgement):
+            let phones = judgement.words.flatMap(\.phones)
+            let worst = phones.map { 1 - $0.confidence }.max() ?? 0
+            let judged = judgement.words.filter { if case .judged = $0.state { true } else { false } }.count
+            return "judged worstPError=\(String(format: "%.3f", worst))"
+                + " flaggedWords=\(judgement.words.filter(\.flagged).count) judgedWords=\(judged)"
+                + " words=\(judgement.words.count) threshold=\(judgement.errorThreshold) judge=\(judgement.judgeID)"
+        case .unavailable(let reason):
+            return "unavailable(\(reason.rawValue))"
+        }
+    }
+
+    private func judgedOutcome(
+        samples: [Float], words: [AMJudging.ExpectedWord]
+    ) async throws -> SoundJudgementOutcome {
         guard words.contains(where: { !$0.variants.isEmpty }) else { return .unavailable(.nothingJudgeable) }
         let judge: Judge
         switch readyJudge() {

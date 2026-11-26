@@ -1,5 +1,5 @@
 wav2vec2-lv-60-espeak-cv-ft, as used by Accent Mirror for on-device per-sound pronunciation judging (Goodness of
-Pronunciation, judge `gop-sf-1`).
+Pronunciation, judge `gop-sf-2`).
 
 - Model: facebook/wav2vec2-lv-60-espeak-cv-ft on Hugging Face,
   https://huggingface.co/facebook/wav2vec2-lv-60-espeak-cv-ft, commit ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4,

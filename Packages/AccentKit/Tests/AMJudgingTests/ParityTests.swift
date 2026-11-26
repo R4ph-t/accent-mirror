@@ -42,6 +42,9 @@ struct ParityFixture: Decodable {
     let units: [Unit]
     let takeSeconds: Double
 
+    /// The P(error) threshold the fixtures' `flagged` were computed at.
+    static let threshold = 0.22
+
     static let names = ["p225_013", "p233_013", "p252_006", "p225_002", "p233_012", "0044_0056"]
 
     static func load(_ name: String) throws -> ParityFixture {
@@ -100,8 +103,10 @@ struct ParityFixture: Decodable {
     func matchesReference(name: String) throws {
         let fixture = try ParityFixture.load(name)
         let posteriors = try fixture.posteriors()
+        // The fixtures' flags were computed at 0.22 (tools/make_judge_fixtures.py), so parity checks the scorer at
+        // that threshold; the live threshold is checked in ScorerTests.
         let judged = SoundScorer.judge(posteriors, words: fixture.expectedWords, vocabulary: .lv60Espeak,
-                                       takeSeconds: fixture.takeSeconds)
+                                       takeSeconds: fixture.takeSeconds, errorThreshold: ParityFixture.threshold)
         #expect(judged.count == fixture.words.count)
         for (w, word) in judged.enumerated() {
             let chosen = fixture.expectedWords[w].variants[fixture.chosenVariant[w]]

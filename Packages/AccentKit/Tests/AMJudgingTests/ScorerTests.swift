@@ -106,7 +106,7 @@ import Testing
         for word in judged { #expect(word.flagged == word.phones.contains(where: \.flagged)) }
         for phone in judged.flatMap(\.phones) {
             #expect(phone.gop <= 0 && (0...1).contains(phone.confidence))
-            #expect(phone.flagged == (1 - phone.confidence > 0.22))
+            #expect(phone.flagged == (1 - phone.confidence > Thresholds.current.soundJudging.errorThreshold))
         }
     }
 
@@ -116,8 +116,24 @@ import Testing
         #expect(judged.map(\.state) == [.unjudged(.notInDictionary)])
     }
 
-    @Test("the frozen threshold is the spike's") func threshold() {
-        #expect(Thresholds.current.soundJudging.errorThreshold == 0.22)
+    @Test("the threshold is the spike's native-safe point (Raph's call, 2026-11-26)") func threshold() {
+        #expect(Thresholds.current.soundJudging.errorThreshold == 0.13)
+        #expect(SoundScorer.judgeID == "gop-sf-2")
+    }
+
+    /// Regression for 2026-11-26: a French speaker's deliberately accented takes got no flags at 0.22. The worst
+    /// sounds there (GOPs from those takes; the audio isn't committed) must flag at the live threshold, and his clean
+    /// takes' worst sounds must not.
+    @Test("a French speaker's 'the' heard as z flags; his clean takes' worst sounds don't")
+    func frenchSpeakerTakes() throws {
+        let threshold = Thresholds.current.soundJudging.errorThreshold
+        func pError(_ gop: Double, _ phone: String) throws -> Double {
+            try #require(Calibration.bundled.errorProbability(gop: gop, phone: phone))
+        }
+        #expect(try pError(-8.24, "DH") > threshold, "'the' DH heard z, take 09:17:21")
+        #expect(try pError(-8.12, "DH") > threshold, "'the' DH heard z, take 09:17:56")
+        #expect(try pError(-2.94, "IH") <= threshold, "'explained' IH heard ɛ, clean take 09:15")
+        #expect(try pError(-2.06, "ER") <= threshold, "'centuries' ER, clean take 09:14")
     }
 
     @Test("bucket choice and normalisation") func buckets() throws {
