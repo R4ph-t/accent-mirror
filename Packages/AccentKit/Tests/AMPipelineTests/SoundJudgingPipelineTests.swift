@@ -146,6 +146,18 @@ import Testing
         #expect(SoundJudgeHost.unavailable(for: InjectedError()) == .modelFailed)
     }
 
+    @Test("the judge log line carries the outcome, worst P(error), flagged count and threshold, and no words")
+    func logLine() {
+        let words = [
+            AMJudging.ExpectedWord(index: WordIndex(0), text: "secretword", variants: [["DH", "AH0"]]),
+            AMJudging.ExpectedWord(index: WordIndex(1), text: "zyzzyva", variants: []),
+        ]
+        let line = SoundJudgeHost.logLine(.judged(Self.judgement(words)))
+        #expect(line == "judged worstPError=0.900 flaggedWords=1 judgedWords=1 words=2 threshold=0.22 judge=stub")
+        #expect(!line.contains("secretword") && !line.contains("zyzzyva"))
+        #expect(SoundJudgeHost.logLine(.unavailable(.modelNotInstalled)) == "unavailable(modelNotInstalled)")
+    }
+
     @Test("a judge that judges no word gives nothingJudgeable")
     func nothingJudgeable() async throws {
         let world = try await PipelineFixtures.world()

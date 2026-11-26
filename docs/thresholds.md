@@ -274,10 +274,21 @@ NOT EVALUATED until then, which is not a pass. Under a bar, the report goes to C
 Per-sound pronunciation judging (sound-judging plan, 2026-11-25; judging spike report §3). AMJudging's per-phone
 logistic calibration (`AMJudging/Resources/calibration.json`, fitted on speechocean762 train only by
 `tools/export_judge_calibration.py`) turns each sound's segmentation-free GOP into P(error); a sound is flagged above
-this value and its word with it. Frozen from the spike, not tuned here: picked as the best phone F1 on speechocean762
-train, then reported unchanged on held-out sets (LibriSpeech natives: 35/5,659 words flagged, 0.62% [0.45, 0.86];
-speechocean762 test: 65% of gross word errors caught).
+this value and its word with it. Both values come from the spike; neither was tuned on held-out clips here.
+
+- **0.22** (2026-11-25, `gop-sf-1`): the best phone F1 on speechocean762 train, reported unchanged on held-out sets
+  (LibriSpeech natives: 35/5,659 words flagged, 0.62% [0.45, 0.86]; speechocean762 test: 65% of gross word errors
+  caught, 3.5% of clean learner words flagged).
+- **0.13** (2026-11-26, `gop-sf-2`, Raph's call: "Ship 0.13 now, skip the native check"). Why: the calibration is
+  fitted on speechocean762 (Mandarin-L1 speakers, many children; label = gross error) and is too lenient for a
+  French speaker's errors. Over Raph's 5 takes of vctk-012 on 2026-11-26, including a deliberately accented one, the
+  worst P(error) was 0.142, so 0.22 flagged nothing. "the" heard as z (GOP −8.1) calibrates to 0.13–0.14. 0.13 is
+  the spike's `th_native_vctk` point (the smallest threshold with ≤ 1% VCTK starter word false flags): VCTK starter
+  11/1,289 words flagged (0.85% [0.48, 1.52]), LibriSpeech 50/5,659 (0.88% [0.67, 1.16]); speechocean762 test word
+  recall 78.3%, precision 24.8%, clean learner words flagged 7.7%. Those are the spike's numbers; the native
+  false-flag check was not rerun for this change (Raph's call). The 14 p311 starter references (bar ≤ 1 word)
+  flag 0 words at 0.13 with the real model and 1 on the committed posteriors (vctk-018 "was", W at P 0.14).
 
 | Name | Key | Value | Unit | Plan | Owner spec | Notes |
 |---|---|---|---|---|---|---|
-| Sound error threshold | `soundJudging.errorThreshold` | 0.22 | calibrated P(error) | sound-judging plan 2026-11-25 | sound judging | Flag when P(error) > this; confidence = 1 − P(error). Changing it needs a new `SoundScorer.judgeID` too |
+| Sound error threshold | `soundJudging.errorThreshold` | 0.13 | calibrated P(error) | sound-judging plan 2026-11-25; Raph 2026-11-26 | sound judging | Flag when P(error) > this; confidence = 1 − P(error). Changing it needs a new `SoundScorer.judgeID` too (`gop-sf-2` at 0.13; `gop-sf-1` was 0.22) |

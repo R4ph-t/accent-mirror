@@ -7,7 +7,7 @@ public enum Versions {
     /// Bump when an algorithm change can change any output for the same inputs.
     public static let algorithmVersion = 1
     /// Bump when any value in `Thresholds` changes.
-    public static let thresholdsVersion = 9
+    public static let thresholdsVersion = 10
     /// Bump when a contract type's shape or JSON changes.
     public static let contractVersion = 2
 
@@ -70,5 +70,10 @@ public enum Versions {
         GoldenDigest(
             algorithmVersion: 1, thresholdsVersion: 9, contractVersion: 2,
             digest: "b192e35d0fb6bdc71ff455b62ac58fa0a79a366101afb08b4753a1b90698063a"),
+        // Sound judging (2026-11-26): `soundJudging.errorThreshold` 0.22 -> 0.13 (Raph's call; the spike's native-safe
+        // point; judge `gop-sf-2`). Only `thresholdsVersion` moved in the goldens.
+        GoldenDigest(
+            algorithmVersion: 1, thresholdsVersion: 10, contractVersion: 2,
+            digest: "cc5e34ce0d07f8e35ad2c0aee7ebe1a6f9a9ff8d298283b29b3b5402d6706bcd"),
     ]
 }

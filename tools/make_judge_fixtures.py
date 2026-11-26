@@ -25,7 +25,7 @@ from gop import units, gop, ctc_ll, cmudict, ENG_IDS, VOCAB  # noqa: E402
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, '..', 'Packages', 'AccentKit', 'Tests', 'AMJudgingTests', 'Fixtures')
 CAL = json.load(open(os.path.join(HERE, '..', 'Packages', 'AccentKit', 'Sources', 'AMJudging', 'Resources', 'calibration.json')))
-TH = 0.22
+TH = 0.22  # the fixtures' reference threshold (ParityTests.threshold), not the live one (0.13 since 2026-11-26)
 STARTER = ['p225_013', 'p233_013', 'p252_006', 'p225_002', 'p233_012']
 SO762 = '0044_0056'
 COLS = [0] + ENG_IDS

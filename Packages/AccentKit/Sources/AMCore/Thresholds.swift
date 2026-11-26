@@ -314,11 +314,12 @@ public struct Thresholds: Sendable, Hashable, Codable {
         public init() {}
     }
 
-    /// Per-sound pronunciation judging (sound-judging plan, 2026-11-25), frozen from the judging spike: the
-    /// calibrated P(error) above which a sound is flagged. Picked as the best phone F1 on speechocean762 train only;
-    /// held-out LibriSpeech natives get 35/5,659 words flagged (0.62%).
+    /// Per-sound pronunciation judging (sound-judging plan, 2026-11-25): the calibrated P(error) above which a sound
+    /// is flagged. 0.13 since 2026-11-26 (Raph's call), the judging spike's native-safe point (`th_native_vctk`: VCTK
+    /// starter 11/1,289 words flagged, LibriSpeech 50/5,659): the first value, 0.22 (best phone F1 on speechocean762
+    /// train), flagged nothing on a French speaker's deliberately accented takes. See docs/thresholds.md.
     public struct SoundJudging: Sendable, Hashable, Codable {
-        public var errorThreshold = 0.22
+        public var errorThreshold = 0.13
         public init() {}
     }
 }

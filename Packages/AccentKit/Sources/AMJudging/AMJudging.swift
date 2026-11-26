@@ -51,7 +51,8 @@ public enum SoundJudgeError: Error, Sendable, Hashable {
 
 /// The pure part: posteriors + expected words -> judged words. Deterministic; what the parity fixtures test.
 public enum SoundScorer {
-    public static let judgeID = "gop-sf-1"
+    /// `gop-sf-2`: flags at P(error) > 0.13 (2026-11-26); `gop-sf-1` flagged at 0.22. Same GOP and calibration.
+    public static let judgeID = "gop-sf-2"
 
     /// Judges with the lv-60 vocabulary's token ids (`TokenVocabulary.lv60Espeak`).
     public static func judge(_ posteriors: LogPosteriors, words: [ExpectedWord]) -> [JudgedWord] {

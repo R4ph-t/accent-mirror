@@ -28,7 +28,8 @@ public struct SoundJudgement: Sendable, Hashable, Codable {
     public let modelID: String
     /// The GOP and calibration algorithm, e.g. `gop-sf-1`. Bump when the same posteriors can give other flags.
     public let judgeID: String
-    /// The calibrated P(error) above which a sound is flagged (frozen from the spike: 0.22).
+    /// The calibrated P(error) above which a sound is flagged (`Thresholds.soundJudging.errorThreshold`: 0.13 for
+    /// `gop-sf-2`, 0.22 for `gop-sf-1`).
     public let errorThreshold: Double
     /// One entry per phrase word, in phrase order.
     public let words: [JudgedWord]
